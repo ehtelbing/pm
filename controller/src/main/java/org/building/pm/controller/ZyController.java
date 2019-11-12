@@ -519,6 +519,246 @@ public class ZyController {
         }
     }
 
+    @RequestMapping(value = "/PRO_RUN7132_ORDERMATLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7132_ORDERMATLIST(
+            @RequestParam(value = "V_D_FACT_START_DATE") String V_D_FACT_START_DATE,
+            @RequestParam(value = "V_D_FACT_FINISH_DATE") String V_D_FACT_FINISH_DATE,
+            @RequestParam(value = "V_V_PLANT") String V_V_PLANT,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUIP_NO") String V_V_EQUIP_NO,
+            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+            @RequestParam(value = "V_V_MATERIALCODE") String V_V_MATERIALCODE,
+            @RequestParam(value = "V_V_MATERIALNAME") String V_V_MATERIALNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = zyService.PRO_RUN7132_ORDERMATLIST(V_D_FACT_START_DATE, V_D_FACT_FINISH_DATE,V_V_PLANT,V_V_DEPTCODE,V_V_EQUIP_NO,V_V_ORDERGUID,V_V_MATERIALCODE,V_V_MATERIALNAME);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_NO7132_DEPARTMATLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_NO7132_DEPARTMATLIST(
+            @RequestParam(value = "V_D_FACT_START_DATE") String V_D_FACT_START_DATE,
+            @RequestParam(value = "V_D_FACT_FINISH_DATE") String V_D_FACT_FINISH_DATE,
+            @RequestParam(value = "V_V_PLANT") String V_V_PLANT,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUIP_NO") String V_V_EQUIP_NO,
+            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+            @RequestParam(value = "V_V_MATERIALCODE") String V_V_MATERIALCODE,
+            @RequestParam(value = "V_V_MATERIALNAME") String V_V_MATERIALNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = zyService.PRO_NO7132_DEPARTMATLIST(V_D_FACT_START_DATE, V_D_FACT_FINISH_DATE,V_V_PLANT,V_V_DEPTCODE,V_V_EQUIP_NO,V_V_ORDERGUID,V_V_MATERIALCODE,V_V_MATERIALNAME);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    //导出重点备件跟踪使用情况分析表
+    @RequestMapping(value = "/EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void EXCEL(@RequestParam(value = "V_V_PLANT") String V_V_PLANT,
+                      @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                      @RequestParam(value = "V_V_EQUIP_NO") String V_V_EQUIP_NO,
+                      @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                      @RequestParam(value = "V_V_MATERIALCODE") String V_V_MATERIALCODE,
+                      @RequestParam(value = "V_V_MATERIALNAME") String V_V_MATERIALNAME,
+                      @RequestParam(value = "V_D_FACT_START_DATE") String V_D_FACT_START_DATE,
+                      @RequestParam(value = "V_D_FACT_FINISH_DATE") String V_D_FACT_FINISH_DATE,
+                      HttpServletResponse response)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+        /*V_V_EQUIP_NO = URLDecoder.decode(V_V_EQUIP_NO, "UTF-8");
+        V_V_DEPTCODE = URLDecoder.decode(V_V_DEPTCODE, "UTF-8");
+        V_V_ORDERGUID = URLDecoder.decode(V_V_ORDERGUID, "UTF-8");
+        V_V_MATERIALCODE = URLDecoder.decode(V_V_MATERIALCODE, "UTF-8");
+        V_V_MATERIALNAME = URLDecoder.decode(V_V_MATERIALNAME, "UTF-8");*/
+
+        HashMap data1 = zyService.PRO_NO7132_DEPARTMATLIST(V_D_FACT_START_DATE, V_D_FACT_FINISH_DATE, V_V_PLANT, V_V_DEPTCODE,
+                V_V_EQUIP_NO, V_V_ORDERGUID, V_V_MATERIALCODE, V_V_MATERIALNAME);
+
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("部门名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("实际使用备件数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("已更换备件数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("未更换备件数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("备件更换执行率");
+        cell.setCellStyle(style);
+
+        if (data1.size() > 0) {
+            list = (List) data1.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("ORDERAMOUNT") == null ? "" : map.get("ORDERAMOUNT").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("ORDERACTU") == null ? "" : map.get("ORDERACTU").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("I_ACTUALAMOUNT") == null ? "" : map.get("I_ACTUALAMOUNT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("EXECUTERATE") == null ? "" : map.get("EXECUTERATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("备件跟踪部门情况统计Excel.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                //OutputStream out = response.getOutputStream();
+
+                /*wb.write(out);
+                out.flush();
+                out.close();*/
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        //明细
+        HashMap data2 = zyService.PRO_RUN7132_ORDERMATLIST(V_D_FACT_START_DATE, V_D_FACT_FINISH_DATE, V_V_PLANT, V_V_DEPTCODE,
+                V_V_EQUIP_NO, V_V_ORDERGUID, V_V_MATERIALCODE, V_V_MATERIALNAME);
+        HSSFSheet sheet2 = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet2.setColumnWidth(i, 3000);
+        }
+
+        HSSFRow row2 = sheet2.createRow((int) 0);
+        HSSFCellStyle style2 = wb.createCellStyle();
+        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell2 = row2.createCell((short) 0);
+        cell2.setCellValue("序号");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 1);
+        cell2.setCellValue("工单号");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 2);
+        cell2.setCellValue("物料编码");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 3);
+        cell2.setCellValue("物料名称");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 4);
+        cell2.setCellValue("计量单位");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 5);
+        cell2.setCellValue("实际领用数量");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 6);
+        cell2.setCellValue("已更换数量");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 7);
+        cell2.setCellValue("未更换数量");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 8);
+        cell2.setCellValue("工单结束日期");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 9);
+        cell2.setCellValue("工单描述");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell((short) 10);
+        cell2.setCellValue("所属设备");
+        cell2.setCellStyle(style2);
+
+        if (data2.size() > 0) {
+            list = (List) data2.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet2.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_ORDERID") == null ? "" : map.get("V_ORDERID").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_MATERIALCODE") == null ? "" : map.get("V_MATERIALCODE").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("V_MATERIALNAME") == null ? "" : map.get("V_MATERIALNAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("V_UNIT") == null ? "" : map.get("V_UNIT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("ORDERAMOUNT") == null ? "" : map.get("ORDERAMOUNT").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("ORDERACTU") == null ? "" : map.get("ORDERACTU").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("I_ACTUALAMOUNT") == null ? "" : map.get("I_ACTUALAMOUNT").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("D_FACT_FINISH_DATE") == null ? "" : map.get("D_FACT_FINISH_DATE").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("V_SHORT_TXT") == null ? "" : map.get("V_SHORT_TXT").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("V_EQUIP_NAME") == null ? "" : map.get("V_EQUIP_NAME").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("重点备件跟踪使用情况分析表Excel.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
 }

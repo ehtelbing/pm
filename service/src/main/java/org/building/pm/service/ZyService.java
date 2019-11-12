@@ -394,5 +394,77 @@ public class ZyService {
         return result;
     }
 
+    public HashMap PRO_RUN7132_ORDERMATLIST(String V_D_FACT_START_DATE, String V_D_FACT_FINISH_DATE,String V_V_PLANT, String V_V_DEPTCODE,String V_V_EQUIP_NO, String V_V_ORDERGUID,String V_V_MATERIALCODE, String V_V_MATERIALNAME) throws SQLException {
+//        logger.info("begin PRO_PM_03_PLAN_YEAR_SET");
+        logger.info("begin PRO_RUN7132_ORDERMATLIST");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7132_ORDERMATLIST" + "(:V_D_FACT_START_DATE,:V_D_FACT_FINISH_DATE,:V_V_PLANT,:V_V_DEPTCODE,:V_V_EQUIP_NO,:V_V_ORDERGUID,:V_V_MATERIALCODE,:V_V_MATERIALNAME,:V_CURSOR)}");
+            //cstmt.setString("V_D_FACT_START_DATE", V_D_FACT_START_DATE);// cstmt.setDate("D_BEGIN_DATE", Date.valueOf(D_BEGIN_DATE));
+            cstmt.setDate("V_D_FACT_START_DATE", Date.valueOf(V_D_FACT_START_DATE));
+            //cstmt.setString("V_D_FACT_FINISH_DATE", V_D_FACT_FINISH_DATE);
+            cstmt.setDate("V_D_FACT_FINISH_DATE", Date.valueOf(V_D_FACT_FINISH_DATE));
+            cstmt.setString("V_V_PLANT", V_V_PLANT);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUIP_NO", V_V_EQUIP_NO);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_MATERIALCODE", V_V_MATERIALCODE);
+            cstmt.setString("V_V_MATERIALNAME", V_V_MATERIALNAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7132_ORDERMATLIST");
+        return result;
+    }
+
+    public HashMap PRO_NO7132_DEPARTMATLIST(String V_D_FACT_START_DATE, String V_D_FACT_FINISH_DATE,String V_V_PLANT, String V_V_DEPTCODE,String V_V_EQUIP_NO, String V_V_ORDERGUID,String V_V_MATERIALCODE, String V_V_MATERIALNAME) throws SQLException {
+//        logger.info("begin PRO_PM_03_PLAN_YEAR_SET");
+        logger.info("begin PRO_NO7132_DEPARTMATLIST");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_NO7132_DEPARTMATLIST" + "(:V_D_FACT_START_DATE,:V_D_FACT_FINISH_DATE,:V_V_PLANT,:V_V_DEPTCODE,:V_V_EQUIP_NO,:V_V_ORDERGUID,:V_V_MATERIALCODE,:V_V_MATERIALNAME,:V_CURSOR)}");
+            cstmt.setString("V_D_FACT_START_DATE", V_D_FACT_START_DATE);// cstmt.setDate("D_BEGIN_DATE", Date.valueOf(D_BEGIN_DATE));
+            //cstmt.setDate("V_D_FACT_START_DATE", Date.valueOf(V_D_FACT_START_DATE));
+            cstmt.setString("V_D_FACT_FINISH_DATE", V_D_FACT_FINISH_DATE);
+            //cstmt.setDate("V_D_FACT_FINISH_DATE", Date.valueOf(V_D_FACT_FINISH_DATE));
+            cstmt.setString("V_V_PLANT", V_V_PLANT);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUIP_NO", V_V_EQUIP_NO);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_MATERIALCODE", V_V_MATERIALCODE);
+            cstmt.setString("V_V_MATERIALNAME", V_V_MATERIALNAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_NO7132_DEPARTMATLIST");
+        return result;
+    }
+
 
 }
