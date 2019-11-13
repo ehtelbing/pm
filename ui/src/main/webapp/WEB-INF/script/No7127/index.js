@@ -1,12 +1,16 @@
-var selPlantstore = Ext.create('Ext.data.Store',
-    {
+
+
+Ext.onReady(function() {
+
+    //厂矿
+    var selPlantstore = Ext.create('Ext.data.Store', {
         autoLoad : true,
         storeId : 'selPlantstore',
         fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
         proxy : {
             type : 'ajax',
             async : false,
-            url: AppUrl + 'No4120/PRO_BASE_DEPT_VIEW_ROLE',
+            url : AppUrl + 'zy/PRO_BASE_DEPT_VIEW',
             actionMethods : {
                 read : 'POST'
             },
@@ -15,170 +19,141 @@ var selPlantstore = Ext.create('Ext.data.Store',
                 root : 'list'
             },
             extraParams : {
-                V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
-                V_V_DEPTCODENEXT:Ext.util.Cookies.get('v_deptcode'),
-                V_V_DEPTTYPE:'[基层单位]'
+                IS_V_DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
+                IS_V_DEPTTYPE : '[基层单位]'
             }
         }
     });
 
-var selSectionstore = Ext.create('Ext.data.Store', {
-    autoLoad : true,
-    storeId : 'selSectionstore',
-    fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
-    proxy : {
-        type : 'ajax',
-        async : false,
-        url : AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
-        actionMethods : {
-            read : 'POST'
-        },
-        reader : {
-            type : 'json',
-            root : 'list'
-        },
-        extraParams : {
-            IS_V_DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
-            IS_V_DEPTTYPE:'[主体作业区]'
-        }
-    }
-});
 
-var sbxzStore = Ext.create('Ext.data.Store', {
-    autoLoad : false,
-    storeId : 'sbxzStore',
-    fields : [ 'EQU_DESC', 'EQU_ID' ],
-    proxy : {
-        type : 'ajax',
-        async : false,
-        url: AppUrl + 'cjy/pro_run7111_equlist',
-        actionMethods : {
-            read : 'POST'
-        },
-        reader : {
-            type : 'json',
-            root : 'list'
-        }
-    }
-});
-
-var gridStore = Ext.create('Ext.data.Store', {
-    id : 'gridStore',
-    autoLoad : false,
-    pageSize :100,
-    fields : [
-        'KC_ID', 'MATERIALCODE', 'MATERIALNAME', 'UNIT',
-        'ELATON', 'F_PRICE','KCAMOUNT', 'KC_MONEY', 'PLANTCODE','PLANTNAME','DEPARTCODE',
-        'DEPARTNAME','STOREID','STORENAME','INSERTDATE'],
-    proxy : {
-        type : 'ajax',
-        async : false,
-        url : AppUrl + 'PM_12/PRO_RUN7127_SELECTKC',
-        actionMethods : {
-            read : 'POST'
-        },
-        reader : {
-            type : 'json',
-            root : 'list'
-        }
-    }
-});
-Ext.onReady(function(){
-
-
-    var panel=Ext.create('Ext.panel.Panel',{
-        id:'panel',
-        style: 'background-color:#FFFFFF',
-        baseCls: 'my-panel-no-border',
-        width : '100%',
-        region : 'north',
-        frame : true,
-        layout : 'column',
-        items : [ {
-                        xtype : 'combo',
-                        id : "selPlant",
-                        store : selPlantstore,
-                        editable : false,
-                        queryMode : 'local',
-                        fieldLabel : '厂矿',
-                        displayField : 'V_DEPTNAME',
-                        valueField : 'V_DEPTCODE',
-                        labelWidth : 70,
-                        matchFieldWidth:false,
-                        style : ' margin: 5px 0px 0px 10px',
-                        labelAlign : 'right',
-            listeners:{
-                            select:function(){
-                                Ext.data.StoreManager.lookup('selSectionstore').removeAll();
-                                        Ext.data.StoreManager.lookup('selSectionstore').load(
-                                            {
-                                                params : {
-                                                    V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-                                                    V_PERSONCODE:Ext.getCmp('selPlant').getValue()
-                                                }
-                                            });
-                                    query();
-                            }
-
+// 作业区
+    var gzpalceStore = Ext.create('Ext.data.Store', {
+        autoLoad : false,
+        storeId : 'gzpalceStore',
+        fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'root'
             }
-                    },
-                    {
-                        xtype : 'combo',
-                        id : "selSection",
-                        store : selSectionstore,
-                        editable : false,
-                        queryMode : 'local',
-                        fieldLabel : '作业区',
-                        displayField : 'V_DEPTNAME',
-                        valueField : 'V_DEPTCODE',
-                        labelWidth : 60,
-                        matchFieldWidth:false,
-                        style : ' margin: 5px 0px 5px 10px',
-                        labelAlign : 'right',
-                        listeners:{
-                            select:function(){
-                                Ext.data.StoreManager.lookup('sbxzStore').removeAll();
-                                    Ext.data.StoreManager.lookup('sbxzStore').load({
-                                        params: {
-                                            v_v_plantcode: Ext.util.Cookies.get('v_orgCode'),
-                                            v_v_deptcode: Ext.getCmp('selSection').getValue()
-                                        }
-                                    });
-                                query();
-                            }
-                        }
-                    },
-                    {
-                        xtype : 'combo',
-                        id : 'xzsb',
-                        store : sbxzStore,
-                        fieldLabel : '选择设备 ',
-                        editable : false,
-                        style : 'margin:5px 0px 5px 5px',
-                        labelWidth : 70,
-                        queryMode : 'local',
-                        valueField : 'EQU_ID',
-                        matchFieldWidth:false,
-                        displayField : 'EQU_DESC',
-                        listeners:{
-                            select:function(){
-                                query();
-                            }
+        }
+    });
 
-                        }
+// 设备选择STORE
+    var sbxzStore = Ext.create('Ext.data.Store', {
+        autoLoad : false,
+        storeId : 'sbxzStore',
+        fields : [ 'EQU_DESC', 'EQU_ID' ],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl + 'zy/PRO_RUN7111_EQULIST',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list'
+            }
+        }
+    });
 
-                    }, {
-                        xtype : 'button',
-                        text : '查询',
-                        icon : imgpath + '/search.png',
-                        width : 100,
-                        handler : query,
-                        style : {
-                            margin : '5px 0 5px 30px'
-                        }
-                    } ]
-            });
+    //主表单STORE
+    var gridStore = Ext.create('Ext.data.Store', {
+        id : 'gridStore',
+        autoLoad : false,
+        pageSize :100,
+        fields : [
+            'KC_ID', 'MATERIALCODE', 'MATERIALNAME', 'UNIT',
+            'ELATON', 'F_PRICE','KCAMOUNT', 'KC_MONEY', 'PLANTCODE','PLANTNAME','DEPARTCODE',
+            'DEPARTNAME','STOREID','STORENAME','INSERTDATE'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl + 'zy/PRO_RUN7127_SELECTKC',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list'
+            }
+        }
+    });
+
+    var creatpanel1 = Ext.create('Ext.form.Panel', {
+        id : 'creatpanel1',
+        style : 'margin:5px 0px 2px 2px',
+        region : 'north',
+        width : '100%',
+        //baseCls : 'my-panel-no-border',
+        defaults : {
+            style : 'margin:5px 0px 5px 10px',
+            labelAlign : 'right'
+        },
+        layout : {
+            type : 'column'
+        },
+        items : [
+            {
+                xtype : 'combobox',
+                id : 'plant',
+                store : 'selPlantstore',
+                fieldLabel : '厂矿 ',
+                editable : false,
+                style : 'margin:5px 0px 5px 5px',
+                labelWidth : 50,
+                queryMode : 'local',
+                valueField : 'V_DEPTCODE',
+                displayField : 'V_DEPTNAME'
+            },{
+                xtype : 'combobox',
+                id : 'zyq',
+                store : 'gzpalceStore',
+                fieldLabel : '作业区 ',
+                editable : false,
+                style : 'margin:5px 0px 5px 5px',
+                labelWidth : 60,
+                queryMode : 'local',
+                valueField : 'V_DEPTCODE',
+                displayField : 'V_DEPTNAME'
+            }, {
+                xtype : 'combo',
+                id : 'xzsb',
+                store : 'sbxzStore',
+                fieldLabel : '选择设备 ',
+                editable : false,
+                style : 'margin:5px 0px 5px 5px',
+                labelWidth : 70,
+                queryMode : 'local',
+                valueField : 'EQU_ID',
+                displayField : 'EQU_DESC'
+            }, {
+                xtype : 'button',
+                text : '查询',
+                icon : imgpath + '/search.png',
+                width : 60,
+                handler : query,
+                style : {
+                    margin : '5px 0 5px 20px'
+                }
+            },
+            {
+                xtype : 'button',
+                text : '导出到Excel',
+                icon : imgpath + '/search.png',
+                width : 100,
+                style : {
+                    margin : '5px 0 5px 10px'
+                },
+                listeners : {
+                    click : OnButtonExportClicked
+                }
+            }
+        ]
+    });
+
     var grid = Ext.create("Ext.grid.Panel", {
         xtype : 'gridpanel',
         id : 'grid',
@@ -259,84 +234,64 @@ Ext.onReady(function(){
             store: 'gridStore'  }
         ]
     });
+
+
     Ext.create('Ext.container.Viewport', {
         id : "id",
         layout : 'border',
-        items : [ panel, grid ]
+        items : [ creatpanel1, grid ]
     });
 
-    Ext.data.StoreManager.lookup('selPlantstore').on(
-        "load",
-        function() {
-            Ext.getCmp("selPlant").select(
-                Ext.data.StoreManager.lookup('selPlantstore').getAt(0));
 
-            Ext.data.StoreManager.lookup('selSectionstore').load(
-                {
-                    params : {
-                        IS_V_DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
-                        IS_V_DEPTTYPE:'[主体作业区]'
-                    }
-                });
-            query();
+    /**厂矿*/
+    selPlantstore.on("load",function(){
+
+        Ext.getCmp('plant').select(selPlantstore.getAt(0));
+
+
+        /**作业区*/
+        gzpalceStore.insert(0, { V_DEPTCODE : Ext.util.Cookies.get('v_deptcode'),
+            V_DEPTNAME : decodeURI(Ext.util.Cookies.get("v_deptname"))
         });
+        Ext.getCmp('zyq').select(gzpalceStore.getAt(0));
 
-    Ext.data.StoreManager.lookup('selSectionstore').on(
-        "load",
-        function() {
-            Ext.getCmp("selSection").select(Ext.data.StoreManager.lookup('selSectionstore').getAt(0));
-            Ext.data.StoreManager.lookup('sbxzStore').load({
-                params: {
-                    v_v_plantcode: Ext.util.Cookies.get('v_orgCode'),
-                    v_v_deptcode: Ext.getCmp('selSection').getValue()
+        /**设备*/
+        Ext.data.StoreManager.lookup('sbxzStore').load(
+            {
+                params : {
+                    V_V_PLANTCODE : Ext.util.Cookies.get('v_orgCode'),
+                    V_V_DEPTCODE : Ext.getCmp('zyq').getValue()
                 }
             });
-            query();
+    })
+
+    /**设备*/
+    sbxzStore.on('load', function() {
+
+        sbxzStore.insert(0, {
+            'EQU_ID' : '%',
+            'EQU_DESC' : '全部'
         });
-    Ext.data.StoreManager.lookup('sbxzStore').on(
-        'load',
-        function() {
-            sbxzStore.insert(0, {'EQU_ID' : '%', 'EQU_DESC' : '全部'});
-            Ext.getCmp('xzsb').select(Ext.data.StoreManager.lookup('sbxzStore').getAt(0));
+        sbxzStore.sort('EQU_ID', 'ASC');
+        Ext.getCmp('xzsb').select(sbxzStore.getAt(0));
 
-            query();
+        query();
+    })
+
+
+    function query(){
+
+        Ext.data.StoreManager.get('gridStore').load({
+            params : {
+                V_PLANTCODE : Ext.getCmp('plant').getValue(),
+                V_DEPARTCODE : Ext.getCmp('zyq').getValue(),
+                V_EQU_ID : Ext.getCmp('xzsb').getValue()
+            }
         });
 
-
-    // Ext.getCmp('selPlant').on("change", function() {
-    //         Ext.data.StoreManager.lookup('selSectionstore').removeAll();
-    //         Ext.data.StoreManager.lookup('selSectionstore').load(
-    //             {
-    //                 params : {
-    //                     V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-    //                     V_PERSONCODE:Ext.getCmp('selPlant').getValue()
-    //                 }
-    //             });
-    //     query();
-    //     });
-    // Ext.getCmp('selSection').on("change",function() {
-    //     Ext.data.StoreManager.lookup('sbxzStore').removeAll();
-    //     Ext.data.StoreManager.lookup('sbxzStore').load({
-    //         params: {
-    //             v_v_plantcode: Ext.util.Cookies.get('v_orgCode'),
-    //             v_v_deptcode: Ext.getCmp('selSection').getValue()
-    //         }
-    //     });
-    // });
-    // Ext.getCmp('xzsb').on('change',function(){
-    //     query();
-    // })
+    }
 });
 
-function query(){
-    Ext.data.StoreManager.get('gridStore').load({
-        params : {
-            V_PLANTCODE: Ext.getCmp('selPlant').getValue(),
-            V_DEPARTCODE:Ext.getCmp('selSection').getValue(),
-            V_EQU_ID:Ext.getCmp('xzsb').getValue()
-        }
-    });
-}
 
 function RenderFontLeft(value, metaData) {
     metaData.style = 'text-align: left';
@@ -344,8 +299,28 @@ function RenderFontLeft(value, metaData) {
     return value;
 }
 
-
 function RenderFontRight(value, metaData) {
     metaData.style = 'text-align: right';
+    //value = value.split(' ')[0];
     return value;
+}
+
+
+function OnButtonExportClicked() {
+
+
+    var V_PLANTCODE =  excelCS(Ext.getCmp('plant').getValue());
+    var V_DEPARTCODE = excelCS(Ext.getCmp('zyq').getValue());
+    var V_EQU_ID = excelCS(Ext.getCmp('xzsb').getValue());
+
+    document.location.href = AppUrl + 'zy/PRO_RUN7127_SELECTKC_excel?V_PLANTCODE='+ excelCS(V_PLANTCODE) +
+        '&V_DEPARTCODE=' + excelCS(V_DEPARTCODE) +
+        '&V_EQU_ID=' + excelCS(V_EQU_ID);
+}
+function excelCS(str) {
+    if(str==undefined) return '';
+    if(str==null) return '';
+    if(str=='') return '';
+    if(str=='%') return '';
+    return str;
 }

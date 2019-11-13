@@ -639,14 +639,6 @@ function OnButtonExcelClicked() {
         '&V_D_FACT_START_DATE=' + excelCS(V_D_FACT_START_DATE) +
         '&V_D_FACT_FINISH_DATE=' + excelCS(V_D_FACT_FINISH_DATE);
 
-        /*document.location.href = AppUrl + 'zy/EXCEL?V_V_PLANT='+ V_V_PLANT +
-        '&V_V_DEPTCODE=' + V_V_DEPTCODE +
-        '&V_V_EQUIP_NO=' + V_V_EQUIP_NO +
-        '&V_V_ORDERGUID=' + V_V_ORDERGUID +
-        '&V_V_MATERIALCODE=' + V_V_MATERIALCODE +
-        '&V_V_MATERIALNAME=' + V_V_MATERIALNAME +
-        '&V_D_FACT_START_DATE=' + V_D_FACT_START_DATE +
-        '&V_D_FACT_FINISH_DATE=' + V_D_FACT_FINISH_DATE;*/
 
 }
 
