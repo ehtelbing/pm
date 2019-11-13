@@ -333,6 +333,7 @@ public class ZyService {
         return result;
     }
 
+    //获取可用运行周期类型
     public HashMap PRO_RUN_CYCLE_ABLE() throws SQLException {
 //        logger.info("begin PRO_PM_03_PLAN_YEAR_SET");
         logger.info("begin PRO_RUN_CYCLE_ABLE");
@@ -463,6 +464,91 @@ public class ZyService {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_NO7132_DEPARTMATLIST");
+        return result;
+    }
+
+    //查询当前设备位置信息
+    public HashMap PRO_RUN_SITE_ALL(String A_EQU_ID) throws SQLException {
+        logger.info("begin PRO_RUN_SITE_ALL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_SITE_ALL" + "(:A_EQU_ID,:RET)}");
+            cstmt.setString("A_EQU_ID", A_EQU_ID);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_SITE_ALL");
+        return result;
+    }
+
+
+    //平均作业量
+    public HashMap PRO_RUN7131_SUPPLYBJAVG(String V_PLANTCODE, String V_DEPARTCODE, String V_EQU_ID, String V_SITE_ID,String V_CYCLE_ID) throws SQLException {
+        logger.info("begin PRO_RUN7131_SUPPLYBJAVG");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7131_SUPPLYBJAVG" + "(:V_PLANTCODE,:V_DEPARTCODE,:V_EQU_ID,:V_SITE_ID,:V_CYCLE_ID,:OUT_RESULT)}");
+            cstmt.setString("V_PLANTCODE", V_PLANTCODE);
+            cstmt.setString("V_DEPARTCODE", V_DEPARTCODE);
+            cstmt.setString("V_EQU_ID", V_EQU_ID);
+            cstmt.setString("V_SITE_ID", V_SITE_ID);
+            cstmt.setString("V_CYCLE_ID", V_CYCLE_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7131_SUPPLYBJAVG");
+        return result;
+    }
+
+    //平均作业量
+    public HashMap PRO_RUN7127_SELECTKC(String V_PLANTCODE, String V_DEPARTCODE, String V_EQU_ID) throws SQLException {
+        logger.info("begin PRO_RUN7127_SELECTKC");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7127_SELECTKC" + "(:V_PLANTCODE,:V_DEPARTCODE,:V_EQU_ID,:OUT_RESULT)}");
+            cstmt.setString("V_PLANTCODE", V_PLANTCODE);
+            cstmt.setString("V_DEPARTCODE", V_DEPARTCODE);
+            cstmt.setString("V_EQU_ID", V_EQU_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7127_SELECTKC");
         return result;
     }
 

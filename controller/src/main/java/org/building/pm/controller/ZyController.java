@@ -40,6 +40,7 @@ public class ZyController {
         return filePaths[filePaths.length - 1];
     }
 
+    //设备选择
     @RequestMapping(value = "/PRO_RUN7111_EQULIST", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_RUN7111_EQULIST(
@@ -58,6 +59,7 @@ public class ZyController {
         return result;
     }
 
+    //厂矿STORE
     @RequestMapping(value = "/PRO_BASE_DEPT_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_BASE_DEPT_VIEW(
@@ -335,6 +337,7 @@ public class ZyController {
         }
     }
 
+   //获取可用运行周期类型
     @RequestMapping(value = "/PRO_RUN_CYCLE_ABLE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_RUN_CYCLE_ABLE(
@@ -759,6 +762,172 @@ public class ZyController {
         }
     }
 
+    //查询当前设备位置信息
+    @RequestMapping(value = "/PRO_RUN_SITE_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_SITE_ALL(
+            @RequestParam(value = "A_EQU_ID") String A_EQU_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
 
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = zyService.PRO_RUN_SITE_ALL(A_EQU_ID);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    //平均作业量
+    @RequestMapping(value = "/PRO_RUN7131_SUPPLYBJAVG", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7131_SUPPLYBJAVG(
+            @RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
+            @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
+            @RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+            @RequestParam(value = "V_SITE_ID") String V_SITE_ID,
+            @RequestParam(value = "V_CYCLE_ID") String V_CYCLE_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = zyService.PRO_RUN7131_SUPPLYBJAVG(V_PLANTCODE, V_DEPARTCODE,V_EQU_ID,V_SITE_ID,V_CYCLE_ID);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    //在库备件监控
+    @RequestMapping(value = "/PRO_RUN7127_SELECTKC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7127_SELECTKC(
+            @RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
+            @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
+            @RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = zyService.PRO_RUN7127_SELECTKC(V_PLANTCODE, V_DEPARTCODE,V_EQU_ID);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    //在库备件监控Excel
+    @RequestMapping(value = "/PRO_RUN7127_SELECTKC_excel", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void PRO_RUN7127_SELECTKC_excel(
+            @RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
+            @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
+            @RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+            HttpServletResponse response)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+        List list = new ArrayList();
+//        A_EQUID = URLDecoder.decode(A_EQUID, "UTF-8");
+//        A_CYCLE_ID = URLDecoder.decode(A_CYCLE_ID, "UTF-8");
+
+        Map<String, Object> data = zyService.PRO_RUN7127_SELECTKC(V_PLANTCODE, V_DEPARTCODE,V_EQU_ID);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("物料号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("物料描述");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("规格型号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("库存数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("库存金额");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("作业区");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("库房名");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("统计时间");
+        cell.setCellStyle(style);
+
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("MATERIALCODE") == null ? "" : map.get("MATERIALCODE").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("MATERIALNAME") == null ? "" : map.get("MATERIALNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("ELATON") == null ? "" : map.get("ELATON").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("KCAMOUNT") == null ? "" : map.get("KCAMOUNT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("KC_MONEY") == null ? "" : map.get("KC_MONEY").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("PLANTNAME") == null ? "" : map.get("PLANTNAME").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("DEPARTNAME") == null ? "" : map.get("DEPARTNAME").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("STORENAME") == null ? "" : map.get("STORENAME").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("INSERTDATE") == null ? "" : map.get("INSERTDATE").toString());
+
+            }
+
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("在库备件监控Excel.xls".getBytes("UTF-8"), "ISO-8859-1");
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
