@@ -1,0 +1,177 @@
+#ganttDiv {
+    height: 100%;
+    width: 100%;
+    border: 1px solid red;
+    overflow: auto;
+    background-color: white;
+}
+
+#trDate {
+    background-color: #C0C0C0;
+    color: #fff;
+}
+
+#trDate td {
+    text-align: center;
+    min-width: 25px;
+    height: 25px;
+}
+
+.trContent {
+    border-bottom: 1px solid #cccccc;
+}
+
+.trContent td {
+    min-width: 25px;
+    height: 25px;
+//min-height: 55px;
+}
+
+#ganttTable td {
+    border-left: 1px solid #ccc !important;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.ganttTd {
+    background-color: red !important;
+}
+
+#ganttTable {
+    font-family: verdana, arial, sans-serif;
+    font-size: 11px;
+    color: #333333;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.trBigDate {
+    background: -webkit-linear-gradient(top,white   ,#484891);
+// background-color: #B8B8DC;
+    color: #fff;
+    height: 25px;
+}
+
+/*#ganttTable td:hover{*/
+/*background-color: #dafdf3;*/
+/*}*/
+
+#ganttTable tr td .trContentDiv:hover {
+    background-color: #2894FF;
+    height: 25px;
+    line-height: 25px;
+    font-size: 15px;
+}
+
+.trContent .trContentDiv {
+    background-color: #2894FF;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    height: 23px;
+    line-height: 23px;
+}
+
+.trContent .trContentDivChild {
+    background-color: #FF9224;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    height: 23px;
+    line-height: 23px;
+}
+
+#ganttTable tr td .trContentDivChild:hover {
+    background-color: #FF9224;
+    height: 23px;
+    line-height: 23px;
+    font-size: 13px;
+}
+
+.tooltip {
+    position: relative;
+    z-index: 999;
+}
+
+/* Trigger text */
+
+.tooltip-item {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tooltip-content {
+    position: absolute;
+    font-size: 12px;
+    background: #FFD9EC;
+    z-index: 99999;
+    width: 180px;
+    bottom: 100%;
+    left: 50%;
+    margin: 0 0 15px -140px;
+    padding: 25px;
+    text-align: left;
+    border-radius: 20px;
+    border: 2px solid #613030;
+    color: #dd5864;
+    opacity: 0;
+    cursor: default;
+    pointer-events: none;
+    -webkit-transition: opacity 1s, -webkit-transform 1s;
+    transition: opacity 1s, transform 1s;
+}
+
+.tooltip-turnright .tooltip-content {
+    -webkit-transform: translate3d(0, 50px, 0) rotate3d(1, 1, 1, 6deg);
+    transform: translate3d(0, 50px, 0) rotate3d(1, 1, 1, 6deg);
+}
+
+.tooltip-turnleft .tooltip-content {
+    -webkit-transform: translate3d(0, 50px, 0) rotate3d(1, 1, 1, -15deg);
+    transform: translate3d(0, 50px, 0) rotate3d(1, 1, 1, -15deg);
+}
+
+.tooltip:hover .tooltip-content {
+    opacity: 0.8;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+/* Arrow */
+
+.tooltip-content::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 100%;
+    z-index: 11;
+    background: url(./images/tooltip3.svg) no-repeat center center;
+    background-size: 100%;
+    -webkit-transform-origin: 50% 0;
+    transform-origin: 50% 0;
+    -webkit-transition: -webkit-transform 1s;
+    transition: transform 1s;
+}
+
+.tooltip-turnright .tooltip-content::after {
+    left: 25%;
+    -webkit-transform: scale3d(-1, 1, 1) rotate3d(1, 1, 1, 25deg) translate3d(0, -50px, 0);
+    transform: scale3d(-1, 1, 1) rotate3d(1, 1, 1, 25deg) translate3d(0, -15px, 0);
+}
+
+.tooltip-turnleft .tooltip-content::after {
+    right: 25%;
+    /*-webkit-transform: rotate3d(1,1,1,25deg) translate3d(0,-15px,0);*/
+    /*transform: rotate3d(1,1,1,-15deg) translate3d(0,-10px,5);*/
+}
+
+.tooltip-turnright:hover .tooltip-content::after {
+    -webkit-transform: scale3d(-1, 1, 1) rotate3d(1, 1, 1, 0) translate3d(0, -5px, 0);
+    transform: scale3d(-1, 1, 1) rotate3d(1, 1, 1, 0) translate3d(0, -5px, 0);
+}
+
+.tooltip-turnleft:hover .tooltip-content::after {
+    /*-webkit-transform: rotate3d(1,1,1,0) translate3d(0,-5px,0);*/
+    /*transform: rotate3d(1,1,1,0) translate3d(0,-5px,0);*/
+}
