@@ -227,6 +227,14 @@ Ext.onReady(function () {
         });
     });
 
+    Ext.data.StoreManager.lookup('cxStore').on('load', function () {
+        Ext.data.StoreManager.lookup('cxStore').insert(0, {
+            V_CXNAME: '--全部--',
+            V_CXCODE: '%'
+        });
+        Ext.getCmp('cx').select(Ext.data.StoreManager.lookup('cxStore').getAt(0));
+    })
+
     Ext.getCmp('ck').on('select', function () {
         Ext.data.StoreManager.lookup('zyqStore').load({
             params: {
@@ -265,6 +273,7 @@ function beforeloadStore(store) {
 
 //查询按钮
 function OnButtonQuery(){
+    Ext.getCmp('rpanel').body.update('<div id=\'ganttDiv\'><table id=\'ganttTable\' border=\'1\' cellpadding=\'0\' cellspacing=\'0\'><tr id=\'trBigDate\' class=\'trBigDate\'></tr><tr id=\'trDate\' class=\'trDate\'></tr></table></div>');
     CreateGanttTime();
     CreateGanttData();
 }
