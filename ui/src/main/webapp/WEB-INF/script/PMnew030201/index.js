@@ -361,7 +361,9 @@ function CreateGanttData(resDateList) {
                 tempIndex = parseInt((new Date(tempList[j -1].V_JHJGSJ).getTime() - this.tableStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
             }
             for (let k = tempIndex; k < this.tableTdSum; k++) {
-                if (k < leftNoStartDay) {
+                if(k == 0) {
+                    tempHtmlContent += '<td><div class = "trTitleDiv"><div class="trTitleInnerDiv">' + tempList[j].V_CXNAME +'</div></div></td>';
+                }else if (k < leftNoStartDay) {
                     tempHtmlContent += '<td>&nbsp;</td>';
                 } else if (k == leftNoStartDay) {
                     tempHtmlContent += '<td colspan="' + (intervalDate) + '"><div class="trContentDiv"><span class="tooltip tooltip-turnleft"><span class="tooltip-item">' + tempList[j].V_COUNT + '</span><span class="tooltip-content">' + tempList[j].V_COUNT + '</span></span></div></td>';
