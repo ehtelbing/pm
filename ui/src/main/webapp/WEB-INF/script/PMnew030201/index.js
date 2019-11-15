@@ -259,44 +259,72 @@ Ext.onReady(function () {
     Ext.getCmp('cx').on('select', function () {
         OnButtonQuery();
     });
-
 })
-
-function beforeloadStore(store) {
-    store.proxy.extraParams.V_V_YEAR = Ext.getCmp('year').getValue();
-    store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp('ck').getValue();
-    store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp('zyq').getValue();
-    store.proxy.extraParams.V_V_CXCODE = Ext.getCmp('cx').getValue();
-    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
-    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
-}
 
 //查询按钮
 function OnButtonQuery(){
     Ext.getCmp('rpanel').body.update('<div id=\'ganttDiv\'><table id=\'ganttTable\' border=\'1\' cellpadding=\'0\' cellspacing=\'0\'><tr id=\'trBigDate\' class=\'trBigDate\'></tr><tr id=\'trDate\' class=\'trDate\'></tr></table></div>');
-    CreateGanttTime();
-    CreateGanttData();
+    Ext.Ajax.request({
+        url : AppUrl + 'hp/PRO_YEAR_PLAN_SEL_GANTT',
+        async : false,
+        params : {
+            V_V_YEAR: Ext.getCmp('year').getValue(),
+            V_V_ORGCODE: Ext.getCmp('ck').getValue(),
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
+            V_V_CXCODE: Ext.getCmp('cx').getValue()
+        },
+        callback : function(options, success, response) {
+            if (success) {
+                var data = Ext.decode(response.responseText);
+                let resDateList = data.list;
+                CreateGanttTime(resDateList);
+                CreateGanttData(resDateList);
+
+            } else {
+                Ext.MessageBox.alert('错误', '服务器错误', Ext.MessageBox.ERROR);
+            }
+        }
+    });
 }
 
 //创建甘特图时间
-function CreateGanttTime(){
-    var startDate = new Date('2019-02-04');
-    var endDate = new Date('2019-04-22');
+function CreateGanttTime(resDateList){
+    let tableStartDate = null;
+    let tableEndDate = null;
+    for (let i = 0; i < resDateList.length; i++) {
+        if (i == 0) {
+            tableStartDate = new Date(resDateList[i].startDate);
+            tableEndDate = new Date(resDateList[i].endDate);
+        }
+        else {
+            if (tableStartDate.getTime() > (new Date(resDateList[i].startDate)).getTime()) {
+                tableStartDate = new Date(resDateList[i].startDate);
+            }
+            if (tableEndDate.getTime() < (new Date(resDateList[i].endDate)).getTime()) {
+                tableEndDate = new Date(resDateList[i].endDate);
+            }
+        }
+    }
+    console.log(tableStartDate);
+    console.log(tableEndDate);
+
+    let startDate = tableStartDate;
+    let endDate = tableEndDate;
 
     //给全局赋值
-    var temp = new Date(startDate);
+    let temp = new Date(startDate);
     temp.setDate(1);
-    tableStartDate = temp;
+    this.tableStartDate = temp;
     //----赋值结束
-    var dayArr = [];
-    var intervalMonth = endDate.getFullYear() * 12 + endDate.getMonth() - (startDate.getFullYear() * 12 + startDate.getMonth());
-    var tempDate = new Date();
-    var forEachDate = startDate;
-    var daySum = 0;
-    for (var i = 0; i < intervalMonth + 1; i++) {
+    let dayArr = [];
+    let intervalMonth = endDate.getFullYear() * 12 + endDate.getMonth() - (startDate.getFullYear() * 12 + startDate.getMonth());
+    let tempDate = new Date();
+    let forEachDate = startDate;
+    let daySum = 0;
+    for (let i = 0; i < intervalMonth + 1; i++) {
         tempDate.setMonth(forEachDate.getMonth() + 1);
         tempDate.setDate(0);
-        var monthDay = tempDate.getDate();
+        let monthDay = tempDate.getDate();
         dayArr.push({
             year: forEachDate.getFullYear(),
             month: (forEachDate.getMonth() + 1) > 9 ? (forEachDate.getMonth() + 1) : '0' + (forEachDate.getMonth() + 1),
@@ -305,92 +333,43 @@ function CreateGanttTime(){
         forEachDate = new Date(forEachDate.getFullYear(), forEachDate.getMonth() + 1, 1);
         daySum += monthDay
     }
-    for (var i = 0; i < dayArr.length; i++) {
+    for (let i = 0; i < dayArr.length; i++) {
         $('#trBigDate').append('<th colspan="' + dayArr[i].monthDay + '">' + dayArr[i].year + '-' + dayArr[i].month + '</th>');
-        for (var j = 0; j < dayArr[i].monthDay; j++) {
+        for (let j = 0; j < dayArr[i].monthDay; j++) {
             $('#trDate').append('<td>' + (j + 1) + '</td>');
         }
     }
-    tableTdSum = daySum;
+    this.tableTdSum = daySum;
 }
 
 //创建甘特图数据
-function CreateGanttData() {
-    var dateList = [{
-        startDate: new Date('2019-02-05'),
-        endDate: new Date('2019-03-09'),
-        name: '项目管理系统',
-        children: [{
-            startDate: new Date('2019-02-05'),
-            endDate: new Date('2019-02-10'),
-            name: '项目模块',
-        }, {
-            startDate: new Date('2019-02-12'),
-            endDate: new Date('2019-02-18'),
-            name: '日报模块',
-        }, {
-            startDate: new Date('2019-02-23'),
-            endDate: new Date('2019-02-28'),
-            name: '周报模块',
-        }]
-    }, {
-        startDate: new Date('2019-02-08'),
-        endDate: new Date('2019-03-3'),
-        name: '东烧设备管理系统',
-        children : []
-    }, {
-        startDate: new Date('2019-03-15'),
-        endDate: new Date('2019-03-29'),
-        name: '鞍钢OA公文管理系统',
-        children : []
-    }, {
-        startDate: new Date('2019-03-18'),
-        endDate: new Date('2019-04-3'),
-        name: '维修计划管理平台',
-        children : []
-    }, {
-        startDate: new Date('2019-02-05'),
-        endDate: new Date('2019-02-23'),
-        name: '大连尚亨科技投票系统平台',
-        children : []
-    }, {
-        startDate: new Date('2019-03-05'),
-        endDate: new Date('2019-03-23'),
-        name: '大球技术中心',
-        children : []
-    }];
-    var tempHtmlContent = ''; //临时存储html 内容用的, 直接用append 方法 会造成tr闭标签 提前生成
-    for (var j = 0; j < dateList.length; j++) {
-        var leftNoStartDay = parseInt((dateList[j].startDate.getTime() - this.tableStartDate.getTime()) / (1000 * 60 * 60 * 24));
-        var intervalDate = parseInt((dateList[j].endDate.getTime() - dateList[j].startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+function CreateGanttData(resDateList) {
+
+    let tempHtmlContent = ''; //临时存储html 内容用的, 直接用append 方法 会造成tr闭标签 提前生成
+    for (let i = 0; i < resDateList.length; i++) {
+        let tempList = resDateList[i].list;
         tempHtmlContent = '<tr class="trContent">';
-        for (var i = 0; i < this.tableTdSum; i++) {
-            if (i < leftNoStartDay) {
-                tempHtmlContent += '<td>&nbsp;</td>';
-            } else if (i == leftNoStartDay) {
-                tempHtmlContent += '<td colspan="' + (intervalDate) + '"><div class="trContentDiv"><span class="tooltip tooltip-turnleft"><span class="tooltip-item">' + dateList[j].name + '</span><span class="tooltip-content">' + dateList[j].name + '</span></span></div></td>';
-            } else if (i >= (intervalDate + leftNoStartDay)) {
-                tempHtmlContent += '<td>&nbsp;</td>';
+        for (let j = 0; j < tempList.length; j++) {
+            //开始距离table左边框格数
+            let leftNoStartDay = parseInt((new Date(tempList[j].V_JHTJSJ).getTime() - this.tableStartDate.getTime()) / (1000 * 60 * 60 * 24));
+            //结束距离开始格数
+            let intervalDate = parseInt((new Date(tempList[j].V_JHJGSJ).getTime() - (new Date(tempList[j].V_JHTJSJ)).getTime()) / (1000 * 60 * 60 * 24)) + 1;
+            let tempIndex = null;
+            if(j == 0){
+                tempIndex = 0;
+            }else{
+                tempIndex = parseInt((new Date(tempList[j -1].V_JHJGSJ).getTime() - this.tableStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
             }
-        }
-        tempHtmlContent += '</tr>';
-        //遍历第二层甘特图(临时遍历,暂不做成递归遍历)
-        if(dateList[j].children.length > 0){
-            for(var c = 0; c < dateList[j].children.length; c++){
-                leftNoStartDay = parseInt((dateList[j].children[c].startDate.getTime() - this.tableStartDate.getTime()) / (1000 * 60 * 60 * 24));
-                intervalDate = parseInt((dateList[j].children[c].endDate.getTime() - dateList[j].children[c].startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-                tempHtmlContent += '<tr class="trContent">';
-                for(var i = 0; i < this.tableTdSum; i++){
-                    if (i < leftNoStartDay) {
-                        tempHtmlContent += '<td>&nbsp;</td>';
-                    } else if (i == leftNoStartDay) {
-                        tempHtmlContent += '<td colspan="' + (intervalDate) + '"><div class="trContentDivChild"><span class="tooltip tooltip-turnleft"><span class="tooltip-item">' + dateList[j].children[c].name + '</span><span class="tooltip-content">' + dateList[j].children[c].name + '</span></span></div></td>';
-                    } else if (i >= (intervalDate + leftNoStartDay)) {
-                        tempHtmlContent += '<td>&nbsp;</td>';
-                    }
+            for (let k = tempIndex; k < this.tableTdSum; k++) {
+                if (k < leftNoStartDay) {
+                    tempHtmlContent += '<td>&nbsp;</td>';
+                } else if (k == leftNoStartDay) {
+                    tempHtmlContent += '<td colspan="' + (intervalDate) + '"><div class="trContentDiv"><span class="tooltip tooltip-turnleft"><span class="tooltip-item">' + tempList[j].V_COUNT + '</span><span class="tooltip-content">' + tempList[j].V_COUNT + '</span></span></div></td>';
+                }else if ((k >= (intervalDate + leftNoStartDay)) && j == tempList.length - 1) {
+                    tempHtmlContent += '<td>&nbsp;</td>';
                 }
-                tempHtmlContent += '</tr>';
             }
+
         }
         $(tempHtmlContent).appendTo('#ganttTable');
     }

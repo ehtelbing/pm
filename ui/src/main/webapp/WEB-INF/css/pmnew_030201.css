@@ -1,36 +1,38 @@
 #ganttDiv {
-    height: 100%;
-    width: 100%;
+    height: 100% ;
+    width: 100% ;
     border: 1px solid red;
-    overflow: auto;
-    background-color: white;
+    overflow: auto ;
+    background-color: white ;
 }
 
 #trDate {
-    background-color: #C0C0C0;
-    color: #fff;
+    background-color: #C0C0C0 ;
+    color: #fff ;
 }
 
 #trDate td {
-    text-align: center;
-    min-width: 25px;
-    height: 25px;
+    text-align: center ;
+    min-width: 25px ;
+    height: 25px ;
 }
 
 .trContent {
-    border-bottom: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc ;
+    height: 26px;
+    min-height: 26px;
 }
 
 .trContent td {
-    min-width: 25px;
-    height: 25px;
-//min-height: 55px;
+    min-width: 25px ;
+    height: 25px ;
+    min-height: 25px ;
 }
 
-#ganttTable td {
+#ganttTable tbody tr td {
     border-left: 1px solid #ccc !important;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc ;
+    border-bottom: 1px solid #ccc ;
 }
 
 .ganttTd {
@@ -38,16 +40,15 @@
 }
 
 #ganttTable {
-    font-family: verdana, arial, sans-serif;
-    font-size: 11px;
-    color: #333333;
-    border-collapse: collapse;
-    table-layout: fixed;
+    font-family: verdana, arial, sans-serif ;
+    font-size: 11px ;
+    color: #333333 ;
+    border-collapse: collapse ;
+    table-layout: fixed ;
 }
 
 .trBigDate {
-    background: -webkit-linear-gradient(top,white   ,#484891);
-// background-color: #B8B8DC;
+    background: -webkit-linear-gradient(top,white   ,#484891) ;
     color: #fff;
     height: 25px;
 }
@@ -56,20 +57,21 @@
 /*background-color: #dafdf3;*/
 /*}*/
 
-#ganttTable tr td .trContentDiv:hover {
-    background-color: #2894FF;
+#ganttTable tbody tr td .trContentDiv:hover {
+    background-color: #ffaad5;
     height: 25px;
     line-height: 25px;
-    font-size: 15px;
+    font-size: 15px !important;
 }
 
 .trContent .trContentDiv {
-    background-color: #2894FF;
+    background-color: #FF99CC;
     text-align: center;
     color: #fff;
     cursor: pointer;
     height: 23px;
     line-height: 23px;
+    border-radius: 3px;
 }
 
 .trContent .trContentDivChild {

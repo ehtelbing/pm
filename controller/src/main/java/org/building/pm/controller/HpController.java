@@ -2817,4 +2817,15 @@ public class HpController {
         return result;
     }
 
+    @RequestMapping(value = "/PRO_YEAR_PLAN_SEL_GANTT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PLAN_SEL_GANTT(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE) throws Exception {
+        HashMap result = hpService.PRO_YEAR_PLAN_SEL_GANTT(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE);
+        return result;
+    }
+
 }
