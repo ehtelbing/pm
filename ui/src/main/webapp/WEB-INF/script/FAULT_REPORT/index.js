@@ -338,6 +338,11 @@ Ext.onReady(function () {
             handler: _seltctFault
         },{
             xtype: 'button',
+            text: '修改',
+            icon: imgpath + '/edit.png',
+            handler: _preUpdateFault
+        },{
+            xtype: 'button',
             text: '上报',
             // width: 90,
             icon: imgpath + '/accordion_collapse.png',
@@ -533,7 +538,7 @@ Ext.onReady(function () {
             width: 80
         },  {
             text: '工单',
-            dataIndex: 'V_GUID',
+            dataIndex: 'V_FAULT_GUID',
             align: 'center',
             width: 65,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
@@ -1112,4 +1117,40 @@ function _preViewProcess(value) {
         }
     });
 
+}
+function _preUpdateFault() {
+    var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
+
+    if (records.length != 1) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选一条数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    if(records[0].get('V_STATE')!='1'){
+    // if(records[0].get('V_STATE')=='0'||records[0].get('V_STATE')=='2'){//||records[0].get('V_STATE')=='10'
+        // Ext.getCmp('updateFaultWindow').show();
+        _updateOpen(records[0].get('V_GUID'));
+    }else{
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '所选事故不能修改',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+    }
+
+}
+function _updateOpen(value) {
+
+    if(Ext.getCmp('V_V_DEPTCODE').getValue()=='%'){
+        alert("请选择作业区！")
+        return;
+    }
+    var owidth = window.screen.availWidth-200;
+    var oheight = window.screen.availHeight-150;
+    window.open(AppUrl + 'page/FAULT_1405/update.html?V_V_GUID=' + value,'', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
 }

@@ -1024,7 +1024,7 @@ Ext.onReady(function () {
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_V_DEPTCODENEXT:operation.node.data.id
                 },
-                store.proxy.url=AppUrl + 'tree/PRO_GET_DEPTEQUTYPE_PER')
+                store.proxy.url=AppUrl + 'cxy/PRO_GET_DEPTEQUTYPE_PER')
         }else if(operation.node.data.parentid.length==8){
             Ext.apply(store.proxy.extraParams,{
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),

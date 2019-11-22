@@ -105,6 +105,13 @@ Ext.onReady(function () {
                 style: ' margin: 10px 0px 0px 10px',
                 icon: imgpath + '/cross.png',
                 handler: _hideFault2
+            },{
+                id:'userModel',
+                xtype: 'button',
+                text: '使用模板',
+                style: ' margin: 10px 0px 0px 60px',
+                icon: imgpath + '/grid.png',
+                handler: _useModel
             }
         ]
     });
@@ -926,4 +933,20 @@ function delFixContent(faultguid,equcode) {
         }
     });
 
+}
+function _useModel() {
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/FAULT_GZ/useModel.html?V_ORDERGUID=' + V_V_GUID +
+        '&V_MODEL=H', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
+}
+function _setModelValue(zjjg,cxfs,gzrs,sbjj,clbj,qxfa,qxya) {
+    Ext.getCmp("organ").setValue(zjjg);
+    Ext.getCmp("program").setValue(cxfs);
+    Ext.getCmp("worktype").setValue(gzrs);
+    Ext.getCmp("tools").setValue(sbjj);
+    Ext.getCmp("material").setValue(clbj);
+    Ext.getCmp("plan").setValue(qxfa);
+    Ext.getCmp("prevent").setValue(qxya);
 }
