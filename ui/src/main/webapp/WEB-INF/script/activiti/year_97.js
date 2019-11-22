@@ -8,6 +8,8 @@ var vStart = '';
 var vEnd = '';
 var stime = '';
 var etime = '';
+var V_STEPNAME="";
+var V_NEXT_SETP="";
 //初始化时间参数
 var today = new Date(Ext.Date.format(new Date(), 'Y-m-d'));
 
@@ -123,6 +125,13 @@ Ext.onReady(function () {
         layout: 'border',
         items: [npanel, cgrid, rpanel]
     });
+
+    Ext.data.StoreManager.lookup('fzPerStore').on('load', function () {
+        Ext.getCmp('fzPer').select(Ext.data.StoreManager.lookup('fzPerStore').getAt(0));
+        processKey = Ext.data.StoreManager.lookup('fzPerStore').getProxy().getReader().rawData.RET;
+        V_STEPNAME = Ext.data.StoreManager.lookup('fzPerStore').getAt(0).data.V_V_FLOW_STEPNAME;
+        V_NEXT_SETP = Ext.data.StoreManager.lookup('fzPerStore').getAt(0).data.V_V_NEXT_SETP;
+    })
 
     QueryEquGrid();
 

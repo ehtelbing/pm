@@ -17,6 +17,8 @@ var V_V_ORGCODE = '';
 var V_V_DEPTCODE = '';
 var V_V_SPECIALTY = '';
 
+var V_STEPNAME="";
+var V_NEXT_SETP="";
 
 //初始化时间参数
 var today = new Date(Ext.Date.format(new Date(), 'Y-m-d'));

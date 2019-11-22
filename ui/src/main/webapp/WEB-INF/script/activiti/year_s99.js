@@ -66,16 +66,6 @@ Ext.onReady(function () {
         }
     });
 
-    var minuteStore = Ext.create("Ext.data.Store", {
-        storeId: 'minuteStore',
-        fields: ['displayField', 'valueField'],
-        data: minutes,
-        proxy: {
-            type: 'memory',
-            reader: {type: 'json'}
-        }
-    });
-
     var yearStore = Ext.create("Ext.data.Store", {
         storeId: 'yearStore',
         fields: ['displayField', 'valueField'],
@@ -88,7 +78,7 @@ Ext.onReady(function () {
 
     //厂矿计划数据加载
     var ckStore = Ext.create('Ext.data.Store', {
-        autoLoad: true,
+        autoLoad: false,
         storeId: 'ckStore',
         fields: ['V_DEPTCODE', 'V_DEPTNAME'],
         proxy: {
@@ -101,12 +91,6 @@ Ext.onReady(function () {
             reader: {
                 type: 'json',
                 root: 'list'
-            },
-            extraParams: {
-                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODE': Ext.util.Cookies.get('v_orgCode'),
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '基层单位'
             }
         }
     });
@@ -398,49 +382,6 @@ Ext.onReady(function () {
         items: [npanel, dpanel, cpanel]
     });
 
-    Ext.data.StoreManager.lookup('ckStore').on('load', function () {
-        Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
-        Ext.data.StoreManager.lookup('zyqStore').load({
-            params: {
-                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '主体作业区'
-            }
-        });
-    });
-
-    Ext.data.StoreManager.lookup("zyqStore").on('load', function () {
-        Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
-        Ext.data.StoreManager.lookup('cxStore').load({
-            params: {
-                'V_V_ORGCODE': Ext.getCmp('ck').getValue(),
-                'V_V_DEPTCODE': Ext.getCmp('zyq').getValue(),
-                'V_V_CXNAME': '%'
-            }
-        });
-
-    });
-
-    Ext.data.StoreManager.lookup('cxStore').on('load', function () {
-        Ext.getCmp('cx').select(Ext.data.StoreManager.lookup('cxStore').getAt(0));
-        Ext.data.StoreManager.lookup('equStore').load({
-            params: {
-                'V_V_CXCODE': Ext.getCmp('cx').getValue()
-            }
-        });
-    })
-
-    Ext.data.StoreManager.lookup('equStore').on('load', function () {
-        Ext.getCmp('equ').select(Ext.data.StoreManager.lookup('equStore').getAt(0));
-        Ext.data.StoreManager.lookup('zyStore').load();
-    });
-
-    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
-        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
-        QueryEquGrid();
-    });
-
     Ext.getCmp('ck').on('select', function () {
         Ext.data.StoreManager.lookup('zyqStore').load({
             params: {
@@ -476,7 +417,7 @@ Ext.onReady(function () {
             QueryFirstData(cGuid);
         }
     })
-
+    QueryEquGrid();
     OnPageLoad()
 });
 
@@ -1041,11 +982,12 @@ function OnBtnSelC(s, record) {
                     Ext.getCmp('year').select(resp.list[0].V_YEAR);
                     Ext.getCmp('yearName').setValue(resp.list[0].V_YEARNAME);
                     Ext.getCmp('njhnr').setValue(resp.list[0].V_YEARCOUNT);
-                    Ext.getCmp('ck').select(resp.list[0].V_ORGCODE);
+                    QueryCombo(resp.list[0]);
+                    /*Ext.getCmp('ck').select(resp.list[0].V_ORGCODE);
                     Ext.getCmp('zyq').select(resp.list[0].V_DEPTCODE);
                     Ext.getCmp('cx').select(resp.list[0].V_CXCODE);
                     Ext.getCmp('zy').select(resp.list[0].V_ZY);
-                    Ext.getCmp('equ').select(resp.list[0].V_EQUCODE);
+                    Ext.getCmp('equ').select(resp.list[0].V_EQUCODE);*/
                     Ext.getCmp('jxnr').setValue(resp.list[0].V_COUNT);
                     Ext.getCmp('jhtjsj').setValue(resp.list[0].V_JHTJSJ.split(" ")[0]);
                     if (resp.list[0].V_JHTJSJ.split(" ").length == 1) {
@@ -1076,11 +1018,12 @@ function QueryFirstData(YearChildGuid) {
                     Ext.getCmp('year').select(resp.list[0].V_YEAR);
                     Ext.getCmp('yearName').setValue(resp.list[0].V_YEARNAME);
                     Ext.getCmp('njhnr').setValue(resp.list[0].V_YEARCOUNT);
-                    Ext.getCmp('ck').select(resp.list[0].V_ORGCODE);
+                    QueryCombo(resp.list[0]);
+                   /* Ext.getCmp('ck').select(resp.list[0].V_ORGCODE);
                     Ext.getCmp('zyq').select(resp.list[0].V_DEPTCODE);
                     Ext.getCmp('cx').select(resp.list[0].V_CXCODE);
                     Ext.getCmp('zy').select(resp.list[0].V_ZY);
-                    Ext.getCmp('equ').select(resp.list[0].V_EQUCODE);
+                    Ext.getCmp('equ').select(resp.list[0].V_EQUCODE);*/
                     Ext.getCmp('jxnr').setValue(resp.list[0].V_COUNT);
                     Ext.getCmp('jhtjsj').setValue(resp.list[0].V_JHTJSJ.split(" ")[0]);
                     if (resp.list[0].V_JHTJSJ.split(" ").length == 1) {
@@ -1094,4 +1037,57 @@ function QueryFirstData(YearChildGuid) {
             }
         }
     });
+}
+
+function QueryCombo(ComboData){
+    Ext.data.StoreManager.lookup('ckStore').load({
+        params:{
+            'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+            'V_V_DEPTCODE': Ext.util.Cookies.get('v_orgCode'),
+            'V_V_DEPTCODENEXT': '%',
+            'V_V_DEPTTYPE': '基层单位'
+        }
+    })
+    Ext.data.StoreManager.lookup('ckStore').on('load', function () {
+        Ext.getCmp('ck').select(ComboData.V_ORGCODE);
+        Ext.data.StoreManager.lookup('zyqStore').load({
+            params: {
+                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
+                'V_V_DEPTCODENEXT': '%',
+                'V_V_DEPTTYPE': '主体作业区'
+            }
+        });
+    });
+
+    Ext.data.StoreManager.lookup("zyqStore").on('load', function () {
+        Ext.getCmp('zyq').select(ComboData.V_DEPTCODE);
+        Ext.data.StoreManager.lookup('cxStore').load({
+            params: {
+                'V_V_ORGCODE': Ext.getCmp('ck').getValue(),
+                'V_V_DEPTCODE': Ext.getCmp('zyq').getValue(),
+                'V_V_CXNAME': '%'
+            }
+        });
+
+    });
+
+    Ext.data.StoreManager.lookup('cxStore').on('load', function () {
+        Ext.getCmp('cx').select(ComboData.V_CXCODE);
+        Ext.data.StoreManager.lookup('equStore').load({
+            params: {
+                'V_V_CXCODE': Ext.getCmp('cx').getValue()
+            }
+        });
+    })
+
+    Ext.data.StoreManager.lookup('equStore').on('load', function () {
+        Ext.getCmp('equ').select(ComboData.V_EQUCODE);
+        Ext.data.StoreManager.lookup('zyStore').load();
+    });
+
+    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
+        Ext.getCmp('zy').select(ComboData.V_ZY);
+    });
+
 }

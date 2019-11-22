@@ -3,13 +3,13 @@
 	font-size: 12px !important;
 }
 
-.x-boundlist-item {
+/*.x-boundlist-item {
 	height: 21px;
 }
 
 .x-boundlist-selected {
 	height: 21px;
-}
+}*/
 .menu_list{margin:15px 10px 0px 0px; padding:0px; float:right;}
 .menu_list li{list-style-type:none; width:auto !important; float:left; font-family:"微软雅黑"; font-size:14px; color:#30408d; text-align:center; padding-left:10px; padding-right:10px;}
 .menu_list li img{width:36px; height:auto;}
