@@ -189,6 +189,12 @@ Ext.onReady(function () {
             // width: 90,
             icon: imgpath + '/printer.png',
             handler: OnButtonPrint
+        },{
+            xtype: 'button',
+            text: '生成模型',
+            // width: 90,
+            icon: imgpath + '/grid.png',
+            handler: CreateModel
         }
         ]
     });
@@ -525,7 +531,7 @@ function _preUpdateFault() {
         return false;
     }
 
-   if(records[0].get('V_STAUTS')=='0'){//||records[0].get('V_STAUTS')=='10'
+    if(records[0].get('V_STAUTS')=='0'){//||records[0].get('V_STAUTS')=='10'
        _updateOpen(records[0].get('V_GUID'));
     }else{
         Ext.MessageBox.show({
@@ -723,4 +729,32 @@ function OnButtonPrint() {
     selectID = [];
     selectID.push(records[0].get('V_GUID'));
     window.open(AppUrl + 'page/FAULT_GZ/print.html', 'selectID', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+}
+
+//生成模型
+function CreateModel() {
+    var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    if (records.length > 1) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '只能选择一条数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/FAULT_GZ/CreateModel.html?V_ORDERGUID=' + records[0].data.V_GUID +
+        '&V_MODEL=F', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
