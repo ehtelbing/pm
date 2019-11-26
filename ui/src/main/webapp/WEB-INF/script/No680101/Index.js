@@ -428,20 +428,9 @@ function zhuce() {
         str = str.substring(0, str.length - 1);
     }
     if (str != '' && str != null) {
-        var aHour;
-        var aMinute;
-        if (Ext.getCmp('Hour').getValue() < 10) {
-            aHour = '0' + Ext.getCmp('Hour').getValue();
-        }
-        else {
-            aHour = Ext.getCmp('Hour').getValue();
-        }
-        if (Ext.getCmp('Minute').getValue() < 10) {
-            aMinute = '0' + Ext.getCmp('Minute').getValue();
-        }
-        else {
-            aMinute = Ext.getCmp('Minute').getValue();
-        }
+        var aHour= Ext.getCmp('Hour').getValue();
+        var aMinute=Ext.getCmp('Minute').getValue();
+
         Ext.Ajax.request({
             url: AppUrl + 'Wsy/PRO_PP_INFORMATION_SET',
             type: 'ajax',
