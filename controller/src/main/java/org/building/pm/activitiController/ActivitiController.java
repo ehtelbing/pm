@@ -651,6 +651,7 @@ public class ActivitiController {
                     taskmap.put("PLANEND", equmap.get("D_FINISH_DATE").toString());
                     taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                     taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
+                    taskmap.put("ORDERTYPE", equmap.get("V_PLANNER").toString());
                 }   //---add 3 columns on NONTH
                 else if (taskmap.get("flow_type").toString().indexOf("MonthPlan") != -1) {
                     equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_MONTH_GET(taskmap.get("BusinessKey").toString()).get("list");

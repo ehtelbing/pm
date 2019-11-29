@@ -27,7 +27,7 @@ Ext.onReady(function () {
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
             'Name', 'flow_code', 'ProcessDefinitionName', 'ProcessInstanceId', 'TaskDefinitionKey', 'ProcessDefinitionKey', 'BusinessKey', 'startName', 'MATERIALNAME',
-            'EQUNAME', 'PLANSTART', 'PLANEND', 'PLANHOUR', 'flow_type', 'OPERANAME', 'ORGNAME', 'DEPTNAME', 'ZYNAME'
+            'EQUNAME', 'PLANSTART', 'PLANEND', 'PLANHOUR', 'flow_type', 'OPERANAME', 'ORGNAME', 'DEPTNAME', 'ZYNAME','ORDERTYPE'
         ],
         proxy: {
             type: 'ajax',
@@ -102,7 +102,7 @@ Ext.onReady(function () {
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return '<a href=javascript:_dealWith(\'' + record.data.ProcessDefinitionKey + '\',\'' + record.data.TaskDefinitionKey + '\',\''
-                    + record.data.BusinessKey + '\',\'' + record.data.ProcessInstanceId + '\')>' + '办理' + '</a>&nbsp;&nbsp;&nbsp;' +
+                    + record.data.BusinessKey + '\',\'' + record.data.ProcessInstanceId + '\',\''+record.data.ORDERTYPE +'\')>' + '办理' + '</a>&nbsp;&nbsp;&nbsp;' +
                     '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\')">' + '查看流程' + '</a>';
             }
         }
@@ -468,7 +468,7 @@ function _preViewProcess(ProcessInstanceId) {
         + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }
 
-function _dealWith(ProcessDefinitionKey, TaskDefinitionKey, BusinessKey, ProcessInstanceId) {
+function _dealWith(ProcessDefinitionKey, TaskDefinitionKey, BusinessKey, ProcessInstanceId,type) {
     tabturn = tabpage;
     Ext.Ajax.request({
         url: AppUrl + 'hp/PM_EQU_REPAIR_FLOW_MENU_SEL',
@@ -483,6 +483,9 @@ function _dealWith(ProcessDefinitionKey, TaskDefinitionKey, BusinessKey, Process
             var data = Ext.decode(response.responseText);//后台返回的值
             if (data.success) {//成功，会传回true
                 var V_URL = data.list[0].V_URL;
+                if(TaskDefinitionKey=='gdys'&&type=='AK06'){
+                    V_URL ="/activiti/workorder_ysfault.html";
+                }
                 var owidth = window.screen.availWidth;
                 var oheight = window.screen.availHeight - 50;
                 window.open(AppUrl + 'page' + V_URL + '?V_ORDERGUID=' + BusinessKey + '&TaskDefinitionKey=' + TaskDefinitionKey + '&ProcessDefinitionKey=' + ProcessDefinitionKey + '&ProcessInstanceId=' + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
