@@ -483,7 +483,7 @@ function _dealWith(ProcessDefinitionKey, TaskDefinitionKey, BusinessKey, Process
             var data = Ext.decode(response.responseText);//后台返回的值
             if (data.success) {//成功，会传回true
                 var V_URL = data.list[0].V_URL;
-                if(TaskDefinitionKey=='gdys'&&type=='AK06'){
+                if(TaskDefinitionKey=='gdys'&&type=='抢修工单'){
                     V_URL ="/activiti/workorder_ysfault.html";
                 }
                 var owidth = window.screen.availWidth;
