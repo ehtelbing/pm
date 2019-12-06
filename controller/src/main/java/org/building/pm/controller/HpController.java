@@ -2016,7 +2016,7 @@ public class HpController {
                                                        HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = hpService.POR_WORKORDER_REPER_SEL(V_V_WORKORDERGUID,V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRCODE, V_V_FLOWTYPE, V_V_FLOW_STEP, V_V_PERCODE, V_V_SPECIALTY, V_V_WHERE);
+        HashMap data = hpService.POR_WORKORDER_REPER_SEL(V_V_WORKORDERGUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRCODE, V_V_FLOWTYPE, V_V_FLOW_STEP, V_V_PERCODE, V_V_SPECIALTY, V_V_WHERE);
 
         List<Map<String, Object>> list = (List) data.get("list");
 
@@ -2827,5 +2827,149 @@ public class HpController {
         HashMap result = hpService.PRO_YEAR_PLAN_SEL_GANTT(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE);
         return result;
     }
+
+    //传入设备编码查询关联设备信息
+    @RequestMapping(value = "/PM_1917_JXMX_DATA_SEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> PM_1917_JXMX_DATA_SEL2(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE, @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE, @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE, @RequestParam(value = "V_V_JXMX_NAME") String V_V_JXMX_NAME, @RequestParam(value = "V_V_PAGE") String V_V_PAGE, @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = hpService.PM_1917_JXMX_DATA_SEL2(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_JXMX_NAME, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
+
+    //添加/修改 模型
+    @RequestMapping(value = "/HP_BASE_JXMX_DATA_EDIT", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> HP_BASE_JXMX_DATA_EDIT(@RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE, @RequestParam(value = "V_V_JXMX_NAME") String V_V_JXMX_NAME, @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE, @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE, @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE, @RequestParam(value = "V_V_REPAIRMAJOR_CODE") String V_V_REPAIRMAJOR_CODE, @RequestParam(value = "V_V_BZ") String V_V_BZ, @RequestParam(value = "V_V_HOUR") String V_V_HOUR, @RequestParam(value = "V_V_IN_PER") String V_V_IN_PER, @RequestParam(value = "V_V_IN_DATE") String V_V_IN_DATE, @RequestParam(value = "V_V_MXBB_NUM") String V_V_MXBB_NUM, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = hpService.HP_BASE_JXMX_DATA_EDIT(V_V_JXMX_CODE, V_V_JXMX_NAME, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPECODE, V_V_REPAIRMAJOR_CODE, V_V_BZ, V_V_HOUR, V_V_IN_PER, V_V_IN_DATE, V_V_MXBB_NUM);
+        return data;
+    }
+
+    //查询机具
+    @RequestMapping(value = "HP_PRO_PM_19_CARTYPE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> HP_PRO_PM_19_CARTYPE_SEL(@RequestParam(value = "V_V_CARNAME") String V_V_CARNAME,
+                                                        @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                        HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = hpService.HP_PRO_PM_19_CARTYPE_SEL(V_V_CARNAME, V_V_EQUTYPE);
+        return result;
+    }
+
+    @RequestMapping(value = "/HP_PM_1917_JXGX_JJ_DATA_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> HP_PM_1917_JXGX_JJ_DATA_SET(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+                                                           @RequestParam(value = "V_V_JJ_CODE") String V_V_JJ_CODE,
+                                                           @RequestParam(value = "V_V_TS") String V_V_TS,
+                                                           @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = hpService.HP_PM_1917_JXGX_JJ_DATA_SET(V_V_JXGX_CODE, V_V_JJ_CODE, V_V_TS, V_V_EQUTYPE);
+
+        String pm_hp = (String) data.get("RET");
+        result.put("RET", pm_hp);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "HP_PRO_PM_19_TOOLTYPE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> HP_PRO_PM_19_TOOLTYPE_SEL(@RequestParam(value = "V_V_TOOLNAME") String V_V_TOOLNAME,
+                                                         @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = hpService.HP_PRO_PM_19_TOOLTYPE_SEL(V_V_TOOLNAME, V_V_EQUTYPE);
+        return result;
+    }
+
+    @RequestMapping(value = "HP_PM_REPAIR_JS_STANDARD_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PM_REPAIR_JS_STANDARD_SEL(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return hpService.HP_PM_REPAIR_JS_STANDARD_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPECODE);
+    }
+
+    @RequestMapping(value = "HP_PRO_PM_19_AQCS_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> HP_PRO_PM_19_AQCS_SEL(@RequestParam(value = "V_V_AQCS_NAME") String V_V_AQCS_NAME,
+                                                     @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                     HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = hpService.HP_PRO_PM_19_AQCS_SEL(V_V_AQCS_NAME, V_V_EQUTYPE);
+        return result;
+    }
+
+    @RequestMapping(value = "/HP_PRO_PM_19_AQCS_EDIT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map HP_PRO_PM_19_AQCS_EDIT(@RequestParam(value = "V_V_AQCSCODE") String V_V_AQCSCODE,
+                                      @RequestParam(value = "V_V_AQCSNAME") String V_V_AQCSNAME,
+                                      @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                      @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+                                      @RequestParam(value = "V_V_EQUSITE") String V_V_EQUSITE,
+                                      @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                      @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
+
+        List<Map> result = null;
+        result = hpService.HP_PRO_PM_19_AQCS_EDIT(V_V_AQCSCODE, V_V_AQCSNAME, V_V_EQUCODE, V_V_EQUNAME, V_V_EQUSITE, V_V_EQUTYPE, V_V_EQUTYPENAME);
+        test.put("list", result);
+        return test;
+    }
+
+    @RequestMapping(value = "/HP_PM_1917_JXGX_PER_DATA_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> HP_PM_1917_JXGX_PER_DATA_DEL(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = hpService.HP_PM_1917_JXGX_PER_DATA_DEL(V_V_JXGX_CODE);
+        return data;
+    }
+
+    @RequestMapping(value = "/HP_PM_1917_JXGX_GJ_DATA_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> HP_PM_1917_JXGX_GJ_DATA_DEL(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = hpService.HP_PM_1917_JXGX_GJ_DATA_DEL(V_V_JXGX_CODE);
+        return data;
+    }
+
+    @RequestMapping(value = "/HP_PM_1917_JXGX_AQCS_DATA_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> HP_PM_1917_JXGX_AQCS_DATA_DEL(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = hpService.HP_PM_1917_JXGX_AQCS_DATA_DEL(V_V_JXGX_CODE);
+        data.put("success", true);
+        return data;
+    }
+
+    @RequestMapping(value = "HP_PRO_PM_19_JSYQ_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> HP_PRO_PM_19_JSYQ_SEL(@RequestParam(value = "V_V_JSYQ_NAME") String V_V_JSYQ_NAME,
+                                                     @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                     HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = hpService.HP_PRO_PM_19_JSYQ_SEL(V_V_JSYQ_NAME, V_V_EQUTYPE);
+        return result;
+    }
+
+    @RequestMapping(value = "/HP_PRO_PM_19_JSYQ_EDIT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map HP_PRO_PM_19_JSYQ_EDIT(@RequestParam(value = "V_V_JSYQ_CODE") String V_V_JSYQ_CODE,
+                                      @RequestParam(value = "V_V_JSYQ_NAME") String V_V_JSYQ_NAME,
+                                      @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                      @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+                                      @RequestParam(value = "V_V_EQUSITE") String V_V_EQUSITE,
+                                      @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                      @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+        Map result = hpService.HP_PRO_PM_19_JSYQ_EDIT(V_V_JSYQ_CODE, V_V_JSYQ_NAME, V_V_EQUCODE, V_V_EQUNAME, V_V_EQUSITE, V_V_EQUTYPE, V_V_EQUTYPENAME);
+        return result;
+    }
+
 
 }

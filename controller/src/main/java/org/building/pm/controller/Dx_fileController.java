@@ -94,6 +94,7 @@ public class Dx_fileController {
         InputStream V_V_BLOB = file.getInputStream();
         String V_V_FILETYPE = file.getContentType();
         Map result = dx_fileService.PM_MODEL_FILE_ADD(V_V_FILENAME, V_V_BLOB, V_V_FILETYPE, V_V_MODE_GUID, V_V_INPERCODE, V_V_INPERNAME, V_V_TYPE);
+        result.put("success", true);
         return result;
     }
 

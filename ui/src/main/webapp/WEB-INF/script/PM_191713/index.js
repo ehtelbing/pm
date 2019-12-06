@@ -57,7 +57,7 @@ Ext.onReady(function () {
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'mwd/PM_REPAIR_JS_STANDARD_SEL',
+            url: AppUrl + 'hp/HP_PM_REPAIR_JS_STANDARD_SEL',
             actionMethods: {
                 read: 'POST'
             },
@@ -162,8 +162,6 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('jsStandardStore').proxy.extraParams = {
         'V_V_ORGCODE': V_V_ORGCODE,
         'V_V_DEPTCODE': V_V_DEPTCODE,
-        'V_V_EQUCODE':  V_V_EQUCODE,
-        'V_V_EQUCHILDCODE': '%',
         'V_V_EQUTYPECODE': V_V_EQUTYPECODE
 
     };
@@ -183,8 +181,6 @@ function _select() {
     jsStandardStore.proxy.extraParams = {
         'V_V_ORGCODE': V_V_ORGCODE,
         'V_V_DEPTCODE': V_V_DEPTCODE,
-        'V_V_EQUCODE': V_V_EQUCODE,
-        'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE').getValue(),
         'V_V_EQUTYPECODE':V_V_EQUTYPECODE
 
     };

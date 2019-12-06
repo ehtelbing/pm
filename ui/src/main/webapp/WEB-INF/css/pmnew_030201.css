@@ -24,7 +24,7 @@
 }
 
 .trContent td {
-    min-width: 25px ;
+    min-width: 26px ;
     height: 25px ;
     min-height: 25px ;
 }
@@ -185,13 +185,13 @@
 .trTitleDiv{
     position: absolute;
     width: 70px;
-    height: 22px;
+    height: 23px;
     border: 0px solid  #00b0ff;
     border-radius:0 30px 30px 0;
     color: white;
     background-color: #909399;
-    top: 2px;
-    line-height: 22px;
+    top: 1px;
+    line-height: 23px;
     font-size: 11px;
     opacity: 0.5;
     cursor :pointer;
@@ -202,4 +202,12 @@
 #ganttTable tr td .trTitleDiv:hover {
     background-color: yellow;
     color: #72767b;
+}
+
+.svgDivX {
+    position: absolute;
+    border:0px solid #00b0ff;
+    height: 23px;
+    top: 1px;
+    opacity: 0.5;
 }

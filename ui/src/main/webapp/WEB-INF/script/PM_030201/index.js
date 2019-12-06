@@ -639,6 +639,9 @@ var pageFunction = {
                 }
             }
         });
+
+        console.log(cmItems);
+
         var ganttgrid = Ext.create('Ext.grid.Panel', {
             id: 'ganttgrid',
             store: ganttStore,

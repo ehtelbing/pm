@@ -3973,7 +3973,7 @@ public class HpService {
                 for (int i = 0; i < mapTempValueList.size(); i++) {
                     if (i == 0) {
                         startDate = strToUtilDate((String) mapTempValueList.get(i).get("V_JHTJSJ"), "yyyy-MM-dd");
-                        endDate = strToUtilDate((String)mapTempValueList.get(i).get("V_JHJGSJ"), "yyyy-MM-dd");
+                        endDate = strToUtilDate((String) mapTempValueList.get(i).get("V_JHJGSJ"), "yyyy-MM-dd");
                     } else {
                         if (startDate.getTime() > (strToUtilDate((String) mapTempValueList.get(i).get("V_JHTJSJ"), "yyyy-MM-dd")).getTime()) {
                             startDate = strToUtilDate((String) mapTempValueList.get(i).get("V_JHTJSJ"), "yyyy-MM-dd");
@@ -3994,8 +3994,8 @@ public class HpService {
                     } else {
                         tempMap = mapTempValueNewList.get(mapTempValueNewList.size() - 1);
                     }
-                    if ((strToUtilDate((String) mapTempValueList.get(k + 1).get("V_JHTJSJ"), "yyyy-MM-dd")).getTime() <= (strToUtilDate((String) tempMap.get("V_JHJGSJ"),"yyyy-MM-dd" )).getTime()) {
-                        if ((strToUtilDate((String) mapTempValueList.get(k + 1).get("V_JHJGSJ"),"yyyy-MM-dd" )).getTime() <= (strToUtilDate((String) tempMap.get("V_JHJGSJ"), "yyyy-MM-dd")).getTime()) {
+                    if ((strToUtilDate((String) mapTempValueList.get(k + 1).get("V_JHTJSJ"), "yyyy-MM-dd")).getTime() <= (strToUtilDate((String) tempMap.get("V_JHJGSJ"), "yyyy-MM-dd")).getTime()) {
+                        if ((strToUtilDate((String) mapTempValueList.get(k + 1).get("V_JHJGSJ"), "yyyy-MM-dd")).getTime() <= (strToUtilDate((String) tempMap.get("V_JHJGSJ"), "yyyy-MM-dd")).getTime()) {
                             if (StringUtils.isNotEmpty((String) mapTempValueList.get(k + 1).get("V_COUNT"))) {
                                 tempMap.put("V_COUNT", (String) tempMap.get("V_COUNT") + "、" + mapTempValueList.get(k + 1).get("V_COUNT"));
                             }
@@ -4054,6 +4054,381 @@ public class HpService {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public HashMap PM_1917_JXMX_DATA_SEL2(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE, String V_V_JXMX_NAME, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+        logger.info("begin PM_1917_JXMX_DATA_SEL2");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXMX_DATA_SEL2" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPE,:V_V_JXMX_NAME,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_JXMX_NAME", V_V_JXMX_NAME);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXMX_DATA_SEL2");
+        return result;
+    }
+
+    public HashMap HP_BASE_JXMX_DATA_EDIT(String V_V_JXMX_CODE, String V_V_JXMX_NAME, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_REPAIRMAJOR_CODE, String V_V_BZ, String V_V_HOUR, String V_V_IN_PER, String V_V_IN_DATE, String V_V_MXBB_NUM) throws SQLException {
+        logger.info("begin HP_BASE_JXMX_DATA_EDIT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call HP_BASE_JXMX_DATA_EDIT" + "(:V_V_JXMX_CODE, :V_V_JXMX_NAME, :V_V_ORGCODE, :V_V_DEPTCODE, :V_V_EQUTYPECODE, :V_V_REPAIRMAJOR_CODE, :V_V_BZ, :V_V_HOUR, :V_V_IN_PER, :V_V_IN_DATE, :V_V_MXBB_NUM, :V_INFO)}");
+            cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
+            cstmt.setString("V_V_JXMX_NAME", V_V_JXMX_NAME);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_REPAIRMAJOR_CODE", V_V_REPAIRMAJOR_CODE);
+            cstmt.setString("V_V_BZ", V_V_BZ);
+            cstmt.setString("V_V_HOUR", V_V_HOUR);
+            cstmt.setString("V_V_IN_PER", V_V_IN_PER);
+            cstmt.setString("V_V_IN_DATE", V_V_IN_DATE);
+            cstmt.setString("V_V_MXBB_NUM", V_V_MXBB_NUM);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_BASE_JXMX_DATA_EDIT");
+        return result;
+    }
+
+    public Map HP_PRO_PM_19_CARTYPE_SEL(String V_V_CARNAME, String V_V_EQUTYPE) throws SQLException {
+
+        logger.info("begin HP_PRO_PM_19_CARTYPE_SEL");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call HP_PRO_PM_19_CARTYPE_SEL(:V_V_CARNAME,:V_V_EQUTYPE,:V_CURSOR)}");
+            cstmt.setString("V_V_CARNAME", V_V_CARNAME);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PRO_PM_19_CARTYPE_SEL");
+        return result;
+    }
+
+    public HashMap HP_PM_1917_JXGX_JJ_DATA_SET(String V_V_JXGX_CODE, String V_V_JJ_CODE, String V_V_TS, String V_V_EQUTYPE) throws SQLException {
+
+        logger.info("begin HP_PM_1917_JXGX_JJ_DATA_SET");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call HP_PM_1917_JXGX_JJ_DATA_SET" + "(:V_V_JXGX_CODE,:V_V_JJ_CODE,:V_V_TS,:V_EQUTYPE," +
+                    ":V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_JJ_CODE", V_V_JJ_CODE);
+            cstmt.setString("V_V_TS", V_V_TS);
+            cstmt.setString("V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PM_1917_JXGX_JJ_DATA_SET");
+        return result;
+    }
+
+    public Map HP_PRO_PM_19_TOOLTYPE_SEL(String V_V_TOOLNAME, String V_V_EQUTYPE) throws SQLException {
+
+        logger.info("begin HP_PRO_PM_19_TOOLTYPE_SEL");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call HP_PRO_PM_19_TOOLTYPE_SEL(:V_V_TOOLNAME,:V_V_EQUTYPE,:V_CURSOR)}");
+            cstmt.setString("V_V_TOOLNAME", V_V_TOOLNAME);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PRO_PM_19_TOOLTYPE_SEL");
+        return result;
+    }
+
+    //检修技术标准字典查询
+    public HashMap HP_PM_REPAIR_JS_STANDARD_SEL(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE) throws SQLException {
+
+        logger.info("begin HP_PM_REPAIR_JS_STANDARD_SEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call HP_PM_REPAIR_JS_STANDARD_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPECODE,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PM_REPAIR_JS_STANDARD_SEL");
+        return result;
+    }
+
+    public Map HP_PRO_PM_19_AQCS_SEL(String V_V_AQCS_NAME, String V_V_EQUTYPE) throws SQLException {
+
+        logger.info("begin HP_PRO_PM_19_AQCS_SEL");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call HP_PRO_PM_19_AQCS_SEL(:V_V_AQCS_NAME,:V_V_EQUTYPE,:V_CURSOR)}");
+            cstmt.setString("V_V_AQCS_NAME", V_V_AQCS_NAME);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PRO_PM_19_AQCS_SEL");
+        return result;
+    }
+
+    public List<Map> HP_PRO_PM_19_AQCS_EDIT(String V_V_AQCSCODE, String V_V_AQCSNAME, String V_V_EQUCODE, String V_V_EQUNAME, String V_V_EQUSITE, String V_V_EQUTYPE, String V_V_EQUTYPENAME) throws SQLException {
+        logger.info("begin HP_PRO_PM_19_AQCS_EDIT");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call HP_PRO_PM_19_AQCS_EDIT" + "(:V_V_AQCSCODE,:V_V_AQCSNAME,:V_V_EQUCODE,:V_V_EQUNAME,:V_V_EQUSITE,:V_V_EQUTYPE,:V_V_EQUTYPENAME,:V_CURSOR)}");
+            cstmt.setString("V_V_AQCSCODE", V_V_AQCSCODE);
+            cstmt.setString("V_V_AQCSNAME", V_V_AQCSNAME);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUNAME", V_V_EQUNAME);
+            cstmt.setString("V_V_EQUSITE", V_V_EQUSITE);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUTYPENAME", V_V_EQUTYPENAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PRO_PM_19_AQCS_EDIT");
+        return result;
+    }
+
+    public HashMap HP_PM_1917_JXGX_PER_DATA_DEL(String V_V_JXMX_CODE) throws SQLException {
+        logger.info("begin HP_PM_1917_JXGX_PER_DATA_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call HP_PM_1917_JXGX_PER_DATA_DEL" + "(:V_V_JXMX_CODE, :V_INFO)}");
+            cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PM_1917_JXGX_PER_DATA_DEL");
+        return result;
+    }
+
+    public HashMap HP_PM_1917_JXGX_GJ_DATA_DEL(String V_V_JXMX_CODE) throws SQLException {
+        logger.info("begin HP_PM_1917_JXGX_GJ_DATA_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call HP_PM_1917_JXGX_GJ_DATA_DEL" + "(:V_V_JXMX_CODE, :V_INFO)}");
+            cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PM_1917_JXGX_GJ_DATA_DEL");
+        return result;
+    }
+
+    public HashMap HP_PM_1917_JXGX_AQCS_DATA_DEL(String V_V_JXMX_CODE) throws SQLException {
+        logger.info("begin HP_PM_1917_JXGX_GJ_DATA_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call HP_PM_1917_JXGX_AQCS_DATA_DEL" + "(:V_V_JXMX_CODE, :V_INFO)}");
+            cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PM_1917_JXGX_AQCS_DATA_DEL");
+        return result;
+    }
+
+    public Map HP_PRO_PM_19_JSYQ_SEL(String V_V_JSYQ_NAME, String V_V_EQUTYPE) throws SQLException {
+
+        logger.info("begin HP_PRO_PM_19_JSYQ_SEL");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call HP_PRO_PM_19_JSYQ_SEL(:V_V_JSYQ_NAME,:V_V_EQUTYPE,:V_CURSOR)}");
+            cstmt.setString("V_V_JSYQ_NAME", V_V_JSYQ_NAME);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end HP_PRO_PM_19_JSYQ_SEL");
+        return result;
+    }
+
+    public Map HP_PRO_PM_19_JSYQ_EDIT(String V_V_JSYQ_CODE, String V_V_JSYQ_NAME, String V_V_EQUCODE, String V_V_EQUNAME, String V_V_EQUSITE, String V_V_EQUTYPE, String V_V_EQUTYPENAME) throws SQLException {
+        logger.info("begin HP_PRO_PM_19_JSYQ_EDIT");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call HP_PRO_PM_19_JSYQ_EDIT" + "(:V_V_JSYQ_CODE,:V_V_JSYQ_NAME,:V_V_EQUCODE,:V_V_EQUNAME,:V_V_EQUSITE,:V_V_EQUTYPE,:V_V_EQUTYPENAME,:V_CURSOR)}");
+            cstmt.setString("V_V_JSYQ_CODE", V_V_JSYQ_CODE);
+            cstmt.setString("V_V_JSYQ_NAME", V_V_JSYQ_NAME);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUNAME", V_V_EQUNAME);
+            cstmt.setString("V_V_EQUSITE", V_V_EQUSITE);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUTYPENAME", V_V_EQUTYPENAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end HP_PRO_PM_19_JSYQ_EDIT");
+        return result;
     }
 
 }

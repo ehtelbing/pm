@@ -83,28 +83,49 @@ function select(){
 
     var retdata = [];
 
-    for (var i = 0; i < seldata.length; i++) {
-        Ext.Ajax.request({
-            method: 'POST',
-            async: false,
-            url: AppUrl + 'basic/PM_1917_JXGX_PER_DATA_SET_N',
-            params: {
-                V_V_JXGX_CODE: V_V_JXGX_CODE,
-                V_V_PERCODE_DE: seldata[i].data.V_WORKCODE,
-                V_V_TS: seldata[i].data.V_TIME,
-                V_V_PERNUM:seldata[i].data.V_PERNUM
-            },
-            success: function (response) {
-                var resp = Ext.decode(response.responseText);
-                if(i ==  seldata.length-1){
-                    retdata.push(seldata[i].data.V_WORKNAME);
-                }
-                else{
-                    retdata.push(seldata[i].data.V_WORKNAME+',');
-                }
+    Ext.Ajax.request({
+        url: AppUrl + 'hp/HP_PM_1917_JXGX_PER_DATA_DEL',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            'V_V_JXGX_CODE': V_V_JXGX_CODE
+        },
+        success: function (response) {
+            for (var i = 0; i < seldata.length; i++) {
+                Ext.Ajax.request({
+                    method: 'POST',
+                    async: false,
+                    url: AppUrl + 'basic/PM_1917_JXGX_PER_DATA_SET_N',
+                    params: {
+                        V_V_JXGX_CODE: V_V_JXGX_CODE,
+                        V_V_PERCODE_DE: seldata[i].data.V_WORKCODE,
+                        V_V_TS: seldata[i].data.V_TIME,
+                        V_V_PERNUM:seldata[i].data.V_PERNUM
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        if(i ==  seldata.length-1){
+                            retdata.push(seldata[i].data.V_WORKNAME);
+                        }
+                        else{
+                            retdata.push(seldata[i].data.V_WORKNAME+',');
+                        }
+                    }
+                });
             }
-        });
-    }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+
     window.opener.getReturnJXPER(retdata);
     window.close();
 

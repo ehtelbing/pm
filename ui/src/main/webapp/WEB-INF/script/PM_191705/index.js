@@ -1,8 +1,10 @@
 var V_V_JXGX_CODE = null;
 var V_EQUCODE=null;
+var V_EQUTYPE = null;
 if (location.href.split('?')[1] != undefined) {
     V_V_JXGX_CODE = Ext.urlDecode(location.href.split('?')[1]).V_V_JXGX_CODE;
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
+    V_EQUTYPE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPE;
 }
 
 var gridStore = Ext.create("Ext.data.Store", {
@@ -12,7 +14,7 @@ var gridStore = Ext.create("Ext.data.Store", {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'pm_19/PRO_PM_19_TOOLTYPE_SEL',
+        url: AppUrl + 'hp/HP_PRO_PM_19_TOOLTYPE_SEL',
         actionMethods: {
             read: 'POST'
         },
@@ -73,26 +75,45 @@ function select(){
 
     var retdata = [];
 
-    for (var i = 0; i < seldata.length; i++) {
-        Ext.Ajax.request({
-            method: 'POST',
-            async: false,
-            url: AppUrl + 'basic/PM_1917_JXGX_GJ_DATA_SET',
-            params: {
-                V_V_JXGX_CODE: V_V_JXGX_CODE,
-                V_V_GJ_CODE: seldata[i].data.V_TOOLCODE
-            },
-            success: function (response) {
-                var resp = Ext.decode(response.responseText);
-                if(i ==  seldata.length-1){
-                    retdata.push(seldata[i].data.V_TOOLNAME);
-                }
-                else{
-                    retdata.push(seldata[i].data.V_TOOLNAME+',');
-                }
+    Ext.Ajax.request({
+        url: AppUrl + 'hp/HP_PM_1917_JXGX_GJ_DATA_DEL',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            'V_V_JXGX_CODE': V_V_JXGX_CODE
+        },
+        success: function (response) {
+            for (var i = 0; i < seldata.length; i++) {
+                Ext.Ajax.request({
+                    method: 'POST',
+                    async: false,
+                    url: AppUrl + 'basic/PM_1917_JXGX_GJ_DATA_SET',
+                    params: {
+                        V_V_JXGX_CODE: V_V_JXGX_CODE,
+                        V_V_GJ_CODE: seldata[i].data.V_TOOLCODE
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        if(i ==  seldata.length-1){
+                            retdata.push(seldata[i].data.V_TOOLNAME);
+                        }
+                        else{
+                            retdata.push(seldata[i].data.V_TOOLNAME+',');
+                        }
+                    }
+                });
             }
-        });
-    }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
     window.opener.getReturnJXTOOL(retdata);
     window.close();
 }
@@ -107,7 +128,7 @@ function queryGrid(){
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
             V_V_TOOLNAME : Ext.getCmp('toolname').getValue(),
-            V_V_EQUCODE:V_EQUCODE
+            V_V_EQUTYPE: V_EQUTYPE
         }
     });
 }

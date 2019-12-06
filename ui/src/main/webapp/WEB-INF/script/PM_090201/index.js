@@ -165,9 +165,11 @@ $(function () {
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
         var ret = window.open(AppUrl + 'page/PM_070204/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '&V_DEPTREPAIRCODE=' + $("#selPlant").val()
+            + '&V_EQUTYPE=' + V_EQUTYPECODE
             + '&V_EQUCODE=' + $("#V_EQUCODE").val()
             + '&V_V_ORGCODE=' + $("#V_ORGCODE").val()
             + '&V_V_DEPTCODE=' + $("#V_DEPTCODE").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
         loadTaskGrid();
     });
 

@@ -10,6 +10,10 @@ var ganttdata = [];
 var VSTART;
 var VEND;
 var mx_code;
+var sign = "";
+var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
+var V_V_PERSONNAME = Ext.util.Cookies.get('v_personname');
+var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -168,6 +172,32 @@ Ext.onReady(function () {
             }
         }
     });
+
+    //设备类型下拉框stroe
+    var sblxStore = Ext.create('Ext.data.Store', {
+        id: 'sblxStore',
+        autoLoad: false,
+        fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        },
+        listeners: {// 给子集下拉框赋值
+            load: function (store, records) {
+                Ext.getCmp('sblx').select(sblxStore.getAt(0));
+            }
+        }
+    });
+
+
     // 编辑弹窗作业区store
     var deptStore = Ext.create('Ext.data.Store', {
         id: 'deptStore',
@@ -293,12 +323,6 @@ Ext.onReady(function () {
             extraParams: {}
         }
     });
-    // 设备树store
-    var treeStore = Ext.create('Ext.data.TreeStore', {
-        id: 'treeStore',
-        autoLoad: false,
-        fields: ['sid', 'text', 'parentid', 'V_EQUSITE']
-    });
     // 空白gridStore
     var gridStore = Ext.create('Ext.data.Store', {
         storeId: 'gridStore',
@@ -328,7 +352,7 @@ Ext.onReady(function () {
         //pageSize: 20,
         fields: ['V_MX_CODE', 'V_MX_NAME', 'V_GX_CODE', 'V_ORGCODE', 'V_DEPTCODE', 'V_EQUTYPE', 'V_EQUCODE', 'V_EQUCODE_CHILD', 'V_BZ', 'V_IN_DATE', 'V_IN_PER', 'V_REPAIRMAJOR_CODE', 'V_HOUR', 'V_MXBB_NUM'],
         proxy: {
-            url: AppUrl + 'Wsy/PM_1917_JXMX_DATA_SEL',
+            url: AppUrl + 'hp/PM_1917_JXMX_DATA_SEL2',
             type: 'ajax',
             async: true,
             actionMethods: {
@@ -348,7 +372,7 @@ Ext.onReady(function () {
         autoLoad: false,
         loading: false,
         //pageSize: 20,
-        fields: ['V_MX_CODE', 'V_MX_NAME', 'V_JXGX_CODE', 'V_JXGX_NAME', 'V_JXGX_NR', 'V_GZZX_CODE', 'V_PERTIME'],
+        fields: ['V_MX_CODE', 'V_MX_NAME', 'V_JXGX_CODE', 'V_JXGX_NAME', 'V_JXGX_NR', 'V_GZZX_CODE', 'V_PERTIME', 'V_ORDER', 'V_JXBZ', 'V_JXBZ_VALUE_DOWN', 'V_JXBZ_VALUE_UP'],
         proxy: {
             url: AppUrl + 'Wsy/PM_1917_JXGX_DATA_SEL',
             type: 'ajax',
@@ -891,86 +915,102 @@ Ext.onReady(function () {
             labelWidth: 70,
             listeners: {
                 change: function (combo, records) {
-                    _queryTree();
+                    sblxload();
+                    _queryjxmx();
+                    //_queryTree();
                 }
             }
-        }, {
-            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin: 5px 5px 5px 80px',
-            items: [
-
+        },
             {
-            xtype: 'button',
-            text: '添加模型',
-            icon: imgpath + '/add.png',
-            width: 100,
-            margin: '0px 0px 0px 5px',
-            handler: _openmanageWindow
-        }, {
-            xtype: 'button',
-            text: '修改模型',
-            icon: imgpath + '/edit.png',
-            width: 100,
-            margin: '0px 0px 0px 5px',
-            handler: _openUpdateWindow
-        }, {
-            xtype: 'button',
-            text: '删除模型',
-            icon: imgpath + '/delete1.png',
-            width: 100,
-            margin: '0px 0px 0px 5px',
-            handler: _deleteJXMX
-        }, {
-            xtype: 'button',
-            text: '添加工序',
-            icon: imgpath + '/add.png',
-            width: 100,
-             margin: '0px 0px 0px 5px',
-            handler: _addProcedureWindow
-        }, {
-            xtype: 'button',
-            text: '修改工序',
-            icon: imgpath + '/edit.png',
-            width: 100,
-            margin: '0px 0px 0px 5px',
-            handler: _editProcedureWindow
-        }, {
-            xtype: 'button',
-            text: '删除工序',
-            icon: imgpath + '/delete1.png',
-            width: 100,
-            margin: '0px 0px 0px 5px',
-            handler: _deleteProcedure
-        }, {
-            xtype: 'button',
-            text: '查看详细',
-            icon: imgpath + '/search.png',
-            width: 100,
-            margin: '0px 0px 0px 5px',
-            handler: _procedualDetail
-        },{
-            xtype:'button',
-            text:'附件添加',
-            icon:imgpath+'/fj.png',
-            width:100,
-            margin: '0px 0px 0px 5px',
-            handler:_addmxfile
-        }
-        ]}
-        ]
-    });
-    // 设备树treePanel
-    var sblxTreePanel = Ext.create('Ext.tree.Panel', {
-        id: 'sblxTreePanel', // title: '设备类型树',
-        region: 'west',
-        width: '30%',
-        rootVisible: false,
-        autoScroll: true,
-        store: treeStore,
-        listeners: {
-            itemclick: function (panel, record, item, index, e, eOpts) {
-                _queryjxmx();
+                xtype: 'combo',
+                id: 'sblx',
+                store: sblxStore,
+                fieldLabel: '设备类型',
+                labelAlign: 'right',
+                editable: false,
+                margin: '5 0 5 5',
+                labelWidth: 75,
+                width: 255,
+                displayField: 'V_EQUTYPENAME',
+                valueField: 'V_EQUTYPECODE',
+                queryMode: 'local',
+                listeners: {
+                    change: function () {
+                        _queryjxmx();
+                        //sbmcload();
+                    }
+                }
+            }, {
+                xtype: 'panel',
+                frame: true,
+                width: '100%',
+                layout: 'column',
+                colspan: 8,
+                baseCls: 'my-panel-noborder',
+                style: 'margin: 5px 5px 5px 80px',
+                items: [
+
+                    {
+                        xtype: 'button',
+                        text: '添加模型',
+                        icon: imgpath + '/add.png',
+                        width: 100,
+                        margin: '0px 0px 0px 5px',
+                        handler: _openmanageWindow
+                    }, {
+                        xtype: 'button',
+                        text: '修改模型',
+                        icon: imgpath + '/edit.png',
+                        width: 100,
+                        margin: '0px 0px 0px 5px',
+                        handler: _openUpdateWindow
+                    }, {
+                        xtype: 'button',
+                        text: '删除模型',
+                        icon: imgpath + '/delete1.png',
+                        width: 100,
+                        margin: '0px 0px 0px 5px',
+                        handler: _deleteJXMX
+                    }, {
+                        xtype: 'button',
+                        text: '添加工序',
+                        icon: imgpath + '/add.png',
+                        width: 100,
+                        margin: '0px 0px 0px 5px',
+                        handler: _addProcedureWindow
+                    }, {
+                        xtype: 'button',
+                        text: '修改工序',
+                        icon: imgpath + '/edit.png',
+                        width: 100,
+                        margin: '0px 0px 0px 5px',
+                        handler: _editProcedureWindow
+                    }, {
+                        xtype: 'button',
+                        text: '删除工序',
+                        icon: imgpath + '/delete1.png',
+                        width: 100,
+                        margin: '0px 0px 0px 5px',
+                        handler: _deleteProcedure
+                    }, {
+                        xtype: 'button',
+                        text: '查看详细',
+                        icon: imgpath + '/search.png',
+                        width: 100,
+                        margin: '0px 0px 0px 5px',
+                        hidden: true,
+                        handler: _procedualDetail
+                    }, {
+                        xtype: 'button',
+                        text: '附件添加',
+                        icon: imgpath + '/fj.png',
+                        width: 100,
+                        margin: '0px 0px 0px 5px',
+                        handler: _addmxfile
+                    }
+                ]
             }
-        }
+        ]
     });
     // 检修模型gridPanel
     var jxmxPanel = Ext.create('Ext.grid.Panel', {
@@ -1076,23 +1116,6 @@ Ext.onReady(function () {
             width: '100%'
         }]
     });
-    // 左上panel集合
-    var zuoshangPanel = Ext.create('Ext.Panel', {
-        id: 'zuoshangPanel',
-        frame: true,
-        border: false,
-        layout: {
-            type: 'border',
-            regionWeights: {
-                north: 3,
-                east: 1,
-                south: 1,
-                west: 4
-            }
-        },
-        items: [sblxTreePanel, jxmxPanel, jxgxPanel]
-    });
-
 
     var ganttpanel = Ext.create('Ext.panel.Panel', {
         id: 'ganttpanel',
@@ -1310,48 +1333,48 @@ Ext.onReady(function () {
         }
     });
 //--附件类型
-    var ftypeStore=Ext.create('Ext.data.Store',{
-        id:'ftypeStore',
-        autoLoad:false,
-        fields:['ID','FNAME','FTYPE'],
-        proxy:{
-            type:'ajax',
-            url:AppUrl+'dxfile/FILETYPE_GETLIST',
-            actionMethods:{
-                read:'POST'
+    var ftypeStore = Ext.create('Ext.data.Store', {
+        id: 'ftypeStore',
+        autoLoad: false,
+        fields: ['ID', 'FNAME', 'FTYPE'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'dxfile/FILETYPE_GETLIST',
+            actionMethods: {
+                read: 'POST'
             },
-            reader:{
-                type:'json',
-                root:'list'
+            reader: {
+                type: 'json',
+                root: 'list'
             }
         }
     });
     Ext.data.StoreManager.lookup('ftypeStore').load({
-        params:{
-            SIGN:'M'
+        params: {
+            SIGN: 'M'
         }
     });
-    Ext.data.StoreManager.lookup('ftypeStore').on('load',function(){
-        Ext.ComponentManager.get('fjtype').store.insert(0,{
-            'ID':'%',
-            'FNAME':'全部'
+    Ext.data.StoreManager.lookup('ftypeStore').on('load', function () {
+        Ext.ComponentManager.get('fjtype').store.insert(0, {
+            'ID': '%',
+            'FNAME': '全部'
         });
         Ext.getCmp('fjtype').select(Ext.data.StoreManager.lookup('ftypeStore').data.getAt(0));
     });
 
-    var mxfileStore=Ext.create('Ext.data.Store',{
-       id:'mxfileStore',
-        autoLoad:false,
-        fields:['V_FILEGUID','V_FILENAME','V_FILETYPE','V_MODE_GUID','V_INPERCODE','V_INPERNAME','V_INTIME','V_TYPE'],
-        proxy:{
-           type:'ajax',
-            url:AppUrl+'dxfile/PM_MODEL_FILE_SEL',
+    var mxfileStore = Ext.create('Ext.data.Store', {
+        id: 'mxfileStore',
+        autoLoad: false,
+        fields: ['V_FILEGUID', 'V_FILENAME', 'V_FILETYPE', 'V_MODE_GUID', 'V_INPERCODE', 'V_INPERNAME', 'V_INTIME', 'V_TYPE'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'dxfile/PM_MODEL_FILE_SEL',
             actionMethods: {
                 read: 'POST'
             },
-            reader:{
-               type:'json',
-               root:'list'
+            reader: {
+                type: 'json',
+                root: 'list'
             }
         }
     });
@@ -1409,22 +1432,6 @@ Ext.onReady(function () {
             valueField: 'V_EQUTYPECODE',
             displayField: 'V_EQUTYPENAME',
             fieldLabel: '设备类型',
-            emptyText: '请选择',
-            editable: false,
-            width: 300,
-            listeners: {
-                select: function () {
-                    _selectEquName();
-                }
-            }
-        }, {
-            xtype: 'combo',
-            id: 'WIN_EQUCODE',
-            store: equNameStore,
-            queryMode: 'local',
-            displayField: 'V_EQUNAME',
-            valueField: 'V_EQUCODE',
-            fieldLabel: '设备名称',
             emptyText: '请选择',
             editable: false,
             width: 300
@@ -1489,14 +1496,33 @@ Ext.onReady(function () {
             }
         }]
     });
+
+    var rightComboPanel = Ext.create('Ext.Panel', {
+        id: 'rightComboPanel',
+        layout: 'border',
+        defaults: {
+            border: false
+        },
+        items: [{
+            region: 'north',
+            layout: 'fit',
+            height: '40%',
+            items: [jxgxPanel]
+        }, {
+            region: 'center',
+            layout: 'fit',
+            items: [ganttpanel]
+        }]
+    });
+
     Ext.create('Ext.container.Viewport', {
         layout: {
             type: 'border',
             regionWeights: {
-                north: 4,
-                east: 3,
-                south: 2,
-                west: -1
+                west: -1,
+                north: 1,
+                south: 1,
+                east: -1
             }
         },
         defaults: {
@@ -1506,35 +1532,18 @@ Ext.onReady(function () {
             region: 'north',
             items: [inputPanel]
         }, {
-            region: 'south',
+            region: 'west',
             layout: 'fit',
-            height: '40%',
-            items: [ganttpanel]
+            width: 500,
+            split: true,
+            collapsible: true,
+            header: false,
+            items: [jxmxPanel]
         }, {
             region: 'center',
             layout: 'fit',
-            items: [zuoshangPanel]
+            items: [rightComboPanel]
         }]
-    });
-    // 树状结构点击节点展开子项
-    Ext.getCmp("sblxTreePanel").on("beforeload", function (store, operation) {
-        if (operation.node.data.parentid == -1) {
-            Ext.apply(store.proxy.extraParams, {
-                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODE: Ext.getCmp('plant').getValue(),
-                V_V_DEPTNEXTCODE: Ext.getCmp('dept').getValue(),
-                V_V_EQUTYPECODE: operation.node.data.sid,
-                V_V_EQUCODE: '%'
-            }, store.proxy.url = AppUrl + 'CarManage/PRO_SAP_PM_EQU_TREE')
-        } else if (operation.node.data.parentid == -2) {
-            Ext.apply(store.proxy.extraParams, {
-                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODE: Ext.getCmp('plant').getValue(),
-                V_V_DEPTNEXTCODE: Ext.getCmp('dept').getValue(),
-                V_V_EQUTYPECODE: '%',
-                V_V_EQUCODE: operation.node.data.sid
-            }, store.proxy.url = AppUrl + 'CarManage/PRO_SAP_PM_CHILDEQU_TREE')
-        }
     });
 
     var inputProcedurePanel = Ext.create('Ext.form.Panel', {
@@ -1546,7 +1555,6 @@ Ext.onReady(function () {
         defaults: {
             labelAlign: 'right',
             labelWidth: 120,
-            margin: '10px 0 0 10px',
             width: 300
         },
         layout: {
@@ -1557,10 +1565,21 @@ Ext.onReady(function () {
             xtype: 'textfield',
             id: 'jxgxbm',
             colspan: 2,
-            fieldLabel: '检修工序编码',
+            hidden: true,
+        }, {
+            xtype: 'textfield',
+            id: 'V_EQUTYPE',
+            colspan: 2,
+            fieldLabel: '设备类型编码',
             readOnly: true,
             hidden: true,
-            width: 340
+        }, {
+            xtype: 'textfield',
+            id: 'V_DEPTCODE',
+            colspan: 2,
+            fieldLabel: '作业区编码',
+            readOnly: true,
+            hidden: true,
         }, {
             xtype: 'textfield',
             id: 'jxgxname',
@@ -1583,7 +1602,7 @@ Ext.onReady(function () {
             displayField: 'V_SAP_WORKNAME',
             fieldLabel: '检修工作中心',
             width: 340,
-            matchFieldWidth:false,
+            matchFieldWidth: false,
             editable: false
         }, {
             xtype: 'numberfield',
@@ -1591,6 +1610,85 @@ Ext.onReady(function () {
             colspan: 2,
             fieldLabel: '检修额定时间',
             width: 340
+        }, {
+            xtype: 'textfield',
+            id: 'jxper',
+            fieldLabel: '检修工种',
+            readOnly: true,
+            width: 365
+        }, {
+            xtype: 'button',
+            text: '+',
+            handler: selectJXPER,
+            margin: '0px 0px 0px 3px',
+            width: 25,
+        }, {
+            xtype: 'textfield',
+            id: 'jxcar',
+            fieldLabel: '检修机具',
+            readOnly: true,
+            width: 365
+        }, {
+            xtype: 'button',
+            text: '+',
+            handler: selectJXCAR,
+            margin: '0px 0px 0px 3px',
+            //handler : selectGJJJ,
+            width: 25,
+        }, {
+            xtype: 'textfield',
+            id: 'jxtool',
+            fieldLabel: '检修工具',
+            readOnly: true,
+            width: 365
+        }, {
+            xtype: 'button',
+            text: '+',
+            handler: selectJXTOOL,
+            margin: '0px 0px 0px 3px',
+            width: 25,
+        }, {
+            xtype: 'textfield',
+            id: 'jxtechnologybz',
+            fieldLabel: '检修技术标准',
+            readOnly: true,
+            width: 365
+        }, {
+            xtype: 'textfield',
+            id: 'jxtechnologybzd',
+            hidden: true,
+            fieldLabel: '检修技术标准下',
+            readOnly: true
+        }, {
+            xtype: 'textfield',
+            id: 'jxtechnologybzu',
+            hidden: true,
+            fieldLabel: '检修技术标准上',
+            readOnly: true
+        }, {
+            xtype: 'textfield',
+            id: 'jxtecbzguid',
+            hidden: true,
+            fieldLabel: '检修技术标准guid',
+            readOnly: true
+        }, {
+            xtype: 'button',
+            text: '+',
+            handler: selectJXTECHNOLOGYBZ,
+            margin: '0px 0px 0px 3px',
+            width: 25,
+        }, {
+            xtype: 'textfield',
+            id: 'jxsafe',
+            fieldLabel: '检修安全措施',
+            readOnly: true,
+            width: 365
+        }, {
+            xtype: 'button',
+            text: '+',
+            handler: selectJXSAFE,
+            margin: '0px 0px 0px 3px',
+            width: 25,
         }, {
             xtype: 'numberfield',
             id: 'order',
@@ -1603,7 +1701,7 @@ Ext.onReady(function () {
     var procedureButtonWin = Ext.create('Ext.window.Window', {
         id: 'procedureButtonWin',
         width: 450,
-        height: 350,
+        height: 500,
         title: '工序',
         modal: true,//弹出窗口时后面背景不可编辑
         frame: true,
@@ -1630,113 +1728,107 @@ Ext.onReady(function () {
 
     //------模型附件窗口
 
-    var toolbar=Ext.create("Ext.form.Panel",{
-        id:'toolbar',
-        border:false,
-        region:'north',
+    var toolbar = Ext.create("Ext.form.Panel", {
+        id: 'toolbar',
+        border: false,
+        region: 'north',
         frame: true,
-        height:45,
+        height: 45,
         layout: 'column',
-        defaults : {
-            style : 'margin:5px 0px 5px 5px',
-            labelAlign : 'right'
+        defaults: {
+            style: 'margin:5px 0px 5px 5px',
+            labelAlign: 'right'
         },
-        items:[{xtype:'combobox',id:'fjtype',store:ftypeStore,queryMode:'local',fieldLabel:'附件类型',valueField:'ID',displayField:'FNAME',width:260,labelAlign:'right',labelWidth:80,style:'margin:5px 2px 5px 5px',listeners:{select:function(){querymxfj(mx_code);}}},
-           {
-               xtype : 'filefield',
-               id : 'upload',
-               name : 'upload',
-               fieldLabel : '文件上传',
-               labelAlign:'right',
-               width : 300,
-               msgTarget : 'side',
-               allowBlank : true,
-               anchor : '100%',
-               buttonText : '浏览....',
-               style : ' margin: 5px 0px 5px 8px'
-           }, {
-               xtype : 'button',
-               width : 60,
-               text : '上传',
-               style : ' margin: 5px 0px 5px 10px',
-               handler : function () {
-                   var toolbarpan = Ext.getCmp('toolbar');
-                   if(Ext.getCmp('fjtype').getValue()=="%"){
-                       { Ext.Msg.alert('提示信息','请选择上传附件类型'); return}
-                   }
-                   if(Ext.getCmp('upload').getValue()==''||Ext.getCmp('upload').getValue()==null||Ext.getCmp('upload').getValue()==undefined){
-                       Ext.Msg.alert('提示信息', '请选择要的上传文件');
-                       return;
-                   }else{
-                       toolbarpan.submit({
-                           url: AppUrl + 'dxfile/PM_MODEL_FILE_ADD',
-                           async: false,
-                           method: 'POST',
-                           params : {
-                               V_V_MODE_GUID:mx_code,
-                               V_V_INPERCODE:Ext.util.Cookies.get('v_personcode'),
-                               V_V_INPERNAME:Ext.util.Cookies.get('v_personname2'),
-                               V_V_TYPE:Ext.getCmp('fjtype').getValue()
-                           },
-                           success: function (response) {
-                               var resp=Ext.decode(response.responseText);
-                               if(resp.RET="SUCCESS"){
-                                   querymxfj(mx_code);
-                               }
-
-                           }
-                       });
-                       querymxfj(mx_code);
-                   }
-               }
-           }, {
-        xtype: 'button',
-        text: '刷新',
-        width : 60,
-        style : ' margin: 5px 0px 5px 10px',
-        listeners: {click: function(){querymxfj(mx_code);}}
-    }, {
-        xtype: 'button',
-        text: '删除',
-        width : 60,
-        style : ' margin: 5px 0px 5px 10px',
-        listeners: {click: _OnButtonDel}
-    }]
+        items: [{
+            xtype: 'combobox',
+            id: 'fjtype',
+            store: ftypeStore,
+            queryMode: 'local',
+            fieldLabel: '附件类型',
+            valueField: 'ID',
+            displayField: 'FNAME',
+            width: 260,
+            labelAlign: 'right',
+            labelWidth: 80,
+            style: 'margin:5px 2px 5px 5px',
+            listeners: {
+                select: function () {
+                    querymxfj(mx_code);
+                }
+            }
+        },
+            {
+                xtype: 'filefield',
+                id: 'upload',
+                name: 'upload',
+                fieldLabel: '文件上传',
+                labelAlign: 'right',
+                width: 300,
+                msgTarget: 'side',
+                allowBlank: true,
+                anchor: '100%',
+                buttonText: '浏览....',
+                style: ' margin: 5px 0px 5px 8px'
+            }, {
+                xtype: 'button',
+                width: 60,
+                text: '上传',
+                style: ' margin: 5px 0px 5px 10px',
+                handler: _insertFile
+            }, {
+                xtype: 'button',
+                text: '刷新',
+                width: 60,
+                style: ' margin: 5px 0px 5px 10px',
+                listeners: {
+                    click: function () {
+                        querymxfj(mx_code);
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: '删除',
+                width: 60,
+                style: ' margin: 5px 0px 5px 10px',
+                listeners: {click: _OnButtonDel}
+            }]
     });
 
-    var mxfilegrid=Ext.create('Ext.grid.Panel',{
-        id:'mxfilegrid',
-        width:'100%',
-        height:340,
-        region:'center',
-        autoScroll:true,
+    var mxfilegrid = Ext.create('Ext.grid.Panel', {
+        id: 'mxfilegrid',
+        width: '100%',
+        height: 340,
+        region: 'center',
+        autoScroll: true,
         columnLines: true,
-        store:mxfileStore,
-        style:'text-align:center;',
+        store: mxfileStore,
+        style: 'text-align:center;',
         selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
             selType: 'checkboxmodel',
             mode: 'SIMPLE'
         },
-        columns:[{xtype: 'rownumberer', text: '序号', width : 50,align:'center'},
-            {text:'文件编码',dataIndex:'V_FILEGUID',align:'center',width:50,hidden:true},
-                {text:'文件名称',dataIndex:'V_FILENAME',align:'center',width:160},
-                {text:'上传时间',dataIndex:'V_INTIME', align:'center', width:150,
-                        renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
-                            return value.toString().substring(0,10);
-                 }},
-                 {text:'附件类型',dataIndex:'V_TYPE',align:'center',width:100},
-            {text:'操作',dataIndex:'V_FILEGUID',align:'center',width:150,renderer:operation}
+        columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {text: '文件编码', dataIndex: 'V_FILEGUID', align: 'center', width: 50, hidden: true},
+            {text: '文件名称', dataIndex: 'V_FILENAME', align: 'center', width: 160},
+            {
+                text: '上传时间', dataIndex: 'V_INTIME', align: 'center', width: 150,
+                renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                    return value.toString().substring(0, 10);
+                }
+            },
+            {text: '附件类型', dataIndex: 'V_TYPE', align: 'center', width: 100},
+            {text: '操作', dataIndex: 'V_FILEGUID', align: 'center', width: 150, renderer: operation}
         ]
     });
-    var mxfilepanel=Ext.create('Ext.panel.Panel',{
-        id:'mxfilepanel',
-        region:'center',
-        width:'100%',
-        layout:'border',
-        height:'100%',
-        items:[toolbar,mxfilegrid]
-     });
-    var mxfilewin= Ext.create('Ext.window.Window', {
+    var mxfilepanel = Ext.create('Ext.panel.Panel', {
+        id: 'mxfilepanel',
+        region: 'center',
+        width: '100%',
+        layout: 'border',
+        height: '100%',
+        items: [toolbar, mxfilegrid]
+    });
+    var mxfilewin = Ext.create('Ext.window.Window', {
         id: 'mxfilewin',
         width: 820,
         height: 360,
@@ -1746,13 +1838,15 @@ Ext.onReady(function () {
         layout: 'fit',
         closeAction: 'hide',
         closable: true,
-        items:[mxfilepanel]
+        items: [mxfilepanel]
     });
 });
+
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
+
 // 根据厂矿进行作业区联动
 function _selectDept() {
     var zyqStore = Ext.data.StoreManager.lookup('zyqStore');
@@ -1760,63 +1854,26 @@ function _selectDept() {
     zyqStore.load();
 }
 
-// 根据厂矿作业区查询设备树
-function _queryTree() {
-    Ext.getCmp('sblxTreePanel').store.setProxy({
-        type: 'ajax',
-        actionMethods: {
-            read: 'POST'
-        },
-        async: false,
-        url: AppUrl + 'CarManage/PRO_GET_DEPTEQUTYPE_PER',
-        reader: {
-            type: 'json'
-        },
-        root: {
-            expanded: true
-        },
-        extraParams: {
-            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_DEPTCODENEXT: Ext.getCmp('dept').getValue()
-        }
-    });
-    Ext.getCmp('sblxTreePanel').store.load();
-    _queryjxmx();
-    //_queryzsbjx(null);
+//根据作业区进行设备类型联动
+function sblxload() {
+    var sblxStore = Ext.data.StoreManager.lookup('sblxStore');
+    sblxStore.proxy.extraParams.V_V_PERSONCODE = V_V_PERSONCODE;
+    sblxStore.proxy.extraParams.V_V_DEPTCODENEXT = Ext.getCmp('dept').getValue();
+    sblxStore.load();
 }
 
-// 点击设备树item查询检修模型窗口
+// 选中设备类型查询检修模型窗口
 function _queryjxmx() {
-    var records = Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection();
     var jxmxStore = Ext.data.StoreManager.lookup('jxmxStore');
-    jxmxStore.removeAll();
-    if (records.length != 0 && records[0].raw.V_EQUTYPECODE != null) {
-        jxmxStore.load({
-            params: {
-                V_V_ORGCODE: Ext.getCmp('plant').getValue(),
-                V_V_DEPTCODE: Ext.getCmp('dept').getValue(),
-                V_V_EQUTYPE: '%',
-                V_V_EQUCODE: records[0].get('sid'),
-                V_V_EQUCHILD_CODE: '%',
-                V_V_JXMX_NAME: '%',
-                V_V_PAGE: Ext.getCmp('jxmxPanel_toolbar').store.currentPage,
-                V_V_PAGESIZE: Ext.getCmp('jxmxPanel_toolbar').store.pageSize
-            }
-        });
-    }else if(records.length != 0 && records[0].raw.V_EQUTYPECODE == null){
-        jxmxStore.load({
-            params: {
-                V_V_ORGCODE: Ext.getCmp('plant').getValue(),
-                V_V_DEPTCODE: Ext.getCmp('dept').getValue(),
-                V_V_EQUTYPE: records[0].get('sid'),
-                V_V_EQUCODE: '%',
-                V_V_EQUCHILD_CODE: '%',
-                V_V_JXMX_NAME: '%',
-                V_V_PAGE: Ext.getCmp('jxmxPanel_toolbar').store.currentPage,
-                V_V_PAGESIZE: Ext.getCmp('jxmxPanel_toolbar').store.pageSize
-            }
-        });
-    }
+    jxmxStore.proxy.extraParams = {
+        V_V_ORGCODE: Ext.getCmp('plant').getValue(),
+        V_V_DEPTCODE: Ext.getCmp('dept').getValue(),
+        V_V_EQUTYPE: Ext.getCmp('sblx').getValue(),
+        V_V_JXMX_NAME: '%',
+        V_V_PAGE: Ext.getCmp('jxmxPanel_toolbar').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('jxmxPanel_toolbar').store.pageSize
+    };
+    jxmxStore.load();
     _querygx(null);
 }
 
@@ -1849,20 +1906,6 @@ function _queryzsbjx(sid, V_EQUTYPECODE) {
             }
         });
     }
-}
-
-// 点击子设备名称按钮查询子设备检修技术标准
-function _queryzsb() {
-    var records = Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection();
-    Ext.data.StoreManager.lookup('zsbjxStore').load({
-        params: {
-            V_V_ORGCODE: Ext.getCmp('plant').getValue(),
-            V_V_DEPTCODE: Ext.getCmp('dept').getValue(),
-            V_V_EQUCODE: records[0].data.sid,
-            V_V_EQUCHILDCODE: Ext.getCmp('zsbmc').getValue(),
-            V_V_EQUTYPECODE: Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection()[0].raw.V_EQUTYPECODE
-        }
-    });
 }
 
 // 点击检修模型item查询工序窗口
@@ -1960,30 +2003,71 @@ function _addProcedureWindow() {//新增工序
         });
         return;
     }
+
     Ext.getCmp('jxgxbm').setValue(guid());
+    Ext.getCmp('V_EQUTYPE').setValue(records[0].get('V_EQUTYPE'));
+    Ext.getCmp('V_DEPTCODE').setValue(records[0].get('V_DEPTCODE'));
     Ext.getCmp('jxgxname').setValue('');
     Ext.getCmp('jxgxcontent').setValue('');
     Ext.getCmp('jxedsj').setValue(1);
+
+    Ext.getCmp('jxper').setValue('');
+    Ext.getCmp('jxcar').setValue('');
+    Ext.getCmp('jxtool').setValue('');
+    Ext.getCmp('jxsafe').setValue('');
+    Ext.getCmp('jxtechnologybz').setValue('');
+    Ext.getCmp('jxtechnologybzd').setValue('');
+    Ext.getCmp('jxtechnologybzu').setValue('');
+    Ext.getCmp('jxtecbzguid').setValue('');
+
     Ext.getCmp('order').setValue(1);
     flag = 1;
     Ext.getCmp('procedureButtonWin').show();
+    sign = "IN";
 
 }
 
 function _editProcedureWindow() {//修改工序
+    var records = Ext.getCmp('jxmxPanel').getSelectionModel().getSelection();
     var jxgxPanel = Ext.getCmp('jxgxPanel').getSelectionModel().getSelection();
     if (jxgxPanel.length != 1) {
         alert('请选择一条数据进行修改！');
         return false;
     }
 
+    Ext.getCmp('V_EQUTYPE').setValue(records[0].get('V_EQUTYPE'));
+    Ext.getCmp('V_DEPTCODE').setValue(records[0].get('V_DEPTCODE'));
     Ext.getCmp('jxgxbm').setValue(jxgxPanel[0].data.V_JXGX_CODE);
     Ext.getCmp('jxgxname').setValue(jxgxPanel[0].data.V_JXGX_NAME);
     Ext.getCmp('jxgxcontent').setValue(jxgxPanel[0].data.V_JXGX_NR);
     Ext.getCmp('jxteam').setValue(jxgxPanel[0].data.V_GZZX_CODE);
     Ext.getCmp('jxedsj').setValue(jxgxPanel[0].data.V_PERTIME);
-    Ext.getCmp('order').setValue(1);
+
+    Ext.getCmp('jxtechnologybz').setValue(jxgxPanel[0].data.V_JXBZ_VALUE_DOWN + '~' + jxgxPanel[0].data.V_JXBZ_VALUE_UP);
+    Ext.getCmp('jxtechnologybzd').setValue(jxgxPanel[0].data.V_JXBZ_VALUE_DOWN);
+    Ext.getCmp('jxtechnologybzu').setValue(jxgxPanel[0].data.V_JXBZ_VALUE_UP);
+    Ext.getCmp('jxtecbzguid').setValue(jxgxPanel[0].data.V_JXBZ);
+    Ext.getCmp('order').setValue(jxgxPanel[0].data.V_ORDER);
+
+    Ext.Ajax.request({
+        url: AppUrl + 'pm_19/PM_1917_JXGX_BYCODE_SEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_JXGX_CODE: jxgxPanel[0].data.V_JXGX_CODE
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            Ext.getCmp('jxcar').setValue(resp.list[0].V_JJ_NAME);
+            Ext.getCmp('jxper').setValue(resp.list[0].V_PER_NAME);
+            Ext.getCmp('jxtool').setValue(resp.list[0].V_GJ_NAME);
+            Ext.getCmp('jxsafe').setValue(resp.list[0].V_AQSC_NAME);
+        }
+    });
+
+
     flag = 0;
+    sign = "UPDATE";
     Ext.getCmp('procedureButtonWin').show();
 
 }
@@ -2031,34 +2115,34 @@ function _open() {
 
 // 打开新增窗口
 function _openmanageWindow() {
-    var selectedNode = null;
-    selectedNode = Ext.getCmp('sblxTreePanel').getSelectionModel().selected.items[0]; // 获取当前节点
+    //var selectedNode = null;
+    // selectedNode = Ext.getCmp('sblxTreePanel').getSelectionModel().selected.items[0]; // 获取当前节点
     Ext.getCmp('editPanel').getForm().reset();
     Ext.getCmp('WIN_ORGCODE').setValue(Ext.getCmp('plant').getValue());
     _selectDeptWin();
     Ext.getCmp('WIN_DEPTCODE').setValue(Ext.getCmp('dept').getValue());
     _selectEquType();
-    if (selectedNode != null) {
-        if (selectedNode.data.depth == 2) {
-            Ext.getCmp('WIN_EQUTYPECODE').setValue(selectedNode.data.sid);
-            _selectEquName();
-        }
-        if (selectedNode.data.depth == 3) {
-            var selectedParentNode = selectedNode.parentNode; // 获取该节点的父节点
-            Ext.getCmp('WIN_EQUTYPECODE').setValue(selectedParentNode.data.sid);
-            _selectEquName();
-            Ext.getCmp('WIN_EQUCODE').setValue(selectedNode.data.sid);
-            _selectSubEquName();
-        }
-        if (selectedNode.data.depth == 4) {
-            var selectedParentNode = selectedNode.parentNode; // 获取该节点的父节点
-            var selectedGrandParentNode = selectedParentNode.parentNode; // 获取该节点的爷节点
-            Ext.getCmp('WIN_EQUTYPECODE').setValue(selectedGrandParentNode.data.sid);
-            _selectEquName();
-            Ext.getCmp('WIN_EQUCODE').setValue(selectedParentNode.data.sid);
-            _selectSubEquName();
-        }
-    }
+    // if (selectedNode != null) {
+    //     if (selectedNode.data.depth == 2) {
+    //         Ext.getCmp('WIN_EQUTYPECODE').setValue(selectedNode.data.sid);
+    //         _selectEquName();
+    //     }
+    //     if (selectedNode.data.depth == 3) {
+    //         var selectedParentNode = selectedNode.parentNode; // 获取该节点的父节点
+    //         Ext.getCmp('WIN_EQUTYPECODE').setValue(selectedParentNode.data.sid);
+    //         _selectEquName();
+    //         Ext.getCmp('WIN_EQUCODE').setValue(selectedNode.data.sid);
+    //         _selectSubEquName();
+    //     }
+    //     if (selectedNode.data.depth == 4) {
+    //         var selectedParentNode = selectedNode.parentNode; // 获取该节点的父节点
+    //         var selectedGrandParentNode = selectedParentNode.parentNode; // 获取该节点的爷节点
+    //         Ext.getCmp('WIN_EQUTYPECODE').setValue(selectedGrandParentNode.data.sid);
+    //         _selectEquName();
+    //         Ext.getCmp('WIN_EQUCODE').setValue(selectedParentNode.data.sid);
+    //         _selectSubEquName();
+    //     }
+    // }
     Ext.getCmp('WIN_JXMX_CODE').setValue(Ext.data.IdGenerator.get('uuid').generate());
     Ext.getCmp('WIN_IN_PER').hide();
     Ext.getCmp('WIN_IN_DATE').hide();
@@ -2083,9 +2167,6 @@ function _openUpdateWindow() {
     Ext.getCmp('WIN_DEPTCODE').setValue(records[0].data.V_DEPTCODE);
     _selectEquType();
     Ext.getCmp('WIN_EQUTYPECODE').setValue(records[0].data.V_EQUTYPE);
-    _selectEquName();
-    Ext.getCmp('WIN_EQUCODE').setValue(records[0].data.V_EQUCODE);
-    _selectSubEquName();
     Ext.getCmp('WIN_JXMX_CODE').setValue(records[0].data.V_MX_CODE);
     Ext.getCmp('WIN_JXMX_NAME').setValue(records[0].data.V_MX_NAME);
     Ext.getCmp('WIN_BZ').setValue(records[0].data.V_BZ);
@@ -2112,7 +2193,6 @@ function _selectEquType() {
     var eTypeStore = Ext.data.StoreManager.lookup('eTypeStore');
     eTypeStore.removeAll();
     Ext.getCmp('WIN_EQUTYPECODE').setValue(null);
-    _selectEquName();
     if (Ext.getCmp('WIN_DEPTCODE').getValue() != null) {
         eTypeStore.proxy.extraParams.V_V_DEPTCODENEXT = Ext.getCmp('WIN_DEPTCODE').getValue();
         eTypeStore.load();
@@ -2148,7 +2228,7 @@ function _selectSubEquName() {
 // 编辑弹窗的保存
 function _save() {
     Ext.Ajax.request({
-        url: AppUrl + 'Wsy/BASE_JXMX_DATA_EDIT',
+        url: AppUrl + 'hp/HP_BASE_JXMX_DATA_EDIT',
         method: 'POST',
         async: false,
         params: {
@@ -2157,8 +2237,6 @@ function _save() {
             V_V_ORGCODE: Ext.getCmp('WIN_ORGCODE').getValue(),
             V_V_DEPTCODE: Ext.getCmp('WIN_DEPTCODE').getValue(),
             V_V_EQUTYPECODE: Ext.getCmp('WIN_EQUTYPECODE').getValue(),
-            V_V_EQUCODE: Ext.getCmp('WIN_EQUCODE').getValue(),
-            V_V_EQUCODE_CHILD: '%',
             V_V_REPAIRMAJOR_CODE: '',
             V_V_BZ: Ext.getCmp('WIN_BZ').getValue(),
             V_V_HOUR: '',
@@ -2184,15 +2262,14 @@ function _save() {
         }
     });
     _queryjxmx();
+    var ganttStore123 = Ext.data.StoreManager.lookup('ganttStore123');
+    ganttStore123.removeAll();
     Ext.getCmp('editWindow').close();
-}
-
-function _expand() {
-    Ext.getCmp('sblxTreePanel').expandAll();
 }
 
 function save_btn() {
     var jxmxPanel = Ext.getCmp('jxmxPanel').getSelectionModel().getSelection();
+
     Ext.Ajax.request({
         url: AppUrl + 'pm_19/PM_1917_JXGX_DATA_SETNEW',
         method: 'POST',
@@ -2206,9 +2283,9 @@ function save_btn() {
             V_V_ORDER: Ext.getCmp('order').getValue(),
             V_V_PERNUM: '',
             V_V_PERTIME: Ext.getCmp('jxedsj').getValue(),
-            V_V_JXBZ: '',
-            V_V_JXBZ_VALUE_DOWN: '',
-            V_V_JXBZ_VALUE_UP: ''
+            V_V_JXBZ: Ext.getCmp('jxtecbzguid').getValue(),
+            V_V_JXBZ_VALUE_DOWN: Ext.getCmp('jxtechnologybzd').getValue(),
+            V_V_JXBZ_VALUE_UP: Ext.getCmp('jxtechnologybzu').getValue(),
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -2236,20 +2313,10 @@ function _procedualDetail() {
         });
         return;
     }
-    var records = Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection();
-    if (records.length == 0) {
-        Ext.MessageBox.show({
-            title: '提示',
-            msg: '请选择一个设备类型!',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
-        return;
-    }
     var owidth = window.document.body.offsetWidth;
     var oheight = window.document.body.offsetHeight;
-    if (jxmxPanel[0].data.V_MX_CODE != null && records[0].data.sid != null) {
-        window.open(AppUrl + 'page/PM_1917/indexDetailNew.html?V_JXMX_CODE=' + jxmxPanel[0].data.V_MX_CODE + '&V_V_ORGCODE=' + Ext.getCmp('plant').getValue() + '&V_V_DEPTCODE=' + Ext.getCmp('dept').getValue() + '&V_V_EQUCODE=' + records[0].data.sid + '&V_V_EQUTYPECODE=' + Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection()[0].raw.V_EQUTYPECODE, '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    if (jxmxPanel[0].data.V_MX_CODE != null) {
+        window.open(AppUrl + 'page/PM_1917/indexDetailNew.html?V_JXMX_CODE=' + jxmxPanel[0].data.V_MX_CODE + '&V_V_ORGCODE=' + Ext.getCmp('plant').getValue() + '&V_V_DEPTCODE=' + Ext.getCmp('dept').getValue(), '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     }
 }
 
@@ -2393,70 +2460,192 @@ var pageFunction = {
 };
 
 /*添加检修模型附件*/
-function _addmxfile(){
+function _addmxfile() {
 
     var jxmxPanel = Ext.getCmp('jxmxPanel').getSelectionModel().getSelection();
-    var length=jxmxPanel.length;
-    if(length!=1){
+    var length = jxmxPanel.length;
+    if (length != 1) {
         alert('请选择一条检修模型数据');
-    }else{
-        mx_code=jxmxPanel[0].data.V_MX_CODE;
+    } else {
+        mx_code = jxmxPanel[0].data.V_MX_CODE;
         querymxfj(mx_code);
         Ext.getCmp("mxfilewin").show();
     }
 }
-function querymxfj(mx_code){
-     Ext.data.StoreManager.lookup('mxfileStore').load({
-        params:{
-            V_V_MODE_GUID:mx_code,
-            V_V_TYPE:Ext.getCmp('fjtype').getValue()
+
+function querymxfj(mx_code) {
+    Ext.data.StoreManager.lookup('mxfileStore').load({
+        params: {
+            V_V_MODE_GUID: mx_code,
+            V_V_TYPE: Ext.getCmp('fjtype').getValue()
         }
-     });
+    });
 
 }
-function _OnButtonDel(){
-       var records=Ext.getCmp('mxfilegrid').getSelectionModel().getSelection();
-       if(records.length==0){
-           Ext.MessageBox.show({
-               title:'提示',
-               msg:'请选择一条数据',
-               buttons:Ext.MessageBox.OK,
-               icon:Ext.MessageBox.WARNING
-           });
-           return false;
-       }
-       Ext.MessageBox.show({
-           title:'确认',
-           msg:'你确定要删除么？',
-           buttons:Ext.MessageBox.YESNO,
-           icon:Ext.MessageBox.WARNING,
-           fn:function(btn){
-               if(btn=='yes'){
-                   var err=0;
-                   for(var i=0;i<records.length;i++){
-                       Ext.Ajax.request({
-                           url:AppUrl+'dxfile/PM_MODEL_FILE_DEL',
-                           type:'ajax',
-                           mehtod:'POST',
-                           params:{
-                               V_V_FILEGUID:records[i].get('V_FILEGUID')
-                           },
-                           success:function(resp){
-                               err++;
-                               if(err==records.length){
-                                   querymxfj(mx_code);
-                               }
-                           }
-                       });
-                   }
-               }
-           }
-       });
+
+function _OnButtonDel() {
+    var records = Ext.getCmp('mxfilegrid').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一条数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    Ext.MessageBox.show({
+        title: '确认',
+        msg: '你确定要删除么？',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.WARNING,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                var err = 0;
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'dxfile/PM_MODEL_FILE_DEL',
+                        type: 'ajax',
+                        mehtod: 'POST',
+                        params: {
+                            V_V_FILEGUID: records[i].get('V_FILEGUID')
+                        },
+                        success: function (resp) {
+                            err++;
+                            if (err == records.length) {
+                                querymxfj(mx_code);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    });
 }
-function operation(value, metaData, record, store){
+
+function operation(value, metaData, record, store) {
     metaData.style = "text-align:center";
-    return '<a href="javascript:delfile(\''+value+'\')">'+"下载"+'</a>';
+    return '<a href="javascript:delfile(\'' + value + '\')">' + "下载" + '</a>';
 }
-function delfile(value){
-    window.location.href=AppUrl+'dxfile/PM_MODEL_FILE_DOWN?V_V_FILEGUID='+value;
+
+function delfile(value) {
+    window.location.href = AppUrl + 'dxfile/PM_MODEL_FILE_DOWN?V_V_FILEGUID=' + value;
+}
+
+function selectJXPER() {
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_191706/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+}
+
+//回调函数,不能删
+function getReturnJXPER(data) {
+    var ss = "";
+    for (var i = 0; i < data.length; i++) {
+        ss += data[i];
+    }
+    Ext.getCmp('jxper').setValue(ss);
+}
+
+function selectJXCAR() {
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_191704/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue() + '&V_EQUTYPE=' + Ext.getCmp('V_EQUTYPE').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+}
+
+//回调函数,不能删
+function getReturnJXCAR(data) {
+    var ss = "";
+    for (var i = 0; i < data.length; i++) {
+        ss += data[i];
+    }
+    Ext.getCmp('jxcar').setValue(ss);
+}
+
+function selectJXTOOL() {
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_191705/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue()
+        + '&V_EQUTYPE=' + Ext.getCmp('V_EQUTYPE').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+}
+
+//回调函数,不能删
+function getReturnJXTOOL(data) {
+    var ss = "";
+    for (var i = 0; i < data.length; i++) {
+        ss += data[i];
+    }
+    Ext.getCmp('jxtool').setValue(ss);
+}
+
+function selectJXTECHNOLOGYBZ() {
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_191713/index.html?V_V_DEPTCODE=' + Ext.getCmp('V_DEPTCODE').getValue()
+        + '&V_V_EQUTYPECODE=' + Ext.getCmp('V_EQUTYPE').getValue()
+        + '&V_V_ORGCODE=' + Ext.getCmp('plant').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+}
+
+//回调函数,不能删
+function getReturnJSBZ(guid, valued, valueu) {
+    Ext.getCmp('jxtechnologybz').setValue(valued + '~' + valueu);
+    Ext.getCmp('jxtechnologybzd').setValue(valued);
+    Ext.getCmp('jxtechnologybzu').setValue(valueu);
+    Ext.getCmp('jxtecbzguid').setValue(guid);
+}
+
+function selectJXSAFE() {
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_191709/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue() + '&V_EQUTYPE=' + Ext.getCmp('V_EQUTYPE').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+}
+
+//回调函数,不能删
+function getReturnJXSAFE(code, data) {
+    var ss = "";
+    // for(var j=0;j<code.length;j++){
+    //     aqcsCodeList.push(code[j]);
+    // }
+    for (var i = 0; i < data.length; i++) {
+        ss += data[i];
+    }
+    Ext.getCmp('jxsafe').setValue(ss);
+}
+
+function _insertFile() {
+    if (Ext.getCmp('fjtype').getValue() == "%") {
+        {
+            Ext.Msg.alert('提示信息', '请选择上传附件类型');
+            return
+        }
+    }
+    if (Ext.getCmp('upload').getValue() == '' || Ext.getCmp('upload').getValue() == null || Ext.getCmp('upload').getValue() == undefined) {
+        Ext.Msg.alert('提示信息', '请选择要的上传文件');
+        return;
+    } else {
+        Ext.getCmp('toolbar').getForm().submit({
+            url: AppUrl + 'dxfile/PM_MODEL_FILE_ADD',
+            submitEmptyText: false,
+            params: {
+                V_V_MODE_GUID: mx_code,
+                V_V_INPERCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_INPERNAME: Ext.util.Cookies.get('v_personname2'),
+                V_V_TYPE: Ext.getCmp('fjtype').getValue()
+            },
+            success: function (form, action) {
+                querymxfj(mx_code);
+            },
+            failure: function (form, action) {
+                alert('错误')
+            }
+        });
+    }
+}
+
+function guid2() {
+    function S6() {
+        return (((1 + Math.random()) * 0x10002) | 0).toString(16).substring(1);
+    }
+
+    return (S6() + S6() + "-" + S6() + "-" + S6() + "-" + S6() + "-" + S6() + S6() + S6());
 }

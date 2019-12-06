@@ -1,11 +1,13 @@
 var V_V_JXGX_CODE = null;
 var V_ORDERGUID = null;
 var V_EQUCODE = null;
+var V_EQUTYPE = null;
 if (location.href.split('?')[1] != undefined) {
     V_V_JXGX_CODE = Ext.urlDecode(location.href.split('?')[1]).V_V_JXGX_CODE;
     V_MX_CODE = Ext.urlDecode(location.href.split('?')[1]).V_MX_CODE;
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
+    V_EQUTYPE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPE;
 }
 
 var selid = "";
@@ -13,11 +15,11 @@ Ext.onReady(function(){
 var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
-    fields: ['V_CARCODE', 'V_CARNAME', 'V_CARTYPE', 'V_CARGUISUO', 'V_FLAG', 'V_CARINFO', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE'],
+    fields: ['V_CARCODE', 'V_CARNAME', 'V_CARTYPE', 'V_CARGUISUO', 'V_FLAG', 'V_CARINFO', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUTYPE'],
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'pm_19/PRO_PM_19_CARTYPE_SEL',
+        url: AppUrl + 'hp/HP_PRO_PM_19_CARTYPE_SEL',
         actionMethods: {
             read: 'POST'
         },
@@ -462,7 +464,7 @@ function queryGrid() {
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
             V_V_CARNAME: Ext.getCmp('carname').getValue(),
-            V_V_EQUCODE: V_EQUCODE
+            V_V_EQUTYPE: V_EQUTYPE
         }
     });
 }
@@ -657,23 +659,20 @@ function QueryXXGrid2() {
 
 function OnClickGrid() {
     var records = Ext.getCmp('grid').getSelectionModel().getSelection();//获取选中的数据
-
     Ext.Ajax.request({
-        url: AppUrl + 'hp/PM_1917_JXGX_JJ_DATA_SET',
+        url: AppUrl + 'hp/HP_PM_1917_JXGX_JJ_DATA_SET',
         method: 'POST',
         async: false,
         params: {
             V_V_JXGX_CODE: V_V_JXGX_CODE,
             V_V_JJ_CODE: records[0].get('V_CARCODE'),
             V_V_TS: '1',
-            V_V_EQUCODE: V_EQUCODE
+            V_V_EQUTYPE: V_EQUTYPE
 
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             QueryXXGrid();
-
-
         }
     });
 }

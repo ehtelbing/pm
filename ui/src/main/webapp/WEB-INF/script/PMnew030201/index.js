@@ -339,6 +339,7 @@ function CreateGanttTime(resDateList){
             $('#trDate').append('<td>' + (j + 1) + '</td>');
         }
     }
+    console.log(daySum);
     this.tableTdSum = daySum;
 }
 
@@ -348,31 +349,47 @@ function CreateGanttData(resDateList) {
     let tempHtmlContent = ''; //临时存储html 内容用的, 直接用append 方法 会造成tr闭标签 提前生成
     for (let i = 0; i < resDateList.length; i++) {
         let tempList = resDateList[i].list;
+        console.log(tempList);
         tempHtmlContent = '<tr class="trContent">';
         for (let j = 0; j < tempList.length; j++) {
+            //重要 时间如果是字符串格式带时分秒 需要substring一下 去掉时分秒
             //开始距离table左边框格数
             let leftNoStartDay = parseInt((new Date(tempList[j].V_JHTJSJ).getTime() - this.tableStartDate.getTime()) / (1000 * 60 * 60 * 24));
             //结束距离开始格数
-            let intervalDate = parseInt((new Date(tempList[j].V_JHJGSJ).getTime() - (new Date(tempList[j].V_JHTJSJ)).getTime()) / (1000 * 60 * 60 * 24)) + 1;
+            let intervalDate = parseInt((new Date(tempList[j].V_JHJGSJ.substring(0, 10)).getTime() - (new Date(tempList[j].V_JHTJSJ.substring(0, 10))).getTime()) / (1000 * 60 * 60 * 24)) + 1;
             let tempIndex = null;
             if(j == 0){
                 tempIndex = 0;
             }else{
                 tempIndex = parseInt((new Date(tempList[j -1].V_JHJGSJ).getTime() - this.tableStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
             }
-            for (let k = tempIndex; k < this.tableTdSum; k++) {
-                if(k == 0) {
-                    tempHtmlContent += '<td><div class = "trTitleDiv"><div class="trTitleInnerDiv">' + tempList[j].V_CXNAME +'</div></div></td>';
-                }else if (k < leftNoStartDay) {
+            console.log("索引------->" + tempIndex);
+            console.log("开始距离最左面的距离------->" + leftNoStartDay);
+            console.log("gantt------->" + intervalDate);
+            console.log("结束时间--------->" + new Date(tempList[j].V_JHJGSJ.substring(0, 10)));
+            console.log("开始时间--------->" + new Date(tempList[j].V_JHTJSJ.substring(0, 10)));
+            console.log("总长度------->" + (intervalDate + leftNoStartDay));
+            for (let k = tempIndex; k <= this.tableTdSum; k++) {
+                //箭头样式, 横向版箭头
+                if (k == 0) {
+                    tempHtmlContent += '<td><div class = "trTitleDiv"><div class="trTitleInnerDiv">' + tempList[j].V_CXNAME + '</div></div></td>';
+                }else if (k == tempIndex && k != 0) {
+                    if (leftNoStartDay - tempIndex + 1 > 0) {
+                        let jtwidth = (leftNoStartDay - tempIndex) * 26;
+                        let jtwidth1 = jtwidth - 10;
+                        tempHtmlContent += '<td><div class = "svgDivX" style="width: ' + (leftNoStartDay - tempIndex) * 26 + 'px"><svg xmlns="http://www.w3.org/2000/svg" width="' + ((leftNoStartDay - tempIndex) * 26) + '"  height="23"><polygon points="0 6 '+ jtwidth1 +' 6 '+ jtwidth1 +' 2 '+ jtwidth +' 11 '+ jtwidth1 +' 20 '+ jtwidth1 +' 16 0 16" stroke="none" fill="red"></polygon></svg></div></td>';
+                    }
+                } else if (k < leftNoStartDay) {
                     tempHtmlContent += '<td>&nbsp;</td>';
                 } else if (k == leftNoStartDay) {
                     tempHtmlContent += '<td colspan="' + (intervalDate) + '"><div class="trContentDiv"><span class="tooltip tooltip-turnleft"><span class="tooltip-item">' + tempList[j].V_COUNT + '</span><span class="tooltip-content">' + tempList[j].V_COUNT + '</span></span></div></td>';
-                }else if ((k >= (intervalDate + leftNoStartDay)) && j == tempList.length - 1) {
+                } else if ((k > (intervalDate + leftNoStartDay)) && j == tempList.length - 1) {
                     tempHtmlContent += '<td>&nbsp;</td>';
                 }
             }
 
         }
+        tempHtmlContent += '</tr>';
         $(tempHtmlContent).appendTo('#ganttTable');
     }
 
