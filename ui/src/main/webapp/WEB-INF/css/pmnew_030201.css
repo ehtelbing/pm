@@ -1,7 +1,7 @@
 #ganttDiv {
     height: 100% ;
     width: 100% ;
-    border: 1px solid red;
+    border: 0px solid red;
     overflow: auto ;
     background-color: white ;
 }
@@ -27,6 +27,9 @@
     min-width: 26px ;
     height: 25px ;
     min-height: 25px ;
+    max-width: 26px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #ganttTable tbody tr td {
