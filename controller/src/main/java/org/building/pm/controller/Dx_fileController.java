@@ -1530,6 +1530,36 @@ public class Dx_fileController {
         return data;
     }
 
+    @RequestMapping(value = "PRO_03_PLAN_YEAR_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_03_PLAN_YEAR_GET(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_ZYCODE") String V_V_ZYCODE,
+            @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
+            @RequestParam(value = "V_V_YEARNAME") String V_V_YEARNAME,
+            @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_03_PLAN_YEAR_GET(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE,V_V_ZYCODE,V_V_CXCODE,V_V_YEARNAME,V_V_PERNAME,V_V_PERCODE,V_V_PAGE,V_V_PAGESIZE);
+        return data;
+    }
+
+    @RequestMapping(value = "PRO_YEAR_TO_MONTH_GETY_BYM", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_TO_MONTH_GETY_BYM(
+            @RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_YEAR_TO_MONTH_GETY_BYM(V_V_MONTHGUID);
+        return data;
+    }
+
+
     // 计划模型修改
     @RequestMapping(value = "PM_1921_PLAN_MX_DATA_UPDATE", method = RequestMethod.POST)
     @ResponseBody
@@ -4678,11 +4708,12 @@ public class Dx_fileController {
     //周计划关联缺陷删除 PM_DEFECTTOWEEK_DEL
     @RequestMapping(value = "PM_DEFECTTOWEEK_DEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> PM_DEFECTTOWEEK_DEL(@RequestParam(value = "V_WEEKGUID") String V_WEEKGUID,
+    public Map<String, Object> PM_DEFECTTOWEEK_DEL(@RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID,
                                                    @RequestParam(value = "DEF_GUID") String DEF_GUID,
+                                                   @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
                                                       HttpServletRequest request,
                                                       HttpServletResponse response) throws Exception {
-        Map result = dx_fileService.PM_DEFECTTOWEEK_DEL(V_WEEKGUID,DEF_GUID);
+        Map result = dx_fileService.PM_DEFECTTOWEEK_DEL(V_V_WEEKGUID,DEF_GUID,V_V_PERCODE);
         return result;
     }
 
@@ -4760,9 +4791,50 @@ public class Dx_fileController {
     @RequestMapping(value = "PM_PLAN_YEAR_RE_DEFECT_SEL2", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_RE_DEFECT_SEL2(
-            @RequestParam(value = "V_WX_GUID") String V_WX_GUID) throws Exception {
+            @RequestParam(value = "V_V_QXLX") String V_V_QXLX,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE) throws Exception {
+        Map result = dx_fileService.PM_PLAN_YEAR_RE_DEFECT_SEL2(V_V_QXLX,V_V_PERCODE);
+        return result;
+    }
 
-        Map result = dx_fileService.PM_PLAN_YEAR_RE_DEFECT_SEL2(V_WX_GUID);
+    @RequestMapping(value = "PM_DEFECTTOWORKORDER_SETDM", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECTTOWORKORDER_SETDM(
+            @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
+            @RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE) throws Exception {
+        Map result = dx_fileService.PM_DEFECTTOWORKORDER_SETDM(V_V_DEFECTGUID,V_V_MONTHGUID,V_V_PERCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "PM_DEFECTTOWORKORDER_SETDW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECTTOWORKORDER_SETDW(
+            @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
+            @RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE) throws Exception {
+        Map result = dx_fileService.PM_DEFECTTOWORKORDER_SETDW(V_V_DEFECTGUID,V_V_WEEKGUID,V_V_PERCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "PM_DEFECTTOWORKORDER_SETMW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECTTOWORKORDER_SETMW(
+            @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
+            @RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
+            @RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE) throws Exception {
+        Map result = dx_fileService.PM_DEFECTTOWORKORDER_SETMW(V_V_DEFECTGUID,V_V_MONTHGUID,V_V_WEEKGUID,V_V_PERCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "PM_DEFECTTOWORKORDER_DELDM", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECTTOWORKORDER_DELDM(
+            @RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
+            @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE) throws Exception {
+        Map result = dx_fileService.PM_DEFECTTOWORKORDER_DELDM(V_V_MONTHGUID,V_V_DEFECTGUID,V_V_PERCODE);
         return result;
     }
 
@@ -5153,6 +5225,15 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_V_ACTIVITY") String V_V_V_ACTIVITY) throws Exception {
 
         Map data = dx_fileService.PRO_PM_WORKORDER_SPARE_V_N(V_V_ORDERGUID,V_V_V_ACTIVITY);
+        return data;
+    }
+
+    @RequestMapping(value="PM_WEEK_PLAN_CHECK_M", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_WEEK_PLAN_CHECK_M(
+            @RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID) throws Exception {
+
+        Map data = dx_fileService.PM_WEEK_PLAN_CHECK_M(V_V_WEEKGUID);
         return data;
     }
 

@@ -925,15 +925,12 @@ function OnBtnBack() {
                 var resp = Ext.decode(response.responseText);
                 if (resp.ret == '任务提交成功') {
                     Ext.Ajax.request({
-                        url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                        url: AppUrl + 'PM_06/PRO_PLAN_YEAR_STATE_SET',
                         method: 'POST',
                         async: false,
                         params: {
-                            'V_V_ORDERID': Guid,
-                            'V_V_PROCESS_NAMESPACE': 'YearPlan',
-                            'V_V_PROCESS_CODE': processKey,
-                            'V_V_STEPCODE': V_STEPCODE,
-                            'V_V_STEPNEXT_CODE': V_N_STEPCODE
+                            'V_V_GUID': Guid,
+                            'V_V_STATECODE': '98'
                         },
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);

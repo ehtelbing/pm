@@ -13,6 +13,7 @@ var wuliaochaxunlist=[];
 var V_FUNC_LOC='';
 var ProcessInstanceId = '';
 var Assignee='';
+var orderType='';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_V_PLANT == undefined) ? V_V_PLANT = '' : V_V_PLANT = parameters.V_V_PLANT;
@@ -375,6 +376,7 @@ function loadPageInfo() {
                 $("#V_DEPTNAMEREPARIR").html(resp.list[0].V_DEPTNAMEREPARIR);
 
                 $("#V_ORDER_TYP_TXT").html(resp.list[0].V_ORDER_TYP_TXT);
+                orderType=resp.list[0].V_ORDER_TYP;
 
                 $("#D_START_DATE").html(resp.list[0].D_START_DATE);
                 $("#D_FINISH_DATE").html(resp.list[0].D_FINISH_DATE);
@@ -731,7 +733,7 @@ function OnBtnLookClicked() {
 
     //var ret = window.showModalDialog(AppUrl+'/No41100103/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '', 'dialogHeight:500px;dialogWidth:800px');
     var ret = window.open(AppUrl
-    + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val()
+    + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val()+"&orderTyp="+orderType
     + '', '', 'dialogHeight:500px;dialogWidth:800px');
     loadMatList();
 }

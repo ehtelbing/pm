@@ -501,6 +501,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             text: '从缺陷添加',
             margin: '5 0 5 5',
             icon: imgpath + '/add.png',
+            hidden:true,
             handler: OnButtonDefectAddClicked
         },
         {
@@ -508,6 +509,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             text: '从备件添加',
             margin: '5 0 5 5',
             icon: imgpath + '/add.png',
+            hidden:true,
             handler: OnButtonBJAddClicked
         },
         {

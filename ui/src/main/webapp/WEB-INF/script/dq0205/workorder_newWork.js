@@ -392,7 +392,7 @@ function OpenEditMat() {
             } else {
                 var owidth = window.document.body.offsetWidth - 200;
                 var oheight = window.document.body.offsetHeight - 100;
-                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '', '_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val()+ '&orderTyp=' + $("#selType").val(), '', '_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 loadMatList();
             }
         }

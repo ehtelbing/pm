@@ -6,6 +6,8 @@ if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
 }
 
+var orderType='';
+
 $(function () {
 
     loadOrder();
@@ -19,19 +21,19 @@ $(function () {
     loadOther();
     $("#btnTask").click(function () {
 
-        var owidth = window.document.body.offsetWidth-200;
-        var oheight = window.document.body.offsetHeight-100 ;
-        var ret = window.open(AppUrl+'page/PM_050101/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_DEPTREPAIRCODE=' + V_DEPTREPAIRCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        var owidth = window.document.body.offsetWidth - 200;
+        var oheight = window.document.body.offsetHeight - 100;
+        var ret = window.open(AppUrl + 'page/PM_050101/index.html?V_ORDERGUID=' + V_ORDERGUID + '&V_DEPTREPAIRCODE=' + V_DEPTREPAIRCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     });
 });
 
-function loadOrder(){
+function loadOrder() {
     Ext.Ajax.request({
         url: AppUrl + 'zdh/PRO_WX_WORKORDER_GET',
         method: 'POST',
         async: false,
         params: {
-            V_V_ORDERGUID:  V_ORDERGUID
+            V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -49,6 +51,7 @@ function loadOrder(){
                 $("#D_START_DATE").html(resp.list[0].D_START_DATE);
                 $("#D_FINISH_DATE").html(resp.list[0].D_FINISH_DATE);
                 $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
+                orderType=resp.list[0].V_ORDER_TYP;
                 V_DEPTREPAIRCODE = resp.list[0].V_DEPTCODEREPARIR;
                 V_TEAMCODE = resp.list[0].V_WXTEAM;
                 loadTeam(resp.list[0].V_WXTEAM);
@@ -57,7 +60,7 @@ function loadOrder(){
     });
 }
 
-function loadTeam(wxteam){
+function loadTeam(wxteam) {
 
     Ext.Ajax.request({
         method: 'POST',
@@ -68,7 +71,7 @@ function loadTeam(wxteam){
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            for(var i=0;i<resp.list.length;i++){
+            for (var i = 0; i < resp.list.length; i++) {
                 $("#V_TEAM").html(resp.list[0].V_CLASS_NAME);
                 break;
             }
@@ -82,26 +85,26 @@ function loadTeam(wxteam){
         url: AppUrl + 'zdh/teamdetail_sel',
         params: {
             IN_CLASSCODE: wxteam,
-            IN_ORDERGUID : V_ORDERGUID
+            IN_ORDERGUID: V_ORDERGUID
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
 
-            for(var i=0;i<resp.list.length;i++){
-                if(i==0){
-                    if(resp.list[i].V_ROLECODE == "11"){
-                        $("#V_TEAMPERSON").html(resp.list[i].V_PERSONNAME+"（班长）");
+            for (var i = 0; i < resp.list.length; i++) {
+                if (i == 0) {
+                    if (resp.list[i].V_ROLECODE == "11") {
+                        $("#V_TEAMPERSON").html(resp.list[i].V_PERSONNAME + "（班长）");
                     }
-                    else{
+                    else {
                         $("#V_TEAMPERSON").html(resp.list[i].V_PERSONNAME);
                     }
                 }
-                else{
-                    if(resp.list[i].V_ROLECODE == "11"){
-                        $("#V_TEAMPERSON").append(","+resp.list[i].V_PERSONNAME+"（班长）");
+                else {
+                    if (resp.list[i].V_ROLECODE == "11") {
+                        $("#V_TEAMPERSON").append("," + resp.list[i].V_PERSONNAME + "（班长）");
                     }
-                    else{
-                        $("#V_TEAMPERSON").append(","+resp.list[i].V_PERSONNAME);
+                    else {
+                        $("#V_TEAMPERSON").append("," + resp.list[i].V_PERSONNAME);
                     }
                 }
             }
@@ -110,8 +113,7 @@ function loadTeam(wxteam){
 }
 
 
-
-function getEquipReturnValue(ret){
+function getEquipReturnValue(ret) {
     var str = [];
     str = ret.split('^');
     $("#V_EQUIP_NAME").val(str[1]);
@@ -142,9 +144,9 @@ function CreateOrderGUID() {
         method: 'POST',
         async: false,
         params: {
-            V_V_PERCODE:  $.cookies.get('v_personcode'),
+            V_V_PERCODE: $.cookies.get('v_personcode'),
             V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
-            V_V_ORGCODE:   $("#V_ORGNAME").val(),
+            V_V_ORGCODE: $("#V_ORGNAME").val(),
             V_V_DEPTCODE: $("#V_DEPTNAME").val()
         },
         success: function (ret) {
@@ -223,12 +225,12 @@ function loadRepairList() {
  */
 function loadTaskGrid() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
         //url: "/No410701/PRO_PM_WORKORDER_ET_OPERATIONS",
         type: 'post',
         async: false,
         params: {
-               V_V_ORDERGUID: V_ORDERGUID
+            V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -272,47 +274,52 @@ function loadTaskGrid() {
 
 function OpenEditMat() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
         type: "post",
         async: false,
         params: {
-            V_V_ORDERGUID : V_ORDERGUID
+            V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-                var owidth = window.document.body.offsetWidth-200;
-                var oheight = window.document.body.offsetHeight-100 ;
-                var ret = window.open(AppUrl+'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID +'', '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-                loadMatList();
+            var owidth = window.document.body.offsetWidth - 200;
+            var oheight = window.document.body.offsetHeight - 100;
+            var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID='
+                + V_ORDERGUID + '&orderTyp=' + orderType, '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            loadMatList();
         }
     });
 }
 
 $('#btnGJJJ').live('click', function () {
-    var ret = window.showModalDialog(AppUrl+'/No41070103/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '41070103', 'dialogHeight:500px;dialogWidth:800px');
+    var ret = window.showModalDialog(AppUrl + '/No41070103/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '41070103', 'dialogHeight:500px;dialogWidth:800px');
 });
 
 function loadMatList() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
         type: 'post',
         params: {
-              V_V_ORDERGUID: V_ORDERGUID
+            V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             if (resp.list != null && resp.list != "") {
                 $("#TtableM tbody").empty();
-                $.each(resp.list, function (index, item) { item["sid"] = index + 1; });
+                $.each(resp.list, function (index, item) {
+                    item["sid"] = index + 1;
+                });
                 $("#TtableMTemplate").tmpl(resp.list).appendTo("#TtableM tbody");
-            } else { $("#TtableM tbody").empty(); }
+            } else {
+                $("#TtableM tbody").empty();
+            }
         }
     });
 }
 
-function loadOther(){
+function loadOther() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SEL',
+        url: AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SEL',
         type: 'post',
         params: {
             V_V_ORDERGUID: V_ORDERGUID
@@ -331,15 +338,15 @@ function loadOther(){
     });
 }
 
-function orderAccept(){
+function orderAccept() {
     OrderSave();
     orderaccept1();
 }
 
-function orderaccept1(){
-    var flag=1;
+function orderaccept1() {
+    var flag = 1;
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
         type: 'post',
         params: {
             V_V_ORDERGUID: V_ORDERGUID
@@ -349,17 +356,17 @@ function orderaccept1(){
             if (resp.list == null || resp.list == "") {
                 accept();
             }
-            else{
-                var temp=0;
+            else {
+                var temp = 0;
                 var number = 0;
-                for(var i=0;i<resp.list.length;i++){
+                for (var i = 0; i < resp.list.length; i++) {
                     Ext.Ajax.request({
-                        url : AppUrl + 'zdh/WX_INF_FILE_SEL',
+                        url: AppUrl + 'zdh/WX_INF_FILE_SEL',
                         type: 'post',
                         params: {
-                            V_V_ORDERGUID : V_ORDERGUID,
-                            V_V_MATERIALGUID : resp.list[i].V_MATERIALCODE,
-                            V_V_FILENAME : '%'
+                            V_V_ORDERGUID: V_ORDERGUID,
+                            V_V_MATERIALGUID: resp.list[i].V_MATERIALCODE,
+                            V_V_FILENAME: '%'
                         },
                         success: function (ret) {
                             number++;
@@ -367,11 +374,11 @@ function orderaccept1(){
                             if (resp1.list != null && resp1.list != "") {
                                 temp++;
                             }
-                            if(number == i){
-                                if(temp == i){
+                            if (number == i) {
+                                if (temp == i) {
                                     accept();
                                 }
-                                else{
+                                else {
                                     alert("每个物料需要上传至少一张图片,请检查您上传的文件!");
                                 }
                             }
@@ -383,7 +390,7 @@ function orderaccept1(){
     });
 }
 
-function accept(){
+function accept() {
     Ext.Ajax.request({
         method: 'POST',
         async: false,
@@ -404,14 +411,14 @@ function accept(){
 
 function OrderSave() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SAVE',
+        url: AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SAVE',
         type: 'post',
         params: {
             V_V_ORDERGUID: V_ORDERGUID,
-            D_DATE_ACP:  "",
+            D_DATE_ACP: "",
             D_DATE_OVERDUE: $("#D_DATE_OVERDUE").val(),
             V_REASON_OVERDUE: $("#V_REASON_OVERDUE").val(),
-            V_FIX_EXPLAIN:  $("#V_FIX_EXPLAIN").val()
+            V_FIX_EXPLAIN: $("#V_FIX_EXPLAIN").val()
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -474,7 +481,7 @@ var fjgrid = Ext.create('Ext.grid.Panel', {
             text: '附件查询',
             width: 80,
             align: 'center',
-            renderer : function () {
+            renderer: function () {
                 return "<img src=" + imgpath + "/add.png>"
             },
             listeners: {
@@ -485,52 +492,55 @@ var fjgrid = Ext.create('Ext.grid.Panel', {
 });
 
 var fjwindow = Ext.create('Ext.window.Window', {
-    id : 'fjwindow',
-    width : 460,
-    height : 300,
-    layout : 'border',
-    title : '附件查询',
-    modal : true,//弹出窗口时后面背景不可编辑
-    frame : true,
-    closeAction : 'hide',
-    closable : true,
-    items : [fjgrid],
-    buttons : [{
-        xtype : 'button',
-        text : '取消',
-        width : 40,
-        handler : function() {
+    id: 'fjwindow',
+    width: 460,
+    height: 300,
+    layout: 'border',
+    title: '附件查询',
+    modal: true,//弹出窗口时后面背景不可编辑
+    frame: true,
+    closeAction: 'hide',
+    closable: true,
+    items: [fjgrid],
+    buttons: [{
+        xtype: 'button',
+        text: '取消',
+        width: 40,
+        handler: function () {
             Ext.getCmp('fjwindow').hide();
-        }}]
+        }
+    }]
 });
 
 function OrderFile() {
     Ext.data.StoreManager.lookup('fjgridStore').load({
-        params : {
-            V_V_ORDERGUID : V_ORDERGUID
+        params: {
+            V_V_ORDERGUID: V_ORDERGUID
         }
     });
     Ext.getCmp('fjwindow').show();
 }
 
 function OrderFile1(V_MATERIALGUID) {
-    var owidth = window.document.body.offsetWidth-200;
-    var oheight = window.document.body.offsetHeight-100 ;
-    var ret = window.open(AppUrl+'page/PM_050901/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + V_MATERIALGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_050901/index.html?V_ORDERGUID=' + V_ORDERGUID + '&V_MATERIALGUID=' + V_MATERIALGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
 }
 
-function fileadd(){
+function fileadd() {
     var seldata = Ext.getCmp('fjgrid').getSelectionModel().getSelection();
-    var owidth = window.document.body.offsetWidth-200;
-    var oheight = window.document.body.offsetHeight-100 ;
-    var ret = window.open(AppUrl+'page/PM_050902/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + seldata[0].data.V_MATERIALCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_050902/index.html?V_ORDERGUID=' + V_ORDERGUID + '&V_MATERIALGUID=' + seldata[0].data.V_MATERIALCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
 }
 
 function GetModel() {
-    if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null) { alert("请先选择设备!"); } else {
-        var ret = window.showModalDialog(AppUrl+'/No41070106/Index.html?V_EQUIP_NO=' + $("#V_EQUIP_NO").val() + '&V_ORDERGUID=' + $('#V_ORDERGUID').val() + '&V_DEPTREPAIRCODE='+ $('#V_DEPTNAMEREPARIR').val() + '','', 'dialogHeight:500px;dialogWidth:800px');
+    if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null) {
+        alert("请先选择设备!");
+    } else {
+        var ret = window.showModalDialog(AppUrl + '/No41070106/Index.html?V_EQUIP_NO=' + $("#V_EQUIP_NO").val() + '&V_ORDERGUID=' + $('#V_ORDERGUID').val() + '&V_DEPTREPAIRCODE=' + $('#V_DEPTNAMEREPARIR').val() + '', '', 'dialogHeight:500px;dialogWidth:800px');
         //loadTaskGrid();
         //loadToolAndTxtList();
         //loadMatList();
@@ -547,11 +557,12 @@ function NowDate_b(id) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
-    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 08:30:00" ;
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 08:30:00";
 
     //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").val(s);
 }
+
 function NowDate_e(id) {
     var d, s;
     d = new Date();
@@ -562,11 +573,12 @@ function NowDate_e(id) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
-    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00" ;
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00";
 
     //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").val(s);
 }
+
 function NowDate2(id) {
     var d, s;
     d = new Date();
@@ -577,15 +589,15 @@ function NowDate2(id) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
-    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) ;
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date);
     // try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").html(s);
 }
 
-function dateFomate(val){
-    if(parseInt(val) <=9){
-        return "0"+val;
-    }else{
+function dateFomate(val) {
+    if (parseInt(val) <= 9) {
+        return "0" + val;
+    } else {
         return val;
     }
 }
@@ -602,11 +614,11 @@ function bindDate(fid) {
         dateFormat: 'yy-mm-dd',
         timeFormat: 'hh:mm:ss',
         stepMinute: 30,
-        controlType:'select'
+        controlType: 'select'
     });
 }
 
-var agridStore = Ext.create('Ext.data.Store',{
+var agridStore = Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'agridStore',
     fields: ['V_PERSONCODE', 'V_PERSONNAME'],
@@ -713,7 +725,7 @@ var awindow = Ext.create('Ext.window.Window', {
     }]
 });
 
-function OrderPerson(){
+function OrderPerson() {
     windowquery();
     Ext.getCmp('awindow').show();
 }
@@ -757,7 +769,7 @@ function p_query() {
 
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/Basic/addperson.html?depart='+V_DEPTREPAIRCODE+'&classcode='+V_TEAMCODE+'&V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/Basic/addperson.html?depart=' + V_DEPTREPAIRCODE + '&classcode=' + V_TEAMCODE + '&V_ORDERGUID=' + V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function saved_btn() {
@@ -779,7 +791,7 @@ function saved_btn() {
             IN_CLASSNAME: Ext.getCmp('addmzmc').getValue(),
             IN_WORKCODE: Ext.getCmp('addgzzx').getValue(),
             IN_PERSONCODE: arr.toString(),
-            IN_ORDERGUID : V_ORDERGUID
+            IN_ORDERGUID: V_ORDERGUID
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
@@ -792,7 +804,7 @@ function saved_btn() {
     loadTeam(V_TEAMCODE);
 }
 
-function OrderBooked(){
+function OrderBooked() {
     OrderSave();
     Ext.Ajax.request({
         method: 'POST',
@@ -821,7 +833,7 @@ function getPersonReturnValue(retdata) {
     }
 }
 
-function orderissued(){
+function orderissued() {
     Ext.Ajax.request({
         method: 'POST',
         async: false,
@@ -838,7 +850,7 @@ function orderissued(){
                     url: AppUrl + 'mm/SetMat',//1
                     params: {
                         V_V_ORDERGUID: V_ORDERGUID,
-                        x_personcode :  Ext.util.Cookies.get('v_personcode')
+                        x_personcode: Ext.util.Cookies.get('v_personcode')
                     },
                     success: function (response) {
                         var resp = Ext.decode(response.responseText);
@@ -850,7 +862,7 @@ function orderissued(){
                                 url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
                                 params: {
                                     V_V_ORDERGUID: V_ORDERGUID,
-                                    V_V_SEND_STATE :  "成功"
+                                    V_V_SEND_STATE: "成功"
                                 },
                                 success: function (response) {
                                 }
@@ -867,14 +879,14 @@ function orderissued(){
                                 }
                             });
                         }
-                        else{
+                        else {
                             Ext.Ajax.request({
                                 method: 'POST',
                                 async: false,
                                 url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
                                 params: {
                                     V_V_ORDERGUID: V_ORDERGUID,
-                                    V_V_SEND_STATE :  "失败"
+                                    V_V_SEND_STATE: "失败"
                                 },
                                 success: function (response) {
                                 }
@@ -883,14 +895,15 @@ function orderissued(){
                     }
                 });
             }
-            else{
+            else {
                 alert("工单已下达,不可重复下单!");
             }
         }
     });
 
 }
-function OrderBooked(){
+
+function OrderBooked() {
     OrderSave();
     Ext.Ajax.request({
         method: 'POST',

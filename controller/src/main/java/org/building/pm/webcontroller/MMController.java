@@ -171,6 +171,7 @@ public class MMController {
                                    @RequestParam(value = "sap_departcode") String sap_departcode,
                                    @RequestParam(value = "storeplace") String storeplace,
                                    @RequestParam(value = "i_from_id") String i_from_id,
+                                   @RequestParam(value = "orderType") String orderType,
                                    @RequestParam(value = "x_personcode") String x_personcode,
                                    HttpServletRequest request,
                                    HttpServletResponse response) throws Exception {
@@ -178,10 +179,10 @@ public class MMController {
         List<Map> result = null;
         try {
             Client client = new Client(new URL(MMEquurl));
-
-            Object[] results = client.invoke("GetDepartKC_storeid",
+            String orderTyp=orderType;
+            Object[] results = client.invoke("GetDepartKC_OrderType",//"GetDepartKC_storeid",
                     new Object[]{number, code, name, sap_plantcode,
-                            sap_departcode, storeplace, i_from_id});
+                            sap_departcode, storeplace, i_from_id,orderTyp});
 
 
             Document doc = DocumentHelper.parseText(results[0].toString());
@@ -370,7 +371,7 @@ public class MMController {
                     if (!str.equals("88")) {
                         String state = fmap.get("SYSTEM_STATUS").toString();  //状态
                         if (!state.equals("TECO")) {// 已发的 不在发送
-                            bs = valicate(V_V_ORDERGUID, x_personcode, request, response);
+                            bs = valicate(V_V_ORDERGUID, x_personcode,fmap.get("V_ORDER_TYP").toString(), request, response);
 
                             System.out.println("=====================输出发送SAP工单接口 Stsrt===========================");
                             System.out.println("=====================输出发送SAP工单接口 :" + bs + "===========================");
@@ -426,7 +427,7 @@ public class MMController {
         return test;
     }
 
-    private boolean valicate(String orderguid, String personcode, HttpServletRequest request,
+    private boolean valicate(String orderguid, String personcode,String orderType, HttpServletRequest request,
                              HttpServletResponse response) throws Exception {
         List<Map> viewlist = cxyService.PRO_PM_WORKORDER_SPARE_TOSAP_VIEW(orderguid);
         Map viewmap = viewlist.get(0);
@@ -439,7 +440,7 @@ public class MMController {
             String plant = map.get("V_PLANT").toString();
             String workarea = map.get("V_WORK_AREA").toString();
             String mid = map.get("I_ID").toString();
-            Map listmaps = this.GetDepartKC_storeid(1000, materialcode, "", plant, workarea, "", "0", personcode, request, response);
+            Map listmaps = this.GetDepartKC_storeid(1000, materialcode, "", plant, workarea, "", "0",orderType, personcode, request, response);
             List mylist = (List) listmaps.get("list");
             if(mylist!=null) {
                 for (int j = 0; j < mylist.size(); j++) {

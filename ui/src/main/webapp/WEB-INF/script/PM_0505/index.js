@@ -1,4 +1,4 @@
-
+var orderType='';
 Ext.onReady(function () {
 
     Ext.QuickTips.init();
@@ -7,16 +7,16 @@ Ext.onReady(function () {
         id: 'gridStore',
         pageSize: 100,
         autoLoad: false,
-        fields: ['V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO','V_CHECKMANSIGN',
-            'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME','V_DEPTCODEREPARIR',
+        fields: ['V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO', 'V_CHECKMANSIGN',
+            'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME', 'V_DEPTCODEREPARIR',
             'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE', 'V_STATECODE', 'V_WXTEAM',
-            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME', 'WX_STATENAME'],
+            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME', 'WX_STATENAME','V_ORDER_TYP'],
 
         proxy: {
             type: 'ajax',
             async: false,
             //url: AppUrl + 'zdh/workorder_sel',
-            url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_SELECT_ADMIN',
+            url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_SELECT_ADMIN',
             actionMethods: {
                 read: 'POST'
             },
@@ -358,7 +358,7 @@ Ext.onReady(function () {
             style: 'margin:5px 0px 5px 5px',
             labelAlign: 'right'
         },
-        frame:true,
+        frame: true,
         layout: 'column',
         items: [{
             id: 'begintime',
@@ -366,7 +366,7 @@ Ext.onReady(function () {
             editable: false,
             format: 'Y/m/d',
             value: new Date(new Date().getFullYear() + '/'
-            + (new Date().getMonth() + 1) + '/' + 1),
+                + (new Date().getMonth() + 1) + '/' + 1),
             fieldLabel: '时间段选择',
             labelWidth: 100,
             baseCls: 'margin-bottom'
@@ -377,7 +377,7 @@ Ext.onReady(function () {
             format: 'Y/m/d',
             value: new Date(),
             fieldLabel: '至',
-            labelWidth:100
+            labelWidth: 100
         }, {
             id: 'ck',
             xtype: 'combo',
@@ -467,8 +467,8 @@ Ext.onReady(function () {
             xtype: 'textfield',
             width: 158,
             emptyText: '工单描述模糊搜索',
-            margin:'5px 0px 5px 110px'
-        },{
+            margin: '5px 0px 5px 110px'
+        }, {
             id: 'query',
             xtype: 'button',
             icon: imgpath + '/search.png',
@@ -491,7 +491,7 @@ Ext.onReady(function () {
                 click: selecteam
             },
             hidden: true
-        },{
+        }, {
             xtype: 'button',
             text: '添加物料',
             icon: imgpath + '/group.png',
@@ -500,7 +500,7 @@ Ext.onReady(function () {
                 click: addmaterial
             },
             hidden: true
-        },{
+        }, {
             xtype: 'button',
             text: '工单处理',
             icon: imgpath + '/group.png',
@@ -508,7 +508,7 @@ Ext.onReady(function () {
             listeners: {
                 click: orderissued
             }
-        },{
+        }, {
             xtype: 'button',
             text: '工单验收',
             icon: imgpath + '/group.png',
@@ -516,7 +516,7 @@ Ext.onReady(function () {
             listeners: {
                 click: orderback
             }
-        },{
+        }, {
             xtype: 'button',
             text: '工单验收',
             icon: imgpath + '/group.png',
@@ -525,7 +525,7 @@ Ext.onReady(function () {
                 click: orderaccept
             },
             hidden: true
-        },{
+        }, {
             xtype: 'button',
             text: '预留工单',
             icon: imgpath + '/group.png',
@@ -551,41 +551,37 @@ Ext.onReady(function () {
     });
 
     Ext.data.StoreManager.lookup('ckstore').on('load', function () {
-        Ext.getCmp('ck').select(Ext.data.StoreManager.
-            lookup('ckstore').getAt(0));
+        Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckstore').getAt(0));
     });
 
     Ext.data.StoreManager.lookup('zyqstore').on('load', function () {
         zyqstore.insert(0, {V_DEPTNAME: '全部', V_DEPTCODE: '%'});
-        Ext.getCmp('zyq').select(Ext.data.StoreManager.
-            lookup('zyqstore').getAt(0));
+        Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqstore').getAt(0));
     });
 
     Ext.data.StoreManager.lookup('ssblx').on('load', function () {
-        Ext.getCmp('sblx').select(Ext.data.StoreManager.
-            lookup('ssblx').getAt(0));
+        Ext.getCmp('sblx').select(Ext.data.StoreManager.lookup('ssblx').getAt(0));
     });
 
     Ext.data.StoreManager.lookup('ssbmc').on('load', function () {
-        Ext.getCmp('sbmc').select(Ext.data.StoreManager.
-            lookup('ssbmc').getAt(0));
+        Ext.getCmp('sbmc').select(Ext.data.StoreManager.lookup('ssbmc').getAt(0));
     });
 
-    Ext.data.StoreManager.lookup('gridStore').on('beforeload',function(store) {
-        store.proxy.extraParams.V_D_ENTER_DATE_B = Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d');
-        store.proxy.extraParams.V_D_ENTER_DATE_E = Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d');
-        store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp( "ck").getValue();
-        store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp( "zyq").getValue();
-        store.proxy.extraParams.V_V_DEPTCODEREPARIR ='';
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+        store.proxy.extraParams.V_D_ENTER_DATE_B = Ext.Date.format(Ext.getCmp("begintime").getValue(), 'Y-m-d');
+        store.proxy.extraParams.V_D_ENTER_DATE_E = Ext.Date.format(Ext.getCmp("endtime").getValue(), 'Y-m-d');
+        store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp("ck").getValue();
+        store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp("zyq").getValue();
+        store.proxy.extraParams.V_V_DEPTCODEREPARIR = '';
         store.proxy.extraParams.V_V_STATECODE = Ext.ComponentManager.get("gdzt").getValue();
-        store.proxy.extraParams.V_EQUTYPE_CODE = Ext.getCmp( "sblx").getValue();
-        store.proxy.extraParams.V_EQU_CODE = Ext.getCmp( "sbmc").getValue();
-        store.proxy.extraParams.V_DJ_PERCODE ='%';
-        store.proxy.extraParams.V_V_SHORT_TXT = Ext.getCmp( "selshortTxt").getValue();
+        store.proxy.extraParams.V_EQUTYPE_CODE = Ext.getCmp("sblx").getValue();
+        store.proxy.extraParams.V_EQU_CODE = Ext.getCmp("sbmc").getValue();
+        store.proxy.extraParams.V_DJ_PERCODE = '%';
+        store.proxy.extraParams.V_V_SHORT_TXT = Ext.getCmp("selshortTxt").getValue();
         store.proxy.extraParams.V_V_BJ_TXT = '';
         store.proxy.extraParams.V_V_ORDER_TYP = "AK04";
-        store.proxy.extraParams.V_V_PAGE= Ext.getCmp('page').store.currentPage;
-        store.proxy.extraParams.V_V_PAGESIZE= Ext.getCmp('page').store.pageSize;
+        store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
+        store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
     });
 });
 
@@ -658,18 +654,19 @@ function windowquery() {
     });
     slecode = seldata[0].data.V_WXTEAM;
 }
+
 function itemClick(s, record, item, index, e, eOpts) {
-    var owidth = window.document.body.offsetWidth-200;
-    var oheight = window.document.body.offsetHeight-100 ;
-    var ret = window.open(AppUrl+'page/PM_0501/detail.html?V_ORDERGUID=' + record.data.V_ORDERGUID +  '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_0501/detail.html?V_ORDERGUID=' + record.data.V_ORDERGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function left(value, metaData) {
     metaData.style = "text-align:left";
-    if(value == null){
+    if (value == null) {
         return '<div data-qtip="" ></div>';
     }
-    else{
+    else {
         return '<div data-qtip="' + value + '" >' + value + '</div>';
     }
 }
@@ -734,41 +731,42 @@ function saved_btn() {
 
 function orderback() {
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
-    if(seldata.length != 1){
+    if (seldata.length != 1) {
         alert("请选择一条工单进行验收");
     }
-    else{
+    else {
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
         var ret = window.open(AppUrl + 'page/PM_0501/edit.html?V_ORDERGUID=' + seldata[0].data.V_ORDERGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     }
 }
 
-function addmaterial(){
+function addmaterial() {
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
         type: "post",
         async: false,
         params: {
-            V_V_ORDERGUID : seldata[0].data.V_ORDERGUID
+            V_V_ORDERGUID: seldata[0].data.V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            var owidth = window.document.body.offsetWidth-200;
-            var oheight = window.document.body.offsetHeight-100 ;
-            var ret = window.open(AppUrl+'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + seldata[0].data.V_ORDERGUID +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            var owidth = window.document.body.offsetWidth - 200;
+            var oheight = window.document.body.offsetHeight - 100;
+            var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID='
+                + seldata[0].data.V_ORDERGUID + '&orderTyp=' + seldata[0].data.V_ORDER_TYP, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
         }
     });
 }
 
-function orderissued(){
+function orderissued() {
 
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
-    if(seldata.length != 1){
+    if (seldata.length != 1) {
         alert("请选择一条工单进行处理");
     }
-    else{
+    else {
         Ext.Ajax.request({
             method: 'POST',
             async: false,
@@ -790,15 +788,15 @@ function orderissued(){
 
 }
 
-function orderaccept(){
-    var flag=1;
+function orderaccept() {
+    var flag = 1;
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
-    if(seldata.length !=1){
+    if (seldata.length != 1) {
         alert('请选择一条工单进行验收!');
         return false;
     }
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
         type: 'post',
         params: {
             V_V_ORDERGUID: seldata[0].data.V_ORDERGUID
@@ -808,17 +806,17 @@ function orderaccept(){
             if (resp.list == null || resp.list == "") {
                 accept();
             }
-            else{
-                var temp=0;
+            else {
+                var temp = 0;
                 var number = 0;
-                for(var i=0;i<resp.list.length;i++){
+                for (var i = 0; i < resp.list.length; i++) {
                     Ext.Ajax.request({
-                        url : AppUrl + 'zdh/WX_INF_FILE_SEL',
+                        url: AppUrl + 'zdh/WX_INF_FILE_SEL',
                         type: 'post',
                         params: {
-                            V_V_ORDERGUID : seldata[0].data.V_ORDERGUID,
-                            V_V_MATERIALGUID : resp.list[i].V_MATERIALCODE,
-                            V_V_FILENAME : '%'
+                            V_V_ORDERGUID: seldata[0].data.V_ORDERGUID,
+                            V_V_MATERIALGUID: resp.list[i].V_MATERIALCODE,
+                            V_V_FILENAME: '%'
                         },
                         success: function (ret) {
                             number++;
@@ -826,11 +824,11 @@ function orderaccept(){
                             if (resp1.list != null && resp1.list != "") {
                                 temp++;
                             }
-                            if(number == i){
-                                if(temp == i){
+                            if (number == i) {
+                                if (temp == i) {
                                     accept();
                                 }
-                                else{
+                                else {
                                     alert("每个物料需要上传至少一张图片,请检查您上传的文件!");
                                 }
                             }
@@ -842,7 +840,7 @@ function orderaccept(){
     });
 }
 
-function accept(){
+function accept() {
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
     Ext.Ajax.request({
         method: 'POST',
@@ -861,8 +859,8 @@ function accept(){
     });
 }
 
-function orderbooked(){
-    var owidth = window.document.body.offsetWidth-200;
-    var oheight = window.document.body.offsetHeight-100 ;
-    var ret = window.open(AppUrl+'page/PM_0507/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+function orderbooked() {
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_0507/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }

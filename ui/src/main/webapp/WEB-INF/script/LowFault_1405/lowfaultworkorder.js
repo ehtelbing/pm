@@ -2,6 +2,7 @@ var selectID = [];
 var V_EQUCODE='';
 var V_EQUTYPE = '';
 var V_EQUTYPECODE = null;
+var orderType='';
 // if (location.href.split('?')[1] != undefined) {
 //     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
 // }
@@ -391,7 +392,7 @@ function OpenEditMat() {
             } else {
                 var owidth = window.document.body.offsetWidth;
                 var oheight = window.document.body.offsetHeight;
-                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '','', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() +"&orderTyp=AK06",'', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 loadMatList();
             }
         }

@@ -6,12 +6,12 @@ var gridStore = Ext.create('Ext.data.Store', {
     fields: ['V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO', 'V_CHECKMANSIGN',
         'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME', 'V_DEPTCODEREPARIR',
         'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE', 'V_STATECODE', 'V_WXTEAM',
-        'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME', 'WX_STATENAME'],
+        'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME', 'WX_STATENAME','V_ORDER_TYP'],
 
     proxy: {
         type: 'ajax',
         async: false,
-        url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_SELECT_ADMIN',
+        url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_SELECT_ADMIN',
         actionMethods: {
             read: 'POST'
         },
@@ -299,7 +299,7 @@ var sgdzt = Ext.create("Ext.data.Store", {
     proxy: {
         type: 'ajax',
         async: false,
-        url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_STATE_VIEW',
+        url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_STATE_VIEW',
         actionMethods: {
             read: 'POST'
         },
@@ -318,7 +318,7 @@ var ssblx = Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-        url : AppUrl + 'WorkOrder/PRO_GET_DEPTEQUTYPE_ADMIN',
+        url: AppUrl + 'WorkOrder/PRO_GET_DEPTEQUTYPE_ADMIN',
         actionMethods: {
             read: 'POST'
         },
@@ -336,7 +336,7 @@ var ssbmc = Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-        url : AppUrl + 'WorkOrder/PRO_GET_DEPTEQU_ADMIN',
+        url: AppUrl + 'WorkOrder/PRO_GET_DEPTEQU_ADMIN',
         actionMethods: {
             read: 'POST'
         },
@@ -352,12 +352,12 @@ var panel = Ext.create('Ext.form.Panel', {
     id: 'panellow',
     style: 'margin:5px 0px 2px 2px',
     region: 'north',
-    frame:true,
+    frame: true,
     defaults: {
         style: 'margin:5px 0px 5px 5px',
         labelAlign: 'right'
     },
-    layout:'column',
+    layout: 'column',
     items: [{
         id: 'begintime',
         xtype: 'datefield',
@@ -469,58 +469,58 @@ var panel = Ext.create('Ext.form.Panel', {
         emptyText: '工单描述模糊搜索',
         margin: '5px 0px 5px 90px'
     }, {
-            id: 'query',
-            xtype: 'button',
-            icon: imgpath + '/search.png',
-            text: '查询',
-            width: 80,
-            handler: function () {
-                gridquery();
-            }
-        }, {
-            xtype: 'hidden',
-            id: 'tabid'
-        }, {
-            xtype: 'button',
-            text: '选择维修人员',
-            icon: imgpath + '/group.png',
-            width: 100,
-            listeners: {
-                click: selecteam
-            },
-            hidden: true
-        }, {
-            xtype: 'button',
-            text: '添加物料',
-            icon: imgpath + '/group.png',
-            width: 85,
-            listeners: {
-                click: addmaterial
-            },
-            hidden: true
-        }, {
-            xtype: 'button',
-            text: '工单处理',
-            icon: imgpath + '/group.png',
-            width: 85,
-            listeners: {
-                click: orderissued
-            }
-        }, {
-            xtype: 'button',
-            text: '预留工单',
-            icon: imgpath + '/group.png',
-            width: 85,
-            listeners: {
-                click: orderbooked
-            }
-        },{
-            xtype: 'button',
-            text: '导出EXCEL',
-            width: 100,
-            icon: imgpath + '/311.gif',
-            handler: onBtnExcel
-        }]
+        id: 'query',
+        xtype: 'button',
+        icon: imgpath + '/search.png',
+        text: '查询',
+        width: 80,
+        handler: function () {
+            gridquery();
+        }
+    }, {
+        xtype: 'hidden',
+        id: 'tabid'
+    }, {
+        xtype: 'button',
+        text: '选择维修人员',
+        icon: imgpath + '/group.png',
+        width: 100,
+        listeners: {
+            click: selecteam
+        },
+        hidden: true
+    }, {
+        xtype: 'button',
+        text: '添加物料',
+        icon: imgpath + '/group.png',
+        width: 85,
+        listeners: {
+            click: addmaterial
+        },
+        hidden: true
+    }, {
+        xtype: 'button',
+        text: '工单处理',
+        icon: imgpath + '/group.png',
+        width: 85,
+        listeners: {
+            click: orderissued
+        }
+    }, {
+        xtype: 'button',
+        text: '预留工单',
+        icon: imgpath + '/group.png',
+        width: 85,
+        listeners: {
+            click: orderbooked
+        }
+    }, {
+        xtype: 'button',
+        text: '导出EXCEL',
+        width: 100,
+        icon: imgpath + '/311.gif',
+        handler: onBtnExcel
+    }]
 });
 Ext.onReady(function () {
 
@@ -540,41 +540,37 @@ Ext.onReady(function () {
     });
 
     Ext.data.StoreManager.lookup('ckstore').on('load', function () {
-        Ext.getCmp('ck').select(Ext.data.StoreManager.
-            lookup('ckstore').getAt(0));
+        Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckstore').getAt(0));
     });
 
     Ext.data.StoreManager.lookup('zyqstore').on('load', function () {
         zyqstore.insert(0, {V_DEPTNAME: '全部', V_DEPTCODE: '%'});
-        Ext.getCmp('zyq').select(Ext.data.StoreManager.
-            lookup('zyqstore').getAt(0));
+        Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqstore').getAt(0));
     });
 
     Ext.data.StoreManager.lookup('ssblx').on('load', function () {
-        Ext.getCmp('sblx').select(Ext.data.StoreManager.
-            lookup('ssblx').getAt(0));
+        Ext.getCmp('sblx').select(Ext.data.StoreManager.lookup('ssblx').getAt(0));
     });
 
     Ext.data.StoreManager.lookup('ssbmc').on('load', function () {
-        Ext.getCmp('sbmc').select(Ext.data.StoreManager.
-            lookup('ssbmc').getAt(0));
+        Ext.getCmp('sbmc').select(Ext.data.StoreManager.lookup('ssbmc').getAt(0));
     });
 
-    Ext.data.StoreManager.lookup('gridStore').on('beforeload',function(store) {
-        store.proxy.extraParams.V_D_ENTER_DATE_B = Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d');
-        store.proxy.extraParams.V_D_ENTER_DATE_E = Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d');
-        store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp( "ck").getValue();
-        store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp( "zyq").getValue();
-        store.proxy.extraParams.V_V_DEPTCODEREPARIR ='';
-        store.proxy.extraParams.V_V_STATECODE = Ext.getCmp( "gdzt").getValue();
-        store.proxy.extraParams.V_EQUTYPE_CODE = Ext.getCmp( "sblx").getValue();
-        store.proxy.extraParams.V_EQU_CODE = Ext.getCmp( "sbmc").getValue();
-        store.proxy.extraParams.V_DJ_PERCODE ='%';
-        store.proxy.extraParams.V_V_SHORT_TXT = Ext.getCmp( "selshortTxt").getValue();
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+        store.proxy.extraParams.V_D_ENTER_DATE_B = Ext.Date.format(Ext.getCmp("begintime").getValue(), 'Y-m-d');
+        store.proxy.extraParams.V_D_ENTER_DATE_E = Ext.Date.format(Ext.getCmp("endtime").getValue(), 'Y-m-d');
+        store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp("ck").getValue();
+        store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp("zyq").getValue();
+        store.proxy.extraParams.V_V_DEPTCODEREPARIR = '';
+        store.proxy.extraParams.V_V_STATECODE = Ext.getCmp("gdzt").getValue();
+        store.proxy.extraParams.V_EQUTYPE_CODE = Ext.getCmp("sblx").getValue();
+        store.proxy.extraParams.V_EQU_CODE = Ext.getCmp("sbmc").getValue();
+        store.proxy.extraParams.V_DJ_PERCODE = '%';
+        store.proxy.extraParams.V_V_SHORT_TXT = Ext.getCmp("selshortTxt").getValue();
         store.proxy.extraParams.V_V_BJ_TXT = '';
         store.proxy.extraParams.V_V_ORDER_TYP = '%';
-        store.proxy.extraParams.V_V_PAGE= Ext.getCmp('page').store.currentPage;
-        store.proxy.extraParams.V_V_PAGESIZE= Ext.getCmp('page').store.pageSize;
+        store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
+        store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
     });
 });
 
@@ -645,6 +641,7 @@ function windowquery() {
     });
     slecode = seldata[0].data.V_WXTEAM;
 }
+
 function itemClick(s, record, item, index, e, eOpts) {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
@@ -720,7 +717,6 @@ function saved_btn() {
 }
 
 
-
 function addmaterial() {
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
     Ext.Ajax.request({
@@ -734,7 +730,7 @@ function addmaterial() {
             var resp = Ext.JSON.decode(ret.responseText);
             var owidth = window.document.body.offsetWidth - 200;
             var oheight = window.document.body.offsetHeight - 100;
-            var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + seldata[0].data.V_ORDERGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + seldata[0].data.V_ORDERGUID + '&orderTyp=' + seldata[0].data.V_ORDER_TYP, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
         }
     });
 }
@@ -766,7 +762,6 @@ function orderissued() {
     }
 
 }
-
 
 
 function orderbooked() {

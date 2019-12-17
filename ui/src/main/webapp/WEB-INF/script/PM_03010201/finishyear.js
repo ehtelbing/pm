@@ -377,7 +377,7 @@ function saveMonth(){
 function wxqxLoad(YEARGUID){
     Ext.data.StoreManager.lookup('wxqxGridStore').load({
         params: {
-            V_WX_GUID: YEARGUID
+            V_V_QXLX: YEARGUID
         }
     });
 }

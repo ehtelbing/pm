@@ -1,7 +1,5 @@
-/**
-*月计划上报设备部 流程结束
-*/
-var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
+﻿var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
+
 var V_V_CKTYPE = '';
 var V_EQUTYPECODE = '';
 var V_EQUTYPENAME = '';
@@ -12,7 +10,7 @@ var V_V_SPECIALTY = '';
 var V_PERSONCODE = '';
 var taskId = '';
 var V_STEPCODE = '';
-var V_PERSONNAME ='';
+var V_PERSONNAME = '';
 
 var ProcessInstanceId = '';
 if (location.href.split('?')[1] != undefined) {
@@ -24,10 +22,8 @@ if (location.href.split('?')[1] != undefined) {
 var orgLoad = false;
 var equTypeLoad = false;
 var basedicLoad = false;
-var V_NEXT_SETP='';
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
-/*
 
     var nextSprStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
@@ -36,7 +32,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl +  'dxfile/PM_ACTIVITI_PROCESS_PER_SELSBB',
+            url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
             actionMethods: {
                 read: 'POST'
             },
@@ -49,16 +45,16 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records, success, eOpts) {
                 var list = [];
-                if(store.getAt(0) !=null){
+                if (store.getAt(0) != null) {
                     processKey = store.getProxy().getReader().rawData.RET;
                     V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
                     V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+
                     Ext.getCmp('nextPer').select(store.first());
                 }
             }
         }
     });
-*/
 
     var inputPanel = Ext.create('Ext.form.Panel', {
         id: 'inputPanel',
@@ -70,8 +66,8 @@ Ext.onReady(function () {
         //border:false,
         items: [{
             xtype: 'fieldset',
-            height: 500,
-            width: 540,
+            height: 840,
+            width: 565,
             style: 'margin-left:10px;',
             defaults: {
                 frame: true,
@@ -106,16 +102,15 @@ Ext.onReady(function () {
                     width: 250
                 },
                 items: [{
+                    id: 'week',
+                    fieldLabel: '周',
+                    readOnly: true,
+                    labelWidth: 90
+                }, {
                     id: 'ck',
                     readOnly: true,
                     allowBlank: false,
                     fieldLabel: '计划厂矿',
-                    labelWidth: 90
-                }, {
-                    readOnly: true,
-                    id: 'zyq',
-                    fieldLabel: '作业区',
-                    allowBlank: false,
                     labelWidth: 90
                 }]
             }, {
@@ -126,59 +121,39 @@ Ext.onReady(function () {
                     width: 250
                 },
                 items: [{
+                    readOnly: true,
+                    id: 'zyq',
+                    fieldLabel: '作业区',
+                    allowBlank: false,
+                    labelWidth: 90
+                }, {
                     id: 'zy',
                     readOnly: true,
                     allowBlank: false,
                     fieldLabel: '专业',
                     labelWidth: 90
-                }, {
+                }]
+            }, {
+                layout: 'column',
+                defaults: {
+                    xtype: 'textfield',
+                    labelAlign: 'right',
+                    width: 250,
+                    readOnly: true
+                },
+                items: [{
                     readOnly: true,
                     id: 'sblx',
                     fieldLabel: '设备类型',
                     allowBlank: false,
                     labelWidth: 90
-                }]
-            }, {
-                layout: 'column',
-                defaults: {
-                    xtype: 'textfield',
-                    labelAlign: 'right',
-                    width: 250,
-                    readOnly: true
-                },
-                items: [{
+                }, {
                     id: 'sbmc',
                     allowBlank: false,
                     fieldLabel: '设备名称',
                     labelWidth: 90
-                }, {
-                    id: 'fqr',
-                    allowBlank: false,
-                    fieldLabel: '发起人',
-                    labelWidth: 90
                 }]
             }, {
-                layout: 'hbox',
-                defaults: {
-                    labelAlign: 'right',
-                    width: 250,
-                    readOnly: true
-                },
-                items: [{
-                    xtype: 'textfield',
-                    id: 'sgfs',
-                    allowBlank: false,
-                    fieldLabel: '施工方式',
-                    labelWidth: 90
-                }, {
-                    xtype:'checkboxfield',
-                    boxLabel:'施工准备是否已落实',
-                    margin:'5 0 0 35',
-                    id : 'iflag',
-                    inputValue:1,
-                    uncheckedValue:0
-                }]
-            },{
                 layout: 'column',
                 defaults: {
                     xtype: 'textfield',
@@ -187,6 +162,11 @@ Ext.onReady(function () {
                     readOnly: true
                 },
                 items: [{
+                    id: 'fqr',
+                    allowBlank: false,
+                    fieldLabel: '发起人',
+                    labelWidth: 90
+                }, {
                     id: 'fqsj',
                     allowBlank: false,
                     fieldLabel: '发起时间',
@@ -214,6 +194,15 @@ Ext.onReady(function () {
                     fieldLabel: '计划停工时间',
                     labelWidth: 90,
                     width: 250
+                }, {
+                    xtype: 'textfield',
+                    readOnly: true,
+                    id: 'gx',
+                    labelAlign: 'right',
+                    allowBlank: false,
+                    fieldLabel: '工序',
+                    labelWidth: 90,
+                    width: 250
                 }]
             }, {
                 layout: 'column',
@@ -228,7 +217,7 @@ Ext.onReady(function () {
                     width: 250
                 }]
             }, {
-                layout: 'column',
+                layout: 'hbox',
                 defaults: {
                     xtype: 'textfield',
                     labelAlign: 'right',
@@ -240,14 +229,55 @@ Ext.onReady(function () {
                     allowBlank: false,
                     fieldLabel: '计划工时合计',
                     labelWidth: 90
+                }, {
+                    xtype: 'checkboxfield',
+                    boxLabel: '施工准备是否已落实',
+                    id: 'iflag',
+                    margin: '5 0 0 65',
+                    inputValue: 1,
+                    uncheckedValue: 0
+                }]
+            }, {
+                layout: 'column',
+                defaults: {
+                    xtype: 'textfield',
+                    labelAlign: 'right',
+                    width: 250,
+                    readOnly: true
                 },
-                    {
-                        readOnly:true,
-                        id: 'gx',
-                        allowBlank: false,
-                        fieldLabel: '工序',
-                        labelWidth: 90
-                    }]
+                items: [{
+                    readOnly: true,
+                    id: 'sgfs',
+                    fieldLabel: '施工方式',
+                    allowBlank: false,
+                    hidden: true,
+                    labelWidth: 90
+                }, {
+                    id: 'repairDept',
+                    allowBlank: false,
+                    fieldLabel: '检修单位',
+                    labelWidth: 90
+                }]
+            }, {
+                layout: 'column',
+                defaults: {
+                    xtype: 'textfield',
+                    labelAlign: 'right',
+                    width: 250,
+                    readOnly: true
+                },
+                items: [{
+                    readOnly: true,
+                    id: 'telname',
+                    fieldLabel: '联系人姓名',
+                    allowBlank: false,
+                    labelWidth: 90
+                }, {
+                    id: 'telnumb',
+                    allowBlank: false,
+                    fieldLabel: '联系人电话',
+                    labelWidth: 90
+                }]
             }, {
                 layout: 'column',
                 items: [{
@@ -259,8 +289,167 @@ Ext.onReady(function () {
                     labelWidth: 90,
                     width: 500
                 }]
-            }]
-        }]
+            }, {
+                xtype: 'label',
+                text: "--------------------------------皮带胶接数据-----------------------------",
+                margin: '10 0 0 45',
+                style: 'color:blue'
+            }, {
+                layout: 'hbox',
+                defaults: {labelAlign: 'right'},
+                //frame: false,
+                //border: false,
+                baseCls: 'my-panel-no-border',
+                items: [{
+                    xtype: 'numberfield',
+                    id: 'pdc',
+                    readOnly: true,
+                    fieldLabel: '皮带周长',
+                    labelAlign: 'right',
+                    margin: '5 0 0 2',
+                    labelWidth: 90,
+                    width: 220,
+                    value: 0
+                }, {
+                    xtype: 'label',
+                    text: "(米）",
+                    width: 30,
+                    margin: '5 0 0 2'
+                },
+                    {
+                        xtype: 'numberfield',
+                        id: 'changpdc',
+                        readOnly: true,
+                        fieldLabel: '更换皮带长度',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        labelWidth: 90,
+                        width: 220,
+                        value: 0
+                    }, {
+                        xtype: 'label',
+                        text: "(米）",
+                        margin: '7 0 0 2',
+                        width: 30
+                    }
+                ]
+            }, {
+                layout: 'hbox',
+                defaults: {labelAlign: 'right', readOnly: true},
+                baseCls: 'my-panel-no-border',
+                items: [{
+                    xtype: 'textfield',
+                    id: 'gyyq',
+                    fieldLabel: '工艺要求',
+                    labelAlign: 'right',
+                    margin: '5 0 0 5',
+                    allowNegative: false,
+                    allowDecimals: false,
+                    labelWidth: 90,
+                    width: 250,
+                    value: ''
+                }, {
+                    xtype: 'textfield',
+                    id: 'pdgg',
+                    fieldLabel: '皮带规格',
+                    labelAlign: 'right',
+                    margin: '5 0 0 5',
+                    allowNegative: false,
+                    allowDecimals: false,
+                    labelWidth: 90,
+                    width: 250,
+                    value: ''
+                }]
+            }, {
+                layout: 'hbox',
+                defaults: {labelAlign: 'right', readOnly: true},
+                //frame: false,
+                //border: false,
+                baseCls: 'my-panel-no-border',
+                items: [
+                    {
+                        xtype: 'numberfield',
+                        id: 'jxhour',
+                        fieldLabel: '检修时间',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 90,
+                        width: 190,
+                        value: '0'
+                    }, {
+                        xtype: 'label',
+                        text: "(小时）",
+                        margin: '7 0 0 2',
+                        width: 60
+                    },
+                    {
+                        xtype: 'numberfield',
+                        id: 'jjhour',
+                        fieldLabel: '胶接时间',
+                        labelAlign: 'right',
+                        margin: '5 0 0 2',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 90,
+                        width: 190,
+                        value: '0'
+                    }, {
+                        xtype: 'label',
+                        text: "(小时）",
+                        margin: '7 0 0 2',
+                        width: 60
+                    }]
+            },
+                {
+                    layout: 'hbox',
+                    defaults: {labelAlign: 'right', readOnly: true},
+                    baseCls: 'my-panel-no-border',
+                    items: [{
+                        xtype: 'datefield',
+                        id: 'evertime',
+                        format: 'Y-m-d',
+                        fieldLabel: '上次施工时间',
+                        editable: false,
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        labelWidth: 90,
+                        width: 250,
+                        value: ''
+                    }, {
+                        xtype: 'numberfield',
+                        id: 'hd',
+                        fieldLabel: '厚度',
+                        labelAlign: 'right',
+                        margin: '5 0 0 2',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 90,
+                        width: 190,
+                        value: '0'
+                    },
+                        {
+                            xtype: 'label',
+                            text: "(厘米）",
+                            margin: '7 0 0 2',
+                            width: 60
+                        }]
+                }, {
+                    xtype: 'textarea',
+                    id: 'sgyy',
+                    labelAlign: 'right',
+                    fieldLabel: '施工原因',
+                    // margin: '5 0 10 5',
+                    labelWidth: 90,
+                    readOnly: true,
+                    width: 500,
+                    height: 80,
+                    value: ''
+                }
+            ]
+        }
+        ]
     });
 
     var buttonPanel = Ext.create('Ext.panel.Panel', {
@@ -272,7 +461,7 @@ Ext.onReady(function () {
         style: 'margin-bottom:1px',
         frame: true,
         baseCls: 'my-panel-no-border',
-        items: [/*{
+        items: [{
             id: 'nextPer',
             xtype: 'combo',
             store: nextSprStore,
@@ -287,7 +476,7 @@ Ext.onReady(function () {
             style: ' margin: 5px 0px 0px 5px',
             labelAlign: 'right',
             width: 200
-        }, */{
+        }, {
             id: 'spyj',
             xtype: 'textfield',
             fieldLabel: '审批意见',
@@ -299,10 +488,22 @@ Ext.onReady(function () {
             width: 250
         }, {
             xtype: 'button',
-            text: '同意',
-            style: ' margin: 5px 20px 0px 20px',
+            text: '上报设备部',
+            style: ' margin: 5px 20px 0px 5px',
             icon: imgpath + '/saved.png',
             handler: _agree
+        }, {
+            xtype: 'button',
+            text: '流程结束',
+            style: ' margin: 5px 20px 0px 5px',
+            icon: imgpath + '/saved.png',
+            handler: _agreeOver
+        }, {
+            xtype: 'button',
+            text: '驳回',
+            style: ' margin: 5px 20px 0px 0px',
+            icon: imgpath + '/cross.png',
+            handler: _reject
         }]
     });
 
@@ -323,6 +524,7 @@ Ext.onReady(function () {
         }, {
             region: 'center',
             //layout: 'fit',
+            autoScroll: true,
             border: false,
             items: [inputPanel]
         }]
@@ -339,7 +541,6 @@ function _selectTaskId() {
         params: {
             businessKey: V_ORDERGUID,
             userCode: Ext.util.Cookies.get('v_personcode')
-
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
@@ -364,11 +565,11 @@ function _selectNextPer() {
         V_V_ORGCODE: V_V_ORGCODE,
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: '',
-        V_V_FLOWTYPE: 'MonthPlan01',
-        V_V_FLOW_STEP:V_STEPCODE,
+        V_V_FLOWTYPE: 'WeekPlan',
+        V_V_FLOW_STEP: V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: V_V_SPECIALTY,
-        V_V_WHERE: '通过'
+        V_V_WHERE: '上报设备部'
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
@@ -376,11 +577,11 @@ function _selectNextPer() {
 
 function _init() {
     Ext.Ajax.request({
-        url: AppUrl + 'dxfile/PRO_PM_03_PLAN_MONTH_GET2',
+        url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
         type: 'ajax',
         method: 'POST',
         params: {
-            'V_V_MONTHPLAN_GUID': V_ORDERGUID
+            'V_V_WEEKPLAN_GUID': V_ORDERGUID
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
@@ -390,6 +591,7 @@ function _init() {
                 V_V_SPECIALTY = data.list[0].V_REPAIRMAJOR_CODE;
                 V_PERSONNAME = data.list[0].V_INPERNAME;
                 V_PERSONCODE = data.list[0].V_INPER;
+                Ext.getCmp('week').setValue(data.list[0].V_WEEK);
                 //alert(V_PERSONCODE);
                 Ext.getCmp('year').setValue(data.list[0].V_YEAR);
                 Ext.getCmp('month').setValue(data.list[0].V_MONTH);
@@ -406,11 +608,32 @@ function _init() {
                 Ext.getCmp('jhgshj').setValue(data.list[0].V_HOUR);
                 Ext.getCmp('bz').setValue(data.list[0].V_BZ);
 
-                //2018-11-21
-                Ext.getCmp('sgfs').setValue(data.list[0].V_SGWAYNAME);
-                Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);
-                Ext.getCmp('gx').setValue(data.list[0].V_OPERANAME);
-                //  _selectNextPer();
+                //---update 2018-1120
+                Ext.getCmp('pdc').setValue(data.list[0].V_PDC == "0" ? "0" : data.list[0].V_PDC); //皮带周长
+                Ext.getCmp('gyyq').setValue(data.list[0].V_GYYQ == "" ? "" : data.list[0].V_GYYQ); //工艺要求
+                Ext.getCmp('pdgg').setValue(data.list[0].V_PDGG == "" ? "" : data.list[0].V_PDGG);//皮带规格
+                Ext.getCmp('changpdc').setValue(data.list[0].V_CHANGPDC == "" ? "0" : data.list[0].V_CHANGPDC);//更换皮带长度（米）
+                Ext.getCmp('jxhour').setValue(data.list[0].V_JXHOUR == 0 ? 0 : data.list[0].V_JXHOUR); //检修时间（小时）
+                Ext.getCmp('jjhour').setValue(data.list[0].V_JJHOUR == 0 ? 0 : data.list[0].V_JJHOUR);//胶接时间（小时）
+                Ext.getCmp('telname').setValue(data.list[0].V_TELNAME == "" ? "" : data.list[0].V_TELNAME);//联系人姓名
+                Ext.getCmp('telnumb').setValue(data.list[0].V_TELNUMB == "" ? "" : data.list[0].V_TELNUMB);//联系人电话
+
+                Ext.getCmp('sgyy').setValue(data.list[0].V_THICKNESS == "0" ? "" : data.list[0].V_THICKNESS); //--施工原因
+                Ext.getCmp('hd').setValue(data.list[0].V_REASON == "" ? "0" : data.list[0].V_REASON);  //厚度
+                if (data.list[0].V_EVERTIME != "" && data.list[0] != undefined) {
+                    var V_EVERTIME = data.list[0].V_EVERTIME;
+                    var V_EVERTIME_DATE = V_EVERTIME.split(" ")[0]; //上次时间
+                    Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
+                } else {
+                    Ext.getCmp('evertime').setValue("");
+                }
+                //end up
+
+                Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);  //施工准备是否已落实
+                Ext.getCmp('sgfs').setValue(data.list[0].V_SGWAYNAME);  //施工方式
+                Ext.getCmp('repairDept').setValue(data.list[0].V_REPAIRDEPATNAME); //检修单位
+                Ext.getCmp('gx').setValue(data.list[0].V_OPERANAME);// 工序
+
                 _selectTaskId();
                 Ext.getBody().unmask();
             }
@@ -426,14 +649,14 @@ function _init() {
     });
 }
 
-function _agree() {
+
+function _agreeOver(){
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
-        spyj = '审批通过';
+        spyj = '通过';
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
-
 
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
@@ -441,19 +664,20 @@ function _agree() {
         method: 'POST',
         params: {
             taskId: taskId,
-            idea: '通过',
-            parName: [V_NEXT_SETP, "flow_yj"],
-            parVal: [Ext.getCmp('nextPer').getValue(), spyj],
-            processKey: processKey,
-            businessKey: V_ORDERGUID,
-            V_STEPCODE: V_STEPCODE,
-            V_STEPNAME: V_STEPNAME,
-            V_IDEA: '请审批！',
-            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-            V_INPER: Ext.util.Cookies.get('v_personcode')
+            idea: '内部结束',
+            parName: ['lcjs', "flow_yj",'shtgtime'],
+            parVal: ['lcjs',spyj,Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s') ],
+            processKey :$.url().param("ProcessDefinitionKey"),
+            businessKey : $.url().param("V_ORDERGUID"),
+            V_STEPCODE : 'lcjs',
+            V_STEPNAME : '流程结束',
+            V_IDEA : '通过',
+            V_NEXTPER : 'lcjs',
+            V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
+
             if (resp.ret == '任务提交成功') {
                 Ext.Ajax.request({
                     url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
@@ -461,10 +685,10 @@ function _agree() {
                     async: false,
                     params: {
                         'V_V_ORDERID': V_ORDERGUID,
-                        'V_V_PROCESS_NAMESPACE': 'MonthPlan01',
-                        'V_V_PROCESS_CODE': processKey,
+                        'V_V_PROCESS_NAMESPACE': 'WeekPlan',
+                        'V_V_PROCESS_CODE': $.url().param("ProcessDefinitionKey"),
                         'V_V_STEPCODE': V_STEPCODE,
-                        'V_V_STEPNEXT_CODE': V_NEXT_SETP
+                        'V_V_STEPNEXT_CODE': 'lcjs'
                     },
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
@@ -477,11 +701,76 @@ function _agree() {
                         }
                     }
                 });
+            }
+        },
+        failure: function (response) {//访问到后台时执行的方法。
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
+
+    })
+}
+
+function _agree() {
+    Ext.getBody().mask('<p>审批中...请稍候</p>');
+
+    var spyj = '';
+    if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
+        spyj = '审批通过';
+    } else {
+        spyj = Ext.getCmp('spyj').getValue();
+    }
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/TaskComplete',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            taskId: taskId,
+            idea: '上报设备部',
+            parName: [V_NEXT_SETP, "flow_yj", 'shtgtime'],
+            parVal: [Ext.getCmp('nextPer').getValue(), spyj, Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s')],
+            processKey: processKey,
+            businessKey: V_ORDERGUID,
+            V_STEPCODE: V_STEPCODE,
+            V_STEPNAME: V_STEPNAME,
+            V_IDEA: '请审批！',
+            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+            V_INPER: Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.ret == '任务提交成功') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        'V_V_GUID': V_ORDERGUID,
+                        'V_V_STATECODE': '70'
+                    },
+                    success: function (ret) {
+                        var resp = Ext.JSON.decode(ret.responseText);
+                        if (resp.V_INFO == 'success') {
+                            Ext.getBody().unmask();//去除页面笼罩
+                            window.opener.QueryTabW();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
+                            window.close();
+                            window.opener.OnPageLoad();
+                        }
+                    }
+                });
             } else {
+                Ext.getBody().unmask();//去除页面笼罩
                 Ext.MessageBox.alert('提示', '任务提交失败');
             }
         },
         failure: function (response) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();//去除页面笼罩
             Ext.MessageBox.show({
                 title: '错误',
                 msg: response.responseText,
@@ -493,13 +782,14 @@ function _agree() {
 }
 
 function _reject() {
+    Ext.getBody().mask('<p>驳回中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批驳回';
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
-    var Assignee='';
+    var Assignee = '';
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/InstanceState',
         method: 'POST',
@@ -509,10 +799,15 @@ function _reject() {
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            Assignee=resp.list[0].Assignee;
+            for (var i = 0; i < resp.list.length; i++) {
+                if (resp.list[i].ActivityName == "Start") {
+                    Assignee = resp.list[i].Assignee;
+                    break;
+                }
+            }
         }
     });
-    if(Assignee!=''){
+    if (Assignee != '') {
         Ext.Ajax.request({
             url: AppUrl + 'Activiti/TaskComplete',
             type: 'ajax',
@@ -540,7 +835,7 @@ function _reject() {
                         async: false,
                         params: {
                             'V_V_ORDERID': V_ORDERGUID,
-                            'V_V_PROCESS_NAMESPACE': 'MonthPlan01',
+                            'V_V_PROCESS_NAMESPACE': 'WeekPlan',
                             'V_V_PROCESS_CODE': processKey,
                             'V_V_STEPCODE': V_STEPCODE,
                             'V_V_STEPNEXT_CODE': 'fqrxg'
@@ -548,7 +843,8 @@ function _reject() {
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);
                             if (resp.V_INFO == 'success') {
-                                window.opener.QueryTabY();
+                                Ext.getBody().unmask();//去除页面笼罩
+                                window.opener.QueryTabW();
                                 window.opener.QuerySum();
                                 window.opener.QueryGrid();
                                 window.close();
@@ -557,10 +853,12 @@ function _reject() {
                         }
                     });
                 } else {
+                    Ext.getBody().unmask();//去除页面笼罩
                     Ext.MessageBox.alert('提示', '任务提交失败');
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。
+                Ext.getBody().unmask();//去除页面笼罩
                 Ext.MessageBox.show({
                     title: '错误',
                     msg: response.responseText,
@@ -569,7 +867,8 @@ function _reject() {
                 })
             }
         })
-    }else{
+    } else {
+        Ext.getBody().unmask();//去除页面笼罩
         alert("发起人信息错误，无法驳回");
     }
 }

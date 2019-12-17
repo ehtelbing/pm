@@ -650,7 +650,7 @@ function _agree() {
                     method: 'POST',
                     params: {
                         V_V_GUID: V_ORDERGUID,
-                        V_V_STATECODE: '30'//审批完成
+                        V_V_STATECODE: '80'//审批完成
 
                     },
                     success: function (response) {
@@ -710,8 +710,10 @@ function _reject() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             for (var i = 0; i < resp.list.length; i++) {
-                if (resp.list[i].ActivityName == "Start") {
+                if (resp.list[i].ActivityId == "ckjhysp") {
                     Assignee = resp.list[i].Assignee;
+                    V_N_STEPCODE = resp.list[i].ActivityId;
+                    V_N_STEPNAME = resp.list[i].ActivityName;
                     break;
                 }
             }
@@ -725,12 +727,12 @@ function _reject() {
             params: {
                 taskId: taskId,
                 idea: '不通过',
-                parName: ['fqrxg', "flow_yj"],
+                parName: [V_N_STEPCODE, "flow_yj"],
                 parVal: [Assignee, spyj],// [V_PERSONCODE, spyj],
                 processKey: $.url().param("ProcessDefinitionKey"),
                 businessKey: V_ORDERGUID,
-                V_STEPCODE: 'fqrxg',
-                V_STEPNAME: '发起人修改',
+                V_STEPCODE:V_N_STEPCODE,
+                V_STEPNAME:V_N_STEPNAME,
                 V_IDEA: '不通过',
                 V_NEXTPER: V_PERSONCODE,
                 V_INPER: Ext.util.Cookies.get('v_personcode')
@@ -739,16 +741,12 @@ function _reject() {
                 var resp = Ext.decode(response.responseText);
                 if (resp.ret == '任务提交成功') {
                     Ext.Ajax.request({
-                        //url: AppUrl + 'zdh/PRO_WO_FLOW_AGREE',
-                        url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
+                        type: 'ajax',
                         method: 'POST',
-                        async: false,
                         params: {
-                            'V_V_ORDERID': V_ORDERGUID,
-                            'V_V_PROCESS_NAMESPACE': 'WeekPlan',
-                            'V_V_PROCESS_CODE': $.url().param("ProcessDefinitionKey"),
-                            'V_V_STEPCODE': V_STEPCODE,
-                            'V_V_STEPNEXT_CODE': 'fqrxg'
+                            V_V_GUID: V_ORDERGUID,
+                            V_V_STATECODE: '98'//审批完成
                         },
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);

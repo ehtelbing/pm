@@ -1702,6 +1702,66 @@ public class Dx_fileService {
         return result;
     }
 
+    public HashMap PRO_03_PLAN_YEAR_GET(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZYCODE, String V_V_CXCODE,
+                                        String V_V_YEARNAME, String V_V_PERNAME, String V_V_PERCODE, String V_V_PAGE, String V_V_PAGESIZE) throws Exception, SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_03_PLAN_YEAR_GET");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_03_PLAN_YEAR_GET(:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_ZYCODE,:V_V_CXCODE,:V_V_YEARNAME,:V_V_PERNAME,:V_V_PERCODE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_ZYCODE", V_V_ZYCODE);
+            cstmt.setString("V_V_CXCODE", V_V_CXCODE);
+            cstmt.setString("V_V_YEARNAME", V_V_YEARNAME);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_03_PLAN_YEAR_GET");
+        return result;
+    }
+
+    public HashMap PRO_YEAR_TO_MONTH_GETY_BYM(String V_V_MONTHGUID) throws Exception, SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_YEAR_TO_MONTH_GETY_BYM");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_YEAR_TO_MONTH_GETY_BYM(:V_V_MONTHGUID,:V_CURSOR)}");
+            cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_YEAR_TO_MONTH_GETY_BYM");
+        return result;
+    }
+
     // 计划模型修改
     public HashMap PM_1921_PLAN_MX_DATA_UPDATE(String V_V_MX_CODE, String V_V_PERNUM, String V_V_LIFELONG) throws Exception, SQLException {
         HashMap result = new HashMap();
@@ -2925,7 +2985,7 @@ public class Dx_fileService {
             logger.info("begin PM_PLAN_YEAR_STATE_UPDATE");
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_STATE_UPDATE(:V_GUID,:V_STATE,:RET)}");
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_STATE_UPDATE(:V_V_GUID,:V_V_STATE,:RET)}");
             cstmt.setString("V_GUID", V_GUID);
             cstmt.setString("V_STATE", V_STATE);
 
@@ -5085,87 +5145,87 @@ public class Dx_fileService {
         logger.info("end PM_03_PLAN_SEL_TOWEEK");
         return result;
     }
+
     //缺陷system标识查询
-    public Map PM_DEFECT_SYSTEM_SIGN_SEL(String DEFECTGUID)throws SQLException{
-        HashMap result=new HashMap();
-        Connection conn=null;
-        CallableStatement cstmt=null;
-        try{
+    public Map PM_DEFECT_SYSTEM_SIGN_SEL(String DEFECTGUID) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
             logger.info("begin PM_DEFECT_SYSTEM_SIGN_SEL");
-            conn=dataSources.getConnection();
+            conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt=conn.prepareCall("{call PM_DEFECT_SYSTEM_SIGN_SEL(:DEFECTGUID,:RET)}");
-            cstmt.setString("DEFECTGUID",DEFECTGUID);
-            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt = conn.prepareCall("{call PM_DEFECT_SYSTEM_SIGN_SEL(:DEFECTGUID,:RET)}");
+            cstmt.setString("DEFECTGUID", DEFECTGUID);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("RET",cstmt.getString("RET"));
-        }
-        catch(SQLException ex){
+            result.put("RET", cstmt.getString("RET"));
+        } catch (SQLException ex) {
             logger.error(ex);
-        }
-        finally{
+        } finally {
             cstmt.close();
             conn.close();
         }
-        logger.debug("result:"+result);
+        logger.debug("result:" + result);
         logger.info("end PM_DEFECT_SYSTEM_SIGN_SEL");
         return result;
     }
+
     //工单验收费用添加
-    public Map PRO_PM_WORKORDER_MONEY_UPDATE(String V_WORKORDER,String V_V_MONEY)throws SQLException{
-        HashMap result=new HashMap();
-        Connection conn=null;CallableStatement cstmt=null;
-        try{
+    public Map PRO_PM_WORKORDER_MONEY_UPDATE(String V_WORKORDER, String V_V_MONEY) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
             logger.info("begin PRO_PM_WORKORDER_MONEY_UPDATE");
-            conn=dataSources.getConnection();
+            conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt=conn.prepareCall("{call PRO_PM_WORKORDER_MONEY_UPDATE(:V_WORKORDER,:V_V_MONEY,:RET)}");
-            cstmt.setString("V_WORKORDER",V_WORKORDER);
-            cstmt.setString("V_V_MONEY",V_V_MONEY);
-            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_MONEY_UPDATE(:V_WORKORDER,:V_V_MONEY,:RET)}");
+            cstmt.setString("V_WORKORDER", V_WORKORDER);
+            cstmt.setString("V_V_MONEY", V_V_MONEY);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("RET",cstmt.getString("RET"));
-        }
-        catch(SQLException ex){
+            result.put("RET", cstmt.getString("RET"));
+        } catch (SQLException ex) {
             logger.error(ex);
-        }
-        finally{
+        } finally {
             cstmt.close();
             conn.close();
         }
-        logger.debug("result:"+result);
+        logger.debug("result:" + result);
         logger.info("end PRO_PM_WORKORDER_MONEY_UPDATE");
         return result;
     }
+
     //维修计划缺陷审批状态表格，缺陷删除
-    public Map PM_DEFECT_LOG_FROMPRO_DEL(String V_PROGUID,String V_DEFECTGUID)throws SQLException{
-        HashMap result=new HashMap();
-        Connection conn=null;CallableStatement cstmt=null;
-        try{
+    public Map PM_DEFECT_LOG_FROMPRO_DEL(String V_PROGUID, String V_DEFECTGUID) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
             logger.info("begin PM_DEFECT_LOG_FROMPRO_DEL");
-            conn=dataSources.getConnection();
+            conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt=conn.prepareCall("{call PM_DEFECT_LOG_FROMPRO_DEL(:V_PROGUID,:V_DEFECTGUID,:RET)}");
-            cstmt.setString("V_PROGUID",V_PROGUID);
-            cstmt.setString("V_DEFECTGUID",V_DEFECTGUID);
-            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt = conn.prepareCall("{call PM_DEFECT_LOG_FROMPRO_DEL(:V_PROGUID,:V_DEFECTGUID,:RET)}");
+            cstmt.setString("V_PROGUID", V_PROGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("RET",cstmt.getString("RET"));
-        }
-        catch(SQLException ex){
+            result.put("RET", cstmt.getString("RET"));
+        } catch (SQLException ex) {
             logger.error(ex);
-        }
-        finally{
+        } finally {
             cstmt.close();
             conn.close();
         }
-        logger.debug("result:"+result);
+        logger.debug("result:" + result);
         logger.info("end PM_DEFECT_LOG_FROMPRO_DEL");
         return result;
     }
+
     //月计划设备关联其他缺陷查找
     public Map PRO_PM_07_DEFECT_SELECT_EQU(String V_V_STATECODE,
-                                       String X_PERSONCODE, String V_V_EQUCODE,String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+                                           String X_PERSONCODE, String V_V_EQUCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_SELECT_EQU");
         Map<String, Object> result = new HashMap<String, Object>();
@@ -5179,7 +5239,7 @@ public class Dx_fileService {
                     ":V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
             cstmt.setString("V_V_STATECODE", V_V_STATECODE);
             cstmt.setString("X_PERSONCODE", X_PERSONCODE);
-            cstmt.setString("V_V_EQUCODE",V_V_EQUCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.setString("V_V_PAGE", V_V_PAGE);
             cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
@@ -5199,37 +5259,39 @@ public class Dx_fileService {
         logger.info("end PRO_PM_07_DEFECT_SELECT_EQU");
         return result;
     }
-//    生成周计划的月计划关联缺陷标记
-public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
 
-    logger.info("begin YEAR_TO_MONTH_CH_WEEK_SIGN");
-    Map<String, Object> result = new HashMap<String, Object>();
-    List<Map> resultList = new ArrayList<Map>();
-    Connection conn = null;
-    CallableStatement cstmt = null;
-    try {
-        conn = dataSources.getConnection();
-        conn.setAutoCommit(false);
-        cstmt = conn.prepareCall("{call YEAR_TO_MONTH_CH_WEEK_SIGN(:V_WEEKGUID,:RET)}");
-        cstmt.setString("V_WEEKGUID", V_WEEKGUID);
+    //    生成周计划的月计划关联缺陷标记
+    public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
 
-        cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
-        cstmt.execute();
-        result.put("RET", (String) cstmt.getObject("RET"));
+        logger.info("begin YEAR_TO_MONTH_CH_WEEK_SIGN");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_CH_WEEK_SIGN(:V_WEEKGUID,:RET)}");
+            cstmt.setString("V_WEEKGUID", V_WEEKGUID);
 
-    } catch (SQLException e) {
-        logger.error(e);
-    } finally {
-        cstmt.close();
-        conn.close();
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end YEAR_TO_MONTH_CH_WEEK_SIGN");
+        return result;
     }
 
-    logger.debug("result:" + result);
-    logger.info("end YEAR_TO_MONTH_CH_WEEK_SIGN");
-    return result;
-}
-  //工单附件上传
-    public Map WORK_FILE_INSERT(String V_WORKGUID, String V_FILEGUID,String V_FILENAME, InputStream V_FILEBLOB, String V_FILETYPE,
+    //工单附件上传
+    public Map WORK_FILE_INSERT(String V_WORKGUID, String V_FILEGUID, String V_FILENAME, InputStream V_FILEBLOB, String V_FILETYPE,
                                 String V_INTIME, String V_INPER, String V_REMARK, String V_BLANK, String V_FROMPAGE) throws SQLException {
         logger.info("begin WORK_FILE_INSERT");
         Map result = new HashMap();
@@ -5242,7 +5304,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
                     ":V_INTIME,:V_INPER,:V_REMARK,:V_BLANK,:V_FROMPAGE,:RET)}");
             cstmt.setString("V_WORKGUID", V_WORKGUID);
             cstmt.setString("V_FILEGUID", V_FILEGUID);
-            cstmt.setString("V_FILENAME",V_FILENAME);
+            cstmt.setString("V_FILENAME", V_FILENAME);
             cstmt.setBlob("V_FILEBLOB", V_FILEBLOB);
             cstmt.setString("V_FILETYPE", V_FILETYPE);
             cstmt.setString("V_INTIME", V_INTIME);
@@ -5265,26 +5327,26 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end WORK_FILE_INSERT");
         return result;
     }
+
     //工单附件查找
-    public Map WORK_FILE_SELECT(String V_WOEKGUID,String V_PERCODE)throws  SQLException{
-        Map result=new HashMap();
-        Connection conn=null;
-        CallableStatement cstmt=null;
-        try{
+    public Map WORK_FILE_SELECT(String V_WOEKGUID, String V_PERCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
             logger.info("begin WORK_FILE_SELECT");
-            conn=dataSources.getConnection();
+            conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt=conn.prepareCall("{call WORK_FILE_SELECT(:V_WOEKGUID,:V_PERCODE,:RET)}");
-            cstmt.setString("V_WOEKGUID",V_WOEKGUID);
-            cstmt.setString("V_PERCODE",V_PERCODE);
+            cstmt = conn.prepareCall("{call WORK_FILE_SELECT(:V_WOEKGUID,:V_PERCODE,:RET)}");
+            cstmt.setString("V_WOEKGUID", V_WOEKGUID);
+            cstmt.setString("V_PERCODE", V_PERCODE);
 
             cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             logger.error(e);
-        }finally{
+        } finally {
             cstmt.close();
             conn.close();
         }
@@ -5292,26 +5354,26 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end WORK_FILE_SELECT");
         return result;
     }
+
     //工单附件删除 WORK_FILE_DEL
-    public Map WORK_FILE_DEL(String V_WORKGUID,String V_FILEGUID)throws  SQLException{
-        Map result=new HashMap();
-        Connection conn=null;
-        CallableStatement cstmt=null;
-        try{
+    public Map WORK_FILE_DEL(String V_WORKGUID, String V_FILEGUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
             logger.info("begin WORK_FILE_DEL");
-            conn=dataSources.getConnection();
+            conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt=conn.prepareCall("{call WORK_FILE_DEL(:V_WORKGUID,:V_FILEGUID,:RET)}");
-            cstmt.setString("V_WORKGUID",V_WORKGUID);
-            cstmt.setString("V_FILEGUID",V_FILEGUID);
+            cstmt = conn.prepareCall("{call WORK_FILE_DEL(:V_WORKGUID,:V_FILEGUID,:RET)}");
+            cstmt.setString("V_WORKGUID", V_WORKGUID);
+            cstmt.setString("V_FILEGUID", V_FILEGUID);
 
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("RET", (String) cstmt.getObject("RET"));
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             logger.error(e);
-        }finally{
+        } finally {
             cstmt.close();
             conn.close();
         }
@@ -5319,6 +5381,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end WORK_FILE_DEL");
         return result;
     }
+
     //工单附件下载
     public Map WORK_FILE_DOWN(String V_FILEGUID) throws SQLException {
         logger.info("begin WORK_FILE_DOWN");
@@ -5349,9 +5412,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end WORK_FILE_DOWN");
         return result;
     }
+
     //维修简版查询
     public Map PRO_PM_03_PLAN_YEAR_VIEW_E(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY,
-                                          String V_V_QSTEXT,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+                                          String V_V_QSTEXT, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PRO_PM_03_PLAN_YEAR_VIEW_E");
 
@@ -5387,12 +5451,13 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_03_PLAN_YEAR_VIEW_E");
         return result;
     }
+
     //维修计划简版缺陷解决方案返回值
-    public Map DEFECT_BY_MAINTAIN_JJFA_SEL(String V_DEFGUID,String V_PRO_GUID)throws SQLException{
-        Map result=new HashMap();
-        Connection conn=null;
-        CallableStatement cstmt=null;
-        try{
+    public Map DEFECT_BY_MAINTAIN_JJFA_SEL(String V_DEFGUID, String V_PRO_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
             logger.info("begin DEFECT_BY_MAINTAIN_JJFA_SEL");
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
@@ -5405,11 +5470,11 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("JJFA", (String) cstmt.getObject("JJFA"));
-            result.put("BJCL",(String) cstmt.getObject("BJCL"));
+            result.put("BJCL", (String) cstmt.getObject("BJCL"));
             result.put("RET", (String) cstmt.getObject("RET"));
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             logger.info(ex);
-        }finally{
+        } finally {
             cstmt.close();
             conn.close();
         }
@@ -5417,13 +5482,14 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end DEFECT_BY_MAINTAIN_JJFA_SEL");
         return result;
     }
+
     //简版维修计划保存
-    public Map PRO_PM_03_PLAN_YEAR_SAVE(String V_V_GUID,String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_ORGNAME,String V_V_DEPTCODE,String V_V_DEPTNAME,String V_V_PORJECT_CODE,String V_V_PORJECT_NAME,String V_V_SPECIALTY,
-                                       String V_V_SPECIALTYNAME,String V_V_SPECIALTYMANCODE,String V_V_SPECIALTYMAN,String V_V_WXTYPECODE,String V_V_WXTYPENAME,String V_V_CONTENT,
-                                       String V_V_MONEYBUDGET,String V_V_REPAIRDEPTCODE,String V_V_BDATE,String V_V_EDATE,String V_V_INMAN,String V_V_INMANCODE,
-                                       String V_V_JHLB,String V_V_SCLB,String V_V_CPZL,String V_V_CPGX,String V_V_SGFS,String V_V_SFXJ,String V_V_ZBFS,
-                                       String V_V_SZ,String V_V_GUID_UP,String V_V_WBS,String V_V_WBS_TXT,String V_V_SUMTIME,String V_V_SUMDATE,String V_V_SPECIALTY_ZX,
-                                       String V_V_SPECIALTY_ZXNAME,String V_V_BJF,String V_V_CLF,String V_V_SGF,String V_V_QSTEXT,String V_V_WXCLASS)throws SQLException {
+    public Map PRO_PM_03_PLAN_YEAR_SAVE(String V_V_GUID, String V_V_YEAR, String V_V_MONTH, String V_V_ORGCODE, String V_V_ORGNAME, String V_V_DEPTCODE, String V_V_DEPTNAME, String V_V_PORJECT_CODE, String V_V_PORJECT_NAME, String V_V_SPECIALTY,
+                                        String V_V_SPECIALTYNAME, String V_V_SPECIALTYMANCODE, String V_V_SPECIALTYMAN, String V_V_WXTYPECODE, String V_V_WXTYPENAME, String V_V_CONTENT,
+                                        String V_V_MONEYBUDGET, String V_V_REPAIRDEPTCODE, String V_V_BDATE, String V_V_EDATE, String V_V_INMAN, String V_V_INMANCODE,
+                                        String V_V_JHLB, String V_V_SCLB, String V_V_CPZL, String V_V_CPGX, String V_V_SGFS, String V_V_SFXJ, String V_V_ZBFS,
+                                        String V_V_SZ, String V_V_GUID_UP, String V_V_WBS, String V_V_WBS_TXT, String V_V_SUMTIME, String V_V_SUMDATE, String V_V_SPECIALTY_ZX,
+                                        String V_V_SPECIALTY_ZXNAME, String V_V_BJF, String V_V_CLF, String V_V_SGF, String V_V_QSTEXT, String V_V_WXCLASS) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -5475,10 +5541,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt.setString("V_V_BJF", V_V_BJF);
             cstmt.setString("V_V_CLF", V_V_CLF);
             cstmt.setString("V_V_SGF", V_V_SGF);
-            cstmt.setString("V_V_QSTEXT",V_V_QSTEXT);
-            cstmt.setString("V_V_WXCLASS",V_V_WXCLASS);
+            cstmt.setString("V_V_QSTEXT", V_V_QSTEXT);
+            cstmt.setString("V_V_WXCLASS", V_V_WXCLASS);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
-            cstmt.registerOutParameter("V_V_PROCODE",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_V_PROCODE", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.put("V_V_PROCODE", (String) cstmt.getObject("V_V_PROCODE"));
@@ -5492,6 +5558,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_03_PLAN_YEAR_SAVE");
         return result;
     }
+
     //简版维修计划待办查找
     public HashMap PRO_PM_03_PLAN_PROJECT_NGET(String V_V_GUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_PROJECT_NGET");
@@ -5586,6 +5653,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_03_PLAN_PROJECT_STAT_SET");
         return result;
     }
+
     //月计划查找缺陷添加缺陷  PRO_PM_07_DEFECT_SEL_RE_MONTH2
     public Map PRO_PM_07_DEFECT_SEL_RE_MONTH2(String V_MONTHGUID) throws SQLException {
 
@@ -5616,6 +5684,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_07_DEFECT_SEL_RE_MONTH2");
         return result;
     }
+
     //    工单查询  缺陷详情
     public Map PRO_PM_DEFECT_SEL_FROM_WORK(String V_WORK_GUID) throws SQLException {
 
@@ -5646,6 +5715,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_DEFECT_SEL_FROM_WORK");
         return result;
     }
+
     //    工单查询  缺陷详情
     public Map PRO_PM_SELECT_SEL_FROM_WORK(String V_WORK_GUID) throws SQLException {
 
@@ -5676,6 +5746,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_SELECT_SEL_FROM_WORK");
         return result;
     }
+
     //缺陷查找工单
     public Map PRO_PM_WORKORDER_SEL_FROM_DEL(String V_DEL_GUID) throws SQLException {
 
@@ -5706,8 +5777,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_WORKORDER_SEL_FROM_DEL");
         return result;
     }
+
     //放行计划查找缺陷
-    public Map MAINTAIN_BY_DEFECT_SEL(String V_FX_GUID)throws SQLException{
+    public Map MAINTAIN_BY_DEFECT_SEL(String V_FX_GUID) throws SQLException {
         logger.info("begin MAINTAIN_BY_DEFECT_SEL");
 
         HashMap result = new HashMap();
@@ -5732,8 +5804,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end MAINTAIN_BY_DEFECT_SEL");
         return result;
     }
+
     //缺陷写入工单查询
-    public Map PRO_PM_WORKORDER_FX_CREATE(String V_V_ORG_CODE,String V_PERCODE,String V_FXGUID,String V_V_DEFECTLIST)throws SQLException{
+    public Map PRO_PM_WORKORDER_FX_CREATE(String V_V_ORG_CODE, String V_PERCODE, String V_FXGUID, String V_V_DEFECTLIST) throws SQLException {
         logger.info("begin PRO_PM_WORKORDER_FX_CREATE");
 
         HashMap result = new HashMap();
@@ -5761,6 +5834,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_WORKORDER_FX_CREATE");
         return result;
     }
+
     //工单查找缺陷
     public HashMap PM_DEFECT_SEL_TO_WORK(String V_V_WORKORDER_GUID, String V_V_FLAG) throws SQLException {
 
@@ -5792,8 +5866,8 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
 
     //周计划--备件查找
     public HashMap PRO_DEFECT_PART_DATA_SEL_N(String V_V_TYPE, String V_V_INPER,
-                                              String V_V_STATE,String V_V_PAGE,String V_V_PAGESIZE
-                                              ) throws SQLException {
+                                              String V_V_STATE, String V_V_PAGE, String V_V_PAGESIZE
+    ) throws SQLException {
 
         logger.info("begin PRO_DEFECT_PART_DATA_SEL_N");
         HashMap result = new HashMap();
@@ -5828,6 +5902,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_DEFECT_PART_DATA_SEL_N");
         return result;
     }
+
     //周计划生成工单webcode判断
     public HashMap PM_03_PLAN_WBS_COMPARE(String V_V_GUID) throws SQLException {
 
@@ -5855,6 +5930,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_03_PLAN_WBS_COMPARE");
         return result;
     }
+
     //周计划关联缺陷
     public HashMap PM_DEFECTTOWEEK_SEL(String V_WEEKGUID) throws SQLException {
 
@@ -5883,7 +5959,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
     }
 
     //周计划关联缺陷删除 PM_DEFECTTOWEEK_DEL
-    public HashMap PM_DEFECTTOWEEK_DEL(String V_WEEKGUID,String DEF_GUID) throws SQLException {
+    public HashMap PM_DEFECTTOWEEK_DEL(String V_V_WEEKGUID, String DEF_GUID,String V_V_PERCODE) throws SQLException {
 
         logger.info("begin PM_DEFECTTOWEEK_DEL");
         HashMap result = new HashMap();
@@ -5892,9 +5968,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_DEL(:V_WEEKGUID,:DEF_GUID,:RET)}");
-            cstmt.setString("V_WEEKGUID", V_WEEKGUID);
-            cstmt.setString("DEF_GUID",DEF_GUID);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_DEL(:V_V_WEEKGUID,:DEF_GUID,:V_V_PERCODE,:RET)}");
+            cstmt.setString("V_V_WEEKGUID", V_V_WEEKGUID);
+            cstmt.setString("DEF_GUID", DEF_GUID);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
 
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
@@ -5910,8 +5987,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_DEFECTTOWEEK_DEL");
         return result;
     }
+
     //周计划关联月计划写入-修改
-    public HashMap PM_03_PLAN_WEEK_UPDATE(String V_V_MONTHGUID,String V_V_DEFECTGUID,String V_WEEKGUID) throws SQLException {
+    public HashMap PM_03_PLAN_WEEK_UPDATE(String V_V_MONTHGUID, String V_V_DEFECTGUID, String V_WEEKGUID) throws SQLException {
 
         logger.info("begin PM_03_PLAN_WEEK_UPDATE");
         HashMap result = new HashMap();
@@ -5922,8 +6000,8 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PM_03_PLAN_WEEK_UPDATE(:V_V_MONTHGUID,:V_V_DEFECTGUID,:V_WEEKGUID,:RET)}");
             cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
-            cstmt.setString("V_V_DEFECTGUID",V_V_DEFECTGUID);
-            cstmt.setString("V_WEEKGUID",V_WEEKGUID);
+            cstmt.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
+            cstmt.setString("V_WEEKGUID", V_WEEKGUID);
 
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
@@ -5939,63 +6017,66 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_03_PLAN_WEEK_UPDATE");
         return result;
     }
-   //清除未保存 的周计划关联缺陷 PM_DEFECTTOWEEK_DELALL_OLD
-   public HashMap PM_DEFECTTOWEEK_DELALL_OLD(String V_V_MONTHGUID,String V_V_WEEKGUID,String V_INPER,String V_DEFECTSTATE) throws SQLException {
 
-       logger.info("begin PM_DEFECTTOWEEK_DELALL_OLD");
-       HashMap result = new HashMap();
-       Connection conn = null;
-       CallableStatement cstmt = null;
-       try {
-           conn = dataSources.getConnection();
-           conn.setAutoCommit(false);
-           cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_DELALL_OLD(:V_V_MONTHGUID,:V_V_WEEKGUID,:V_INPER,:V_DEFECTSTATE,:RET)}");
-           cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
-           cstmt.setString("V_V_WEEKGUID",V_V_WEEKGUID);
-           cstmt.setString("V_INPER",V_INPER);
-           cstmt.setString("V_DEFECTSTATE",V_DEFECTSTATE);
+    //清除未保存 的周计划关联缺陷 PM_DEFECTTOWEEK_DELALL_OLD
+    public HashMap PM_DEFECTTOWEEK_DELALL_OLD(String V_V_MONTHGUID, String V_V_WEEKGUID, String V_INPER, String V_DEFECTSTATE) throws SQLException {
 
-           cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
-           cstmt.execute();
-           String sunm = (String) cstmt.getObject("RET");
-           result.put("RET", sunm);
-       } catch (SQLException e) {
-           logger.error(e);
-       } finally {
-           cstmt.close();
-           conn.close();
-       }
-       logger.debug("result:" + result);
-       logger.info("end PM_DEFECTTOWEEK_DELALL_OLD");
-       return result;
-   }
-   //查找未关联月计划的周计划关联缺陷
-   public HashMap PM_03_PLAN_WEEK_GET_DEF(String WEEKGUID) throws SQLException {
+        logger.info("begin PM_DEFECTTOWEEK_DELALL_OLD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_DELALL_OLD(:V_V_MONTHGUID,:V_V_WEEKGUID,:V_INPER,:V_DEFECTSTATE,:RET)}");
+            cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
+            cstmt.setString("V_V_WEEKGUID", V_V_WEEKGUID);
+            cstmt.setString("V_INPER", V_INPER);
+            cstmt.setString("V_DEFECTSTATE", V_DEFECTSTATE);
 
-       logger.info("begin PM_03_PLAN_WEEK_GET_DEF");
-       HashMap result = new HashMap();
-       Connection conn = null;
-       CallableStatement cstmt = null;
-       try {
-           conn = dataSources.getConnection();
-           conn.setAutoCommit(false);
-           cstmt = conn.prepareCall("{call PM_03_PLAN_WEEK_GET_DEF(:WEEKGUID,:RET)}");
-           cstmt.setString("WEEKGUID", WEEKGUID);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sunm = (String) cstmt.getObject("RET");
+            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWEEK_DELALL_OLD");
+        return result;
+    }
 
-           cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
-           cstmt.execute();
-           result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
-       } catch (SQLException e) {
-           logger.error(e);
-       } finally {
-           cstmt.close();
-           conn.close();
-       }
-       logger.debug("result:" + result);
-       logger.info("end PM_03_PLAN_WEEK_GET_DEF");
-       return result;
-   }
-   //修改周计划表格中主要缺陷
+    //查找未关联月计划的周计划关联缺陷
+    public HashMap PM_03_PLAN_WEEK_GET_DEF(String WEEKGUID) throws SQLException {
+
+        logger.info("begin PM_03_PLAN_WEEK_GET_DEF");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_WEEK_GET_DEF(:WEEKGUID,:RET)}");
+            cstmt.setString("WEEKGUID", WEEKGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_WEEK_GET_DEF");
+        return result;
+    }
+
+    //修改周计划表格中主要缺陷
     public HashMap PRO_PLAN_WEEK_MAINDEF_UPDATE(String WEEK_GUID) throws SQLException {
 
         logger.info("begin PRO_PLAN_WEEK_MAINDEF_UPDATE");
@@ -6022,10 +6103,11 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PLAN_WEEK_MAINDEF_UPDATE");
         return result;
     }
+
     //缺陷保存过程-状态手动添加
     public Map PRO_PM_07_DEFECT_SET_STAT(String V_V_GUID, String V_V_PERCODE, String V_V_PERNAME, String V_V_INPERCODE, String V_V_INPERNAME, String V_V_DEFECTLIST, String V_V_SOURCECODE,
-                                    String V_V_SOURCEID, String V_D_DEFECTDATE, String V_V_DEPTCODE, String V_V_EQUCODE,
-                                    String V_V_EQUCHILDCODE, String V_V_IDEA, String V_V_LEVEL, String V_V_PROWAY,String V_STATE) throws SQLException {
+                                         String V_V_SOURCEID, String V_D_DEFECTDATE, String V_V_DEPTCODE, String V_V_EQUCODE,
+                                         String V_V_EQUCHILDCODE, String V_V_IDEA, String V_V_LEVEL, String V_V_PROWAY, String V_STATE) throws SQLException {
         logger.info("begin PRO_PM_07_DEFECT_SET_STAT");
         Map result = new HashMap();
         Connection conn = null;
@@ -6064,8 +6146,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_07_DEFECT_SET_STAT");
         return result;
     }
+
     //年计划缺陷查询
-    public Map PM_PLAN_YEAR_RE_DEFECT_SEL2(String V_WX_GUID) throws SQLException {
+    public Map PM_PLAN_YEAR_RE_DEFECT_SEL2(String V_V_QXLX, String V_V_PERCODE) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -6073,9 +6156,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             logger.info("begin PM_PLAN_YEAR_RE_DEFECT_SEL2");
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_RE_DEFECT_SEL2" + "(:V_WX_GUID,:RET)}");
-            cstmt.setString("V_WX_GUID", V_WX_GUID);
-
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_RE_DEFECT_SEL2" + "(:V_V_QXLX,:V_V_PERCODE,:RET)}");
+            cstmt.setString("V_V_QXLX", V_V_QXLX);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
             cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
@@ -6089,6 +6172,112 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_PLAN_YEAR_RE_DEFECT_SEL2");
         return result;
     }
+
+    public Map PM_DEFECTTOWORKORDER_DELDM(String V_V_MONTHGUID, String V_V_DEFECTGUID,String V_V_PERCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_DEFECTTOWORKORDER_DELDM");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_DELDM" + "(:V_V_MONTHGUID,:V_V_DEFECTGUID,:V_V_PERCODE,:V_INFO)}");
+            cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
+            cstmt.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_DELDM");
+        return result;
+    }
+
+    public Map PM_DEFECTTOWORKORDER_SETDM(String V_V_DEFECTGUID, String V_V_MONTHGUID,String V_V_PERCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_DEFECTTOWORKORDER_SETDM");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SETDM" + "(:V_V_DEFECTGUID,:V_V_MONTHGUID,:V_V_PERCODE,:V_INFO)}");
+            cstmt.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
+            cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_SETDM");
+        return result;
+    }
+
+    public Map PM_DEFECTTOWORKORDER_SETDW(String V_V_DEFECTGUID, String V_V_WEEKGUID,String V_V_PERCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_DEFECTTOWORKORDER_SETDW");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SETDW" + "(:V_V_DEFECTGUID,:V_V_WEEKGUID,:V_V_PERCODE,:V_INFO)}");
+            cstmt.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
+            cstmt.setString("V_V_WEEKGUID", V_V_WEEKGUID);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_SETDW");
+        return result;
+    }
+
+    public Map PM_DEFECTTOWORKORDER_SETMW(String V_V_DEFECTGUID,String V_V_MONTHGUID, String V_V_WEEKGUID,String V_V_PERCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_DEFECTTOWORKORDER_SETMW");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SETMW" + "(:V_V_DEFECTGUID,:V_V_MONTHGUID,:V_V_WEEKGUID,:V_V_PERCODE,:V_INFO)}");
+            cstmt.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
+            cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
+            cstmt.setString("V_V_WEEKGUID", V_V_WEEKGUID);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_SETMW");
+        return result;
+    }
+
     //放行生成工单缺陷表写入
     public Map MAINTAIN_BY_DEFECT_INSERT_TOWORK(String V_FXGUID, String V_DEFECTGUID, String V_INPER, String V_DEPT, String V_ORDCODE) throws SQLException {
         Map result = new HashMap();
@@ -6118,64 +6307,62 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end MAINTAIN_BY_DEFECT_INSERT_TOWORK");
         return result;
     }
-    //放行计划上报人调取
-    public Map PM_WX_SBTABLE_SELECT(String V_ORG,String V_DEPT,String V_PER,String TEMP_1,String TEMP_2)throws SQLException{
-        Map result=new HashMap();
-        Connection conn=null;
-       CallableStatement cstmt=null;
-       try{
-           logger.info("begin PM_WX_SBTABLE_SELECT");
-           conn=dataSources.getConnection();
-           conn.setAutoCommit(true);
-           cstmt=conn.prepareCall("{call PM_WX_SBTABLE_SELECT(:V_ORG,:V_DEPT,:V_PER,:TEMP_1,:TEMP_2,:V_INFO,:RET)}");
-           cstmt.setString("V_ORG",V_ORG);
-           cstmt.setString("V_DEPT",V_DEPT);
-           cstmt.setString("V_PER",V_PER);
-           cstmt.setString("TEMP_1",TEMP_1);
-           cstmt.setString("TEMP_2",TEMP_2);
 
-           cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
-           cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
-           cstmt.execute();
-           String V_V_INFO=(String) cstmt.getString("V_INFO") ;
-           result.put("V_INFO",V_V_INFO);
-           result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
-            }
-            catch(SQLException ex) {
-                logger.error(ex);
-            }
-            finally {
-           cstmt.close();
-           conn.close();
-       }
+    //放行计划上报人调取
+    public Map PM_WX_SBTABLE_SELECT(String V_ORG, String V_DEPT, String V_PER, String TEMP_1, String TEMP_2) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_WX_SBTABLE_SELECT");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_WX_SBTABLE_SELECT(:V_ORG,:V_DEPT,:V_PER,:TEMP_1,:TEMP_2,:V_INFO,:RET)}");
+            cstmt.setString("V_ORG", V_ORG);
+            cstmt.setString("V_DEPT", V_DEPT);
+            cstmt.setString("V_PER", V_PER);
+            cstmt.setString("TEMP_1", TEMP_1);
+            cstmt.setString("TEMP_2", TEMP_2);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            String V_V_INFO = (String) cstmt.getString("V_INFO");
+            result.put("V_INFO", V_V_INFO);
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException ex) {
+            logger.error(ex);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
         logger.debug("result:" + result);
         logger.info("end PM_WX_SBTABLE_SELECT");
         return result;
     }
-    //是否为备件生成维修缺陷判别
-    public Map PM_03_PLAN_YEAR_EQU_SELNUM(String V_V_PROGUID)throws SQLException{
-        Map result=new HashMap();
-        Connection conn=null;
-        CallableStatement cstmt=null;
-        try{
-            logger.info("begin PM_03_PLAN_YEAR_EQU_SELNUM");
-            conn=dataSources.getConnection();
-            conn.setAutoCommit(true);
-            cstmt=conn.prepareCall("{call PM_03_PLAN_YEAR_EQU_SELNUM(:V_V_PROGUID,:RET)}");
-            cstmt.setString("V_V_PROGUID",V_V_PROGUID);
 
-            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+    //是否为备件生成维修缺陷判别
+    public Map PM_03_PLAN_YEAR_EQU_SELNUM(String V_V_PROGUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_03_PLAN_YEAR_EQU_SELNUM");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_YEAR_EQU_SELNUM(:V_V_PROGUID,:RET)}");
+            cstmt.setString("V_V_PROGUID", V_V_PROGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
 //            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
             cstmt.execute();
-            String RET=(String) cstmt.getString("RET") ;
-            result.put("RET",RET);
+            String RET = (String) cstmt.getString("RET");
+            result.put("RET", RET);
 //            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
 
-        }
-        catch(SQLException ex) {
+        } catch (SQLException ex) {
             logger.error(ex);
-        }
-        finally {
+        } finally {
             cstmt.close();
             conn.close();
         }
@@ -6183,6 +6370,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_03_PLAN_YEAR_EQU_SELNUM");
         return result;
     }
+
     //维修查看所有类别关联缺陷详情列表
     public Map PM_03_PROJECT_DEFECT_SEL_Q(String V_V_PROJECT_GUID) throws SQLException {
         Map result = new HashMap();
@@ -6236,7 +6424,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
     }
 
     //工单验收-缺陷关联工单 PM_DEFECT_RE_WORK_INSERT
-    public Map PM_DEFECT_RE_WORK_INSERT(String V_V_WGUID,String V_DEFGUID) throws SQLException {
+    public Map PM_DEFECT_RE_WORK_INSERT(String V_V_WGUID, String V_DEFGUID) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -6261,9 +6449,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_DEFECT_RE_WORK_INSERT");
         return result;
     }
+
     //周计划-按月计划设备查找其他缺陷
     public Map PRO_PM_07_DEFECT_SELECT_N(String V_V_STATECODE,
-                                       String X_PERSONCODE,String V_V_EQUCODE,String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+                                         String X_PERSONCODE, String V_V_EQUCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_SELECT_N");
         Map<String, Object> result = new HashMap<String, Object>();
@@ -6297,8 +6486,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_07_DEFECT_SELECT_N");
         return result;
     }
+
     //月计划已选择缺陷查看
-    public Map YEAR_TO_MONTH_LIST(String V_MONTHGUID,String V_PERCODE)throws SQLException{
+    public Map YEAR_TO_MONTH_LIST(String V_MONTHGUID, String V_PERCODE) throws SQLException {
         logger.info("begin YEAR_TO_MONTH_LIST");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6327,8 +6517,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end YEAR_TO_MONTH_LIST");
         return result;
     }
+
     //月计划缺陷关联删除
-    public Map YEAR_TO_MONTH_SDEL(String V_MONTH_GUID,String V_DEF_GUID)throws SQLException{
+    public Map YEAR_TO_MONTH_SDEL(String V_MONTH_GUID, String V_DEF_GUID) throws SQLException {
         logger.info("begin YEAR_TO_MONTH_SDEL");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6358,8 +6549,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end YEAR_TO_MONTH_SDEL");
         return result;
     }
+
     //
-    public Map MONTH_ADDDEF_EQUCODE_SEL(String V_MONTHGUID)throws SQLException{
+    public Map MONTH_ADDDEF_EQUCODE_SEL(String V_MONTHGUID) throws SQLException {
         logger.info("begin MONTH_ADDDEF_EQUCODE_SEL");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6386,7 +6578,8 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end MONTH_ADDDEF_EQUCODE_SEL");
         return result;
     }
-    public Map PM_MONTH_DEL_CHVALUE(String V_MONTHGUID)throws SQLException{
+
+    public Map PM_MONTH_DEL_CHVALUE(String V_MONTHGUID) throws SQLException {
         logger.info("begin PM_MONTH_DEL_CHVALUE");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6412,8 +6605,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_MONTH_DEL_CHVALUE");
         return result;
     }
+
     //PM_MONTH_OTHERDEL_STATCH
-    public Map PM_MONTH_OTHERDEL_STATCH(String V_MONTHGUID)throws SQLException{
+    public Map PM_MONTH_OTHERDEL_STATCH(String V_MONTHGUID) throws SQLException {
         logger.info("begin PM_MONTH_OTHERDEL_STATCH");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6439,8 +6633,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_MONTH_OTHERDEL_STATCH");
         return result;
     }
+
     //周计划删除状态修改
-    public Map PM_DEFECTTOWEEK_DEL_ALL(String V_V_WEEKGUID,String V_INPER)throws SQLException{
+    public Map PM_DEFECTTOWEEK_DEL_ALL(String V_V_WEEKGUID, String V_INPER) throws SQLException {
         logger.info("begin PM_DEFECTTOWEEK_DEL_ALL");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6467,8 +6662,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_DEFECTTOWEEK_DEL_ALL");
         return result;
     }
+
     //月计划其他缺陷添加设备返回值
-    public Map YEAR_TO_MONTH_SDEF_EQU(String V_YEARGUID,String V_MONTHGUID,String V_DEFECTGUID,String V_PER_CODE)throws SQLException{
+    public Map YEAR_TO_MONTH_SDEF_EQU(String V_YEARGUID, String V_MONTHGUID, String V_DEFECTGUID, String V_PER_CODE) throws SQLException {
         logger.info("begin YEAR_TO_MONTH_SDEF_EQU");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6498,8 +6694,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end YEAR_TO_MONTH_SDEF_EQU");
         return result;
     }
+
     //缺陷统计（设备部）
-    public Map PRO_PM_07_DEF_SBBTJ_VIEW(String V_NF,String V_YF)throws SQLException{
+    public Map PRO_PM_07_DEF_SBBTJ_VIEW(String V_NF, String V_YF) throws SQLException {
         logger.info("begin PRO_PM_07_DEF_SBBTJ_VIEW");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6524,8 +6721,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_07_DEF_SBBTJ_VIEW");
         return result;
     }
+
     //工单类型判别
-    public Map PRO_MAINTAIN_BY_DEF_SELSIGN(String V_WORKORDER)throws SQLException{
+    public Map PRO_MAINTAIN_BY_DEF_SELSIGN(String V_WORKORDER) throws SQLException {
         logger.info("begin PRO_MAINTAIN_BY_DEF_SELSIGN");
         Map<String, Object> result = new HashMap<String, Object>();
         Connection conn = null;
@@ -6548,8 +6746,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_MAINTAIN_BY_DEF_SELSIGN");
         return result;
     }
+
     //维修计划备件查询
-    public Map PRO_PM_DEFECT_SPECIL_SEL2(String V_DEPT_CODE)throws SQLException{
+    public Map PRO_PM_DEFECT_SPECIL_SEL2(String V_DEPT_CODE) throws SQLException {
         logger.info("begin PRO_PM_DEFECT_SPECIL_SEL2");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6573,8 +6772,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_DEFECT_SPECIL_SEL2");
         return result;
     }
+
     //工单接收、返回下一步人员查找
-    public Map WORKCTR_TO_PERCODE_SEL(String V_V_REPAIRCODE,String V_V_EQUCODE)throws SQLException{
+    public Map WORKCTR_TO_PERCODE_SEL(String V_V_REPAIRCODE, String V_V_EQUCODE) throws SQLException {
         logger.info("begin WORKCTR_TO_PERCODE_SEL");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6599,8 +6799,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end WORKCTR_TO_PERCODE_SEL");
         return result;
     }
+
     //生产写实状态修改
-    public Map PP_INFORMATION_STAT_UPDT(String V_ID,String V_STATE,String V_DEFCODE)throws SQLException{
+    public Map PP_INFORMATION_STAT_UPDT(String V_ID, String V_STATE, String V_DEFCODE) throws SQLException {
         logger.info("begin PP_INFORMATION_STAT_UPDT");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6626,8 +6827,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PP_INFORMATION_STAT_UPDT");
         return result;
     }
+
     //生产写实完成处理
-    public Map PP_INFORMATION_FINISH_IN(String V_ID,String V_PERCODE,String V_PERNAME,String V_REMARK)throws SQLException{
+    public Map PP_INFORMATION_FINISH_IN(String V_ID, String V_PERCODE, String V_PERNAME, String V_REMARK) throws SQLException {
         logger.info("begin PP_INFORMATION_FINISH_IN");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6654,9 +6856,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PP_INFORMATION_FINISH_IN");
         return result;
     }
+
     //缺陷处理导出查询
     public Map PRO_PM_07_DEFECT_EXPEXCEL(String V_V_STATECODE,
-                                             String X_PERSONCODE,String PUT_PERNAME,String V_SIGN) throws SQLException {
+                                         String X_PERSONCODE, String PUT_PERNAME, String V_SIGN) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_EXPEXCEL");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -6671,8 +6874,8 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_EXPEXCEL(:V_V_STATECODE,:X_PERSONCODE,:PUT_PERNAME,:V_SIGN,:V_V_SNUM,:V_CURSOR)}");
             cstmt.setString("V_V_STATECODE", V_V_STATECODE);
             cstmt.setString("X_PERSONCODE", X_PERSONCODE);
-            cstmt.setString("PUT_PERNAME",PUT_PERNAME);
-            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.setString("PUT_PERNAME", PUT_PERNAME);
+            cstmt.setString("V_SIGN", V_SIGN);
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
@@ -6689,9 +6892,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_07_DEFECT_EXPEXCEL");
         return result;
     }
+
     /*外围计划删除写入*/
     public Map PM_PLAN_PROJECT_LOG_IN(String V_V_GUID,
-                                      String V_PERCODE,String V_V_PERNAME,String V_OPINION) throws SQLException {
+                                      String V_PERCODE, String V_V_PERNAME, String V_OPINION) throws SQLException {
 
         logger.info("begin PM_PLAN_PROJECT_LOG_IN");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -6706,8 +6910,8 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt = conn.prepareCall("{call PM_PLAN_PROJECT_LOG_IN(:V_V_GUID,:V_PERCODE,:V_V_PERNAME,:V_OPINION,:RET)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_PERCODE", V_PERCODE);
-            cstmt.setString("V_V_PERNAME",V_V_PERNAME);
-            cstmt.setString("V_OPINION",V_OPINION);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_OPINION", V_OPINION);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("RET", (String) cstmt.getObject("RET"));
@@ -6722,9 +6926,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_PLAN_PROJECT_LOG_IN");
         return result;
     }
+
     /*月计划删除写入*/
     public Map PM_PLAN_MONTH_LOG_IN(String V_V_GUID,
-                                      String V_PERCODE,String V_PERNAME,String V_OPERATION) throws SQLException {
+                                    String V_PERCODE, String V_PERNAME, String V_OPERATION) throws SQLException {
 
         logger.info("begin PM_PLAN_MONTH_LOG_IN");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -6739,8 +6944,8 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt = conn.prepareCall("{call PM_PLAN_MONTH_LOG_IN(:V_V_GUID,:V_PERCODE,:V_PERNAME,:V_OPERATION,:RET)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_PERCODE", V_PERCODE);
-            cstmt.setString("V_PERNAME",V_PERNAME);
-            cstmt.setString("V_OPERATION",V_OPERATION);
+            cstmt.setString("V_PERNAME", V_PERNAME);
+            cstmt.setString("V_OPERATION", V_OPERATION);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("RET", (String) cstmt.getObject("RET"));
@@ -6755,9 +6960,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_PLAN_MONTH_LOG_IN");
         return result;
     }
+
     /*周计划删除写入*/
     public Map PM_PLAN_WEEK_LOG_IN(String V_V_GUID,
-                                    String V_PERCODE,String V_PERNAME,String V_OPERATION) throws SQLException {
+                                   String V_PERCODE, String V_PERNAME, String V_OPERATION) throws SQLException {
 
         logger.info("begin PM_PLAN_WEEK_LOG_IN");
         Map<String, Object> result = new HashMap<String, Object>();
@@ -6770,8 +6976,8 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt = conn.prepareCall("{call PM_PLAN_WEEK_LOG_IN(:V_V_GUID,:V_PERCODE,:V_PERNAME,:V_OPERATION,:RET)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_PERCODE", V_PERCODE);
-            cstmt.setString("V_PERNAME",V_PERNAME);
-            cstmt.setString("V_OPERATION",V_OPERATION);
+            cstmt.setString("V_PERNAME", V_PERNAME);
+            cstmt.setString("V_OPERATION", V_OPERATION);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("RET", (String) cstmt.getObject("RET"));
@@ -6786,8 +6992,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_PLAN_WEEK_LOG_IN");
         return result;
     }
+
     //缺陷跟踪负责人
-    public Map PRO_DEFECT_PER_VIEW_SEL(String V_V_DEPT,String V_V_EQUTYPE,String V_V_EQU) throws SQLException {
+    public Map PRO_DEFECT_PER_VIEW_SEL(String V_V_DEPT, String V_V_EQUTYPE, String V_V_EQU) throws SQLException {
 
         logger.info("begin PRO_DEFECT_PER_VIEW_SEL");
         Map<String, Object> result = new HashMap<String, Object>();
@@ -6799,7 +7006,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PRO_DEFECT_PER_VIEW_SEL(:V_V_DEPT,:V_V_EQUTYPE,:V_V_EQU,:V_V_SNUM,:RET)}");
             cstmt.setString("V_V_DEPT", V_V_DEPT);
-            cstmt.setString("V_V_EQUTYPE",V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
             cstmt.setString("V_V_EQU", V_V_EQU);
 
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
@@ -6818,6 +7025,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_DEFECT_PER_VIEW_SEL");
         return result;
     }
+
     //工单接收-厂矿下拉列表
     public Map PRO_BASE_ORG_FROMW_SEL(String WORKORDER) throws SQLException {
 
@@ -6846,6 +7054,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_BASE_ORG_FROMW_SEL");
         return result;
     }
+
     //工单接收-检修单位下拉列表
     public Map PRO_BASE_DEPT_FROMW_SEL(String WORKORDER) throws SQLException {
 
@@ -6873,8 +7082,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_BASE_DEPT_FROMW_SEL");
         return result;
     }
+
     //维修计划状态下拉
-    public Map PM_03_PLAN_YEAR_STATE_SEL()throws SQLException{
+    public Map PM_03_PLAN_YEAR_STATE_SEL() throws SQLException {
         logger.info("begin PM_03_PLAN_YEAR_STATE_SEL");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -6898,9 +7108,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_03_PLAN_YEAR_STATE_SEL");
         return result;
     }
+
     //维修简版查询_N
-    public Map PRO_PM_03_PLAN_YEAR_VIEW_Q(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY,String V_V_STATE,
-                                          String V_V_QSTEXT,String V_V_INMANCODE ,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+    public Map PRO_PM_03_PLAN_YEAR_VIEW_Q(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY, String V_V_STATE,
+                                          String V_V_QSTEXT, String V_V_INMANCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
         //String V_V_INMAN ,
         logger.info("begin PRO_PM_03_PLAN_YEAR_VIEW_Q");
 
@@ -6917,9 +7128,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_ZY", V_V_ZY);
-            cstmt.setString("V_V_STATE",V_V_STATE);
+            cstmt.setString("V_V_STATE", V_V_STATE);
             cstmt.setString("V_V_QSTEXT", V_V_QSTEXT);
-            cstmt.setString("V_V_INMANCODE",V_V_INMANCODE);
+            cstmt.setString("V_V_INMANCODE", V_V_INMANCODE);
             cstmt.setString("V_V_PAGE", V_V_PAGE);
             cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
@@ -6968,11 +7179,12 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_WORK_MAT_DEPT_SEL");
         return result;
     }
+
     // 工作中心保存
     public List<Map> PRO_PM_WORKORDER_ET_SET_N(Double V_I_ID, String V_V_ORDERGUID, String V_V_DESCRIPTION,
-                                                 String V_I_WORK_ACTIVITY, String V_I_DURATION_NORMAL, String V_V_WORK_CENTER,
-                                                 String V_I_ACTUAL_TIME, String V_I_NUMBER_OF_PEOPLE, String V_V_ID, String V_V_GUID,
-                                                 String V_V_JXBZ, String V_V_JXBZ_VALUE_DOWN, String V_V_JXBZ_VALUE_UP,String V_V_CENT_DEPT) throws SQLException {
+                                               String V_I_WORK_ACTIVITY, String V_I_DURATION_NORMAL, String V_V_WORK_CENTER,
+                                               String V_I_ACTUAL_TIME, String V_I_NUMBER_OF_PEOPLE, String V_V_ID, String V_V_GUID,
+                                               String V_V_JXBZ, String V_V_JXBZ_VALUE_DOWN, String V_V_JXBZ_VALUE_UP, String V_V_CENT_DEPT) throws SQLException {
         logger.info("begin PRO_PM_WORKORDER_ET_SET_N");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -7013,8 +7225,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_WORKORDER_ET_SET_N");
         return result;
     }
+
     //new 工序下拉
-    public Map PRO_PM_WORKORDER_ET_ACT_N(String V_V_ORDERGUID,String V_V_STEP)throws SQLException{
+    public Map PRO_PM_WORKORDER_ET_ACT_N(String V_V_ORDERGUID, String V_V_STEP) throws SQLException {
         logger.info("begin PRO_PM_WORKORDER_ET_ACT_N");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -7040,8 +7253,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_WORKORDER_ET_ACT_N");
         return result;
     }
+
     //物料编辑-厂矿
-    public Map PRO_PM_WORK_MAT_ORG_SEL(String V_V_ORDERGUID,String V_V_GXID,String V_V_STEP)throws SQLException{
+    public Map PRO_PM_WORK_MAT_ORG_SEL(String V_V_ORDERGUID, String V_V_GXID, String V_V_STEP) throws SQLException {
         logger.info("begin PRO_PM_WORK_MAT_ORG_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -7055,10 +7269,10 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt.setString("V_V_GXID", V_V_GXID);
             cstmt.setString("V_V_STEP", V_V_STEP);
 
-            cstmt.registerOutParameter("V_MSG",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_MSG", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("RET",(String) cstmt.getObject("V_MSG"));
+            result.put("RET", (String) cstmt.getObject("V_MSG"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -7070,8 +7284,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_WORK_MAT_ORG_SEL");
         return result;
     }
+
     //物料编辑-作业区
-    public Map PRO_PM_WORK_MAT_DEPT_SEL(String V_V_ORDERGUID,String V_V_GXID,String V_V_STEP,String V_V_ORG)throws SQLException{
+    public Map PRO_PM_WORK_MAT_DEPT_SEL(String V_V_ORDERGUID, String V_V_GXID, String V_V_STEP, String V_V_ORG) throws SQLException {
         logger.info("begin PRO_PM_WORK_MAT_DEPT_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -7099,8 +7314,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_WORK_MAT_DEPT_SEL");
         return result;
     }
+
     //工序物料查询
-    public Map PRO_PM_WORKORDER_SPARE_V_N(String V_V_ORDERGUID,String V_V_V_ACTIVITY)throws SQLException{
+    public Map PRO_PM_WORKORDER_SPARE_V_N(String V_V_ORDERGUID, String V_V_V_ACTIVITY) throws SQLException {
         logger.info("begin PRO_PM_WORKORDER_SPARE_V_N");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -7124,6 +7340,33 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_PM_WORKORDER_SPARE_V_N");
+        return result;
+    }
+
+
+    public Map PM_WEEK_PLAN_CHECK_M(String V_V_WEEKGUID) throws SQLException {
+        logger.info("begin PM_WEEK_PLAN_CHECK_M");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_WEEK_PLAN_CHECK_M" + "(:V_V_WEEKGUID,:V_INFO)}");
+
+            cstmt.setString("V_V_WEEKGUID", V_V_WEEKGUID);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO",cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_WEEK_PLAN_CHECK_M");
         return result;
     }
 

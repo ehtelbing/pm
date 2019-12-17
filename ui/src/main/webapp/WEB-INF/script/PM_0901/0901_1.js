@@ -13,7 +13,7 @@ if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
     V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPECODE;
 }
-
+var orderType='';
 $(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     bindDate("planStartDate");
@@ -226,6 +226,7 @@ function loadRepairList() {
     });
 
 }
+
 function loadSPR() {
     $.ajax({//审批人
         url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
@@ -325,7 +326,7 @@ function OpenEditMat() {
             } else {
                 var owidth = window.document.body.offsetWidth;
                 var oheight = window.document.body.offsetHeight;
-                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '', '_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#selType").val() + '&orderTyp=' +  $("#V_ORDERGUID").val(), '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 loadMatList();
             }
         }
@@ -415,7 +416,7 @@ function BillGo() {
                     },
                     success: function (response) {
 
-                        if(V_NEXT_SETP.indexOf("sp")==-1){//下一步没有审批字样
+                        if (V_NEXT_SETP.indexOf("sp") == -1) {//下一步没有审批字样
                             Ext.Ajax.request({
                                 method: 'POST',
                                 async: false,
@@ -470,7 +471,7 @@ function BillGo() {
                                     }
                                 }
                             });
-                        }else{
+                        } else {
 
                             Ext.Ajax.request({
                                 url: AppUrl + 'Activiti/StratProcess',

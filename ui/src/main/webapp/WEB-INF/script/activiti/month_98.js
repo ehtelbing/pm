@@ -57,7 +57,7 @@ for (var k = 0; k <= 59; k++) {
 }
 
 //var V_V_GUID = Ext.data.IdGenerator.get('uuid').generate();
-
+var V_NEXT_SETP='';
 
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',

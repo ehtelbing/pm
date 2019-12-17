@@ -443,6 +443,7 @@ Ext.onReady(function () {
                     displayField: 'V_DEPTNAME',
                     valueField: 'V_DEPTCODE',
                     fieldLabel: '计划厂矿',
+                    readOnly:true,
                     labelWidth: 90,
                     listeners: {
                         change: function (field, newValue, oldValue) {
@@ -467,6 +468,7 @@ Ext.onReady(function () {
                     fieldLabel: '作业区',
                     displayField: 'V_DEPTNAME',
                     valueField: 'V_DEPTCODE',
+                    readOnly:true,
                     allowBlank: false,
                     labelWidth: 90,
                     listeners: {
@@ -503,6 +505,7 @@ Ext.onReady(function () {
                     fieldLabel: '设备类型',
                     displayField: 'V_EQUTYPENAME',
                     valueField: 'V_EQUTYPECODE',
+                    readOnly:true,
                     allowBlank: false,
                     labelWidth: 90,
                     listeners: {
@@ -517,6 +520,7 @@ Ext.onReady(function () {
                     editable: false,
                     queryMode: 'local',
                     fieldLabel: '设备名称',
+                    readOnly:true,
                     displayField: 'V_EQUNAME',
                     valueField: 'V_EQUCODE',
                     labelWidth: 90
@@ -577,6 +581,7 @@ Ext.onReady(function () {
                         {
                             xtype: 'textfield',
                             id: 'maindefect',
+                            readOnly:true,
                             fieldLabel: '主要缺陷',
                             labelAlign: 'right',
                             labelWidth: 90,
@@ -1624,12 +1629,28 @@ function _repairDept(){
     // });
 }
 function choiceDef(){
-    var owidth = window.document.body.offsetWidth - 200;
-    var oheight = window.document.body.offsetHeight - 100;
-    var ret =window.open(AppUrl + 'page/activiti/weekDefChoice.html?V_WEEKPLAN_GUID=' + V_ORDERGUID +'&Oyear='+Ext.getCmp("year").getValue()
-        +'&Omonth='+Ext.getCmp("month").getValue()+'&V_V_ORGCODE='+Ext.getCmp("ck").getValue()+'&V_V_DEPTCODE='+Ext.getCmp("zyq").getValue()
-        +'&V_V_EQUTYPE='+Ext.getCmp("sblx").getValue()+'&V_V_EQUCODE='+Ext.getCmp("sbmc").getValue()+'&V_V_ZY='+Ext.getCmp("zy").getValue()
-        +'&WSIGN='+1+'',"newwindow", 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    window.open(AppUrl + 'page/PM_03010318/defUpdate.html?WeekGuid=' + V_ORDERGUID, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+}
+
+function OnReload(){
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_D_U',
+        method: 'POST',
+        params: {
+            V_V_WEEKGUID:V_ORDERGUID
+        },
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
+            if (resp.V_INFO == 'SUCCESS') {
+                initLoad=true;
+                _init();
+            } else {
+                Ext.Msg.alert('操作信息', resp.V_INFO);
+            }
+        }
+    });
 }
 
 function getNewDefDate() {
