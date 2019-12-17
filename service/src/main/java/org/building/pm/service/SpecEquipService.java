@@ -138,7 +138,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.CURSOR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("total",ResultHash((ResultSet) cstmt.getObject("V_V_SNUM")));
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
             result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
