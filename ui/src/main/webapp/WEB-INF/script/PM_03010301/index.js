@@ -58,16 +58,19 @@ var weekStore = Ext.create("Ext.data.Store", {
 });
 
 //--上报人
-var inperList=[];
-inperList.push({V_PERSCODE:Ext.util.Cookies.get('v_personcode'),V_PERSNAME:decodeURI(Ext.util.Cookies.get('v_personname'))});
-inperList.push({V_PERSCODE:"%",V_PERSNAME:"全部"});
-var insertPerStore=Ext.create('Ext.data.Store',{
-    storeId:'insertPerStore',
-    fields:['V_PERSNAME', 'V_PERSCODE'],
-    data:inperList,
-    proxy:{
-        type:'memory',
-        reader:{type:'json'}
+var inperList = [];
+inperList.push({
+    V_PERSCODE: Ext.util.Cookies.get('v_personcode'),
+    V_PERSNAME: decodeURI(Ext.util.Cookies.get('v_personname'))
+});
+inperList.push({V_PERSCODE: "%", V_PERSNAME: "全部"});
+var insertPerStore = Ext.create('Ext.data.Store', {
+    storeId: 'insertPerStore',
+    fields: ['V_PERSNAME', 'V_PERSCODE'],
+    data: inperList,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
     }
 });
 Ext.define('Ext.grid.column.LineBreakColumn', {
@@ -112,7 +115,7 @@ var nextSprStore = Ext.create("Ext.data.Store", {
     },
     listeners: {
         load: function (store, records, success, eOpts) {
-            if(store.getAt(0)!=undefined){
+            if (store.getAt(0) != undefined) {
                 processKey = store.getProxy().getReader().rawData.RET;
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
                 V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
@@ -276,10 +279,10 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_JXGX_CODE',
         'V_MONTHPLAN_CODE',
         'V_WEEKID',
-        'V_STATUSNAME', 'V_GUID','V_STATE','V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
+        'V_STATUSNAME', 'V_GUID', 'V_STATE', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
-        'V_REPAIR_PER','V_SGWAY','V_SGWAYNAME','WORKORDERNUM'],
+        'V_REPAIR_PER', 'V_SGWAY', 'V_SGWAYNAME', 'WORKORDERNUM'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -311,7 +314,7 @@ function query() {
             V_V_STATE: Ext.getCmp('state').getValue(),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
-            V_V_INPER:Ext.getCmp('instPer').getValue()
+            V_V_INPER: Ext.getCmp('instPer').getValue()
         }
     });
 
@@ -494,7 +497,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             valueField: 'V_PERSCODE',
             store: insertPerStore,
             queryMode: 'local'
-        },{
+        }, {
             xtype: 'combo',
             id: 'nextPer',
             fieldLabel: '下一步接收人',
@@ -529,57 +532,78 @@ var northPanel = Ext.create('Ext.form.Panel', {
             value: ''
         },
         {
-            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 9, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 55px',
+            xtype: 'panel',
+            frame: true,
+            width: '100%',
+            layout: 'column',
+            colspan: 9,
+            baseCls: 'my-panel-noborder',
+            style: 'margin:5px 5px 0 55px',
             items: [
-        {
-            xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
-            handler: function () {
-                query();
-            }
-        },
-        {
-            xtype: 'button',
-            text: '从缺陷添加',
-            margin: '5 0 5 5',
-            icon: imgpath + '/add.png',
-            handler: OnButtonDefectAddClicked
-        },
-        {
-            xtype: 'button',
-            text: '从备件添加',
-            margin: '5 0 5 5',
-            icon: imgpath + '/add.png',
-            handler: OnButtonDefPartAddClicked
-        },
-        // {xtype: 'button', text: '手工添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
-        //     handler: OnButtonPlanAddClicked},
-        {xtype: 'button', text: '添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
-            handler: OnButtonFromMonth},
-        {
-            xtype: 'button',
-            text: '模型选择',
-            margin: '5 0 5 5',
-            icon: imgpath + '/add.png',
-            handler: OnButtonSelectClicked
-        },
-        {xtype: 'button', text: '修改', margin: '5 0 5 5', icon: imgpath + '/edit.png', handler: OnButtonEditClicked},
-        // {xtype: 'button', text: '作废', margin: '5 0 5 5', icon: imgpath + '/delete1.png', handler: OnButtonDelete},
-        {xtype: 'button', text: '删除', margin: '5 0 5 5', icon: imgpath + '/delete1.png', handler: OnButtonDeleteData},
-        {
-            xtype: 'button',
-            text: '上报',
-            margin: '5 0 5 5',
-            icon: imgpath + '/accordion_expand.png',
-            handler: OnButtonUp
-        },
-        {
-            xtype: 'button',
-            text: '生成工单',
-            margin: '5 0 5 5',
-            icon: imgpath + '/accordion_collapse.png',
-            handler: createWorkorder
-        }
-    ]
+                {
+                    xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
+                    handler: function () {
+                        query();
+                    }
+                },
+                {
+                    xtype: 'button',
+                    text: '从缺陷添加',
+                    margin: '5 0 5 5',
+                    icon: imgpath + '/add.png',
+                    hidden:true,
+                    handler: OnButtonDefectAddClicked
+                },
+                {
+                    xtype: 'button',
+                    text: '从备件添加',
+                    margin: '5 0 5 5',
+                    icon: imgpath + '/add.png',
+                    hidden:true,
+                    handler: OnButtonDefPartAddClicked
+                },
+                {
+                    xtype: 'button', text: '添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
+                    handler: OnButtonFromMonth
+                },
+                {
+                    xtype: 'button',
+                    text: '模型选择',
+                    margin: '5 0 5 5',
+                    icon: imgpath + '/add.png',
+                    hidden:true,
+                    handler: OnButtonSelectClicked
+                },
+                {
+                    xtype: 'button',
+                    text: '修改',
+                    margin: '5 0 5 5',
+                    icon: imgpath + '/edit.png',
+                    handler: OnButtonEditClicked
+                },
+                // {xtype: 'button', text: '作废', margin: '5 0 5 5', icon: imgpath + '/delete1.png', handler: OnButtonDelete},
+                {
+                    xtype: 'button',
+                    text: '删除',
+                    margin: '5 0 5 5',
+                    icon: imgpath + '/delete1.png',
+                    handler: OnButtonDeleteData
+                },
+                {
+                    xtype: 'button',
+                    text: '上报',
+                    margin: '5 0 5 5',
+                    icon: imgpath + '/accordion_expand.png',
+                    handler: OnButtonUp
+                },
+                {
+                    xtype: 'button',
+                    text: '生成工单',
+                    margin: '5 0 5 5',
+                    icon: imgpath + '/accordion_collapse.png',
+                    handler: createWorkorder
+                }
+            ]
         }
     ]
 });
@@ -593,8 +617,8 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     selType: 'checkboxmodel',
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
-        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATE',hidden:true},
-        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME',renderer: atleft},
+        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATE', hidden: true},
+        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME', renderer: atleft},
         {
             text: '流程详细',
             dataIndex: 'V_ORDERID',
@@ -604,24 +628,32 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
                 return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
             }
         },
-        {text: '缺陷详细', dataIndex: 'V_GUID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return '<a href="javascript:OnLookDefect(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';}},
+        {
+            text: '缺陷详细',
+            dataIndex: 'V_GUID',
+            width: 90,
+            align: 'center',
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                return '<a href="javascript:OnLookDefect(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+            }
+        },
         {
             text: '关联工单数量',
             dataIndex: 'WORKORDERNUM',
             width: 150,
             align: 'center',
-        renderer: atleft
-        // ,renderer: function (value, metaData, record) {
-        //         // return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
-        //         return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + value + '</a>';
-        //     }
+            renderer: atleft
+            // ,renderer: function (value, metaData, record) {
+            //         // return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
+            //         return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + value + '</a>';
+            //     }
         },
-        {text: '厂矿', align: 'center', width: 120, dataIndex: 'V_ORGNAME',renderer: atleft},
-        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME',renderer: atleft},
-        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE',renderer: atleft},
-        {text: '设备名称', align: 'center', width: 180, dataIndex: 'V_EQUNAME',renderer: atleft},
-        {xtype: 'linebreakcolumn', text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT',renderer: atleft},
-        {text: '检修模型', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME',renderer: atleft},
+        {text: '厂矿', align: 'center', width: 120, dataIndex: 'V_ORGNAME', renderer: atleft},
+        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME', renderer: atleft},
+        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE', renderer: atleft},
+        {text: '设备名称', align: 'center', width: 180, dataIndex: 'V_EQUNAME', renderer: atleft},
+        {xtype: 'linebreakcolumn', text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT', renderer: atleft},
+        {text: '检修模型', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME', renderer: atleft},
         {
             text: '计划停机日期',
             align: 'center',
@@ -644,13 +676,13 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
-        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR',renderer: atleft},
-        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME',renderer: atleft},
+        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR', renderer: atleft},
+        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME', renderer: atleft},
 
-        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT',renderer: atleft},
-        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE',renderer: atleft},
-        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER',renderer: atleft},
-        {text:'施工方式',align:'center',width:'70',dataIndex:'V_SGWAYNAME',hidden:true},
+        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT', renderer: atleft},
+        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE', renderer: atleft},
+        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER', renderer: atleft},
+        {text: '施工方式', align: 'center', width: '70', dataIndex: 'V_SGWAYNAME', hidden: true},
         {
             text: '录入时间',
             align: 'center',
@@ -834,14 +866,16 @@ Ext.onReady(function () {
 
 
 });
+
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
-function OnLookDefect(MonthGuid){
+
+function OnLookDefect(MonthGuid) {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03010201/LookDefet.html?V_V_GUID='+MonthGuid, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    window.open(AppUrl + 'page/PM_03010201/LookDefet.html?V_V_GUID=' + MonthGuid, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function _selectNextSprStore() {
@@ -860,14 +894,6 @@ function _selectNextSprStore() {
     nextSprStore.currentPage = 1;
     nextSprStore.load();
 }
-
-//第几周
-/*function getWeekOfMonth(string) {//周日为起始
-    var date = new Date(string);
-    var w = date.getDay();//星期
-    var d = date.getDate();//日期
-    return Math.ceil((d + 6 - w) / 7);//向上取整
-};*/
 
 //第几周
 function getWeekOfMonth() {//周一为起始
@@ -892,13 +918,7 @@ function getWeekOfMonth() {//周一为起始
     }
 
 };
-//增加天后日期
-//function addDate(date,days){
-//    var d=new Date(date);
-//    d.setDate(d.getDate()+days);
-//    var m=d.getMonth()+1;
-//    return d.getFullYear()+'-'+m+'-'+d.getDate();
-//}
+
 //当前月有几周
 function getWeeks() {
     var str = date;
@@ -974,8 +994,8 @@ function OnButtonDefectAddClicked() {
                                     "&MONTH=" + Ext.getCmp("yf").getValue() +
                                     "&WEEK=" + Ext.getCmp("zhou").getValue() +
                                     "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-                                    "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()+
-                                    "&KSTIME="+Ext.getCmp("zks").getValue() , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+                                    "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue() +
+                                    "&KSTIME=" + Ext.getCmp("zks").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
                             }
 
 
@@ -997,30 +1017,31 @@ function OnButtonDefectAddClicked() {
 function OnButtonPlanAddClicked() {
     if (Ext.getCmp("jhzyq").getValue() == "%") {
         alert("作业区不可以为全部，请重新选择");
-        return;}
-   else{
-    V_WEEKPLAN_GUID = 0;
-    V_PLANTYPE = 'DEFECT';
-    //------update 2018-0907
-    //  if(Ext.getCmp('starttime').getValue()<Ext.Date.format(new Date(),'Y-m-d H:i:s')){
-    //---end update
-    var ret = window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=0&V_PLANTYPE=' + V_PLANTYPE +
-        "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
-        "&YEAR=" + Ext.getCmp("nf").getValue() +
-        "&MONTH=" + Ext.getCmp("yf").getValue() +
-        "&WEEK=" + Ext.getCmp("zhou").getValue() +
-        "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()
-        //update start 20180907
-        + "&startUpTime=" + Ext.getCmp("zks").getValue()
-        + "&endUpTime=" + Ext.getCmp("zjs").getValue()
-        //---update end
-        , '','_blank', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
-    //------update 2018-0907
-    // }else{
-    //     alert("当前计划时间小于可上报时间，请重新修改");
-    // }
-    //---end update
+        return;
+    }
+    else {
+        V_WEEKPLAN_GUID = 0;
+        V_PLANTYPE = 'DEFECT';
+        //------update 2018-0907
+        //  if(Ext.getCmp('starttime').getValue()<Ext.Date.format(new Date(),'Y-m-d H:i:s')){
+        //---end update
+        var ret = window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=0&V_PLANTYPE=' + V_PLANTYPE +
+            "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
+            "&YEAR=" + Ext.getCmp("nf").getValue() +
+            "&MONTH=" + Ext.getCmp("yf").getValue() +
+            "&WEEK=" + Ext.getCmp("zhou").getValue() +
+            "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
+            "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()
+            //update start 20180907
+            + "&startUpTime=" + Ext.getCmp("zks").getValue()
+            + "&endUpTime=" + Ext.getCmp("zjs").getValue()
+            //---update end
+            , '', '_blank', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+        //------update 2018-0907
+        // }else{
+        //     alert("当前计划时间小于可上报时间，请重新修改");
+        // }
+        //---end update
     }
 }
 
@@ -1029,8 +1050,8 @@ function OnButtonSelectClicked() {
         "&QUARTER=0" +
         "&MONTH=" + Ext.getCmp("yf").getValue() +
         "&WEEK=" + Ext.getCmp("zhou").getValue() +
-        "&PLANTYPE=WEEK&startUpTime="+Ext.getCmp("zks").getValue()+
-        "&endUpTime="+ Ext.getCmp("zjs").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+        "&PLANTYPE=WEEK&startUpTime=" + Ext.getCmp("zks").getValue() +
+        "&endUpTime=" + Ext.getCmp("zjs").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 
 //修改
@@ -1038,20 +1059,16 @@ function OnButtonEditClicked() {
     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
     if (seldata.length != 1) {
         Ext.Msg.alert('操作信息', '请选择一条信息进行修改');
-        return ;
+        return;
     }
-    if (seldata[0].data.V_INPER!=Ext.util.Cookies.get('v_personcode') && Ext.util.Cookies.get('v_rolecode')!='00'&& Ext.util.Cookies.get('v_rolecode')!='99'){
+    if (seldata[0].data.V_INPER != Ext.util.Cookies.get('v_personcode') && Ext.util.Cookies.get('v_rolecode') != '00' && Ext.util.Cookies.get('v_rolecode') != '99') {
         Ext.Msg.alert('操作信息', '没有权限修改！');
-        return ;
+        return;
     }
-    if (seldata[0].data.V_STATE == 10 || seldata[0].data.V_STATE == 100|| seldata[0].data.V_STATE == 99) {
-        V_WEEKPLAN_GUID = seldata[0].data.V_GUID;
-        // window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
-        //     + "&endUpTime=" + Ext.getCmp("endtime").getValue()  +'&WSIGN='+1+'', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
-        window.open(AppUrl + 'page/PM_03010318/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("zks").getValue() //Ext.getCmp("starttime").getValue()
-            + "&endUpTime=" + Ext.getCmp("zjs").getValue() //Ext.getCmp("endtime").getValue()
-            +'&WSIGN='+1+'', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
-    }else {
+    if (seldata[0].data.V_STATE == 10 || seldata[0].data.V_STATE == 100 || seldata[0].data.V_STATE == 99) {
+        window.open(AppUrl + 'page/PM_03010318/index.html?WEEKGUID=' + seldata[0].data.V_GUID+ "&startUpTime=" + Ext.getCmp("zks").getValue()
+            + "&endUpTime=" + Ext.getCmp("zjs").getValue() + '', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
+    } else {
         Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
     }
 
@@ -1121,8 +1138,9 @@ function OnButtonDelete() {
         }
     });
 }
+
 //删除
-function OnButtonDeleteData(){
+function OnButtonDeleteData() {
     var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();//获取选中的数据
     if (records.length == 0) {//判断是否选中数据
         Ext.MessageBox.show({
@@ -1134,7 +1152,7 @@ function OnButtonDeleteData(){
         return false;
     }
     for (var i = 0; i < records.length; i++) {
-        if (records[i].get('V_STATE') != "100"&&records[i].get('V_STATE') !="10") {
+        if (records[i].get('V_STATE') != "100" && records[i].get('V_STATE') != "10") {
             alert('此计划非作废或未发起计划，无法删除');
             return false;
         }
@@ -1155,9 +1173,9 @@ function OnButtonDeleteData(){
                         async: false,
                         params: {
                             V_V_GUID: records[i].get('V_GUID'),
-                            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-                            V_PERNAME:decodeURI(Ext.util.Cookies.get('v_personname')),
-                            V_OPERATION:'del'
+                            V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                            V_PERNAME: decodeURI(Ext.util.Cookies.get('v_personname')),
+                            V_OPERATION: 'del'
                         },
                         success: function (resp) {
                             var resp = Ext.decode(resp.responseText);
@@ -1185,11 +1203,11 @@ function OnButtonDeleteData(){
                                         async: false,
                                         params: {
                                             V_V_WEEKGUID: records[i].get('V_GUID'),
-                                            V_INPER:Ext.util.Cookies.get('v_personcode')
+                                            V_INPER: Ext.util.Cookies.get('v_personcode')
                                         },
                                         success: function (response) {
                                             var resp = Ext.decode(response.responseText);
-                                            if(resp.RET=='SUCCESS'){
+                                            if (resp.RET == 'SUCCESS') {
                                                 query();
                                             }
                                         }
@@ -1224,6 +1242,7 @@ function OnButtonDeleteData(){
         }
     });
 }
+
 //上传
 function OnButtonUp() {
     var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
@@ -1236,14 +1255,7 @@ function OnButtonUp() {
         });
         return false;
     }
-    //Ext.MessageBox.show({
-    //    title: '确认',
-    //    msg: '您确定要上报吗？',
-    //    buttons: Ext.MessageBox.YESNO,
-    //    icon: Ext.MessageBox.QUESION,
-    //    fn: function (btn) {
-    //        if (btn == 'yes') {
-//---new start 2018-09-17
+
     var i_err = 0;
     for (var i = 0; i < records.length; i++) {
         if (Ext.Date.format(new Date(), 'Y-m-d H:i:s') >= Ext.getCmp("starttime").getValue() && Ext.Date.format(new Date(), 'Y-m-d H:i:s') <= Ext.getCmp("endtime").getValue()) {
@@ -1268,8 +1280,8 @@ function OnButtonUp() {
                             async: false,
                             method: 'post',
                             params: {
-                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type","zyName"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan",records[i].get('V_REPAIRMAJOR_CODE')],
+                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type", "zyName"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan", records[i].get('V_REPAIRMAJOR_CODE')],
                                 processKey: processKey,
                                 businessKey: records[i].get('V_GUID'),
                                 V_STEPCODE: 'Start',
@@ -1320,80 +1332,7 @@ function OnButtonUp() {
             Ext.Msg.alert('提示', '该计划不在上报时间内！');
         }
     }
-    //--end update
-    //-----old start
-    // var i_err = 0;
-    // for (var i = 0; i < records.length; i++) {
-    //     Ext.Ajax.request({
-    //         url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_SEND',
-    //         method: 'POST',
-    //         async: false,
-    //         params: {
-    //             V_V_GUID: records[i].data.V_GUID,
-    //             V_V_ORGCODE: records[i].data.V_ORGCODE,
-    //             V_V_DEPTCODE: records[i].data.V_DEPTCODE,
-    //             V_V_FLOWCODE: '上报',
-    //             V_V_PLANTYPE: 'WEEK',
-    //             V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
-    //         },
-    //         success: function (resp) {
-    //             var resp = Ext.decode(resp.responseText).list[0];
-    //
-    //             if (resp.V_INFO == '成功') {
-    //                 Ext.Ajax.request({
-    //                     url: AppUrl + 'Activiti/StratProcess',
-    //                     async: false,
-    //                     method: 'post',
-    //                     params: {
-    //                         parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-    //                         parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan"],
-    //                         processKey: processKey,
-    //                         businessKey: records[i].get('V_GUID'),
-    //                         V_STEPCODE: 'Start',
-    //                         V_STEPNAME: V_STEPNAME,
-    //                         V_IDEA: '请审批！',
-    //                         V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-    //                         V_INPER: Ext.util.Cookies.get('v_personcode')
-    //                     },
-    //                     success: function (response) {
-    //                         if (Ext.decode(response.responseText).ret == 'OK') {
-    //
-    //                         } else if (Ext.decode(response.responseText).error == 'ERROR') {
-    //                             Ext.Msg.alert('提示', '该流程发起失败！');
-    //                         }
-    //                     }
-    //                 });
-    //                 i_err++;
-    //
-    //                 if (i_err == records.length) {
-    //                     query();
-    //                 }
-    //             } else {
-    //                 Ext.MessageBox.show({
-    //                     title: '错误',
-    //                     msg: resp.V_INFO,
-    //                     buttons: Ext.MessageBox.OK,
-    //                     icon: Ext.MessageBox.ERROR,
-    //                     fn: function (btn) {
-    //                         query();
-    //                     }
-    //                 });
-    //             }
-    //         },
-    //         failure: function (response) {
-    //             Ext.MessageBox.show({
-    //                 title: '错误',
-    //                 msg: response.responseText,
-    //                 buttons: Ext.MessageBox.OK,
-    //                 icon: Ext.MessageBox.ERROR,
-    //                 fn: function (btn) {
-    //                     query();
-    //                 }
-    //             })
-    //         }
-    //     });
-    // }
-    //------old end
+
 }
 
 function getReturnQXXZ(retdata) {
@@ -1554,18 +1493,14 @@ function createWorkorder() {
 
     var V_GUIDList = '';
     for (var i = 0; i < record.length; i++) {
-        if (record[i].data.V_STATE  == '10' && record[i].data.V_STATE == '100'&&record[i].data.V_STATE== '20'&&record[i].data.V_STATE== '99') {
+        if (record[i].data.V_STATE == '10' && record[i].data.V_STATE == '100' && record[i].data.V_STATE == '20' && record[i].data.V_STATE == '99') {
             alert("该计划状态无法生成工单");
             return;
         }
-        if (record[i].data.V_STATE  == '31') {
+        if (record[i].data.V_STATE == '31') {
             alert("存在一下票工单，请重新选择");
             return false;
         }
-        // if(record[i].get('V_INPER')!==Ext.util.Cookies.get('v_personcode')){
-        //     alert("该计划录入人非本人，无法生成工单");
-        //     return;
-        // }
         if (i == 0) {
             V_GUIDList = record[i].data.V_GUID;
         } else {
@@ -1717,56 +1652,40 @@ function _preViewProcess(businessKey) {
         + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 
 }
+
 // 添加、月计划选择
-function OnButtonFromMonth(){
-    var equtype=0;
-    var equcode=0;
-    var zy=0;
-    if(Ext.getCmp("jhck").getValue()==""||Ext.getCmp("jhck").getValue()=="%"){
+function OnButtonFromMonth() {
+    if (Ext.getCmp("jhck").getValue() == "" || Ext.getCmp("jhck").getValue() == "%") {
         alert('请先选择厂矿');
         return false;
     }
-    if(Ext.getCmp("jhzyq").getValue()==""||Ext.getCmp("jhzyq").getValue()=="%"){
-        alert('请先选择作业区');
-        return false;
-    }
-    // if(Ext.getCmp("sblx").getValue()==""){
-    //     alert('请先选择设备类型');
-    //     return false;
-    // }
-    // if(Ext.getCmp("sbmc").getValue()==""||Ext.getCmp("sbmc").getValue()=="%"){
-    //     alert('请先选择设备名称');
-    //     return false;
-    // }
-    // if(Ext.getCmp("zy").getValue()==""||Ext.getCmp("zy").getValue()=="%"){
-    //     alert('请先选择专业');
-    //     return false;
-    // }
-    if(Ext.getCmp("sblx").getValue()=="%"){
-        equtype=0;
-    }
-    if(Ext.getCmp("sbmc").getValue()=="%"){
-        equcode=0;
-    }
-    if(Ext.getCmp("zy").getValue()=="%"){
-        zy=0;
-    }
-    var owidth = window.screen.availWidth;
-    var oheight = window.screen.availHeight - 50;
-    // var ret = window.open(AppUrl + 'page/PM_03010317/index.html?Oyear='
-    var ret = window.open(AppUrl + 'page/PM_03010317/newadd.html?Oyear='
-        + Ext.getCmp("nf").getValue()+'&Omonth='+Ext.getCmp('yf').getValue()
-        +'&V_V_ORGCODE='+Ext.getCmp("jhck").getValue()
-        +'&V_V_DEPTCODE='+Ext.getCmp("jhzyq").getValue()
-        +'&V_V_EQUTYPE='+equtype
-        +'&V_V_EQUCODE='+equcode
-        +'&V_V_ZY='+zy
-        +"&WEEK=" + Ext.getCmp("zhou").getValue()
-        +'&startUpTime='+ Ext.getCmp("zks").getValue()
-        +'&endUpTime='+Ext.getCmp("zjs").getValue(),'', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PRO_03_PLAN_WEEK_CREATE',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_ORGCODE:Ext.getCmp('jhck').getValue(),
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            var owidth = window.screen.availWidth;
+            var oheight = window.screen.availHeight - 50;
+            window.open(AppUrl + 'page/PM_03010317/newadd.html?WeekGuid='
+                + resp.V_INFO+"&YEAR=" + Ext.getCmp("nf").getValue() +
+                "&MONTH=" + Ext.getCmp("yf").getValue() +
+                "&WEEK=" + Ext.getCmp("zhou").getValue() +
+                "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
+                "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()
+                + "&startUpTime=" + Ext.getCmp("zks").getValue()
+                + "&endUpTime=" + Ext.getCmp("zjs").getValue(), '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+        }
+    });
 }
+
 //从备件添加周计划
-function OnButtonDefPartAddClicked(){
+function OnButtonDefPartAddClicked() {
     var weekguid = guid();
     //清空表
     Ext.Ajax.request({
@@ -1801,8 +1720,8 @@ function OnButtonDefPartAddClicked(){
                                     "&MONTH=" + Ext.getCmp("yf").getValue() +
                                     "&WEEK=" + Ext.getCmp("zhou").getValue() +
                                     "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-                                    "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()+
-                                    "&KSTIME="+Ext.getCmp("zks").getValue() , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+                                    "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue() +
+                                    "&KSTIME=" + Ext.getCmp("zks").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
                             }
                         } else {
                             alert("初始数据保存失败");
@@ -1814,7 +1733,4 @@ function OnButtonDefPartAddClicked(){
             }
         }
     });
-}
-function Winclose(){
-    query();
 }

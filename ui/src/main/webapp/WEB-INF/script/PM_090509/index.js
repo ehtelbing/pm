@@ -22,6 +22,7 @@ if (location.href.split('?')[1] != undefined) {
     ProcessInstanceId = Ext.urlDecode(location.href.split('?')[1]).ProcessInstanceId;
 }
 var selectID = [];
+var orderType="";
 $(function () {
 
     var nextSprStore = Ext.create("Ext.data.Store", {
@@ -391,7 +392,7 @@ function loadOrder(){
 
                 $("#V_WBS").html(resp.list[0].V_WBS);
                 $("#V_WBS_TXT").html(resp.list[0].V_WBS_TXT);
-
+                orderType=resp.list[0].V_ORDER_TYP;
                // V_DEPTREPAIRCODE = resp.list[0].V_DEPTCODEREPARIR;
                 V_TEAMCODE = resp.list[0].V_WXTEAM;
                 //loadTeam(resp.list[0].V_WXTEAM);
@@ -608,7 +609,7 @@ function OpenEditMat() {
             var resp = Ext.JSON.decode(ret.responseText);
                 var owidth = window.document.body.offsetWidth-200;
                 var oheight = window.document.body.offsetHeight-100 ;
-                var ret = window.open(AppUrl+'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID +'', '','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl+'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '&orderTyp=' + orderType, '','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 loadMatList();
         }
     });

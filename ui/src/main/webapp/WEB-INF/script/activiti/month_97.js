@@ -10,7 +10,7 @@ var V_V_SPECIALTY = '';
 var V_PERSONCODE = '';
 var taskId = '';
 var V_STEPCODE = '';
-var V_PERSONNAME ='';
+var V_PERSONNAME = '';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
@@ -19,6 +19,9 @@ if (location.href.split('?')[1] != undefined) {
 var orgLoad = false;
 var equTypeLoad = false;
 var basedicLoad = false;
+var V_NEXT_SETP = '';
+var V_N_STEPCODE = '';
+var V_N_STEPNAME = '';
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
@@ -151,7 +154,7 @@ Ext.onReady(function () {
                     fieldLabel: '发起人',
                     labelWidth: 90
                 }]
-            },{
+            }, {
                 layout: 'hbox',
                 defaults: {
                     labelAlign: 'right',
@@ -163,15 +166,15 @@ Ext.onReady(function () {
                     id: 'sgfs',
                     allowBlank: false,
                     fieldLabel: '施工方式',
-                    hidden:true,
+                    hidden: true,
                     labelWidth: 90
                 }, {
-                    xtype:'checkboxfield',
-                    boxLabel:'施工准备是否已落实',
-                    margin:'5 0 0 35',
-                    id : 'iflag',
-                    inputValue:1,
-                    uncheckedValue:0
+                    xtype: 'checkboxfield',
+                    boxLabel: '施工准备是否已落实',
+                    margin: '5 0 0 35',
+                    id: 'iflag',
+                    inputValue: 1,
+                    uncheckedValue: 0
                 }]
             }, {
                 layout: 'column',
@@ -237,7 +240,7 @@ Ext.onReady(function () {
                     labelWidth: 90
                 },
                     {
-                        readOnly:true,
+                        readOnly: true,
                         id: 'gx',
                         allowBlank: false,
                         fieldLabel: '工序',
@@ -267,7 +270,7 @@ Ext.onReady(function () {
         style: 'margin-bottom:1px',
         frame: true,
         baseCls: 'my-panel-no-border',
-        items: [ {
+        items: [{
             id: 'spyj',
             xtype: 'textfield',
             fieldLabel: '审批意见',
@@ -429,15 +432,15 @@ function _agree() {
         params: {
             taskId: taskId,
             idea: '通过',
-            parName: ['lcjs', "flow_yj",'shtgtime'],
-            parVal: ['lcjs',spyj,Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s') ],
-            processKey :$.url().param("ProcessDefinitionKey"),
-            businessKey : $.url().param("V_ORDERGUID"),
-            V_STEPCODE : 'lcjs',
-            V_STEPNAME : '流程结束',
-            V_IDEA : '通过',
-            V_NEXTPER : 'lcjs',
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            parName: ['lcjs', "flow_yj", 'shtgtime'],
+            parVal: ['lcjs', spyj, Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s')],
+            processKey: $.url().param("ProcessDefinitionKey"),
+            businessKey: $.url().param("V_ORDERGUID"),
+            V_STEPCODE: 'lcjs',
+            V_STEPNAME: '流程结束',
+            V_IDEA: '通过',
+            V_NEXTPER: 'lcjs',
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
@@ -481,7 +484,6 @@ function _agree() {
     })
 
 
-
 }
 
 function _reject() {
@@ -502,8 +504,10 @@ function _reject() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             for (var i = 0; i < resp.list.length; i++) {
-                if (resp.list[i].ActivityName == "Start") {
+                if (resp.list[i].ActivityId == "ckjhysp") {
                     Assignee = resp.list[i].Assignee;
+                    V_N_STEPCODE = resp.list[i].ActivityId;
+                    V_N_STEPNAME = resp.list[i].ActivityName;
                     break;
                 }
             }
@@ -517,12 +521,12 @@ function _reject() {
             params: {
                 taskId: taskId,
                 idea: '不通过',
-                parName: ['fqrxg', "flow_yj"],
+                parName: [V_N_STEPCODE, "flow_yj"],
                 parVal: [Assignee, spyj],//[V_PERSONCODE, spyj],
                 processKey: $.url().param("ProcessDefinitionKey"),
                 businessKey: V_ORDERGUID,
-                V_STEPCODE: 'fqrxg',
-                V_STEPNAME: '发起人修改',
+                V_STEPCODE: V_N_STEPCODE,
+                V_STEPNAME: V_N_STEPNAME,
                 V_IDEA: '不通过',
                 V_NEXTPER: V_PERSONCODE,
                 V_INPER: Ext.util.Cookies.get('v_personcode')
@@ -531,20 +535,16 @@ function _reject() {
                 var resp = Ext.decode(response.responseText);
                 if (resp.ret == '任务提交成功') {
                     Ext.Ajax.request({
-                        //url: AppUrl + 'zdh/PRO_WO_FLOW_AGREE',
-                        url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                        url: AppUrl + 'PM_03/PRO_PM_MONTH_STATE_SET',
                         method: 'POST',
                         async: false,
                         params: {
-                            'V_V_ORDERID': V_ORDERGUID,
-                            'V_V_PROCESS_NAMESPACE': 'MonthPlan',
-                            'V_V_PROCESS_CODE': $.url().param("ProcessDefinitionKey"),
-                            'V_V_STEPCODE': V_STEPCODE,
-                            'V_V_STEPNEXT_CODE': 'fqrxg'
+                            'V_V_GUID': V_ORDERGUID,
+                            'V_V_STATE': '98'
                         },
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);
-                            if (resp.V_INFO == 'success') {
+                            if (resp.V_INFO == 'SUCCESS') {
                                 window.opener.QueryTabY();
                                 window.opener.QuerySum();
                                 window.opener.QueryGrid();

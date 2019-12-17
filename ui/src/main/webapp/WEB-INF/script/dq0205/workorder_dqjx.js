@@ -14,7 +14,7 @@ if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
     V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPECODE;
 }
-
+var orderType="";
 $(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     bindDate("planStartDate");
@@ -160,6 +160,7 @@ function createDD() {
                 $("#V_EQUSITE").val(resp.list[0].V_FUNC_LOC);
 
                 $("#ORDER_TYP").html(resp.list[0].V_ORDER_TYP);
+                orderType=resp.list[0].V_ORDER_TYP;
 
                 $("#V_ORDERGUID").val(resp.list[0].V_ORDERGUID);
                 $("#V_DEFECTLIST").val(resp.list[0].V_SHORT_TXT);
@@ -261,11 +262,11 @@ function loadSPR() {
 
                 processKey = resp.RET;
                 //-----2018-10-31 当默认加载审批人不存在时
-                if(resp.list.length==0){
-                    Ext.MessageBox.alert('消息','当前流程不存在，请从新选择');
+                if (resp.list.length == 0) {
+                    Ext.MessageBox.alert('消息', '当前流程不存在，请从新选择');
                     // V_STEPNAME="";
                     // V_NEXT_SETP="";
-                }else{
+                } else {
                     V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
                     V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
                 }
@@ -366,7 +367,7 @@ function OpenEditMat() {
             } else {
                 var owidth = window.document.body.offsetWidth;
                 var oheight = window.document.body.offsetHeight;
-                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '&V_EQUCODE='+$("#V_EQUCODE").val()+'', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '&V_EQUCODE=' + $("#V_EQUCODE").val() + '&orderTyp=' + $("#selType").val(), '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 loadMatList();
             }
         }
@@ -468,32 +469,32 @@ function BillGo() {
                                 success: function (response) {
                                     var resp = Ext.decode(response.responseText);
                                     if (resp.V_CURSOR == '1') {
-                            Ext.Ajax.request({
-                                url: AppUrl + 'Activiti/StratProcess',
-                                async: false,
-                                method: 'post',
-                                params: {
-                                    parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                                    parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！", "WORK"],
-                                    processKey: processKey,
-                                    businessKey: $("#V_ORDERGUID").val(),
-                                    V_STEPCODE: 'start',
-                                    V_STEPNAME: V_STEPNAME,
-                                    V_IDEA: '请审批！',
-                                    V_NEXTPER: $("#selApprover").val(),
-                                    V_INPER: Ext.util.Cookies.get('v_personcode')
-                                },
-                                success: function (response) {
-                                    if (Ext.decode(response.responseText).ret == 'OK') {
-                                        alert("工单创建成功：" + $("#V_ORDERID").html());
-                                        history.go(0);
-                                    } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                        Ext.Msg.alert('提示', '该流程发起失败！');
-                                        history.go(0);
+                                        Ext.Ajax.request({
+                                            url: AppUrl + 'Activiti/StratProcess',
+                                            async: false,
+                                            method: 'post',
+                                            params: {
+                                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                                                parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！", "WORK"],
+                                                processKey: processKey,
+                                                businessKey: $("#V_ORDERGUID").val(),
+                                                V_STEPCODE: 'start',
+                                                V_STEPNAME: V_STEPNAME,
+                                                V_IDEA: '请审批！',
+                                                V_NEXTPER: $("#selApprover").val(),
+                                                V_INPER: Ext.util.Cookies.get('v_personcode')
+                                            },
+                                            success: function (response) {
+                                                if (Ext.decode(response.responseText).ret == 'OK') {
+                                                    alert("工单创建成功：" + $("#V_ORDERID").html());
+                                                    history.go(0);
+                                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                                    Ext.Msg.alert('提示', '该流程发起失败！');
+                                                    history.go(0);
+                                                }
+                                            }
+                                        });
                                     }
-                                }
-                            });
-                            }
                                     else {
                                         Ext.Ajax.request({
                                             method: 'POST',
@@ -639,9 +640,9 @@ function getEquipReturnValue(ret) {
     $("#V_EQUNAME").val(str[1]);
     $("#V_EQUCODE").val(str[0]);
     //---update2018-0903
-    if (str[3]==""){
+    if (str[3] == "") {
         $("#V_EQUSITE").val(str[2]);
-    }else{
+    } else {
         $("#V_EQUSITE").val(str[3]);
     }
     //==end up

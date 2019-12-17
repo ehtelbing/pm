@@ -1465,4 +1465,13 @@ public class PM_03Controller {
         return data;
     }
 
+    @RequestMapping(value = "/PRO_PM_MONTH_STATE_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_MONTH_STATE_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                        @RequestParam(value = "V_V_STATE") String V_V_STATE) throws Exception {
+
+        HashMap data = pm_03Service.PRO_PM_MONTH_STATE_SET(V_V_GUID,V_V_STATE);
+        return data;
+    }
+
 }

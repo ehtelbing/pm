@@ -11,7 +11,7 @@ if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
     V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPECODE;
 }
-
+var orderType='';
 $(function () {
     bindDate("planStartDate");
     bindDate("planFinDate");
@@ -161,7 +161,7 @@ function loadPageInfo() {
 
                 $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
                 $("#D_FACT_FINISH_DATE").html(resp.list[0].D_FACT_FINISH_DATE);
-
+                orderType=resp.list[0].V_ORDER_TYP;
               /*  var result = [];
                 result.push("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">" + resp.list[0].V_ORDER_TYP_TXT+ "</option>");
                  $("#selType").html(result.join(""));*/
@@ -420,7 +420,7 @@ function OpenEditMat() {
             } else {
                 var owidth = window.document.body.offsetWidth - 200;
                 var oheight = window.document.body.offsetHeight - 100;
-                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '&orderTyp=' + $("#selType").val() , '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 loadMatList();
             }
         }

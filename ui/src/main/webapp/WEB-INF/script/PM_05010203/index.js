@@ -2,10 +2,12 @@ var V_ORDERGUID = null;
 var temp = 0;
 var V_EQUCODE;
 var STEP="";
+var orderType='';
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_EQUCODE=Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
     STEP=Ext.urlDecode(location.href.split('?')[1]).STEP;
+    orderType=Ext.urlDecode(location.href.split('?')[1]).orderType;
 }
 var GridModel = Ext.create('Ext.selection.RowModel', {});
 Ext
@@ -845,6 +847,7 @@ Ext
                     sap_departcode:Ext.getCmp('selKCSection').getValue(), //Ext.getCmp('selKCSection').valueModels[0].data.V_SAP_DEPT,
                     storeplace: Ext.getCmp('KWMName').getValue(),
                     i_from_id: Ext.getCmp('kfSection').getValue(),
+                    orderType: orderType,
                     x_personcode: Ext.util.Cookies.get('v_personcode')
                 }
             });

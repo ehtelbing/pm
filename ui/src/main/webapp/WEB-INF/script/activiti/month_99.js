@@ -21,6 +21,7 @@ if (location.href.split('?')[1] != undefined) {
 var orgLoad = false;
 var equTypeLoad = false;
 var basedicLoad = false;
+var V_NEXT_SETP='';
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 

@@ -214,6 +214,30 @@ public class ActivitiController {
                     }
                 }
 
+                //年计划，下一步没有审批人或者下一步审批人为自己时自动通过
+                if (processKey.indexOf("YearPlan") != -1) {
+                    if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                        zd = TaskCompleteZd(processKey, businessKey, V_INPER, "YearPlan");
+                        result.put("info", zd.get("info").toString());
+                    }
+                }
+
+                //月计划，下一步没有审批人或者下一步审批人为自己时自动通过
+                if (processKey.indexOf("MonthPlan") != -1) {
+                    if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                        zd = TaskCompleteZd(processKey, businessKey, V_INPER, "MonthPlan");
+                        result.put("info", zd.get("info").toString());
+                    }
+                }
+
+                //周计划，下一步没有审批人或者下一步审批人为自己时自动通过
+                if (processKey.indexOf("WeekPlan") != -1) {
+                    if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                        zd = TaskCompleteZd(processKey, businessKey, V_INPER, "WeekPlan");
+                        result.put("info", zd.get("info").toString());
+                    }
+                }
+
                 result.put("id", processInstance.getId());
                 result.put("InstanceId", processInstance.getProcessInstanceId());
                 result.put("BusinessKey", processInstance.getBusinessKey());
@@ -1183,6 +1207,22 @@ public class ActivitiController {
                 }
             }
 
+            //月计划，下一步没有审批人或者下一步审批人为自己时自动通过
+            if (idea.equals("通过") && processKey.indexOf("MonthPlan") != -1) {
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    zd = TaskCompleteZd(processKey, businessKey, V_INPER, "MonthPlan");
+                    result.put("info", zd.get("info").toString());
+                }
+            }
+
+            //周计划，下一步没有审批人或者下一步审批人为自己时自动通过
+            if (idea.equals("通过") && processKey.indexOf("WeekPlan") != -1) {
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    zd = TaskCompleteZd(processKey, businessKey, V_INPER, "WeekPlan");
+                    result.put("info", zd.get("info").toString());
+                }
+            }
+
 
         } catch (Exception e) {
             result.put("ret", "任务提交失败");
@@ -1263,7 +1303,7 @@ public class ActivitiController {
         return result;
     }
 
-    //外委维修申请自动审批
+    //自动审批
     public void MaintainPlanZDComplete(String taskId, String idea, String[] parName, String[] parVal, String V_IDEA, String V_INPER, String V_NEXTPER,
                                        String V_STEPNAME, String V_STEPCODE, String processKey, String businessKey) throws SQLException {
         Map map = new HashMap();
@@ -1307,6 +1347,10 @@ public class ActivitiController {
                 fstep = activitiService.PM_ACTIVITI_PROCESS_STEP_SEL(orgCode, deptCode, "", "MaintainPlan", V_STEPCODE, "", "通过");
             } else if (processKey.indexOf("YearPlan") != -1) {
                 fstep = activitiService.PM_ACTIVITI_PROCESS_STEP_SEL(orgCode, deptCode, "", "YearPlan", V_STEPCODE, "", "通过");
+            } else if (processKey.indexOf("MonthPlan") != -1) {
+                fstep = activitiService.PM_ACTIVITI_PROCESS_STEP_SEL(orgCode, deptCode, "", "MonthPlan", V_STEPCODE, "", "通过");
+            } else if (processKey.indexOf("WeekPlan") != -1) {
+                fstep = activitiService.PM_ACTIVITI_PROCESS_STEP_SEL(orgCode, deptCode, "", "WeekPlan", V_STEPCODE, "", "通过");
             }
 
             List fstepList = (List) fstep.get("list");
@@ -1325,9 +1369,21 @@ public class ActivitiController {
                 }
             } else if (processKey.indexOf("YearPlan") != -1) {
                 hpService.PRO_ACTIVITI_FLOW_AGREE(businessKey, "YearPlan", processKey, V_STEPCODE, stepcodeN);
-                //外委申请，下一步没有审批人或者下一步审批人为自己时自动通过
+                //年计划，下一步没有审批人或者下一步审批人为自己时自动通过
                 if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
                     TaskCompleteZd(processKey, businessKey, V_INPER, "YearPlan");
+                }
+            } else if (processKey.indexOf("MonthPlan") != -1) {
+                hpService.PRO_ACTIVITI_FLOW_AGREE(businessKey, "MonthPlan", processKey, V_STEPCODE, stepcodeN);
+                //月计划，下一步没有审批人或者下一步审批人为自己时自动通过
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    TaskCompleteZd(processKey, businessKey, V_INPER, "MonthPlan");
+                }
+            } else if (processKey.indexOf("WeekPlan") != -1) {
+                hpService.PRO_ACTIVITI_FLOW_AGREE(businessKey, "WeekPlan", processKey, V_STEPCODE, stepcodeN);
+                //周计划，下一步没有审批人或者下一步审批人为自己时自动通过
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    TaskCompleteZd(processKey, businessKey, V_INPER, "WeekPlan");
                 }
             }
 
@@ -1378,6 +1434,30 @@ public class ActivitiController {
             if (idea.equals("通过") && processKey.indexOf("MaintainPlan") != -1) {
                 if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
                     zd = TaskCompleteZd(processKey, businessKey, V_INPER, "MaintainPlan");
+                    result.put("info", zd.get("info").toString());
+                }
+            }
+
+            //年计划，下一步没有审批人或者下一步审批人为自己时自动通过
+            if (idea.equals("通过") && processKey.indexOf("YearPlan") != -1) {
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    zd = TaskCompleteZd(processKey, businessKey, V_INPER, "YearPlan");
+                    result.put("info", zd.get("info").toString());
+                }
+            }
+
+            //月计划，下一步没有审批人或者下一步审批人为自己时自动通过
+            if (idea.equals("通过") && processKey.indexOf("MonthPlan") != -1) {
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    zd = TaskCompleteZd(processKey, businessKey, V_INPER, "MonthPlan");
+                    result.put("info", zd.get("info").toString());
+                }
+            }
+
+            //周计划，下一步没有审批人或者下一步审批人为自己时自动通过
+            if (idea.equals("通过") && processKey.indexOf("WeekPlan") != -1) {
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    zd = TaskCompleteZd(processKey, businessKey, V_INPER, "WeekPlan");
                     result.put("info", zd.get("info").toString());
                 }
             }

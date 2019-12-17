@@ -522,25 +522,28 @@ function OnButtonDel() {
     if (seldata.length == 0) {
         alert('请选择数据进行删除！');
     } else {
-        var num = 0;
-        for (var i = 0; i < seldata.length; i++) {
-            Ext.Ajax.request({
-                url: AppUrl + 'PM_06/PRO_PLAN_YEAR_DEL',
-                method: 'POST',
-                async: false,
-                params: {
-                    V_V_GUID: seldata[i].data.V_GUID
-                },
-                success: function (resp) {
-                    var resp = Ext.decode(resp.responseText);
-                    if (resp.V_INFO == 'SUCCESS') {
-                        num++;
+        if (seldata[0].data.V_STATE == '20' || seldata[0].data.V_STATE == '30'|| seldata[0].data.V_STATE == '70'|| seldata[0].data.V_STATE == '80') {
+            alert("无法删除审批中或审批完成的年计划！")
+        } else {
+            var num = 0;
+            for (var i = 0; i < seldata.length; i++) {
+                Ext.Ajax.request({
+                    url: AppUrl + 'PM_06/PRO_PLAN_YEAR_DEL',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: seldata[i].data.V_GUID
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        if (resp.V_INFO == 'SUCCESS') {
+                            num++;
+                        }
                     }
+                });
+                if (num == seldata.length) {
+                    OnButtonQuery();
                 }
-            });
-
-            if (num == seldata.length) {
-                OnButtonQuery();
             }
         }
     }

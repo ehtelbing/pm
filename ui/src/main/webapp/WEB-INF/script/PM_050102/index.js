@@ -7,6 +7,7 @@ var KC_COUNT=0;
 var setMatSign=0;
 var DEPTCODEREP=null;
 var STEP=null;
+var orderType='';
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
 }
@@ -18,6 +19,7 @@ if (location.href.split('?')[1] != undefined) {
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
     DEPTCODEREP= Ext.urlDecode(location.href.split('?')[1]).DEPTCODEREP;
     STEP=Ext.urlDecode(location.href.split('?')[1]).STEP;
+    orderType=Ext.urlDecode(location.href.split('?')[1]).orderType;
 }
 var gridStore = Ext.create('Ext.data.Store',
     {
@@ -200,7 +202,7 @@ var framePanel = Ext.create('Ext.panel.Panel', {
     layout: 'fit',
     flex: 5,
     html: '<iframe frameborder="0" width="100%" height="100%"  src="' + AppUrl
-    + 'page/PM_05010201/index.html?V_ORDERGUID=' + V_ORDERGUID +'&V_EQUCODE='+V_EQUCODE+'&DEPTCODEREP=' + DEPTCODEREP+'&STEP='+STEP
+    + 'page/PM_05010201/index.html?V_ORDERGUID=' + V_ORDERGUID +'&V_EQUCODE='+V_EQUCODE+'&DEPTCODEREP=' + DEPTCODEREP+'&STEP='+STEP+'&orderType='+orderType
     + '"></iframe>'
 
 });

@@ -2863,9 +2863,9 @@ public class CjyService {
                                         String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE,
                                         String V_V_CONTENT, String V_V_STARTTIME, String V_V_ENDTIME, String V_V_OTHERPLAN_GUID, String V_V_OTHERPLAN_TYPE,
                                         String V_V_JHMX_GUID, String V_V_HOUR, String V_V_BZ, String V_V_DEFECTGUID, String V_V_MAIN_DEFECT, String V_V_EXPECT_AGE, String V_V_REPAIR_PER
-                                        ,String V_V_PDC/*,String V_V_SGDATE*/,String V_V_GYYQ,String V_V_CHANGPDC,/*String V_V_JXRESON,*/String V_V_JXHOUR,String V_V_JJHOUR,
-                                         /*String V_V_JHHOUR,*/String V_V_TELNAME,String V_V_TELNUMB,String V_V_PDGG,String V_V_THICKNESS,String V_V_REASON,String V_V_EVERTIME
-            ,String V_V_FLAG,String V_V_RDEPATCODE,String V_V_RDEPATNAME,String V_V_SGWAY,String V_V_SGWAYNAME,String V_V_OPERANAME
+            , String V_V_PDC/*,String V_V_SGDATE*/, String V_V_GYYQ, String V_V_CHANGPDC,/*String V_V_JXRESON,*/String V_V_JXHOUR, String V_V_JJHOUR,
+            /*String V_V_JHHOUR,*/String V_V_TELNAME, String V_V_TELNUMB, String V_V_PDGG, String V_V_THICKNESS, String V_V_REASON, String V_V_EVERTIME
+            , String V_V_FLAG, String V_V_RDEPATCODE, String V_V_RDEPATNAME, String V_V_SGWAY, String V_V_SGWAYNAME, String V_V_OPERANAME
     ) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_NSET");
         Map result = new HashMap<String, Object>();
@@ -2876,8 +2876,8 @@ public class CjyService {
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_NSET" + "(:V_V_INPER,:V_V_GUID,:V_V_YEAR,:V_V_MONTH,:V_V_WEEK,:V_V_ORGCODE,:V_V_DEPTCODE," +
                     ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_REPAIRMAJOR_CODE,:V_V_CONTENT,:V_V_STARTTIME,:V_V_ENDTIME," +
-                    ":V_V_OTHERPLAN_GUID,:V_V_OTHERPLAN_TYPE,:V_V_JHMX_GUID,:V_V_HOUR,:V_V_BZ,:V_V_DEFECTGUID,:V_V_MAIN_DEFECT,:V_V_EXPECT_AGE,:V_V_REPAIR_PER,"+
-                    ":V_V_PDC,/*:V_V_SGDATE,*/:V_V_GYYQ,:V_V_CHANGPDC,/*:V_V_JXRESON,*/:V_V_JXHOUR,:V_V_JJHOUR,/*:V_V_JHHOUR,*/:V_V_TELNAME,:V_V_TELNUMB,:V_V_PDGG,"+
+                    ":V_V_OTHERPLAN_GUID,:V_V_OTHERPLAN_TYPE,:V_V_JHMX_GUID,:V_V_HOUR,:V_V_BZ,:V_V_DEFECTGUID,:V_V_MAIN_DEFECT,:V_V_EXPECT_AGE,:V_V_REPAIR_PER," +
+                    ":V_V_PDC,/*:V_V_SGDATE,*/:V_V_GYYQ,:V_V_CHANGPDC,/*:V_V_JXRESON,*/:V_V_JXHOUR,:V_V_JJHOUR,/*:V_V_JHHOUR,*/:V_V_TELNAME,:V_V_TELNUMB,:V_V_PDGG," +
                     ":V_V_THICKNESS,:V_V_REASON,:V_V_EVERTIME,:V_V_FLAG,:V_V_RDEPATCODE,:V_V_RDEPATNAME,:V_V_SGWAY,:V_V_SGWAYNAME,:V_V_OPERANAME,:V_INFO)}");
             cstmt.setString("V_V_INPER", V_V_INPER);
             cstmt.setString("V_V_GUID", V_V_GUID);
@@ -2898,12 +2898,12 @@ public class CjyService {
             cstmt.setString("V_V_OTHERPLAN_TYPE", V_V_OTHERPLAN_TYPE);
 
             cstmt.setString("V_V_JHMX_GUID", V_V_JHMX_GUID);
-            cstmt.setDouble("V_V_HOUR", Double.valueOf(V_V_HOUR.equals("")?"0":V_V_HOUR));
+            cstmt.setDouble("V_V_HOUR", Double.valueOf(V_V_HOUR.equals("") ? "0" : V_V_HOUR));
             cstmt.setString("V_V_BZ", V_V_BZ);
             cstmt.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
             cstmt.setString("V_V_MAIN_DEFECT", V_V_MAIN_DEFECT);
-            cstmt.setDouble("V_V_EXPECT_AGE", Double.valueOf(V_V_EXPECT_AGE.equals("")?"0":V_V_EXPECT_AGE));
-            cstmt.setDouble("V_V_REPAIR_PER", Double.valueOf(V_V_REPAIR_PER.equals("")?"0":V_V_REPAIR_PER));
+            cstmt.setDouble("V_V_EXPECT_AGE", Double.valueOf(V_V_EXPECT_AGE.equals("") ? "0" : V_V_EXPECT_AGE));
+            cstmt.setDouble("V_V_REPAIR_PER", Double.valueOf(V_V_REPAIR_PER.equals("") ? "0" : V_V_REPAIR_PER));
 
             //--update 2018-0910
             cstmt.setString("V_V_PDC", V_V_PDC);
@@ -2911,8 +2911,8 @@ public class CjyService {
             cstmt.setString("V_V_GYYQ", V_V_GYYQ);
             cstmt.setString("V_V_CHANGPDC", V_V_CHANGPDC);
 //            cstmt.setString("V_V_JXRESON", V_V_JXRESON);
-            cstmt.setInt("V_V_JXHOUR", Integer.parseInt(V_V_JXHOUR.equals("")?"0":V_V_JXHOUR));
-            cstmt.setInt("V_V_JJHOUR", Integer.parseInt(V_V_JJHOUR.equals("")?"0":V_V_JJHOUR));
+            cstmt.setInt("V_V_JXHOUR", Integer.parseInt(V_V_JXHOUR.equals("") ? "0" : V_V_JXHOUR));
+            cstmt.setInt("V_V_JJHOUR", Integer.parseInt(V_V_JJHOUR.equals("") ? "0" : V_V_JJHOUR));
 //            cstmt.setString("V_V_JHHOUR", V_V_JHHOUR);
             cstmt.setString("V_V_TELNAME", V_V_TELNAME);
             cstmt.setString("V_V_TELNUMB", V_V_TELNUMB);
@@ -2920,18 +2920,18 @@ public class CjyService {
 
             //--end upate
             //---add 2018-10-26
-            cstmt.setString("V_V_THICKNESS",V_V_THICKNESS);
-            cstmt.setString("V_V_REASON",V_V_REASON);
-            cstmt.setString("V_V_EVERTIME",V_V_EVERTIME);
+            cstmt.setString("V_V_THICKNESS", V_V_THICKNESS);
+            cstmt.setString("V_V_REASON", V_V_REASON);
+            cstmt.setString("V_V_EVERTIME", V_V_EVERTIME);
             //--end add
             //20181113
-            cstmt.setString("V_V_FLAG",V_V_FLAG);
-            cstmt.setString("V_V_RDEPATCODE",V_V_RDEPATCODE);
-            cstmt.setString("V_V_RDEPATNAME",V_V_RDEPATNAME);
-            cstmt.setString("V_V_SGWAY",V_V_SGWAY);
-            cstmt.setString("V_V_SGWAYNAME",V_V_SGWAYNAME);
-            cstmt.setString("V_V_OPERANAME",V_V_OPERANAME);
-           // end
+            cstmt.setString("V_V_FLAG", V_V_FLAG);
+            cstmt.setString("V_V_RDEPATCODE", V_V_RDEPATCODE);
+            cstmt.setString("V_V_RDEPATNAME", V_V_RDEPATNAME);
+            cstmt.setString("V_V_SGWAY", V_V_SGWAY);
+            cstmt.setString("V_V_SGWAYNAME", V_V_SGWAYNAME);
+            cstmt.setString("V_V_OPERANAME", V_V_OPERANAME);
+            // end
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
@@ -2981,7 +2981,7 @@ public class CjyService {
         return result;
     }
 
-    public Map login(String userName, String UserPassword, String userIp,String V_OSNAME,String V_BROWN,String V_LOCALHOST,String V_SS,String V_COMPUTER_TYPE) throws SQLException {
+    public Map login(String userName, String UserPassword, String userIp, String V_OSNAME, String V_BROWN, String V_LOCALHOST, String V_SS, String V_COMPUTER_TYPE) throws SQLException {
 
         logger.info("begin PRO_BASE_PERSON_LOGIN_NEW");
         logger.debug("params:userName:" + userName + "params:userIp:" + userIp);
@@ -3000,7 +3000,7 @@ public class CjyService {
             cstmt.setString("V_BROWN", V_BROWN);
             cstmt.setString("V_LOCALHOST", V_LOCALHOST);
             cstmt.setString("V_SS", V_SS);
-            cstmt.setString("V_COMPUTER_TYPE",V_COMPUTER_TYPE);
+            cstmt.setString("V_COMPUTER_TYPE", V_COMPUTER_TYPE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
 
@@ -3202,7 +3202,7 @@ public class CjyService {
     }
 
     public Map PRO_PM_07_DEFECT_VIEW_BYROLE2(String V_V_STATECODE,
-                                            String X_PERSONCODE,String PUT_PERNAME, String V_V_PAGE, String V_V_PAGESIZE,String V_SIGN) throws SQLException {
+                                             String X_PERSONCODE, String PUT_PERNAME, String V_V_PAGE, String V_V_PAGESIZE, String V_SIGN) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_VIEW_BYROLE2");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -3218,10 +3218,10 @@ public class CjyService {
                     ":V_V_PAGESIZE,:V_SIGN,:V_V_SNUM,:V_CURSOR)}");
             cstmt.setString("V_V_STATECODE", V_V_STATECODE);
             cstmt.setString("X_PERSONCODE", X_PERSONCODE);
-            cstmt.setString("PUT_PERNAME",PUT_PERNAME);
+            cstmt.setString("PUT_PERNAME", PUT_PERNAME);
             cstmt.setString("V_V_PAGE", V_V_PAGE);
             cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
-            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.setString("V_SIGN", V_SIGN);
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
@@ -3240,7 +3240,7 @@ public class CjyService {
         return result;
     }
 
-    public HashMap PRO_PM_03_PLAN_YEAR_VIEW(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY, String V_V_WXLX, String V_V_CONTENT,  String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+    public HashMap PRO_PM_03_PLAN_YEAR_VIEW(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY, String V_V_WXLX, String V_V_CONTENT, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PRO_PM_03_PLAN_YEAR_VIEW");
 
@@ -5820,6 +5820,113 @@ public class CjyService {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_PM_WORKORDER_SELBYDEFECT");
+        return result;
+    }
+
+    public Map PRO_03_PLAN_WEEK_CREATE(String v_v_orgcode, String v_v_percode) throws SQLException {
+        logger.info("begin PRO_03_PLAN_WEEK_CREATE");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_03_PLAN_WEEK_CREATE(:V_V_ORGCODE,:V_V_PERCODE,:V_INFO)}");
+            cstmt.setString("V_V_ORGCODE", v_v_orgcode);
+            cstmt.setString("V_V_PERCODE", v_v_percode);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_03_PLAN_WEEK_CREATE");
+        return result;
+    }
+
+    public Map PM_03_PLAN_MONTH_FINISH_SEL(String v_v_year, String v_v_month, String v_v_jxnr, String v_v_percode, String v_v_pername) throws SQLException {
+        logger.info("begin PM_03_PLAN_MONTH_FINISH_SEL");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_MONTH_FINISH_SEL(:V_V_YEAR,: V_V_MONTH,: V_V_JXNR, :V_V_PERCODE,: V_V_PERNAME,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", v_v_year);
+            cstmt.setString("V_V_MONTH", v_v_month);
+            cstmt.setString("V_V_JXNR", v_v_jxnr);
+            cstmt.setString("V_V_PERCODE", v_v_percode);
+            cstmt.setString("V_V_PERNAME", v_v_pername);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_03_PLAN_WEEK_CREATE");
+        return result;
+    }
+
+    public Map PM_DEFECTTOWORKORDER_SM(String V_V_MONTHGUID, String V_V_WEEK_GUID) throws SQLException {
+        logger.info("begin PM_DEFECTTOWORKORDER_SM");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SM(:V_V_MONTHGUID,: V_V_WEEK_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
+            cstmt.setString("V_V_WEEK_GUID", V_V_WEEK_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_SM");
+        return result;
+    }
+
+    public Map PRO_PM_03_PLAN_WEEK_D_U(String v_v_weekguid) throws SQLException {
+
+        logger.info("begin PRO_PM_03_PLAN_WEEK_D_U");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_D_U(:V_V_WEEKGUID,: V_INFO)}");
+            cstmt.setString("V_V_WEEKGUID", v_v_weekguid);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_D_U");
         return result;
     }
 }
