@@ -34,7 +34,7 @@ var egridStore = Ext.create("Ext.data.Store", {
     proxy : {
         type : 'ajax',
         async : false,
-        url : AppUrl + 'Zyk/PRO_RUN7134_GETSITELIST',
+        url : AppUrl + 'Zyk/PRO_RUN7134_GETSITELIST',   
         actionMethods : {
             read : 'POST'
         },
