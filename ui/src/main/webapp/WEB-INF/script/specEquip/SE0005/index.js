@@ -114,6 +114,33 @@ Ext.onReady(function () {
         }
     });
 
+    let equipStore = Ext.create('Ext.data.Store', {
+        storeId: 'equipStore',
+        autoLoad: false,
+        loading: false,
+        pageSize: -1,
+        fields: ['V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME'],
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax",{
+            url: AppUrl + 'pm_19/PRO_GET_DEPTEQU_PER',
+            type: 'ajax',
+            async: false,
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {},
+            reader: {
+                type: 'json',
+                root: 'list',
+                totalProperty: 'total'
+            }
+        }),
+        listeners: {
+            load: function (store, records, successful, eOpts) {
+                Ext.getCmp('equip').select(store.first());
+            }
+        }
+    });
+
     let verPlanStore = Ext.create('Ext.data.Store', {
         storeId: 'verPlanStore',
         autoLoad: false,
@@ -175,7 +202,9 @@ Ext.onReady(function () {
             listeners: {
                 select: function (combo, records) {
                     if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        _selectDept()
+                        _selectDept();
+                        _selectEquipType();
+                        _selectEquip();
                     }
                 }
             }
@@ -192,7 +221,8 @@ Ext.onReady(function () {
             listeners: {
                 select: function (combo, records) {
                     if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        _selectEquipType()
+                        _selectEquipType();
+                        _selectEquip();
                     }
                 }
             }
@@ -205,12 +235,25 @@ Ext.onReady(function () {
             displayField: 'V_EQUTYPENAME',
             emptyText: '全部',
             forceSelection: true,
-            fieldLabel: '设备类型'
-        }, {
-            xtype : 'textfield',
-            name : 'ASSET_NAME_',
-            fieldLabel : '设备名称'
-        } ]
+            fieldLabel: '设备类型',
+            listeners: {
+                select: function (combo, records) {
+                    if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
+                        _selectEquip()
+                    }
+                }
+            }
+        },{
+            xtype: 'combo',
+            id: 'equip',
+            store: equipStore,
+            queryMode: 'local',
+            valueField: 'V_EQUCODE',
+            displayField: 'V_EQUNAME',
+            emptyText: '全部',
+            forceSelection: true,
+            fieldLabel: '设备名称'
+        },]
     });
 
     var verPlanPanel = Ext.create('Ext.grid.Panel', {
@@ -280,6 +323,8 @@ function _init() {
 
     _selectEquipType();
 
+    _selectEquip();
+
     _selectVerPlan();//查询加载主表数据
 
     Ext.getBody().unmask();
@@ -311,33 +356,19 @@ function _selectEquipType(){
     equipTypeStore.load();
 }
 
+function  _selectEquip(){
+    let equipStore = Ext.data.StoreManager.lookup('equipStore');
+    equipStore.proxy.extraParams = {
+        V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+        V_V_DEPTCODENEXT : Ext.getCmp('DEPT_CODE_').getValue(),
+        V_V_EQUTYPECODE : Ext.getCmp('equipType').getValue()
+    };
+    equipStore.load();
+}
+
 
 function _select() {
 
 }
-
-function _loadExcel() {
-
-}
-
-function _resetOperationAreaStore(V_DEPTCODE) {
-    var assetTypeStore = Ext.data.StoreManager.lookup('assetTypeStore');
-    var subAssetTypeStore = Ext.data.StoreManager.lookup('subAssetTypeStore');
-    subAssetTypeStore.removeAll();
-    if (PARENT_ASSET_TYPE_ID_ != '') {//按父属性过滤
-        assetTypeStore.filter('PARENT_ASSET_TYPE_ID_', new RegExp('^' + PARENT_ASSET_TYPE_ID_ + '$'));
-        subAssetTypeStore.add(assetTypeStore.getRange());
-        assetTypeStore.clearFilter();
-    }
-}
-
-function _resetEquipmentTypeStore(V_DEPTCODE) {
-
-}
-
-function _resetEquipmentNameStore(V_DEPTCODE) {
-
-}
-
 
 
