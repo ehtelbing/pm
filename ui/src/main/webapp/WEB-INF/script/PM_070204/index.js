@@ -4,7 +4,6 @@ var flag = "";
 var V_ORDERGUID = null;
 var aqcsGuid="";
 var aqcsGuidList=[];
-var aqcsCodeList=[];
 var sign="";
 var A_USERID = Ext.util.Cookies.get('v_personcode');
 var A_USERNAME = Ext.util.Cookies.get('v_personname2');
@@ -278,7 +277,6 @@ var windowLayout = {
             xtype: 'textfield',
             id: 'jxsafe',
             fieldLabel: '检修安全措施',
-            readOnly: false,
             readOnly: true,
             width: 365
         }, {
@@ -343,8 +341,6 @@ function OnclickAddButtonLoad() {
         }
     });
     I_ID = '-1';
-    aqcsCodeList.splice(0, aqcsCodeList.length);
-    console.log(aqcsCodeList);
     Ext.getCmp('jxgxbm').setValue(guid());
     Ext.getCmp('workContent').setValue('');
     Ext.getCmp('actualTime').setValue('1');
@@ -369,105 +365,6 @@ function OnClickSaveButton() {
     if (Ext.getCmp('workContent').getValue() == '') {
         Ext.MessageBox.alert('提示', '请填写工序内容');
         return false;
-    }
-    if(aqcsCodeList.length==0){
-        aqcsGuid = guid2();
-        Ext.Ajax.request({
-            url: AppUrl + 'pm_19/PRO_PM_19_AQCS_EDIT',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_AQCSCODE: aqcsGuid,//Ext.getCmp('winaqcscode').getValue(),
-                V_V_AQCSNAME: Ext.getCmp('jxsafe').getValue(),
-                V_V_EQUCODE: 'TY',
-                V_V_EQUNAME: 'TY',
-                V_V_EQUSITE: 'TY'
-            },
-            success: function (ret) {
-                var resp = Ext.JSON.decode(ret.responseText);
-                if (resp.list[0].V_INFO == "SUCCESS") {
-                    Ext.Ajax.request({
-                        method: 'POST',
-                        async: false,
-                        url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_SET_W',
-                        params: {
-                            V_V_JXGX_CODE: Ext.getCmp('jxgxbm').getValue(),
-                            V_V_AQCS_CODE: aqcsGuid,
-                            V_SIGN:sign
-                        },
-                        success: function (response) {
-                            var resp = Ext.decode(response.responseText);
-                            // if (resp.list[0].V_INFO == "success") {
-                            //     aqcsCodeList.splice(0, aqcsCodeList.length);
-                            //     console.log(aqcsCodeList);
-                            // }
-                        }
-                    });
-                }
-
-            }
-        });
-    }
-    else{
-        if(sign=="UPDATE"){
-            Ext.Ajax.request({
-                method: 'POST',
-                async: false,
-                url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_DEL',
-                params: {
-                    V_V_JXGX_CODE: Ext.getCmp('jxgxbm').getValue(),
-                    V_V_AQCS_CODE: aqcsCodeList[0],
-                    V_SIGN:sign
-                },
-                success: function (response) {
-                    var resp = Ext.decode(response.responseText);
-                    if (resp.list[0].V_INFO == "success") {
-                        for(var j=0;j<aqcsCodeList.length;j++){
-                            Ext.Ajax.request({
-                                method: 'POST',
-                                async: false,
-                                url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_SET_W',
-                                params: {
-                                    V_V_JXGX_CODE: Ext.getCmp('jxgxbm').getValue(),
-                                    V_V_AQCS_CODE: aqcsCodeList[j],
-                                    V_SIGN:sign
-                                },
-                                success: function (response) {
-                                    var resp = Ext.decode(response.responseText);
-                                    if (resp.list[0].V_INFO == "success") {
-                                        // aqcsCodeList.splice(0, aqcsCodeList.length);
-                                        // console.log(aqcsCodeList);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-        }else{
-            for(var j=0;j<aqcsCodeList.length;j++){
-                Ext.Ajax.request({
-                    method: 'POST',
-                    async: false,
-                    url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_SET_W',
-                    params: {
-                        V_V_JXGX_CODE: Ext.getCmp('jxgxbm').getValue(),
-                        V_V_AQCS_CODE: aqcsCodeList[j],
-                        V_SIGN:sign
-                    },
-                    success: function (response) {
-                        var resp = Ext.decode(response.responseText);
-                        if (resp.list[0].V_INFO == "success") {
-                            // aqcsCodeList.splice(0, aqcsCodeList.length);
-                            // console.log(aqcsCodeList);
-                        }
-                    }
-                });
-            }
-        }
-
-        aqcsCodeList.splice(0, aqcsCodeList.length);
-        console.log(aqcsCodeList);
     }
     Ext.Ajax.request({
         // url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_SET_NEW',
@@ -714,8 +611,7 @@ function selectJXCAR() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_191704/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue() + '&V_ORDERGUID=' + V_ORDERGUID
-        + '&V_EQUCODE=' + V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
-    + '&V_EQUTYPE=' + V_EQUTYPE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+        + '&V_EQUTYPE=' + V_EQUTYPE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 
 function getReturnJXCAR(data) {
@@ -730,8 +626,7 @@ function selectJXTOOL() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_191705/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue()
-        + '&V_EQUCODE=' + V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
-    + '&V_EQUTYPE=' + V_EQUTYPE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+        + '&V_EQUTYPE=' + V_EQUTYPE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 
 function getReturnJXTOOL(data) {
@@ -775,15 +670,11 @@ function getReturnJSBZ(guid, valued, valueu) {
 function selectJXSAFE() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_191709/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue() + '&V_EQUCODE=' + V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
     var ret = window.open(AppUrl + 'page/PM_191709/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue() + '&V_EQUTYPE=' + V_EQUTYPE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 
 function getReturnJXSAFE(code,data) {
     var ss = "";
-    for(var j=0;j<code.length;j++){
-        aqcsCodeList.push(code[j]);
-    }
     // for(var j=0;j<code.length;j++){
     //     aqcsCodeList.push(code[j]);
     // }
