@@ -326,18 +326,12 @@ Ext.onReady(function () {
         items: [haveChoDef, mfGridPanel]
     });
 
-    //月计划审批完成查找
-    var mGridPanel = Ext.create('Ext.grid.Panel', {
-        title: '月计划',
-        id: 'mGridPanel',
-        region: 'west',
-        width: '55%',
-        height: '100%',
+    var wnpanel=Ext.create('Ext.panel.Panel', {
+        region: 'north',
+        layout: 'column',
+        width: '100%',
         frame: true,
-        store: mgridStore,
-        autoScroll: true,
-        columnLines: true,
-        tbar: [{
+        items: [{
             xtype: 'combo',
             id: 'year',
             fieldLabel: '年份',
@@ -384,8 +378,17 @@ Ext.onReady(function () {
                 margin: '5 0 0 5',
                 value: Ext.util.Cookies.get("v_personname2")
             },
-            {xtype: 'button', text: '查询', margin: '10 0 5 10', icon: imgpath + '/search.png', handler: QueryMonth}
-        ],
+            {xtype: 'button', text: '查询', margin: '10 0 5 10', icon: imgpath + '/search.png', handler: QueryMonth}]
+    });
+
+    //月计划审批完成查找
+    var mGridPanel = Ext.create('Ext.grid.Panel', {
+        id: 'mGridPanel',
+        region: 'center',
+        frame: true,
+        store: mgridStore,
+        autoScroll: true,
+        columnLines: true,
         columns: [
             {text: '序号', align: 'right', width: 50, xtype: 'rownumberer'},
             {text: '厂矿', align: 'left', width: 150, dataIndex: 'V_ORGNAME', renderer: CreateGridColumnTd},
@@ -406,6 +409,16 @@ Ext.onReady(function () {
             itemClick: OnGridClick
         }
     });
+
+    var wwpanel=Ext.create('Ext.panel.Panel',{
+        title: '月计划',
+        layout:'border',
+        region:'west',
+        width: '55%',
+        height: '100%',
+        frame:true,
+        items:[wnpanel,mGridPanel]
+    })
 
     var ccgrid = Ext.create('Ext.grid.Panel', {
         title: '月计划缺陷',
@@ -429,7 +442,7 @@ Ext.onReady(function () {
         layout: 'border',
         frame: true,
         width: '100%',
-        items: [ccgrid, mGridPanel]
+        items: [ccgrid, wwpanel]
     })
 
     Ext.create('Ext.container.Viewport', {

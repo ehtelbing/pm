@@ -177,7 +177,7 @@ Ext.onReady(function () {
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID', 'V_EQUTYPECODE', 'V_SOURCECODE','V_EQUTYPENAME'],
+            'V_STATECOLOR', 'V_ORDERID', 'V_EQUTYPECODE', 'V_SOURCECODE', 'V_EQUTYPENAME'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -340,18 +340,12 @@ Ext.onReady(function () {
         items: [haveChoDef, mfGridPanel]
     });
 
-    //月计划审批完成查找
-    var mGridPanel = Ext.create('Ext.grid.Panel', {
-        title: '月计划',
-        id: 'mGridPanel',
-        region: 'west',
-        width: '55%',
-        height: '100%',
-        frame: true,
-        store: mgridStore,
-        autoScroll: true,
-        columnLines: true,
-        tbar: [{
+    var wnpanel=Ext.create('Ext.panel.Panel',{
+        region:'north',
+        layout:'column',
+        width:'100%',
+        frame:true,
+        items:[{
             xtype: 'combo',
             id: 'year',
             fieldLabel: '年份',
@@ -398,8 +392,17 @@ Ext.onReady(function () {
                 margin: '5 0 0 5',
                 value: Ext.util.Cookies.get("v_personname2")
             },
-            {xtype: 'button', text: '查询', margin: '10 0 5 10', icon: imgpath + '/search.png', handler: QueryMonth}
-        ],
+            {xtype: 'button', text: '查询', margin: '10 0 5 10', icon: imgpath + '/search.png', handler: QueryMonth}]
+    })
+
+    //月计划审批完成查找
+    var mGridPanel = Ext.create('Ext.grid.Panel', {
+        id: 'mGridPanel',
+        region: 'center',
+        frame: true,
+        store: mgridStore,
+        autoScroll: true,
+        columnLines: true,
         columns: [
             {text: '序号', align: 'right', width: 50, xtype: 'rownumberer'},
             {text: '厂矿', align: 'left', width: 150, dataIndex: 'V_ORGNAME', renderer: CreateGridColumnTd},
@@ -420,6 +423,16 @@ Ext.onReady(function () {
             itemClick: OnGridClick
         }
     });
+
+    var wwpanel=Ext.create('Ext.panel.Panel',{
+        title: '月计划',
+        layout:'border',
+        region:'west',
+        width: '55%',
+        height: '100%',
+        frame:true,
+        items:[wnpanel,mGridPanel]
+    })
 
     var ccgrid = Ext.create('Ext.grid.Panel', {
         title: '月计划缺陷',
@@ -443,7 +456,7 @@ Ext.onReady(function () {
         layout: 'border',
         frame: true,
         width: '100%',
-        items: [ccgrid, mGridPanel]
+        items: [ccgrid, wwpanel]
     })
 
     Ext.create('Ext.container.Viewport', {
@@ -608,14 +621,14 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
 }
 
 function turnPage() {
-    if(Ext.data.StoreManager.lookup('hChoGridStore').data.items.length==0){
+    if (Ext.data.StoreManager.lookup('hChoGridStore').data.items.length == 0) {
         alert('请添加周计划缺陷！');
         return;
     }
-    var EquCode=Ext.data.StoreManager.lookup('hChoGridStore').data.items[0].data.V_EQUCODE;
-    var EquName=Ext.data.StoreManager.lookup('hChoGridStore').data.items[0].data.V_EQUNAME;
-    var EquTypeCode=Ext.data.StoreManager.lookup('hChoGridStore').data.items[0].data.V_EQUTYPECODE;
-    var EquTypeName=Ext.data.StoreManager.lookup('hChoGridStore').data.items[0].data.V_EQUTYPENAME;
+    var EquCode = Ext.data.StoreManager.lookup('hChoGridStore').data.items[0].data.V_EQUCODE;
+    var EquName = Ext.data.StoreManager.lookup('hChoGridStore').data.items[0].data.V_EQUNAME;
+    var EquTypeCode = Ext.data.StoreManager.lookup('hChoGridStore').data.items[0].data.V_EQUTYPECODE;
+    var EquTypeName = Ext.data.StoreManager.lookup('hChoGridStore').data.items[0].data.V_EQUTYPENAME;
     Ext.Ajax.request({
         url: AppUrl + 'dxfile/PM_WEEK_PLAN_CHECK_M',
         type: 'ajax',
@@ -630,8 +643,8 @@ function turnPage() {
                 var owidth = window.document.body.offsetWidth - 200;
                 var oheight = window.document.body.offsetHeight - 100;
                 window.open(AppUrl + "page/PM_03010315/index.html?V_WEEKPLAN_GUID=" + WEEKGUID + '&startUpTime=' + startUpTime
-                    + '&endUpTime=' + endUpTime + "&YEAR=" + YEAR + '&MONTH=' + MONTH + '&WEEK=' + WEEK+'&V_EQUCODE='+EquCode
-                    +'&V_EQUNAME='+EquName+'&V_EQUTYPECODE='+EquTypeCode+'&V_EQUTYPENAME='+EquTypeName, '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    + '&endUpTime=' + endUpTime + "&YEAR=" + YEAR + '&MONTH=' + MONTH + '&WEEK=' + WEEK + '&V_EQUCODE=' + EquCode
+                    + '&V_EQUNAME=' + EquName + '&V_EQUTYPECODE=' + EquTypeCode + '&V_EQUTYPENAME=' + EquTypeName, '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
             } else {
                 Ext.MessageBox.show({
@@ -643,8 +656,8 @@ function turnPage() {
                             var owidth = window.document.body.offsetWidth - 200;
                             var oheight = window.document.body.offsetHeight - 100;
                             window.open(AppUrl + "page/PM_03010315/index.html?V_WEEKPLAN_GUID=" + WEEKGUID + '&startUpTime=' + startUpTime
-                                + '&endUpTime=' + endUpTime + "&YEAR=" + YEAR + '&MONTH=' + MONTH + '&WEEK=' + WEEK+'&V_EQUCODE='+EquCode
-                                +'&V_EQUNAME='+EquName+'&V_EQUTYPECODE='+EquTypeCode+'&V_EQUTYPENAME='+EquTypeName, '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                                + '&endUpTime=' + endUpTime + "&YEAR=" + YEAR + '&MONTH=' + MONTH + '&WEEK=' + WEEK + '&V_EQUCODE=' + EquCode
+                                + '&V_EQUNAME=' + EquName + '&V_EQUTYPECODE=' + EquTypeCode + '&V_EQUTYPENAME=' + EquTypeName, '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
                         }
                         if (btn == "no") {
