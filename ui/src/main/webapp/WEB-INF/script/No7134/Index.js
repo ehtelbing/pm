@@ -34,7 +34,7 @@ var egridStore = Ext.create("Ext.data.Store", {
     proxy : {
         type : 'ajax',
         async : false,
-        url : AppUrl + 'Zyk/PRO_RUN7134_GETSITELIST',   
+        url : AppUrl + 'Zyk/PRO_RUN7134_GETSITELIST',
         actionMethods : {
             read : 'POST'
         },
@@ -254,7 +254,7 @@ var panel = Ext.create('Ext.form.Panel', {
         xtype : 'panel',
         region : 'north',
         layout : 'column',
-		baseCls: 'my-panel-no-border',
+        baseCls: 'my-panel-no-border',
         items : [{ id: 'equipcode', xtype: 'textfield', fieldLabel:'备件编码',
             labelAlign: 'right', style: 'margin:5px 0px 5px 5px',
             width: 240
@@ -452,7 +452,7 @@ function equery() {
 function beforeload_searchgridStore(store){
     store.proxy.extraParams, {
         A_MAT_NO: Ext.getCmp('searchequipcode').getValue(),
-		A_MAT_DESC: Ext.getCmp('searchequipname').getValue()
+        A_MAT_DESC: Ext.getCmp('searchequipname').getValue()
     }
 }
 //物料查询

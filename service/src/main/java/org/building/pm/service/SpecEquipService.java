@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 import javax.xml.soap.SOAPException;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -140,7 +139,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("total", (String) cstmt.getObject("V_V_SNUM"));
-            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -191,6 +190,14 @@ public class SpecEquipService {
         logger.debug("result:" + result);
         logger.info("end insertPlanApply");
         return result;
+    }
+
+    public InputStream excelPlanApply(List<String> I_I_ID_LIST, String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_EQUCODE, String V_V_BDATE, String V_V_EDATE, String V_V_STATUS, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException, FileNotFoundException {
+       // FileInputStream inputStream = new FileInputStream(new File(this.getClass().getResource("/../../../../resources/planApply.xls").getFile()));
+
+        //System.out.println(inputStream);
+        System.out.println(this.getClass().getResource("/"));
+        return null;
     }
 
 }
