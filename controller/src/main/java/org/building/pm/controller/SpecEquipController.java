@@ -63,4 +63,27 @@ public class SpecEquipController {
         Map result = specEquipService.selectPlanApply(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
+
+    //计划申请新增
+    @RequestMapping(value = "/insertPlanApply", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertPlanApply(@RequestParam(value = "I_I_ID") String I_I_ID,
+                                               @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+                                               @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                               @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                               @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                               @RequestParam(value = "V_V_CHECKTIME") String V_V_CHECKTIME,
+                                               @RequestParam(value = "V_V_CHECKPART") String V_V_CHECKPART,
+                                               @RequestParam(value = "V_V_CHECKDEPT") String V_V_CHECKDEPT,
+                                               @RequestParam(value = "V_V_COST") String V_V_COST,
+                                               @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map result = specEquipService.insertPlanApply(I_I_ID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE, V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_EQUNAME, V_V_EQUCODE, V_V_CHECKTIME, V_V_CHECKPART, V_V_CHECKDEPT, V_V_COST, V_V_PERSONCODE);
+        return result;
+    }
 }
