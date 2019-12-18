@@ -87,6 +87,40 @@ public class SpecEquipController {
         return result;
     }
 
+    //根据计划申请的主键查询
+    @RequestMapping(value = "/loadPlanApply", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> loadPlanApply(
+            @RequestParam(value = "I_I_ID") String I_I_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = specEquipService.loadPlanApply(I_I_ID);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+
+        return data;
+    }
+
+    //计划申请删除
+    @RequestMapping(value = "/deletePlanApply", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deletePlanApply(@RequestParam(value = "I_I_ID", required = false) String I_I_ID,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = specEquipService.deletePlanApply(I_I_ID);
+
+        result.put("V_INFO", (String) data.get("V_INFO"));
+        result.put("success", true);
+
+        return result;
+    }
+
     //导出检定计划查询申请
     @RequestMapping(value = "/excelPlanApply", method = RequestMethod.POST)
     @ResponseBody

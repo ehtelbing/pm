@@ -139,7 +139,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("total", (String) cstmt.getObject("V_V_SNUM"));
-            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -189,6 +189,61 @@ public class SpecEquipService {
         }
         logger.debug("result:" + result);
         logger.info("end insertPlanApply");
+        return result;
+    }
+
+    //根据计划申请的主键查询
+    public HashMap loadPlanApply(String I_I_ID) throws SQLException {
+
+        logger.info("begin loadPlanApply");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_CHECK_PLAN_NODE_GET" + "(:I_I_ID,:V_CURSOR)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadPlanApply");
+        return result;
+    }
+
+    //计划申请删除
+    public HashMap deletePlanApply(String I_I_ID) throws SQLException {
+
+        logger.info("begin deletePlanApply");
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_DEL" + "(:I_I_ID,:V_INFO)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end deletePlanApply");
         return result;
     }
 
