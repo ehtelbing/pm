@@ -195,7 +195,7 @@ Ext.onReady(function () {
             xtype: 'button',
             text: '查询',
             handler: _selectPlanApply
-        },{
+        }, {
             xtype: 'button',
             text: '导出EXCEL',
             handler: _excelPlanApply
@@ -434,7 +434,7 @@ function _selectPlanApply() {
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
         V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue(),
         V_V_EQUTYPENAME: Ext.getCmp('equipType').getRawValue(),
-        V_V_EQUCODE : Ext.getCmp('equip').getValue(),
+        V_V_EQUCODE: Ext.getCmp('equip').getValue(),
         V_V_BDATE: Ext.getCmp('V_V_BDATE').getSubmitValue(),
         V_V_EDATE: Ext.getCmp('V_V_EDATE').getSubmitValue(),
         V_V_STATUS: Ext.getCmp('V_V_STATUS').getValue()
@@ -442,7 +442,7 @@ function _selectPlanApply() {
     planApplyStore.load();
 }
 
-function _excelPlanApply(){
+function _excelPlanApply() {
 
 }
 
@@ -476,8 +476,17 @@ function _selectEquip() {
     equipStore.load();
 }
 
-function _excelPlanApply(){
-
+function _excelPlanApply() {
+    Ext.Ajax.request({
+        url: AppUrl + 'specEquip/excelPlanApply',
+        async: false,
+        params: {},
+        callback: function (options, success, response) {
+            if (success) {
+            } else {
+            }
+        }
+    });
 }
 
 

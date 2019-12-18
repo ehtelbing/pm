@@ -86,4 +86,25 @@ public class SpecEquipController {
         Map result = specEquipService.insertPlanApply(I_I_ID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE, V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_EQUNAME, V_V_EQUCODE, V_V_CHECKTIME, V_V_CHECKPART, V_V_CHECKDEPT, V_V_COST, V_V_PERSONCODE);
         return result;
     }
+
+    //导出检定计划查询申请
+    @RequestMapping(value = "/excelPlanApply", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> excelPlanApply(@RequestParam(value = "I_I_ID_LIST", required = false) List<String> I_I_ID_LIST,
+                                              String V_V_PERSONCODE,
+                                              String V_V_DEPTCODE,
+                                              String V_V_DEPTCODENEXT,
+                                              String V_V_EQUTYPECODE,
+                                              String V_V_EQUTYPENAME,
+                                              String V_V_EQUCODE,
+                                              String V_V_BDATE,
+                                              String V_V_EDATE,
+                                              String V_V_STATUS,
+                                              Integer page,
+                                              Integer limit,
+                                              HttpServletRequest request,
+                                              HttpServletResponse response) throws Exception {
+        specEquipService.excelPlanApply(I_I_ID_LIST, V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, page.toString(), limit.toString());
+        return null;
+    }
 }
