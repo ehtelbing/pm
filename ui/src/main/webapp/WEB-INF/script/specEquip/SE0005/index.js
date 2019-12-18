@@ -480,7 +480,10 @@ function _excelPlanApply() {
     Ext.Ajax.request({
         url: AppUrl + 'specEquip/excelPlanApply',
         async: false,
-        params: {},
+        params: {
+            page : 1,
+            limit : -1
+        },
         callback: function (options, success, response) {
             if (success) {
             } else {
