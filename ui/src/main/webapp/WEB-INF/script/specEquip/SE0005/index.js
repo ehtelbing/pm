@@ -194,7 +194,11 @@ Ext.onReady(function () {
         items: [{
             xtype: 'button',
             text: '查询',
-            handler: _selectVerPlan
+            handler: _selectPlanApply
+        },{
+            xtype: 'button',
+            text: '导出EXCEL',
+            handler: _excelPlanApply
         }]
     });
 
@@ -400,22 +404,6 @@ Ext.onReady(function () {
         }]
     });
 
-    Ext.data.StoreManager.lookup('planApplyStore').on('beforeload', function (store) {
-        store.proxy.extraParams = {
-            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
-            V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
-            V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue(),
-            V_V_EQUTYPENAME: Ext.getCmp('equipType').getRawValue(),
-            V_V_EQUCODE : Ext.getCmp('equip').getValue(),
-            V_V_BDATE: Ext.getCmp('V_V_BDATE').getSubmitValue(),
-            V_V_EDATE: Ext.getCmp('V_V_EDATE').getSubmitValue(),
-            V_V_STATUS: Ext.getCmp('V_V_STATUS').getValue(),
-            V_V_PAGE: Ext.getCmp('page').store.currentPage,
-            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
-        }
-    });
-
     _init();
 });
 
@@ -433,15 +421,14 @@ function _init() {
     _selectEquip();
     Ext.getCmp('V_V_STATUS').select(Ext.data.StoreManager.lookup('statusStore').first());
 
-    _selectVerPlan();//查询加载主表数据
+    _selectPlanApply();//查询加载主表数据
     Ext.getBody().unmask();
 
 }
 
-function _selectVerPlan() {
+function _selectPlanApply() {
     var planApplyStore = Ext.data.StoreManager.lookup('planApplyStore');
     planApplyStore.proxy.extraParams = {
-        //V_V_ORGCODE :Ext.util.Cookies.get('v_orgCode'),
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
@@ -450,11 +437,13 @@ function _selectVerPlan() {
         V_V_EQUCODE : Ext.getCmp('equip').getValue(),
         V_V_BDATE: Ext.getCmp('V_V_BDATE').getSubmitValue(),
         V_V_EDATE: Ext.getCmp('V_V_EDATE').getSubmitValue(),
-        V_V_STATUS: Ext.getCmp('V_V_STATUS').getValue(),
-        V_V_PAGE: Ext.getCmp('page').store.currentPage,
-        V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+        V_V_STATUS: Ext.getCmp('V_V_STATUS').getValue()
     };
     planApplyStore.load();
+}
+
+function _excelPlanApply(){
+
 }
 
 function _selectDept() {
@@ -485,6 +474,10 @@ function _selectEquip() {
         V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue()
     };
     equipStore.load();
+}
+
+function _excelPlanApply(){
+
 }
 
 
