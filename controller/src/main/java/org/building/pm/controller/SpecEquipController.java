@@ -52,6 +52,7 @@ public class SpecEquipController {
                                                @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
                                                @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
                                                @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                                                @RequestParam(value = "V_V_BDATE") String V_V_BDATE,
                                                @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
                                                @RequestParam(value = "V_V_STATUS") String V_V_STATUS,
@@ -59,7 +60,7 @@ public class SpecEquipController {
                                                @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                HttpServletRequest request,
                                                HttpServletResponse response) throws Exception {
-        Map result = specEquipService.selectPlanApply(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_BDATE, V_V_EDATE, V_V_STATUS, V_V_PAGE, V_V_PAGESIZE);
+        Map result = specEquipService.selectPlanApply(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 }
