@@ -121,7 +121,7 @@ Ext.onReady(function () {
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'pm_19/PRO_GET_DEPT_EQUIP_PER',
+            url: AppUrl + 'pm_19/PRO_GET_DEPTEQU_PER',
             actionMethods: {
                 read: 'POST'
             },
