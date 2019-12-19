@@ -2,23 +2,13 @@ package org.building.pm.service;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import oracle.jdbc.OracleTypes;
-import org.apache.axis.client.Call;
-import org.apache.axis.encoding.XMLType;
-import org.apache.axis.message.SOAPHeaderElement;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.xml.namespace.QName;
-import javax.xml.rpc.ParameterMode;
-import javax.xml.soap.SOAPException;
 import java.io.*;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.*;
 
 
@@ -248,11 +238,9 @@ public class SpecEquipService {
     }
 
     public InputStream excelPlanApply(List<String> I_I_ID_LIST, String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_EQUCODE, String V_V_BDATE, String V_V_EDATE, String V_V_STATUS, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException, FileNotFoundException {
-       // FileInputStream inputStream = new FileInputStream(new File(this.getClass().getResource("/../../../../resources/planApply.xls").getFile()));
-
-        //System.out.println(inputStream);
-        System.out.println(this.getClass().getResource("/"));
         return null;
+
+
     }
 
     
