@@ -247,7 +247,7 @@ Ext.onReady(function () {
             listeners: {
                 select: function (combo, records) {
                     if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        deptEquTypeStore.removeAll();
+                        deptEquipStore.removeAll();
                         formPanel.getForm().findField('DEPT_EQUIP_').setValue(null);
                         selectDeptequ();
                     }
