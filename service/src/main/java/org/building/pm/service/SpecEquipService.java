@@ -231,7 +231,7 @@ public class SpecEquipService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_DEL" + "(:I_I_ID,:V_INFO)}");
+            cstmt = conn.prepareCall("{call SE_CHECK_PLAN_DEL" + "(:I_I_ID,:V_INFO)}");
             cstmt.setString("I_I_ID", I_I_ID);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
@@ -254,5 +254,7 @@ public class SpecEquipService {
         System.out.println(this.getClass().getResource("/"));
         return null;
     }
+
+    
 
 }

@@ -83,7 +83,11 @@ public class SpecEquipController {
                                                @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                                HttpServletRequest request,
                                                HttpServletResponse response) throws Exception {
-        Map result = specEquipService.insertPlanApply(I_I_ID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE, V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_EQUNAME, V_V_EQUCODE, V_V_CHECKTIME, V_V_CHECKPART, V_V_CHECKDEPT, V_V_COST, V_V_PERSONCODE);
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = specEquipService.insertPlanApply(I_I_ID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE, V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_EQUNAME, V_V_EQUCODE, V_V_CHECKTIME, V_V_CHECKPART, V_V_CHECKDEPT, V_V_COST, V_V_PERSONCODE);
+
+        result.put("data", data);
+        result.put("planApply", specEquipService.loadPlanApply(I_I_ID));
         return result;
     }
 
@@ -115,8 +119,8 @@ public class SpecEquipController {
 
         HashMap data = specEquipService.deletePlanApply(I_I_ID);
 
-        result.put("V_INFO", (String) data.get("V_INFO"));
-        result.put("success", true);
+        result.put("data", data);
+        result.put("planApply", specEquipService.loadPlanApply(I_I_ID));
 
         return result;
     }
