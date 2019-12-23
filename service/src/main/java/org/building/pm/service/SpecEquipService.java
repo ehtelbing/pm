@@ -2,23 +2,13 @@ package org.building.pm.service;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import oracle.jdbc.OracleTypes;
-import org.apache.axis.client.Call;
-import org.apache.axis.encoding.XMLType;
-import org.apache.axis.message.SOAPHeaderElement;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.xml.namespace.QName;
-import javax.xml.rpc.ParameterMode;
-import javax.xml.soap.SOAPException;
 import java.io.*;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.*;
 
 
@@ -139,7 +129,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("total", (String) cstmt.getObject("V_V_SNUM"));
-            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -192,12 +182,67 @@ public class SpecEquipService {
         return result;
     }
 
-    public InputStream excelPlanApply(List<String> I_I_ID_LIST, String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_EQUCODE, String V_V_BDATE, String V_V_EDATE, String V_V_STATUS, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException, FileNotFoundException {
-       // FileInputStream inputStream = new FileInputStream(new File(this.getClass().getResource("/../../../../resources/planApply.xls").getFile()));
+    //根据计划申请的主键查询
+    public HashMap loadPlanApply(String I_I_ID) throws SQLException {
 
-        //System.out.println(inputStream);
-        System.out.println(this.getClass().getResource("/"));
-        return null;
+        logger.info("begin loadPlanApply");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_CHECK_PLAN_NODE_GET" + "(:I_I_ID,:V_CURSOR)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadPlanApply");
+        return result;
     }
+
+    //计划申请删除
+    public HashMap deletePlanApply(String I_I_ID) throws SQLException {
+
+        logger.info("begin deletePlanApply");
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call SE_CHECK_PLAN_DEL" + "(:I_I_ID,:V_INFO)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end deletePlanApply");
+        return result;
+    }
+
+    public InputStream excelPlanApply(List<String> I_I_ID_LIST, String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_EQUCODE, String V_V_BDATE, String V_V_EDATE, String V_V_STATUS, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException, FileNotFoundException {
+        return null;
+
+
+    }
+
+    
 
 }
