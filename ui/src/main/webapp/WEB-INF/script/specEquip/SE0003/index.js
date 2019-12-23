@@ -530,7 +530,10 @@ function _draft() {
         html: '<iframe src=' + AppUrl + 'page/specEquip/SE000301/index.html?P_ID=' + "" + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
         listeners : {
             close : function(panel, eOpts) {
-                _select();
+                if (returnValue == '保存成功！') {
+                    Ext.MessageBox.alert('提示',returnValue);
+                    _select();
+                }
             }
         }
     });
@@ -558,6 +561,7 @@ function _update() {
         listeners : {
             close : function(panel, eOpts) {
                 if (returnValue != null) {
+                    Ext.MessageBox.alert('提示','保存成功！');
                     var planApply = returnValue;
                     records[0].set("I_PLANID", planApply.list[0].I_ID);
                     records[0].set("V_CHECKDEPT", planApply.list[0].V_CHECKDEPT);
