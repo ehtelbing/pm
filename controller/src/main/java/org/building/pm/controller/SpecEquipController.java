@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -91,6 +92,7 @@ public class SpecEquipController {
         HashMap data = specEquipService.insertPlanApply(I_I_ID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE, V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_EQUNAME, V_V_EQUCODE, V_V_CHECKTIME, V_V_CHECKPART, V_V_CHECKDEPT, V_V_COST, V_V_PERSONCODE);
 
         result.put("data", data);
+        result.put("success", true);
         result.put("planApply", specEquipService.loadPlanApply(I_I_ID));
         return result;
     }
@@ -124,6 +126,7 @@ public class SpecEquipController {
         HashMap data = specEquipService.deletePlanApply(I_I_ID);
 
         result.put("data", data);
+        result.put("success", true);
         result.put("planApply", specEquipService.loadPlanApply(I_I_ID));
 
         return result;
@@ -273,4 +276,82 @@ public class SpecEquipController {
             e.printStackTrace();
         }
     }
+
+    //检定实绩查询
+    @RequestMapping(value = "/selectCheckResult", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectCheckResult(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                               @RequestParam(value = "V_V_BDATE") String V_V_BDATE,
+                                               @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
+                                               Integer page,
+                                               Integer limit,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map result = specEquipService.selectCheckResult(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, page.toString(), limit.toString());
+        return result;
+    }
+
+    //检定实绩(实际检定时间、检测费用)录入
+    @RequestMapping(value = "/setCheckResult", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> setCheckResult(@RequestParam(value = "I_I_ID") String I_I_ID,
+                                               @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+                                               @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                               @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                               @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                               @RequestParam(value = "V_V_CHECKTIME") String V_V_CHECKTIME,
+                                               @RequestParam(value = "V_V_CHECKPART") String V_V_CHECKPART,
+                                               @RequestParam(value = "V_V_CHECKDEPT") String V_V_CHECKDEPT,
+                                               @RequestParam(value = "V_V_COST") String V_V_COST,
+                                               @RequestParam(value = "I_I_PLANID") String I_I_PLANID,
+                                               @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = specEquipService.setCheckResult(I_I_ID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE, V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_EQUNAME, V_V_EQUCODE, V_V_CHECKTIME, V_V_CHECKPART, V_V_CHECKDEPT, V_V_COST, I_I_PLANID, V_V_PERSONCODE);
+
+        result.put("data", data);
+        result.put("success", true);
+        return result;
+    }
+
+    //检定实绩(附件)录入
+    @RequestMapping(value = "/setCheckResultFiles", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> setCheckResultFiles(@RequestParam(value = "I_I_ID") String I_I_ID,
+                                               @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+                                               @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                               @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                               @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                               @RequestParam(value = "V_V_CHECKTIME") String V_V_CHECKTIME,
+                                               @RequestParam(value = "V_V_CHECKPART") String V_V_CHECKPART,
+                                               @RequestParam(value = "V_V_CHECKDEPT") String V_V_CHECKDEPT,
+                                               @RequestParam(value = "B_B_CHECKREPORT") InputStream B_B_CHECKREPORT,
+                                               @RequestParam(value = "I_I_PLANID") String I_I_PLANID,
+                                               @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = specEquipService.setCheckResultFiles(I_I_ID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE, V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_EQUNAME, V_V_EQUCODE, V_V_CHECKTIME, V_V_CHECKPART, V_V_CHECKDEPT, B_B_CHECKREPORT, I_I_PLANID, V_V_PERSONCODE);
+        B_B_CHECKREPORT.close();
+
+        result.put("data", data);
+        result.put("success", true);
+        return result;
+    }
+
 }

@@ -30,110 +30,115 @@ if (location.href.split('?')[1] != undefined) {
 Ext.onReady(function () {
     Ext.getBody().mask('<spring:message code="loading" />');
 
-    var orgStore = Ext.create('Ext.data.Store', {
-        storeId: 'orgStore',
+    let ftyStore = Ext.create('Ext.data.Store', {
+        storeId: 'ftyStore',
         autoLoad: true,//true为自动加载
         loading: true,//自动加载时必须为true
         pageSize: -1,
         fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            type: 'ajax',
-            async: false,
+        proxy: {
             url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+            type: 'ajax',
+            async: true,//false=同步
             actionMethods: {
                 read: 'POST'
             },
+            extraParams: {
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+                V_V_DEPTCODENEXT: '%',
+                V_V_DEPTTYPE: '基层单位'
+            },
             reader: {
                 type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODE': Ext.util.Cookies.get('v_orgCode'),
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '基层单位'
-            },
-        }),
+                root: 'list',
+                totalProperty: 'total'
+            }
+        },
         listeners: {
             load: function (store, records, successful, eOpts) {
-                Ext.getCmp("ORG_").select(store.first());
                 _init();//自动加载时必须调用
             }
         }
     });
 
-    var deptStore = Ext.create('Ext.data.Store', {//作业区Store
+    var deptStore = Ext.create('Ext.data.Store', {
         storeId: 'deptStore',
         autoLoad: false,
         loading: false,
         pageSize: -1,
         fields: ['V_DEPTCODE', 'V_DEPTNAME'],
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
             actionMethods: {
                 read: 'POST'
             },
+            extraParams: {},
             reader: {
                 type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
+                root: 'list',
+                totalProperty: 'total'
+            }
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
-                Ext.getCmp("DEPT_").select(store.first());
+                Ext.getCmp('DEPT_CODE_').select(store.first());
             }
         }
     });
 
-    var deptEquTypeStore = Ext.create('Ext.data.Store', {//设备类型Store
-        storeId: 'deptEquTypeStore',
+    var equipTypeStore = Ext.create('Ext.data.Store', {
+        storeId: 'equipTypeStore',
         autoLoad: false,
         loading: false,
         pageSize: -1,
         fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+            url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
             actionMethods: {
                 read: 'POST'
             },
+            extraParams: {},
             reader: {
                 type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
+                root: 'list',
+                totalProperty: 'total'
+            }
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
-                Ext.getCmp("DEPT_EQUIP_TYPE_").select(store.first());
+                Ext.getCmp('equipType').select(store.first());
             }
         }
     });
 
-    var deptEquipStore = Ext.create('Ext.data.Store', {//设备Store
-        storeId: 'deptEquipStore',
+    let equipStore = Ext.create('Ext.data.Store', {
+        storeId: 'equipStore',
         autoLoad: false,
-        fields: ['V_EQUCODE', 'V_EQUNAME'],
+        loading: false,
+        pageSize: -1,
+        fields: ['V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME'],
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+            url: AppUrl + 'pm_19/PRO_GET_DEPTEQU_PER',
             type: 'ajax',
             async: false,
-            url: AppUrl + 'pm_19/PRO_GET_DEPTEQU_PER',
             actionMethods: {
                 read: 'POST'
             },
+            extraParams: {},
             reader: {
                 type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
+                root: 'list',
+                totalProperty: 'total'
+            }
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
-                Ext.getCmp("DEPT_EQUIP_").select(store.first());
+                Ext.getCmp('equip').select(store.first());
             }
         }
     });
@@ -151,83 +156,71 @@ Ext.onReady(function () {
         },
         items: [{
             xtype: 'combo',
-            id: 'ORG_',
-            name: 'ORG_',
-            store: orgStore,
-            queryMode: 'local',//获取本地数据
+            id: 'FTY_CODE_',
+            name: 'FTY_CODE_',
+            store: ftyStore,
+            queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
             emptyText: '全部',
-            forceSelection: true,//输入错误，会显示一个最接近的值
-            fieldLabel: '选择厂矿',
-            allowBlank: false,
+            forceSelection: true,
+            fieldLabel: '厂矿',
             listeners: {
                 select: function (combo, records) {
                     if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        deptStore.removeAll();
-                        deptEquTypeStore.removeAll();
-                        deptEquipStore.removeAll();
-                        formPanel.getForm().findField('DEPT_').setValue(null);
-                        formPanel.getForm().findField('DEPT_EQUIP_TYPE_').setValue(null);
-                        formPanel.getForm().findField('DEPT_EQUIP_').setValue(null);
-                        selectDept();
+                        _selectDept();
+                        _selectEquipType();
+                        _selectEquip();
                     }
                 }
             }
         }, {
             xtype: 'combo',
-            id: 'DEPT_',
-            name: 'DEPT_',
+            id: 'DEPT_CODE_',
+            name: 'DEPT_CODE_',
             store: deptStore,
-            queryMode: 'local',//获取本地数据
+            queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
             emptyText: '全部',
-            forceSelection: true,//输入错误，会显示一个最接近的值
-            fieldLabel: '选择作业区',
-            allowBlank: false,
+            forceSelection: true,
+            fieldLabel: '作业区',
             listeners: {
                 select: function (combo, records) {
                     if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        deptEquTypeStore.removeAll();
-                        deptEquipStore.removeAll();
-                        formPanel.getForm().findField('DEPT_EQUIP_TYPE_').setValue(null);
-                        formPanel.getForm().findField('DEPT_EQUIP_').setValue(null);
-                        selectDeptequType();
+                        _selectEquipType();
+                        _selectEquip();
                     }
                 }
             }
         }, {
             xtype: 'combo',
-            id: 'DEPT_EQUIP_TYPE_',
-            name: 'DEPT_EQUIP_TYPE_',
-            store: deptEquTypeStore,
-            queryMode: 'local',//获取本地数据
+            id: 'equipType',
+            name: 'equipType',
+            store: equipTypeStore,
+            queryMode: 'local',
             valueField: 'V_EQUTYPECODE',
             displayField: 'V_EQUTYPENAME',
             emptyText: '全部',
-            forceSelection: true,//输入错误，会显示一个最接近的值
+            forceSelection: true,
             fieldLabel: '设备类型',
-            allowBlank: false,
             listeners: {
                 select: function (combo, records) {
                     if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        deptEquipStore.removeAll();
-                        formPanel.getForm().findField('DEPT_EQUIP_').setValue(null);
-                        selectDeptequ();
+                        _selectEquip()
                     }
                 }
             }
         }, {
             xtype: 'combo',
-            id: 'DEPT_EQUIP_',
-            name: 'DEPT_EQUIP_',
-            store: deptEquipStore,
-            queryMode: 'local',//获取本地数据
+            id: 'equip',
+            name: 'equip',
+            store: equipStore,
+            queryMode: 'local',
             valueField: 'V_EQUCODE',
             displayField: 'V_EQUNAME',
             emptyText: '全部',
-            forceSelection: true,//输入错误，会显示一个最接近的值
+            forceSelection: true,
             fieldLabel: '设备名称'
         }, {
             xtype: 'datefield',
@@ -311,52 +304,43 @@ function _init() {
             return;
         }
     }
-
-    var form = Ext.getCmp('formPanel').getForm();
-    form.findField('ORG_').select(Ext.util.Cookies.get('v_orgCode'));//cookie厂矿
-    selectDept();
-    form.findField('DEPT_').select(Ext.util.Cookies.get('v_deptcode'));//cookie作业区
-    selectDeptequType();
-    selectDeptequ();
-    form.findField('TEST_FEE_').setValue("0");
-    form.isValid();//校验数据
+    Ext.getCmp('FTY_CODE_').setValue(Ext.util.Cookies.get('v_orgCode'));
+    _selectDept();
+    Ext.getCmp('DEPT_CODE_').setValue(Ext.util.Cookies.get('v_deptcode'));
+    _selectEquipType();
+    _selectEquip();
 
     Ext.getBody().unmask();
 }
 
-//通过厂矿查询作业区
-function selectDept() {
-    var deptStore = Ext.data.StoreManager.lookup('deptStore');
+function _selectDept() {
+    let deptStore = Ext.data.StoreManager.lookup('deptStore');
     deptStore.proxy.extraParams = {
-        'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-        'V_V_DEPTCODE': Ext.getCmp("ORG_").getValue(), //选取的厂矿的值
-        'V_V_DEPTCODENEXT': '%',
-        'V_V_DEPTTYPE': '主体作业区'
-    }
+        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+        V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
+        V_V_DEPTCODENEXT: '%',
+        V_V_DEPTTYPE: '主体作业区'
+    };
     deptStore.load();
-    Ext.getCmp("DEPT_").select(deptStore.first());
 }
 
-//通过作业区查询设备类型
-function selectDeptequType() {
-    var deptEquTypeStore = Ext.data.StoreManager.lookup('deptEquTypeStore');
-    deptEquTypeStore.proxy.extraParams = {
-        'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-        'V_V_DEPTCODENEXT': Ext.getCmp("DEPT_").getValue(), //选取的作业区的值
-    }
-    deptEquTypeStore.load();
-    Ext.getCmp("DEPT_EQUIP_TYPE_").select(deptEquTypeStore.first());
+function _selectEquipType() {
+    let equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
+    equipTypeStore.proxy.extraParams = {
+        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+        V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue()
+    };
+    equipTypeStore.load();
 }
 
-//通过作业区和设备类型查询设备名称
-function selectDeptequ() {
-    var deptEquipStore = Ext.data.StoreManager.lookup('deptEquipStore');
-    deptEquipStore.proxy.extraParams = {
-        'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-        'V_V_DEPTCODENEXT': Ext.getCmp("DEPT_").getValue(), //选取的作业区的值
-        'V_V_EQUTYPECODE': Ext.getCmp("DEPT_EQUIP_TYPE_").getValue(), //选取的设备类型的值
-    }
-    deptEquipStore.load();
+function _selectEquip() {
+    let equipStore = Ext.data.StoreManager.lookup('equipStore');
+    equipStore.proxy.extraParams = {
+        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+        V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
+        V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue()
+    };
+    equipStore.load();
 }
 
 //点击保存按钮
@@ -376,15 +360,14 @@ function _insert() {
         method : 'POST',
         params : {
             I_I_ID: P_ID,
-            V_V_ORGNAME: Ext.getCmp('ORG_').getRawValue(),
-            V_V_ORGCODE: Ext.getCmp('ORG_').getValue(),
-            V_V_DEPTNAME: Ext.getCmp('DEPT_').getRawValue(),
-            V_V_DEPTCODE: Ext.getCmp('DEPT_').getValue(),
-            V_V_EQUTYPENAME: Ext.getCmp('DEPT_EQUIP_TYPE_').getRawValue(),
-            V_V_EQUTYPECODE: Ext.getCmp('DEPT_EQUIP_TYPE_').getValue(),
-            V_V_EQUNAME: Ext.getCmp('DEPT_EQUIP_').getRawValue(),
-            V_V_EQUCODE: Ext.getCmp('DEPT_EQUIP_').getValue(),
-           // V_V_CHECKTIME: Ext.getCmp('TEST_OF_TIME_').getSubmitValue(),
+            V_V_ORGNAME: Ext.getCmp('FTY_CODE_').getRawValue(),
+            V_V_ORGCODE: Ext.getCmp('FTY_CODE_').getValue(),
+            V_V_DEPTNAME: Ext.getCmp('DEPT_CODE_').getRawValue(),
+            V_V_DEPTCODE: Ext.getCmp('DEPT_CODE_').getValue(),
+            V_V_EQUTYPENAME: Ext.getCmp('equipType').getRawValue(),
+            V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue(),
+            V_V_EQUNAME: Ext.getCmp('equip').getRawValue(),
+            V_V_EQUCODE: Ext.getCmp('equip').getValue(),
             V_V_CHECKTIME: date,
             V_V_CHECKPART: Ext.getCmp('CHECK_PARTS_').getSubmitValue(),
             V_V_CHECKDEPT: Ext.getCmp('TEST_UNIT_').getSubmitValue(),
@@ -393,13 +376,12 @@ function _insert() {
         },
         success : function(response) {
             var resp = Ext.JSON.decode(response.responseText);
-            if(resp.data.V_INFO =="SQLERRM"){
-                alert("新增失败");
-                return;
-            }else{
+            if(resp.success){
                 alert(resp.data.V_INFO);
                 _close();
-
+            }else{
+                alert("新增失败");
+                return;
             }
 
         }
