@@ -232,12 +232,12 @@ public class InfoService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_DDDL_GETURL(:V_V_LOGINNAME,:V_V_info,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_DDDL_GETURL(:V_V_LOGINNAME,:V_V_INFO,:V_CURSOR)}");
             cstmt.setString("V_V_LOGINNAME", LoginName);
-            cstmt.registerOutParameter("V_V_info", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("info", (String) cstmt.getObject("V_V_info"));
+            result.put("info", (String) cstmt.getObject("V_V_INFO"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
 
         } catch (SQLException e) {
