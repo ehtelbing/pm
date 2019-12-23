@@ -377,10 +377,12 @@ function _insert() {
         success : function(response) {
             var resp = Ext.JSON.decode(response.responseText);
             if(resp.success){
+                //Ext.MessageBox.alert('提示',resp.data.V_INFO);
                 alert(resp.data.V_INFO);
                 _close();
             }else{
-                alert("新增失败");
+                //Ext.MessageBox.alert('提示','新增失败');
+                alert('新增失败');
                 return;
             }
 

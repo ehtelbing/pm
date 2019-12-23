@@ -417,10 +417,12 @@ function _insert() {
         success : function(response) {
             var resp = Ext.JSON.decode(response.responseText);
             if(resp.success){
+               // Ext.MessageBox.alert('提示',resp.data.V_INFO);
                 alert(resp.data.V_INFO);
                 parent.returnValue = resp.planApply;
                 _close();
             }else{
+               // Ext.MessageBox.alert('提示','新增失败');
                 alert("修改失败");
                 return;
             }

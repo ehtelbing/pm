@@ -541,7 +541,7 @@ function _update() {
     var records = Ext.getCmp('planApplyPanel').getSelectionModel().getSelection();
 
     if (records.length == 0) {
-        Ext.MessageBox.alert('请选择一条数据', Ext.MessageBox.WARNING);
+        Ext.MessageBox.alert('提示', '请选择一条数据');
         return;
     }
 
@@ -579,7 +579,7 @@ function _delete() {
     var records = Ext.getCmp('planApplyPanel').getSelectionModel().getSelection();
 
     if (records.length == 0) {
-        Ext.MessageBox.alert('请选择一条数据', Ext.MessageBox.WARNING);
+        Ext.MessageBox.alert('提示', '请选择一条数据');
         return;
     }
 
@@ -600,13 +600,13 @@ function _delete() {
                         if (success) {
                             var data = Ext.decode(response.responseText);
                             if(data.success){
-                                alert(data.data.V_INFO);
+                                Ext.MessageBox.alert('提示',data.data.V_INFO);
                                 Ext.data.StoreManager.lookup('planApplyStore').remove(records[0]);//前台删除被删除数据
                             }else{
-                                Ext.MessageBox.alert('删除失败', Ext.MessageBox.ERROR);
+                                Ext.MessageBox.alert('提示', '删除失败');
                             }
                         } else {
-                            Ext.MessageBox.alert('删除失败', Ext.MessageBox.ERROR);
+                            Ext.MessageBox.alert('提示', '删除失败');
                         }
                     }
                 });
