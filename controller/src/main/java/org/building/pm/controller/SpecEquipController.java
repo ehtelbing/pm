@@ -705,6 +705,14 @@ public class SpecEquipController {
     @RequestMapping(value = "/excelCheckResult", method = RequestMethod.GET)
     @ResponseBody
     public void excelCheckResult(@RequestParam(value = "I_I_ID_LIST", required = false) List<String> I_I_ID_LIST,
+                                 @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
+                                 @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
+                                 @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
+                                 @RequestParam(value = "V_CHECKTIME_LIST", required = false) List<String> V_CHECKTIME_LIST,
+                                 @RequestParam(value = "V_CHECKPART_LIST", required = false) List<String> V_CHECKPART_LIST,
+                                 @RequestParam(value = "V_CHECKDEPT_LIST", required = false) List<String> V_CHECKDEPT_LIST,
+                                 @RequestParam(value = "V_FCHECKTIME_LIST", required = false) List<String> V_FCHECKTIME_LIST,
+                                 @RequestParam(value = "V_COST_LIST", required = false) List<String> V_COST_LIST,
                                String V_V_PERSONCODE,
                                String V_V_DEPTCODE,
                                String V_V_DEPTCODENEXT,
@@ -724,13 +732,15 @@ public class SpecEquipController {
             if(i== 0){
                 sheet.setColumnWidth(i, 2000);
             }else if(i ==8 ){
-                sheet.setColumnWidth(i, 2000);
+                sheet.setColumnWidth(i, 6000);
             }else if(i ==7 ){
                 sheet.setColumnWidth(i, 4000);
-            }else if(i ==7 ){
-                sheet.setColumnWidth(i, 4000);
+            }else if(i ==10 ){
+                sheet.setColumnWidth(i, 6000);
             }else if(i ==4 ){
                 sheet.setColumnWidth(i, 5000);
+            }else if(i ==9 ){
+                sheet.setColumnWidth(i, 4000);
             }else{
                 sheet.setColumnWidth(i, 8000);
             }
@@ -778,65 +788,79 @@ public class SpecEquipController {
         cell7.setCellStyle(style);
 
         HSSFCell cell8 = row.createCell((short) 7);
-        cell7.setCellValue("实际检定时间");
-        cell7.setCellStyle(style);
-
-        HSSFCell cell9 = row.createCell((short) 8);
-        cell8.setCellValue("预计下次检定时间");
+        cell8.setCellValue("实际检定时间");
         cell8.setCellStyle(style);
 
-        HSSFCell cell10 = row.createCell((short) 9);
-        cell9.setCellValue("检定费用(元)");
+        HSSFCell cell9 = row.createCell((short) 8);
+        cell9.setCellValue("预计下次检定时间");
         cell9.setCellStyle(style);
 
-        List<Map<String, Object>> planApplyList = new ArrayList<Map<String, Object>>();
+        HSSFCell cell10 = row.createCell((short) 9);
+        cell10.setCellValue("检定费用(元)");
+        cell10.setCellStyle(style);
+
+        List<Map<String, Object>> checkResultList = new ArrayList<Map<String, Object>>();
 
         //如果是选择了很多列
         if (I_I_ID_LIST.size() > 0) {
+
             for (int i = 0; i < I_I_ID_LIST.size(); i++) {
-                Map<String, Object> planApply = specEquipService.loadPlanApply(I_I_ID_LIST.get(i));
-                planApplyList.add(((List<Map<String, Object>>) planApply.get("list")).get(0));
+                Map<String, Object> v_deptName = new HashMap<String, Object>();
+
+                v_deptName.put("V_DEPTNAME", (String)V_DEPTNAME_LIST.get(i));
+                v_deptName.put("V_EQUTYPENAME", (String)V_EQUTYPENAME_LIST.get(i));
+                v_deptName.put("V_EQUNAME", (String)V_EQUNAME_LIST.get(i));
+                v_deptName.put("V_CHECKTIME", (String)V_CHECKTIME_LIST.get(i));
+                v_deptName.put("V_CHECKPART", (String)V_CHECKPART_LIST.get(i));
+                v_deptName.put("V_CHECKDEPT", (String)V_CHECKDEPT_LIST.get(i));
+                v_deptName.put("V_FCHECKTIME", (String)V_FCHECKTIME_LIST.get(i));
+                v_deptName.put("V_COST", (String)V_COST_LIST.get(i));
+
+                checkResultList.add(v_deptName);
             }
         } else {
             Map<String, Object> data = specEquipService.selectCheckResult(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, page.toString(), limit.toString());
 
-            planApplyList = (List<Map<String, Object>>) data.get("list");
+            checkResultList = (List<Map<String, Object>>) data.get("list");
         }
 
-        for (int j = 0; j < planApplyList.size(); j++) {
+        for (int j = 0; j < checkResultList.size(); j++) {
             row = sheet.createRow(j + 1);
             row.setHeightInPoints(25);
             HSSFCell cellContent = row.createCell(0);
             cellContent.setCellValue(j + 1);// 序号
 
             cellContent = row.createCell(1);
-            cellContent.setCellValue(planApplyList.get(j).get("V_DEPTNAME") == null ? "" : planApplyList.get(j).get("V_DEPTNAME").toString());// 作业区名称
+            cellContent.setCellValue(checkResultList.get(j).get("V_DEPTNAME") == null ? "" : checkResultList.get(j).get("V_DEPTNAME").toString());// 作业区名称
 
             cellContent = row.createCell(2);
-            cellContent.setCellValue(planApplyList.get(j).get("V_EQUTYPENAME") == null ? "" : planApplyList.get(j).get("V_EQUTYPENAME").toString());// 设备类型名称
+            cellContent.setCellValue(checkResultList.get(j).get("V_EQUTYPENAME") == null ? "" : checkResultList.get(j).get("V_EQUTYPENAME").toString());// 设备类型名称
 
             cellContent = row.createCell(3);
-            cellContent.setCellValue(planApplyList.get(j).get("V_EQUNAME") == null ? "" : planApplyList.get(j).get("V_EQUNAME").toString());// 设备名称
+            cellContent.setCellValue(checkResultList.get(j).get("V_EQUNAME") == null ? "" : checkResultList.get(j).get("V_EQUNAME").toString());// 设备名称
 
             cellContent = row.createCell(4);
-            cellContent.setCellValue(planApplyList.get(j).get("V_CHECKTIME") == null ? "" : planApplyList.get(j).get("V_CHECKTIME").toString());// 检定时间
+            cellContent.setCellValue(checkResultList.get(j).get("V_CHECKTIME") == null ? "" : checkResultList.get(j).get("V_CHECKTIME").toString());// 申请检定时间
 
             cellContent = row.createCell(5);
-            cellContent.setCellValue(planApplyList.get(j).get("V_CHECKPART") == null ? "" : planApplyList.get(j).get("V_CHECKPART").toString());// 检定部位
+            cellContent.setCellValue(checkResultList.get(j).get("V_CHECKPART") == null ? "" : checkResultList.get(j).get("V_CHECKPART").toString());// 申请检定部位
 
             cellContent = row.createCell(6);
-            cellContent.setCellValue(planApplyList.get(j).get("V_CHECKDEPT") == null ? "" : planApplyList.get(j).get("V_CHECKDEPT").toString());// 检定单位
+            cellContent.setCellValue(checkResultList.get(j).get("V_CHECKDEPT") == null ? "" : checkResultList.get(j).get("V_CHECKDEPT").toString());// 申请检定单位
 
             cellContent = row.createCell(7);
-            cellContent.setCellValue(planApplyList.get(j).get("V_COST") == null ? "" : planApplyList.get(j).get("V_COST").toString());// 检测费用
+            cellContent.setCellValue(checkResultList.get(j).get("V_FCHECKTIME") == null ? "" : checkResultList.get(j).get("V_FCHECKTIME").toString());// 实际检定时间
 
             cellContent = row.createCell(8);
-            cellContent.setCellValue(planApplyList.get(j).get("V_STATUS") == null ? "" : planApplyList.get(j).get("V_STATUS").toString());// 状态
+            cellContent.setCellValue("");// 预计下次检定时间
+
+            cellContent = row.createCell(9);
+            cellContent.setCellValue(checkResultList.get(j).get("V_COST") == null ? "" : checkResultList.get(j).get("V_COST").toString());// 检定费用
         }
 
         try {
             response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-            String fileName = new String("检定计划申请.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+            String fileName = new String("检定实绩录入.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
             response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
             OutputStream out = response.getOutputStream();
 
