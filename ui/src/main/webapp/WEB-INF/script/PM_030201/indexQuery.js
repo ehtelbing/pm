@@ -599,9 +599,6 @@ function OnButtonQuery() {
     })
 }
 
-function OnBtnGauntt() {
-}
-
 function OnButtonOut() {
 
 }

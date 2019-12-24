@@ -1,5 +1,6 @@
 package org.building.pm.controller;
 
+import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.service.QxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -371,41 +377,179 @@ public class QxController {
         Map result = qxService.PRO_PM_07_DEFECT_PART_PER(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE, V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
+
     @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_QXGZSEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_07_DEFECT_VIEW_QXGZSEL(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
-                                                         @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
-                                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                         @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
-                                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                         @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                                         @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
-                                                         @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
-                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
-                                                         @RequestParam(value="V_V_FZPERCODE") String V_V_FZPERCODE,
-                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                         HttpServletRequest request)
-            throws SQLException {
-        Map<String, Object> result = qxService.PRO_PM_07_DEFECT_VIEW_QXGZSEL(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE,
-                V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE, V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE,V_V_FZPERCODE,V_V_PAGE,V_V_PAGESIZE);
-        return result;
-    }
-    @RequestMapping(value = "PRO_DEFECT_SOURCE_COUNT_SEL", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> PRO_DEFECT_SOURCE_COUNT_SEL(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
                                                              @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
                                                              @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                                              @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
                                                              @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                                                              @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                             @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
                                                              @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
                                                              @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
-                                                             @RequestParam(value="V_V_FZPERCODE") String V_V_FZPERCODE,
+                                                             @RequestParam(value = "V_V_FZPERCODE") String V_V_FZPERCODE,
+                                                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                              HttpServletRequest request)
             throws SQLException {
+        Map<String, Object> result = qxService.PRO_PM_07_DEFECT_VIEW_QXGZSEL(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE,
+                V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE, V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE, V_V_FZPERCODE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
+
+    @RequestMapping(value = "/Defect_TypQ", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void Defect_TypQ(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
+                            @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                            @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+                            @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                            @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                            @RequestParam(value = "V_V_FZPERCODE") String V_V_FZPERCODE,
+                            HttpServletResponse response) throws SQLException {
+
+        List list = new ArrayList();
+        Map<String, Object> data = qxService.PRO_PM_07_DEFECT_VIEW_TYPQ(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE.equals("all") ? "%" : V_V_DEPTCODE,
+                V_V_EQUTYPECODE.equals("all") ? "%" : V_V_EQUTYPECODE, V_V_EQUCODE.equals("all") ? "%" : V_V_EQUCODE, V_V_STATECODE.equals("all") ? "%" : V_V_STATECODE,
+                V_V_SOURCECODE.equals("all") ? "%" : V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE, V_V_FZPERCODE, "1", "1000000");
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("WBS编码");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("维修工程项目名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("缺陷明细");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("处理意见");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("缺陷日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("负责人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("缺陷状态");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("缺陷来源");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("WEBCODE") == null ? "" : map.get("WEBCODE").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("WBSNAME") == null ? "" : map.get("WBSNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("V_DEFECTLIST") == null ? "" : map.get("V_DEFECTLIST").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("V_IDEA") == null ? "" : map.get("V_IDEA").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("D_DEFECTDATE") == null ? "" : map.get("D_DEFECTDATE").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("V_PERNAME") == null ? "" : map.get("V_PERNAME").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("V_SOURCENAME") == null ? "" : map.get("V_SOURCENAME").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("缺陷来源.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_TYPQ", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_VIEW_TYPQ(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
+                                                          @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+                                                          @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                          @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                          @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                          @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                          @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+                                                          @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                                                          @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                          @RequestParam(value = "V_V_FZPERCODE") String V_V_FZPERCODE,
+                                                          @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                          @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                          HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = qxService.PRO_PM_07_DEFECT_VIEW_TYPQ(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE,
+                V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE, V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE, V_V_FZPERCODE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
+
+
+    @RequestMapping(value = "PRO_DEFECT_SOURCE_COUNT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DEFECT_SOURCE_COUNT_SEL(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
+                                                           @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+                                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                           @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                           @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                           @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                                                           @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                           @RequestParam(value = "V_V_FZPERCODE") String V_V_FZPERCODE,
+                                                           HttpServletRequest request)
+            throws SQLException {
         Map<String, Object> result = qxService.PRO_DEFECT_SOURCE_COUNT_SEL(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE,
-                V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE, V_V_DEFECTLIST, X_PERSONCODE,V_V_FZPERCODE);
+                V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE, V_V_DEFECTLIST, X_PERSONCODE, V_V_FZPERCODE);
         return result;
     }
 }
