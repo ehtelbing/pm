@@ -21,10 +21,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.security.NoSuchAlgorithmException;
@@ -34,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Created by zjh on 2019-12-17.
@@ -134,6 +133,56 @@ public class SpecEquipController {
         return result;
     }
 
+    //附件类型查询
+    @RequestMapping(value = "/selectAttachDic", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectAttachDic(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = specEquipService.selectAttachDic();
+        List<Map<String, Object>> attachDicList = (List<Map<String, Object>>) result.get("list");
+        for (Map<String, Object> attachDic : attachDicList) {
+            attachDic.put("leaf", true);//设置为树的叶子，最底层
+        }
+
+        return result;
+    }
+
+    //附件查询
+    @RequestMapping(value = "/selectEquFilesAttach", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectEquFilesAttach(@RequestParam(value = "V_V_ECODE") String V_V_ECODE,
+                                               @RequestParam(value = "V_V_ATTACH_TYPE") String V_V_ATTACH_TYPE,
+                                               Integer page,
+                                               Integer limit,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = specEquipService.selectEquFilesAttach(V_V_ECODE, V_V_ATTACH_TYPE, page.toString(), limit.toString());
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //附件名称查询
+    @RequestMapping(value = "/selectAttachNode", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectAttachNode(@RequestParam(value = "V_V_CODE") String V_V_CODE,
+                                                @RequestParam(value = "V_V_ATTACH_TYPE") String V_V_ATTACH_TYPE,
+                                                Integer page,
+                                                Integer limit,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        Map result = specEquipService.selectAttachNode(V_V_CODE, V_V_ATTACH_TYPE, page.toString(), limit.toString());
+        return result;
+    }
+
+
     //导出检定计划查询申请
     @RequestMapping(value = "/excelPlanApply", method = RequestMethod.GET)
     @ResponseBody
@@ -156,17 +205,17 @@ public class SpecEquipController {
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
         for (int i = 0; i < 9; i++) {
-            if(i== 0){
+            if (i == 0) {
                 sheet.setColumnWidth(i, 2000);
-            }else if(i ==8 ){
+            } else if (i == 8) {
                 sheet.setColumnWidth(i, 2000);
-            }else if(i ==7 ){
+            } else if (i == 7) {
                 sheet.setColumnWidth(i, 4000);
-            }else if(i ==7 ){
+            } else if (i == 7) {
                 sheet.setColumnWidth(i, 4000);
-            }else if(i ==4 ){
+            } else if (i == 4) {
                 sheet.setColumnWidth(i, 5000);
-            }else{
+            } else {
                 sheet.setColumnWidth(i, 8000);
             }
         }
@@ -594,6 +643,66 @@ public class SpecEquipController {
         B_B_CHECKREPORT_InputStream.close();
 
         result.put("success", true);
+        return result;
+    }
+
+
+    //导出附件
+    @RequestMapping(value = "/loadEnclosure", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> loadEnclosure(
+            @RequestParam(value = "V_ID") String V_ID,
+            @RequestParam(value = "V_FILENAME") String V_FILENAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data= specEquipService.loadEnclosure(V_ID);
+        Map result = new HashMap();
+
+        String agent = (String) request.getHeader("USER-AGENT");
+        if (agent != null && agent.toLowerCase().indexOf("firefox") > 0) {// 兼容火狐中文文件名下载
+            V_FILENAME = "=?UTF-8?B?" + (new String(Base64.encodeBase64(V_FILENAME.getBytes("UTF-8")))) + "?=";
+        } else {
+            V_FILENAME = java.net.URLEncoder.encode(V_FILENAME, "UTF-8");
+        }
+        response.reset();
+        response.setHeader("Content-Disposition", "attachment; filename=" + V_FILENAME);// 下载模式
+
+        InputStream fileStream = ((Blob) data.get("B_CONTENT")).getBinaryStream();
+        BufferedInputStream reader = new BufferedInputStream(fileStream);
+        BufferedOutputStream writer = new BufferedOutputStream(response.getOutputStream());
+
+        byte[] bytes = new byte[1024 * 1024];
+        int length = reader.read(bytes);
+        while ((length > 0)) {
+            writer.write(bytes, 0, length);
+            length = reader.read(bytes);
+        }
+        reader.close();
+        writer.close();
+
+        result.put("success",true);
+        return result;
+
+    }
+
+    //报废设备查询
+    @RequestMapping(value = "/selectScrapGet", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectScrapGet(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                               @RequestParam(value = "V_V_BDATE") String V_V_BDATE,
+                                               @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
+                                               @RequestParam(value = "V_V_STATUS") String V_V_STATUS,
+                                               Integer page,
+                                               Integer limit,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map result = specEquipService.selectScrapGet(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, page.toString(), limit.toString());
         return result;
     }
 

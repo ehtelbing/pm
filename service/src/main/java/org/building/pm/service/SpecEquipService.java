@@ -305,6 +305,7 @@ public class SpecEquipService {
         return result;
     }
 
+
     //检定实绩(实际检定时间、检测费用)录入
     public HashMap setCheckResult(String I_I_ID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE, String V_V_CHECKTIME, String V_V_CHECKPART, String V_V_CHECKDEPT, String V_V_COST, String I_I_PLANID, String V_V_PERSONCODE ) throws SQLException {
 
@@ -522,6 +523,165 @@ public class SpecEquipService {
         }
         logger.debug("result:" + result);
         logger.info("end deleteEquipMove");
+        return result;
+    }
+
+    //附件类型查询
+    public HashMap selectAttachDic() throws SQLException {
+
+        logger.info("begin selectAttachDic");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_ATTACH_DIC_GET(:V_CURSOR)}");
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectAttachDic");
+        return result;
+    }
+
+    //附件查询
+    public HashMap selectEquFilesAttach(String V_V_ECODE, String V_V_ATTACH_TYPE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin selectEquFilesAttach");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_EQU_ATTACH_GET(:V_V_ECODE,:V_V_ATTACH_TYPE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_ECODE", V_V_ECODE);
+            cstmt.setString("V_V_ATTACH_TYPE", V_V_ATTACH_TYPE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectEquFilesAttach");
+        return result;
+    }
+
+    //附件名称查询
+    public HashMap selectAttachNode(String V_V_CODE, String V_V_ATTACH_TYPE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin selectAttachNode");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_EQU_ATTACH_NODE_GET(:V_V_CODE,:V_V_ATTACH_TYPE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_CODE", V_V_CODE);
+            cstmt.setString("V_V_ATTACH_TYPE", V_V_ATTACH_TYPE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectAttachNode");
+        return result;
+    }
+
+    //导出附件
+    public HashMap loadEnclosure(String V_ID) throws SQLException {
+
+        logger.info("begin loadEnclosure");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_EQU_ATTACH_FILE_GET(:V_ID,:B_CONTENT)}");
+            cstmt.setString("V_ID", V_ID);
+            cstmt.registerOutParameter("B_CONTENT", OracleTypes.BLOB);
+            cstmt.execute();
+            result.put("B_CONTENT", ((Blob) cstmt.getObject("B_CONTENT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadEnclosure");
+        return result;
+
+    }
+
+    //报废设备查询
+    public HashMap selectScrapGet(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_EQUCODE, String V_V_BDATE, String V_V_EDATE, String V_V_STATUS, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin selectScrapGet");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_EQU_FILES_SCRAP_GET(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTCODENEXT,:V_V_EQUTYPECODE,:V_V_EQUTYPENAME,:V_V_EQUCODE,:V_V_BDATE,:V_V_EDATE,:V_V_STATUS,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUTYPENAME", V_V_EQUTYPENAME);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_BDATE", V_V_BDATE);
+            cstmt.setString("V_V_EDATE", V_V_EDATE);
+            cstmt.setString("V_V_STATUS", V_V_STATUS);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectScrapGet");
         return result;
     }
 
