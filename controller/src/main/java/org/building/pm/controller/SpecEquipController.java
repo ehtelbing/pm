@@ -1,6 +1,8 @@
 package org.building.pm.controller;
 
+import com.ctc.wstx.util.StringUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.Region;
@@ -200,8 +202,6 @@ public class SpecEquipController {
                                Integer limit,
                                HttpServletRequest request,
                                HttpServletResponse response) throws Exception {
-        V_V_STATUS = URLDecoder.decode(V_V_STATUS, "UTF-8");
-
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
         for (int i = 0; i < 9; i++) {
@@ -278,6 +278,7 @@ public class SpecEquipController {
                 planApplyList.add(((List<Map<String, Object>>) planApply.get("list")).get(0));
             }
         } else {
+            V_V_STATUS = URLDecoder.decode(V_V_STATUS, "UTF-8");
             Map<String, Object> data = specEquipService.selectPlanApply(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, page.toString(), limit.toString());
 
             planApplyList = (List<Map<String, Object>>) data.get("list");
@@ -425,23 +426,15 @@ public class SpecEquipController {
                                Integer limit,
                                HttpServletRequest request,
                                HttpServletResponse response) throws Exception {
-        V_V_STATUS = URLDecoder.decode(V_V_STATUS, "UTF-8");
-
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 11; i++) {
             if(i== 0){
                 sheet.setColumnWidth(i, 2000);
-            }else if(i ==8 ){
-                sheet.setColumnWidth(i, 2000);
-            }else if(i ==7 ){
-                sheet.setColumnWidth(i, 4000);
-            }else if(i ==7 ){
-                sheet.setColumnWidth(i, 4000);
-            }else if(i ==4 ){
-                sheet.setColumnWidth(i, 5000);
+            }else if(i ==10 ){
+                sheet.setColumnWidth(i, 3000);
             }else{
-                sheet.setColumnWidth(i, 8000);
+                sheet.setColumnWidth(i, 6500);
             }
         }
 
@@ -511,11 +504,13 @@ public class SpecEquipController {
                 equipMoveList.add(((List<Map<String, Object>>) EquipMove.get("list")).get(0));
             }
         } else {
-            Map<String, Object> data = specEquipService.selectPlanApply(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, page.toString(), limit.toString());
-
+            V_V_STATUS = URLDecoder.decode(V_V_STATUS, "UTF-8");
+            //V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, page.toString(), limit.toString()
+            Map<String, Object> data = specEquipService.selectEquipMoveApply(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, page.toString(), limit.toString());
+            System.out.println(data.get("list"));
             equipMoveList = (List<Map<String, Object>>) data.get("list");
         }
-
+            System.out.println(equipMoveList);
         for (int j = 0; j < equipMoveList.size(); j++) {
             row = sheet.createRow(j + 1);
             row.setHeightInPoints(25);
