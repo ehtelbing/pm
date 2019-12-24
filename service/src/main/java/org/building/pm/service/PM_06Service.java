@@ -96,6 +96,35 @@ public class PM_06Service {
     }
 
 
+
+    //  λ   ƹ
+    public HashMap PRO_TYPEDESC_SEL(String V_V_ORGCODE, String V_V_DEPTCODE) throws SQLException {
+        logger.info("begin PRO_TYPEDESC_SEL");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_TYPEDESC_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_TYPEDESC_SEL");
+        return result;
+    }
+
     //�豸������
     public HashMap PRO_GET_DEPTEQUTYPE_PER(String V_V_PERSONCODE, String V_V_DEPTCODENEXT) throws SQLException {
 
@@ -1080,4 +1109,36 @@ public class PM_06Service {
         logger.info("end PRO_PLAN_YEAR_SEL_BYGUID");
         return result;
     }
+
+    public HashMap PRO_YEAR_PLAN_SEL_GTT(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_CXCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+        logger.info("begin PRO_YEAR_PLAN_SEL_GTT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_YEAR_PLAN_SEL_GTT" + "(:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_CXCODE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SUM,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_CXCODE", V_V_CXCODE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", cstmt.getString("V_V_SUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_YEAR_PLAN_SEL_GTT");
+        return result;
+    }
+
 }

@@ -3,10 +3,10 @@ var V_V_PERSONNAME = Ext.util.Cookies.get('v_personname');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
 
 var states = [];
-states.push({id: '全部', value: '%'});
-states.push({id: '报警', value: '报警'});
-states.push({id: '已转出', value: '已转出'});
-states.push({id: '已关闭', value: '已关闭'});
+// states.push({id: '全部', value: '%'});
+// states.push({id: '报警', value: '报警'});
+// states.push({id: '已转出', value: '已转出'});
+// states.push({id: '已关闭', value: '已关闭'});
 // states.push({id: '0', value: ''});
 
 
@@ -649,11 +649,11 @@ function WinClose(){
 function check(value, metaData, record) {
     return '<input type="checkbox" checked="checked" name="GridPrint" id=' + record.raw.I_ID + '></input>'
 }
+
 function renderRQ(v, metaData, record) {
     metaData.style = "color: " + record.data.YS;
     return Ext.Date.format(Ext.Date.parse(v, "Y-m-d H:i:s"), 'Y-m-d H:i');
 }
-
 
 function left(value, metaData, record) {
     metaData.style = "text-align:left; color: " + record.data.YS;

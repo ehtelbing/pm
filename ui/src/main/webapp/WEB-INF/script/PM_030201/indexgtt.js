@@ -1,12 +1,13 @@
 ﻿var dt = new Date();
 var thisYear = dt.getFullYear();
-var thisMonth = dt.getMonth() + 1;
+var thisMonth = dt.getMonth()
 var thisDate = dt.getDate();
 var years = [];
 var processKey = "";
 var V_STEPNAME = "";
-var V_NEXT_SETP = "";
+var V_NEXT_SETP= "";
 var yearguid = '';
+
 
 var cmItems = [];
 var ganttdata = [];
@@ -14,51 +15,50 @@ var vStart = '';
 var vEnd = '';
 var stime = '';
 var etime = '';
+
 //初始化时间参数
 var today = new Date(Ext.Date.format(new Date(), 'Y-m-d'));
 
 //年份
-for (var i = 2018; i <= thisYear + 1; i++) {
+for(var i = 2018; i <= thisYear + 1; i++){
     years.push({displayField: i, valueField: i});
 }
 
-var yearStore = Ext.create("Ext.data.Store", {
-    storeId: 'yearStore',
-    fields: ['displayField', 'valueField'],
-    data: years,
-    proxy: {
-        type: 'memory',
-        reader: {type: 'json'}
+var yearStore = Ext.create("Ext.data.Store",{
+   storeId:'yearStore',
+    fields:['displayField','valueField'],
+    data:years,
+    proxy:{
+       type:'memory',
+        reader:{type:'json'}
     }
 });
+Ext.onReady()(function () {
+  Ext.QuickTips.init();
 
-Ext.onReady(function () {
-    Ext.QuickTips.init();
-    /* Ext.getBody().mask('<p>页面加载中...</p>');*/
-
-    //厂矿计划数据加载
-    var ckStore = Ext.create('Ext.data.Store', {
-        autoLoad: true,
-        storeId: 'ckStore',
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODE': Ext.util.Cookies.get('v_orgCode'),
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '基层单位'
-            }
-        }
+  //厂矿计划数据加载
+    var ckStore = Ext.create("Ext.data.Store",{
+       autoLoad:true,
+       storeId:'ckStore',
+       fields:['V_DEPTCODE','V_DEPTNAME'],
+       proxy:{
+           type:'ajax',
+           async:false,
+           url:AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+           actionMethods:{
+               read:'POST'
+           },
+           reader:{
+               type: 'json',
+               root: 'list'
+           },
+           extraParams:{
+               'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+               'V_V_DEPTCODE': Ext.util.Cookies.get('v_orgCode'),
+               'V_V_DEPTCODENEXT': '%',
+               'V_V_DEPTTYPE': '基层单位'
+           }
+       }
     });
 
     //作业区加载
@@ -116,37 +116,18 @@ Ext.onReady(function () {
         }
     });
 
-    var fzPerStore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'fzPerStore',
-        fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
-
-    //表格信息加载
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         pageSize: 50,
         autoLoad: false,
         fields: ['V_GUID', 'V_YEARID', 'V_YEAR', 'V_ORGCODE',
             'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_CXCODE', 'V_CXNAME',
-            'V_ZY', 'V_STATE', 'V_DEL', 'V_INPER', 'V_INPERNAME', 'V_INDATE',
-            'V_JHTJSJ', 'V_JHJGSJ', 'V_JHGQ', 'V_COUNT', 'V_EQUCODE', 'V_EQUNAME', 'V_BASENAME', 'V_ZYMC','V_YEARNAME'],
+            'V_STATE', 'V_DEL', 'V_INPER', 'V_INPERNAME', 'V_INDATE',
+            'V_JHTJSJ', 'V_JHJGSJ', 'V_JHGQ', 'V_COUNT', 'V_EQUCODE', 'V_EQUNAME', 'V_BASENAME', 'V_ZYMC'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_06/PRO_YEAR_PLAN_SEL',
+            url: AppUrl + 'PM_06/PRO_YEAR_PLAN_SEL_GTT',
             actionMethods: {
                 read: 'POST'
             },
@@ -222,29 +203,7 @@ Ext.onReady(function () {
             displayField: 'V_CXNAME',
             valueField: 'V_CXCODE',
             labelWidth: 80
-        }, {
-            xtype: 'combo',
-            id: "zy",
-            store: zyStore,
-            editable: false,
-            queryMode: 'local',
-            fieldLabel: '专业',
-            displayField: 'V_ZYMC',
-            valueField: 'V_GUID',
-            labelWidth: 80
-        }, {
-            xtype: 'combo',
-            id: 'fzPer',
-            store: fzPerStore,
-            editable: false,
-            queryMode: 'local',
-            fieldLabel: '负责人',
-            displayField: 'V_PERSONNAME',
-            valueField: 'V_PERSONCODE',
-            margin: '5 5 5 10',
-            labelWidth: 60,
-            labelAlign: 'right'
-        }, {
+        },  {
             xtype: 'button',
             text: '查询',
             style: ' margin: 5px 0px 0px 10px',
@@ -283,56 +242,6 @@ Ext.onReady(function () {
         ]
     });
 
-    var grid = Ext.create('Ext.grid.Panel', {
-        id: 'grid',
-        region: 'center',
-        width: '70%',
-        columnLines: true,
-        store: gridStore,
-        autoScroll: true,
-        selType: 'checkboxmodel',
-        style: 'text-align:center',
-        height: 400,
-        selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
-            selType: 'checkboxmodel',
-            mode: 'SIMPLE'
-        },
-        columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            /*{text: '年计划编号', width: 100, dataIndex: 'V_YEARID', align: 'center', renderer: atleft},*/
-            {text: '产线', width: 160, dataIndex: 'V_CXNAME', align: 'center', renderer: atleft},
-            {text: '年计划名称', width: 140, dataIndex: 'V_YEARNAME', align: 'center', renderer: atleft},
-            {text: '检修内容', width: 200, dataIndex: 'V_COUNT', align: 'center', renderer: atleft},
-            {text: '计划开工时间', width: 140, dataIndex: 'V_JHTJSJ', align: 'center', renderer: atleft},
-          //  {text: '计划竣工时间', width: 140, dataIndex: 'V_JHJGSJ', align: 'center', renderer: atleft},
-            {text: '计划工期', width: 120, dataIndex: 'V_JHGQ', align: 'center', renderer: atleft},
-            {text: '专业', width: 100, dataIndex: 'V_ZYMC', align: 'center', renderer: atleft},
-            {text: '状态', width: 100, dataIndex: 'V_BASENAME', align: 'center', renderer: lookFlow}],
-        bbar: [{
-            id: 'page',
-            xtype: 'pagingtoolbar',
-            dock: 'bottom',
-            displayInfo: true,
-            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-            emptyMsg: '没有记录',
-            store: 'gridStore'
-        }], listeners: {itemClick: OnGridClick}
-    });
-
-    var gpanel = Ext.create('Ext.panel.Panel', {
-        id: 'rpanel',
-        region: 'south',
-        layout: 'border',
-        width: '100%',
-        height: '30%',
-        items: []
-    });
-
-    Ext.create('Ext.container.Viewport', {
-        id: "id",
-        layout: 'border',
-        items: [panel, grid, gpanel]
-    });
-
     Ext.data.StoreManager.lookup('ckStore').on('load', function () {
         Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
         Ext.data.StoreManager.lookup('zyqStore').load({
@@ -363,34 +272,6 @@ Ext.onReady(function () {
         });
         Ext.getCmp('cx').select(Ext.data.StoreManager.lookup('cxStore').getAt(0));
         Ext.data.StoreManager.lookup('zyStore').load();
-    })
-
-    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
-        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
-        Ext.data.StoreManager.lookup('zyStore').insert(0, {
-            V_ZYMC: '--全部--',
-            V_GUID: '%'
-        });
-        Ext.data.StoreManager.lookup('fzPerStore').load({
-            params: {
-                V_V_ORGCODE: Ext.getCmp('ck').getValue(),
-                V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
-                V_V_REPAIRCODE: '',
-                V_V_FLOWTYPE: 'YearPlan',
-                V_V_FLOW_STEP: 'start',
-                V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_SPECIALTY: Ext.getCmp('zy').getValue(),
-                V_V_WHERE: '通过'
-            }
-        });
-        OnButtonQuery();
-    });
-
-    Ext.data.StoreManager.lookup('fzPerStore').on('load', function () {
-        Ext.getCmp('fzPer').select(Ext.data.StoreManager.lookup('fzPerStore').getAt(0));
-        processKey = Ext.data.StoreManager.lookup('fzPerStore').getProxy().getReader().rawData.RET;
-        V_STEPNAME = Ext.data.StoreManager.lookup('fzPerStore').getAt(0).data.V_V_FLOW_STEPNAME;
-        V_NEXT_SETP = Ext.data.StoreManager.lookup('fzPerStore').getAt(0).data.V_V_NEXT_SETP;
     })
 
     Ext.getCmp('ck').on('select', function () {
@@ -430,71 +311,40 @@ Ext.onReady(function () {
         OnButtonQuery();
     });
 
-    Ext.getCmp('zy').on('select', function () {
-        Ext.data.StoreManager.lookup('fzPerStore').load({
-            params: {
-                V_V_ORGCODE: Ext.getCmp('ck').getValue(),
-                V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
-                V_V_REPAIRCODE: '',
-                V_V_FLOWTYPE: 'YearPlan',
-                V_V_FLOW_STEP: 'start',
-                V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_SPECIALTY: Ext.getCmp('zy').getValue(),
-                V_V_WHERE: '通过'
-            }
-        });
-        OnButtonQuery();
-    });
-
-    Ext.data.StoreManager.lookup('gridStore').on('load', function () {
-        if (Ext.data.StoreManager.lookup('gridStore').data.items.length > 0) {
-            yearguid = Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID;
-        }
-        OnShow();
-    });
 
 });
 
-function beforeloadStore(store) {
+function beforeloadStore(store){
     store.proxy.extraParams.V_V_YEAR = Ext.getCmp('year').getValue();
     store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp('ck').getValue();
     store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp('zyq').getValue();
     store.proxy.extraParams.V_V_CXCODE = Ext.getCmp('cx').getValue();
-    store.proxy.extraParams.V_V_ZYCODE = Ext.getCmp('zy').getValue();
     store.proxy.extraParams.V_V_ZTCODE = '%';
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
 }
 
-
-
-function OnButtonQuery() {
+function OnButtonQuery(){
     Ext.data.StoreManager.lookup('gridStore').currentPage = 1;
-    Ext.data.StoreManager.lookup('gridStore').load({
-        params: {
-            V_V_YEAR: Ext.getCmp('year').getValue(),
-            V_V_ORGCODE: Ext.getCmp('ck').getValue(),
+    Ext.data.StoremManager.lookup('gridStore').load({
+        params:{
+            V_V_YEAR:Ext.getCmp('year').getValue(),
+            V_V_ORGCODE:Ext.getCmp('cl').getValue(),
             V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
             V_V_CXCODE: Ext.getCmp('cx').getValue(),
-            V_V_ZYCODE: Ext.getCmp('zy').getValue(),
             V_V_ZTCODE: '%',
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
     })
 }
-
 function OnButtonAdd() {
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
     window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + newGuid(), 'PM_03020101', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
-/**
- * 创建Guid
- * @return
- */
-function newGuid() {
+function newGuid(){
     var guid = thisYear + '-' + thisMonth + '-' + thisDate;
     for (var i = 1; i <= 32; i++) {
         var n = Math.floor(Math.random() * 16.0).toString(16);
@@ -505,7 +355,8 @@ function newGuid() {
     return guid;
 }
 
-function OnButtonEdit() {
+function OnButtonEdit(){
+
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
     if (seldata.length != 1) {
         alert('请选择一条数据进行修改！');
@@ -546,24 +397,12 @@ function OnButtonDel() {
     }
 }
 
-function OnShow() {
-    Ext.getCmp('rpanel').removeAll();
-    pageFunction.QueryGanttData();
-}
-
-function OnGridClick(s, record) {
-    yearguid = record.data.V_GUID;
-    Ext.getCmp('rpanel').removeAll();
-    pageFunction.QueryGanttData();
-}
 
 var pageFunction = {
-    /**
-     * 甘特图动态渲染
-     */
-    CreateGantt: function () {
+
+    CreateGannt:function () {
         cmItems = [];
-        var starttime = '';
+        var starrttime = '';
         var endtime = '';
         for (var i = 0; i < ganttdata.length; i++) {
             if (i == 0) {
@@ -578,12 +417,11 @@ var pageFunction = {
                 }
             }
         }
-        vStart = starttime;
+        vStart = starrttime;
         vEnd = endtime;
-        var vTmpDate = new Date(vStart.getFullYear(), vStart.getMonth(), vStart.getDate());
+        var vTmpDate = new Date(vStart.getFullYear(),vStart.getMonth());
         var dateItems = [];
         var vmonth = vTmpDate.getMonth();
-        var vTmpMonth;
         while (vTmpDate <= vEnd) {
             vTmpMonth = vTmpDate.getMonth();
             var vzm = '';
@@ -621,48 +459,47 @@ var pageFunction = {
                 columns: dateItems
             });
         }
-        cmItems.push({
-            text: '',
-            width: 0,
-            dataIndex: 'MYCOLOR',
-            renderer: pageFunction.IndexShow
-        });
-        var ganttStore = Ext.create("Ext.data.Store", {
-            storeId: 'ganttStore',
-            fields: ['V_YEARGUID', 'V_CXCODE', 'V_CXNAME', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUFLAG', 'V_COUNT',
+            cmTtems.push({
+                text:'',
+                width:0,
+                dataIndex:'MYCOLOR',
+                renderer: pageFunction.IndexShow()
+            });
+        var ganttStore = Ext.create("Ext.data.Store",{
+            storeId:'ganttStore',
+            fields:['V_YEAR', 'V_CXCODE', 'V_CXNAME', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUFLAG', 'V_COUNT',
                 'V_JHTJSJ', 'V_JHJGSJ', 'V_JHGQ', 'V_GUID', 'V_ZYMC'],
             data: ganttdata,
-            proxy: {
-                type: 'memory',
-                reader: {
-                    type: 'json'
+            proxy:{
+                type:'memory',
+                reader:{
+                    type:'json'
                 }
             }
         });
-        var ganttgrid = Ext.create('Ext.grid.Panel', {
-            id: 'ganttgrid',
-            store: ganttStore,
-            region: 'center',
-            height: 400,
-            columnLines: true,
+        var ganttgrid = Ext.create('Ext.grid.Panel',{
+            id:'ganttgrid',
+            store:ganttStore,
+            region:'center',
+            columnLines:true,
             columns: cmItems
         });
         Ext.getCmp('rpanel').add(ganttgrid);
     },
-    QueryGanttData: function () {
-        ganttdata = [];
+    QueryGanttData:function () {
+        genttdata = [];
         Ext.Ajax.request({
-            url: AppUrl + 'PM_06/PRO_YEAR_PLAN_C_SEL',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID: yearguid
+            url:AppUrl + 'PRO_YEAR_PLAN_SEL_GTT',
+            method:'POST',
+            async:false,
+            params:{
+                V_YEAR:
             },
-            success: function (resp) {
+            success:function(resp){
                 var resp = Ext.decode(resp.responseText);
                 ganttdata = resp.list;
-                if (resp.list.length > 0) {
-                    pageFunction.CreateGantt();
+                if(resp.list.length > 0){
+                    pageFunction.GreateGantt();
                 }
             }
         });
@@ -758,7 +595,6 @@ var pageFunction = {
         }
     }
 };
-
 function a1(id) {
     var oson = document.getElementById(id);
     with (oson) {
@@ -788,10 +624,6 @@ function timelfet(value, metaDate, record, rowIndex, colIndex, store) {
     return '<div date-qtip="' + value + '" >' + value.toString().substring(0, 10) + '</div>';
 }
 
-function lookFlow(value, metaData, record, rowIndex, colIndex, store) {
-    metaData.style = "text-align:left;";
-    return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + value + '</a>';
-}
 
 function _preViewProcess(businessKey) {
     var ProcessInstanceId = '';
@@ -834,61 +666,46 @@ function btnFlowStart() {
         alert('请选择至少一条数据进行上报！');
         return;
     } else {
+
         for (var k = 0; k < chodata.length; k++) {
             //流程发起
             Ext.Ajax.request({
-                url: AppUrl + 'PM_06/PRO_PLAN_YEAR_SEL_BYGUID',
-                method: 'POST',
+                url: AppUrl + 'Activiti/StratProcess',
                 async: false,
+                method: 'post',
                 params: {
-                    V_V_GUID: chodata[k].data.V_GUID
+                    parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                    parVal: [Ext.util.Cookies.get('v_personcode'), chodata[k].data.V_GUID, Ext.getCmp('fzPer').getValue(), "请审批!", chodata[k].data.V_COUNT, chodata[k].data.V_YEARID, "请审批！", "YearPlan"],
+                    processKey: processKey,
+                    businessKey: chodata[k].data.V_GUID,
+                    V_STEPCODE: 'Start',
+                    V_STEPNAME: V_STEPNAME,
+                    V_IDEA: '请审批！',
+                    V_NEXTPER: Ext.getCmp('fzPer').getValue(),
+                    V_INPER: Ext.util.Cookies.get('v_personcode')
                 },
-                success: function (resp) {
-                    var resp = Ext.decode(resp.responseText);
-                    if (resp.V_INFO == 'SUCCESS') {
+                success: function (response) {
+                    if (Ext.decode(response.responseText).ret == 'OK') {
                         Ext.Ajax.request({
-                            url: AppUrl + 'Activiti/StratProcess',
+                            url: AppUrl + 'PM_06/PRO_PLAN_YEAR_STATE_SET',
+                            method: 'POST',
                             async: false,
-                            method: 'post',
                             params: {
-                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), chodata[k].data.V_GUID, Ext.getCmp('fzPer').getValue(), "请审批!", chodata[k].data.V_COUNT, chodata[k].data.V_YEARID, "请审批！", "YearPlan"],
-                                processKey: processKey,
-                                businessKey: chodata[k].data.V_GUID,
-                                V_STEPCODE: 'Start',
-                                V_STEPNAME: V_STEPNAME,
-                                V_IDEA: '请审批！',
-                                V_NEXTPER: Ext.getCmp('fzPer').getValue(),
-                                V_INPER: Ext.util.Cookies.get('v_personcode')
+                                V_V_GUID: chodata[k].get("V_GUID"),
+                                V_V_STATECODE: '20'
                             },
-                            success: function (response) {
-                                if (Ext.decode(response.responseText).ret == 'OK') {
-                                    Ext.Ajax.request({
-                                        url: AppUrl + 'PM_06/PRO_PLAN_YEAR_STATE_SET',
-                                        method: 'POST',
-                                        async: false,
-                                        params: {
-                                            V_V_GUID: chodata[k].get("V_GUID"),
-                                            V_V_STATECODE: '20'
-                                        },
-                                        success: function (resp) {
-                                            var resp = Ext.decode(resp.responseText);
-                                            if (resp.V_INFO == 'SUCCESS') {
-                                                snum++;
-                                            }
-                                        }
-                                    });
-                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                    Ext.Msg.alert('提示', '该流程发起失败！');
+                            success: function (resp) {
+                                var resp = Ext.decode(resp.responseText);
+                                if (resp.V_INFO == 'SUCCESS') {
+                                    snum++;
                                 }
                             }
                         });
-                    } else {
-                        alert(resp.V_INFO)
+                    } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                        Ext.Msg.alert('提示', '该流程发起失败！');
                     }
                 }
-            })
-
+            });
         }
         if (snum == chodata.length) {
             alert('上报成功！');
@@ -896,3 +713,7 @@ function btnFlowStart() {
         }
     }
 }
+
+
+
+

@@ -44,6 +44,24 @@ public class PM_06Controller {
         return result;
     }
 
+    //  λ   ƹ
+    @RequestMapping(value = "/PRO_TYPEDESC_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_TYPEDESC_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = pm_06Service.PRO_TYPEDESC_SEL(V_V_ORGCODE, V_V_DEPTCODE);
+
+        List<Map<String, Object>> pm_06list = (List) data.get("list");
+
+        result.put("list", pm_06list);
+        result.put("success", true);
+        return result;
+    }
+
     //������
     @RequestMapping(value = "/PRO_GET_DEPTEQUTYPE_PER", method = RequestMethod.POST)
     @ResponseBody
@@ -575,6 +593,19 @@ public class PM_06Controller {
     public Map PRO_PLAN_YEAR_SEL_BYGUID(
             @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
         HashMap result = pm_06Service.PRO_PLAN_YEAR_SEL_BYGUID(V_V_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_YEAR_PLAN_SEL_GTT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PLAN_SEL_GTT(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+        HashMap result = pm_06Service.PRO_YEAR_PLAN_SEL_GTT(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 

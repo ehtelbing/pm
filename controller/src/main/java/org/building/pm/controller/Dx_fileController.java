@@ -37,7 +37,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
+import java.sql.Date;
 
 @Controller
 @RequestMapping("/app/pm/dxfile/")
@@ -5289,6 +5289,112 @@ public class Dx_fileController {
 
     }
 
+    @RequestMapping(value = "PRO_PM_06_PLAN_DXGC_SAVE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_06_PLAN_DXGC_SAVE(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+            @RequestParam(value = "V_V_TYPECODE") String V_V_TYPECODE,
+            @RequestParam(value = "V_V_TYPEDESC") String V_V_TYPEDESC,
+            @RequestParam(value = "V_V_BASECODE") String V_V_BASECODE,
+            @RequestParam(value="V_V_QSTEXT") String V_V_QSTEXT) throws Exception {
 
+        Map result = dx_fileService.PRO_PM_06_PLAN_DXGC_SAVE( V_V_YEAR,  V_V_ORGCODE, V_V_ORGNAME, V_V_DEPTCODE, V_V_DEPTNAME,V_V_TYPECODE,V_V_TYPEDESC,V_V_BASECODE,V_V_QSTEXT);
+        return result;
+    }
 
+    //维修简版查询
+    @RequestMapping(value = "PRO_PM_06_PLAN_DXGC_VIEW_Q", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_06_PLAN_DXGC_VIEW_Q(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_TYPECODE") String V_V_TYPECODE,
+            @RequestParam(value = "V_V_BASECODE") String V_V_BASECODE
+//            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+//            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE
+    ) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map data = dx_fileService.PRO_PM_06_PLAN_DXGC_VIEW_Q(V_V_YEAR, V_V_ORGCODE,V_V_DEPTCODE,V_V_TYPECODE,V_V_BASECODE);
+
+        List<Map<String, Object>> no4120list = (List) data.get("list");
+
+        result.put("list", no4120list);
+        result.put("success", true);
+        //V_V_INMAN,
+        return data;
+    }
+
+    @RequestMapping(value = "PRO_PM_06_PLAN_DXGC_VIEW_Q_SYS", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_06_PLAN_DXGC_VIEW_Q_SYS(
+            @RequestParam(value = "X_TIMELOWERLIMIT") Date X_TIMELOWERLIMIT,
+            @RequestParam(value = "X_TIMEUPPERLIMIT") Date X_TIMEUPPERLIMIT,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_TYPECODE") String V_V_TYPECODE,
+            @RequestParam(value = "V_V_BASECODE") String V_V_BASECODE
+
+//            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+//            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE
+    ) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map data = dx_fileService.PRO_PM_06_PLAN_DXGC_VIEW_Q_SYS(X_TIMELOWERLIMIT,X_TIMEUPPERLIMIT,V_V_YEAR, V_V_ORGCODE,V_V_DEPTCODE,V_V_TYPECODE,V_V_BASECODE);
+
+        List<Map<String, Object>> no4120list = (List) data.get("list");
+
+        result.put("list", no4120list);
+        result.put("success", true);
+        //V_V_INMAN,
+        return data;
+    }
+
+    @RequestMapping(value = "/PRO_PM_06_PLAN_DXGC_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_06_PLAN_DXGC_DEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+
+        Map result = dx_fileService.PRO_PM_06_PLAN_DXGC_DEL(V_V_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "PM_06_PLAN_DXGC_EQU_SELNUM", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_06_PLAN_DXGC_EQU_SELNUM(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+        Map result = dx_fileService.PM_06_PLAN_DXGC_EQU_SELNUM(V_V_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_06_PLAN_DXGC_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_PROJECT_SEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+
+        Map result = dx_fileService.PRO_PM_06_PLAN_DXGC_SEL(V_V_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "PRO_PM_06_PLAN_DXGC_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_06_PLAN_DXGC_UPDATE(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+            @RequestParam(value = "V_V_TYPECODE") String V_V_TYPECODE,
+            @RequestParam(value = "V_V_TYPEDESC") String V_V_TYPEDESC,
+            @RequestParam(value = "V_V_BASECODE") String V_V_BASECODE,
+            @RequestParam(value="V_V_QSTEXT") String V_V_QSTEXT) throws Exception {
+
+        Map result = dx_fileService.PRO_PM_06_PLAN_DXGC_UPDATE( V_V_GUID, V_V_YEAR,  V_V_ORGCODE, V_V_ORGNAME, V_V_DEPTCODE, V_V_DEPTNAME,V_V_TYPECODE,V_V_TYPEDESC,V_V_BASECODE,V_V_QSTEXT);
+        return result;
+    }
 }
