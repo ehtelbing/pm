@@ -4772,7 +4772,7 @@ public class ExcelController {
      * */
     @RequestMapping(value = "/YearPlan_Excel", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void DEFCL_EXCEL(
+    public void YearPlan_Excel(
             @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,

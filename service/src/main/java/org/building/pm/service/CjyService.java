@@ -18,7 +18,7 @@ import java.util.*;
  */
 @Service
 public class CjyService {
-    private static final Logger logger = Logger.getLogger(InfoService.class.getName());
+    private static final Logger logger = Logger.getLogger(CjyService.class.getName());
 
     @Value("#{configProperties['system.copyright']}")
     private String copyright;
@@ -5858,7 +5858,7 @@ public class CjyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_03_PLAN_MONTH_FINISH_SEL(:V_V_YEAR,: V_V_MONTH,: V_V_JXNR, :V_V_PERCODE,: V_V_PERNAME,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PM_03_PLAN_MONTH_FINISH_SEL(:V_V_YEAR,:V_V_MONTH,:V_V_JXNR,:V_V_PERCODE,:V_V_PERNAME,:V_CURSOR)}");
             cstmt.setString("V_V_YEAR", v_v_year);
             cstmt.setString("V_V_MONTH", v_v_month);
             cstmt.setString("V_V_JXNR", v_v_jxnr);
@@ -5874,7 +5874,7 @@ public class CjyService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_03_PLAN_WEEK_CREATE");
+        logger.info("end PM_03_PLAN_MONTH_FINISH_SEL");
         return result;
     }
 
@@ -5887,7 +5887,7 @@ public class CjyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SM(:V_V_MONTHGUID,: V_V_WEEK_GUID,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SM(:V_V_MONTHGUID,:V_V_WEEK_GUID,:V_CURSOR)}");
             cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
             cstmt.setString("V_V_WEEK_GUID", V_V_WEEK_GUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
@@ -5914,7 +5914,7 @@ public class CjyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_D_U(:V_V_WEEKGUID,: V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_D_U(:V_V_WEEKGUID,:V_INFO)}");
             cstmt.setString("V_V_WEEKGUID", v_v_weekguid);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();

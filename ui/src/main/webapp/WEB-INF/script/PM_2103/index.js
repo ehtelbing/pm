@@ -33,6 +33,7 @@ Ext.onReady(function () {
             type: 'ajax',
             async: false,
             url: AppUrl + 'Activiti/QueryTaskList',
+            timeout:60000,
             actionMethods: {
                 read: 'POST'
             },
