@@ -278,7 +278,7 @@ public class SpecEquipService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call SE_CHECK_RESULT_NEW_GET(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTCODENEXT,:V_V_EQUTYPECODE,:V_V_EQUTYPENAME,:V_V_EQUCODE,:V_V_BDATE,:V_V_EDATE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call SE_CHECK_RESULT_GET(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTCODENEXT,:V_V_EQUTYPECODE,:V_V_EQUTYPENAME,:V_V_EQUCODE,:V_V_BDATE,:V_V_EDATE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
@@ -348,7 +348,7 @@ public class SpecEquipService {
     }
 
     //检定实绩（附件）录入
-    public HashMap setCheckResultFiles(String I_I_ID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE, String V_V_CHECKTIME, String V_V_CHECKPART, String V_V_CHECKDEPT, InputStream B_B_CHECKREPORT, String I_I_PLANID, String V_V_PERSONCODE ) throws SQLException {
+    public HashMap setCheckResultFiles(String I_I_ID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE, String V_V_CHECKTIME, String V_V_CHECKPART, String V_V_CHECKDEPT, String V_V_REPORTNAME, InputStream B_B_CHECKREPORT, String I_I_PLANID, String V_V_PERSONCODE ) throws SQLException {
 
         logger.info("begin setCheckResultFiles");
 
@@ -358,7 +358,7 @@ public class SpecEquipService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call SE_CHECK_RESULT_FILES_SET(:I_I_ID,:V_V_ORGNAME,:V_V_ORGCODE,:V_V_DEPTNAME,:V_V_DEPTCODE,:V_V_EQUTYPENAME,:V_V_EQUTYPECODE,:V_V_EQUNAME,:V_V_EQUCODE,:V_V_CHECKTIME,:V_V_CHECKPART,:V_V_CHECKDEPT,:B_B_CHECKREPORT,:I_I_PLANID,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt = conn.prepareCall("{call SE_CHECK_RESULT_FILES_SET(:I_I_ID,:V_V_ORGNAME,:V_V_ORGCODE,:V_V_DEPTNAME,:V_V_DEPTCODE,:V_V_EQUTYPENAME,:V_V_EQUTYPECODE,:V_V_EQUNAME,:V_V_EQUCODE,:V_V_CHECKTIME,:V_V_CHECKPART,:V_V_CHECKDEPT,:V_V_REPORTNAME,:B_B_CHECKREPORT,:I_I_PLANID,:V_V_PERSONCODE,:V_INFO)}");
             cstmt.setString("I_I_ID", I_I_ID);
             cstmt.setString("V_V_ORGNAME", V_V_ORGNAME);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
@@ -371,6 +371,7 @@ public class SpecEquipService {
             cstmt.setString("V_V_CHECKTIME", V_V_CHECKTIME);
             cstmt.setString("V_V_CHECKPART", V_V_CHECKPART);
             cstmt.setString("V_V_CHECKDEPT", V_V_CHECKDEPT);
+            cstmt.setString("V_V_REPORTNAME", V_V_REPORTNAME);
             cstmt.setBlob("B_B_CHECKREPORT",B_B_CHECKREPORT);
             cstmt.setString("I_I_PLANID", I_I_PLANID);
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);

@@ -251,6 +251,7 @@ Ext.onReady(function () {
             fieldLabel: '检测费用(元)',
             decimalPrecision: 2,
             maxLength: 20,
+            value: 0,
             allowBlank: false
         }]
     });
@@ -345,47 +346,66 @@ function _selectEquip() {
 
 //点击保存按钮
 function _insert() {
-    var year = new Date(Ext.getCmp('TEST_OF_TIME_').getSubmitValue()).getFullYear();
-    var month = new Date(Ext.getCmp('TEST_OF_TIME_').getSubmitValue()).getMonth() + 1;
-    var day = new Date(Ext.getCmp('TEST_OF_TIME_').getSubmitValue()).getDate();
-    if(month < 10){
-        month ="0" + month;
-    }
-    if(day < 10){
-        day ="0" + day;
-    }
-    var date = year +"-" + month + "-" + day;
-    Ext.Ajax.request({
-        url: AppUrl + 'specEquip/insertPlanApply',
-        method : 'POST',
-        params : {
-            I_I_ID: P_ID,
-            V_V_ORGNAME: Ext.getCmp('FTY_CODE_').getRawValue(),
-            V_V_ORGCODE: Ext.getCmp('FTY_CODE_').getValue(),
-            V_V_DEPTNAME: Ext.getCmp('DEPT_CODE_').getRawValue(),
-            V_V_DEPTCODE: Ext.getCmp('DEPT_CODE_').getValue(),
-            V_V_EQUTYPENAME: Ext.getCmp('equipType').getRawValue(),
-            V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue(),
-            V_V_EQUNAME: Ext.getCmp('equip').getRawValue(),
-            V_V_EQUCODE: Ext.getCmp('equip').getValue(),
-            V_V_CHECKTIME: date,
-            V_V_CHECKPART: Ext.getCmp('CHECK_PARTS_').getSubmitValue(),
-            V_V_CHECKDEPT: Ext.getCmp('TEST_UNIT_').getSubmitValue(),
-            V_V_COST: Ext.getCmp('TEST_FEE_').getSubmitValue(),
-            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
-        },
-        success : function(response) {
-            var resp = Ext.JSON.decode(response.responseText);
-            if(resp.success){
-                parent.returnValue = resp.data.V_INFO;
-                _close();
-            }else{
-                Ext.MessageBox.alert('提示','保存失败！');
-                return;
-            }
-
+    if(Ext.getCmp('DEPT_CODE_').getRawValue() != '--全部--' && Ext.getCmp('equipType').getRawValue() != '全部' && Ext.getCmp('equip').getRawValue() != '全部'&& Ext.getCmp('TEST_OF_TIME_').getValue() != null&& Ext.getCmp('CHECK_PARTS_').getValue() != ''&& Ext.getCmp('TEST_UNIT_').getValue() != ''&& Ext.getCmp('TEST_FEE_').getValue() != ''){
+        var year = new Date(Ext.getCmp('TEST_OF_TIME_').getSubmitValue()).getFullYear();
+        var month = new Date(Ext.getCmp('TEST_OF_TIME_').getSubmitValue()).getMonth() + 1;
+        var day = new Date(Ext.getCmp('TEST_OF_TIME_').getSubmitValue()).getDate();
+        if(month < 10){
+            month ="0" + month;
         }
-    });
+        if(day < 10){
+            day ="0" + day;
+        }
+        var date = year +"-" + month + "-" + day;
+        Ext.Ajax.request({
+            url: AppUrl + 'specEquip/insertPlanApply',
+            method : 'POST',
+            params : {
+                I_I_ID: P_ID,
+                V_V_ORGNAME: Ext.getCmp('FTY_CODE_').getRawValue(),
+                V_V_ORGCODE: Ext.getCmp('FTY_CODE_').getValue(),
+                V_V_DEPTNAME: Ext.getCmp('DEPT_CODE_').getRawValue(),
+                V_V_DEPTCODE: Ext.getCmp('DEPT_CODE_').getValue(),
+                V_V_EQUTYPENAME: Ext.getCmp('equipType').getRawValue(),
+                V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue(),
+                V_V_EQUNAME: Ext.getCmp('equip').getRawValue(),
+                V_V_EQUCODE: Ext.getCmp('equip').getValue(),
+                V_V_CHECKTIME: date,
+                V_V_CHECKPART: Ext.getCmp('CHECK_PARTS_').getSubmitValue(),
+                V_V_CHECKDEPT: Ext.getCmp('TEST_UNIT_').getSubmitValue(),
+                V_V_COST: Ext.getCmp('TEST_FEE_').getSubmitValue(),
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+            },
+            success : function(response) {
+                var resp = Ext.JSON.decode(response.responseText);
+                if(resp.success){
+                    parent.returnValue = resp.data.V_INFO;
+                    _close();
+                }else{
+                    Ext.MessageBox.alert('提示','保存失败！');
+                    return;
+                }
+
+            }
+        });
+    }else {
+        if (Ext.getCmp('DEPT_CODE_').getRawValue() == '--全部--') {
+            Ext.Msg.alert('提示', '请选择具体作业区');
+        } else if (Ext.getCmp('equipType').getRawValue() == '全部') {
+            Ext.Msg.alert('提示', '请选择具体设备类型');
+        } else if (Ext.getCmp('equip').getRawValue() == '全部') {
+            Ext.Msg.alert('提示', '请选择具体设备名称');
+        } else if (Ext.getCmp('TEST_OF_TIME_').getValue() == null) {
+            Ext.Msg.alert('提示', '请填写检定时间');
+        } else if (Ext.getCmp('CHECK_PARTS_').getValue() == '') {
+            Ext.Msg.alert('提示', '请填写检定部位');
+        } else if (Ext.getCmp('TEST_UNIT_').getValue() == '') {
+            Ext.Msg.alert('提示', '请填写检定单位');
+        } else if (Ext.getCmp('TEST_FEE_').getSubmitValue() == '0') {
+            Ext.Msg.alert('提示', '请填写检定费用');
+        }
+    }
+
 }
 
 //点击提交按钮
