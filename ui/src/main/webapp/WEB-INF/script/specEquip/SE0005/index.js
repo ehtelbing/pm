@@ -449,6 +449,7 @@ function _selectPlanApply() {
         V_V_EDATE: Ext.getCmp('V_V_EDATE').getSubmitValue(),
         V_V_STATUS: Ext.getCmp('V_V_STATUS').getValue()
     };
+    planApplyStore.currentPage = 1;
     planApplyStore.load();
 }
 

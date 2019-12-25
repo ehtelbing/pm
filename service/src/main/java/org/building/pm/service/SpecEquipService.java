@@ -681,6 +681,37 @@ public class SpecEquipService {
         return result;
     }
 
+    public Map<String, Object> uploadEquFilesAttach(String V_V_ECODE, String V_V_PERSONCODE, String V_V_ATTACH_TYPE, String V_V_REPORTNAME, InputStream B_B_CONTENT) throws SQLException {
+
+        logger.info("begin uploadEquFilesAttach");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call SE_EQU_ATTACH_SET(:V_V_ECODE,:V_V_PERSONCODE,:V_V_ATTACH_TYPE,:V_V_REPORTNAME,:B_B_CONTENT,:V_INFO)}");
+            cstmt.setString("V_V_ECODE", V_V_ECODE);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_ATTACH_TYPE", V_V_ATTACH_TYPE);
+            cstmt.setString("V_V_REPORTNAME", V_V_REPORTNAME);
+            cstmt.setBlob("B_B_CONTENT",B_B_CONTENT);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end uploadEquFilesAttach");
+        return result;
+    }
+
     //SE0007检定实绩查询的导出附件
     public HashMap loadCheckResultFiles(String I_I_ID) throws SQLException {
 
@@ -707,6 +738,58 @@ public class SpecEquipService {
         logger.info("end loadCheckResultFiles");
         return result;
 
+    }
+
+    public Map<String, Object> loadEquFilesAttachBlob(String I_I_ID) throws SQLException {
+        logger.info("begin loadEquFilesAttachBlob");
+
+        Map<String, Object> result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_EQU_FILES_ATTACH_GET(:I_I_ID,:B_CONTENT)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("B_CONTENT", OracleTypes.BLOB);
+            cstmt.execute();
+            result.put("B_CONTENT", ((Blob) cstmt.getObject("B_CONTENT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadEquFilesAttachBlob");
+        return result;
+
+    }
+
+    public Map<String, Object> deleteEquFilesAttach(String I_I_ID) throws SQLException {
+        logger.info("begin deleteEquFilesAttach");
+
+        Map<String, Object> result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call SE_EQU_ATTACH_NODE_DEL(:I_I_ID,:V_INFO)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end deleteEquFilesAttach");
+        return result;
     }
 
 }

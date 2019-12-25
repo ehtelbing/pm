@@ -399,8 +399,11 @@ public class SpecEquipController {
                 for (int i = 0; i < archivesList.size(); i++) {
                     row = sheet.createRow(i + 1);
                     row.setHeightInPoints(20);
-                    HSSFCell cellContent = row.createCell(i);
-                    cellContent.setCellValue(archivesList.get(i).get(columnList.get(i)) == null ? "" : archivesList.get(i).get(columnList.get(i)).toString());
+
+                    for(int j = 0; j < columnList.size(); j++){
+                        HSSFCell cellContent = row.createCell(j);
+                        cellContent.setCellValue(archivesList.get(i).get(columnList.get(j)) == null ? "" : archivesList.get(i).get(columnList.get(j)).toString());
+                    }
                 }
             }
         }
@@ -899,14 +902,14 @@ public class SpecEquipController {
             for (int i = 0; i < I_I_ID_LIST.size(); i++) {
                 Map<String, Object> checkResultDate = new HashMap<String, Object>();
 
-                checkResultDate.put("V_DEPTNAME", (String)V_DEPTNAME_LIST.get(i));
-                checkResultDate.put("V_EQUTYPENAME", (String)V_EQUTYPENAME_LIST.get(i));
-                checkResultDate.put("V_EQUNAME", (String)V_EQUNAME_LIST.get(i));
-                checkResultDate.put("V_CHECKTIME", (String)V_CHECKTIME_LIST.get(i));
-                checkResultDate.put("V_CHECKPART", (String)V_CHECKPART_LIST.get(i));
-                checkResultDate.put("V_CHECKDEPT", (String)V_CHECKDEPT_LIST.get(i));
-                checkResultDate.put("V_FCHECKTIME", (String)V_FCHECKTIME_LIST.get(i));
-                checkResultDate.put("V_COST", (String)V_COST_LIST.get(i));
+                checkResultDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
+                checkResultDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
+                checkResultDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
+                checkResultDate.put("V_CHECKTIME", (String) V_CHECKTIME_LIST.get(i));
+                checkResultDate.put("V_CHECKPART", (String) V_CHECKPART_LIST.get(i));
+                checkResultDate.put("V_CHECKDEPT", (String) V_CHECKDEPT_LIST.get(i));
+                checkResultDate.put("V_FCHECKTIME", (String) V_FCHECKTIME_LIST.get(i));
+                checkResultDate.put("V_COST", (String) V_COST_LIST.get(i));
 
                 checkResultList.add(checkResultDate);
             }
@@ -974,7 +977,7 @@ public class SpecEquipController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        Map data= specEquipService.loadCheckResultFiles(I_I_ID);
+        Map data = specEquipService.loadCheckResultFiles(I_I_ID);
         Map result = new HashMap();
 
         String agent = (String) request.getHeader("USER-AGENT");
@@ -999,7 +1002,7 @@ public class SpecEquipController {
         reader.close();
         writer.close();
 
-        result.put("success",true);
+        result.put("success", true);
         return result;
 
     }
@@ -1008,51 +1011,51 @@ public class SpecEquipController {
     @RequestMapping(value = "/excelGetCheckResult", method = RequestMethod.GET)
     @ResponseBody
     public void excelGetCheckResult(@RequestParam(value = "I_I_ID_LIST", required = false) List<String> I_I_ID_LIST,
-                                 @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
-                                 @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
-                                 @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
-                                 @RequestParam(value = "V_CHECKTIME_LIST", required = false) List<String> V_CHECKTIME_LIST,
-                                 @RequestParam(value = "V_CHECKPART_LIST", required = false) List<String> V_CHECKPART_LIST,
-                                 @RequestParam(value = "V_CHECKDEPT_LIST", required = false) List<String> V_CHECKDEPT_LIST,
-                                 @RequestParam(value = "V_FCHECKTIME_LIST", required = false) List<String> V_FCHECKTIME_LIST,
-                                 @RequestParam(value = "V_COST_LIST", required = false) List<String> V_COST_LIST,
-                                 String V_V_PERSONCODE,
-                                 String V_V_DEPTCODE,
-                                 String V_V_DEPTCODENEXT,
-                                 String V_V_EQUTYPECODE,
-                                 String V_V_EQUTYPENAME,
-                                 String V_V_EQUCODE,
-                                 String V_V_BDATE,
-                                 String V_V_EDATE,
-                                 Integer page,
-                                 Integer limit,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                    @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
+                                    @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
+                                    @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
+                                    @RequestParam(value = "V_CHECKTIME_LIST", required = false) List<String> V_CHECKTIME_LIST,
+                                    @RequestParam(value = "V_CHECKPART_LIST", required = false) List<String> V_CHECKPART_LIST,
+                                    @RequestParam(value = "V_CHECKDEPT_LIST", required = false) List<String> V_CHECKDEPT_LIST,
+                                    @RequestParam(value = "V_FCHECKTIME_LIST", required = false) List<String> V_FCHECKTIME_LIST,
+                                    @RequestParam(value = "V_COST_LIST", required = false) List<String> V_COST_LIST,
+                                    String V_V_PERSONCODE,
+                                    String V_V_DEPTCODE,
+                                    String V_V_DEPTCODENEXT,
+                                    String V_V_EQUTYPECODE,
+                                    String V_V_EQUTYPENAME,
+                                    String V_V_EQUCODE,
+                                    String V_V_BDATE,
+                                    String V_V_EDATE,
+                                    Integer page,
+                                    Integer limit,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
         for (int i = 0; i < 11; i++) {
-            if(i== 0){
+            if (i == 0) {
                 sheet.setColumnWidth(i, 2000);
-            }else if(i ==1 ){
+            } else if (i == 1) {
                 sheet.setColumnWidth(i, 6000);
-            }else if(i ==2 ){
+            } else if (i == 2) {
                 sheet.setColumnWidth(i, 6000);
-            }else if(i ==3 ){
+            } else if (i == 3) {
                 sheet.setColumnWidth(i, 6000);
-            }else if(i ==4 ){
+            } else if (i == 4) {
                 sheet.setColumnWidth(i, 5000);
-            }else if(i ==5 ){
+            } else if (i == 5) {
                 sheet.setColumnWidth(i, 4000);
-            }else if(i ==6 ){
+            } else if (i == 6) {
                 sheet.setColumnWidth(i, 4000);
-            }else if(i ==7 ){
+            } else if (i == 7) {
                 sheet.setColumnWidth(i, 6000);
-            }else if(i ==8 ){
+            } else if (i == 8) {
                 sheet.setColumnWidth(i, 4000);
-            }else if(i ==9 ){
+            } else if (i == 9) {
                 sheet.setColumnWidth(i, 4000);
-            }else{
+            } else {
                 sheet.setColumnWidth(i, 4000);
             }
         }
@@ -1122,14 +1125,14 @@ public class SpecEquipController {
             for (int i = 0; i < I_I_ID_LIST.size(); i++) {
                 Map<String, Object> checkResultDate = new HashMap<String, Object>();
 
-                checkResultDate.put("V_DEPTNAME", (String)V_DEPTNAME_LIST.get(i));
-                checkResultDate.put("V_EQUTYPENAME", (String)V_EQUTYPENAME_LIST.get(i));
-                checkResultDate.put("V_EQUNAME", (String)V_EQUNAME_LIST.get(i));
-                checkResultDate.put("V_CHECKTIME", (String)V_CHECKTIME_LIST.get(i));
-                checkResultDate.put("V_CHECKPART", (String)V_CHECKPART_LIST.get(i));
-                checkResultDate.put("V_CHECKDEPT", (String)V_CHECKDEPT_LIST.get(i));
-                checkResultDate.put("V_FCHECKTIME", (String)V_FCHECKTIME_LIST.get(i));
-                checkResultDate.put("V_COST", (String)V_COST_LIST.get(i));
+                checkResultDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
+                checkResultDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
+                checkResultDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
+                checkResultDate.put("V_CHECKTIME", (String) V_CHECKTIME_LIST.get(i));
+                checkResultDate.put("V_CHECKPART", (String) V_CHECKPART_LIST.get(i));
+                checkResultDate.put("V_CHECKDEPT", (String) V_CHECKDEPT_LIST.get(i));
+                checkResultDate.put("V_FCHECKTIME", (String) V_FCHECKTIME_LIST.get(i));
+                checkResultDate.put("V_COST", (String) V_COST_LIST.get(i));
 
                 checkResultList.add(checkResultDate);
             }
@@ -1188,6 +1191,78 @@ public class SpecEquipController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //档案附件录入
+    @RequestMapping(value = "/uploadEquFilesAttach", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> uploadEquFilesAttach(@RequestParam(value = "V_V_ECODE") String V_V_ECODE,
+                                                    @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                    @RequestParam(value = "V_V_ATTACH_TYPE") String V_V_ATTACH_TYPE,
+                                                    @RequestParam(value = "B_B_CONTENT") MultipartFile B_B_CONTENT,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+
+        String fileName = BaseUtils.getFileName(B_B_CONTENT.getOriginalFilename());
+        InputStream B_B_CONTENT_InputStream = B_B_CONTENT.getInputStream();// 获取上传二进制流
+
+        Map result = specEquipService.uploadEquFilesAttach(V_V_ECODE, V_V_PERSONCODE, V_V_ATTACH_TYPE, fileName, B_B_CONTENT_InputStream);
+        B_B_CONTENT_InputStream.close();
+
+        result.put("success", true);
+        return result;
+    }
+
+    //下载档案附件
+    @RequestMapping(value = "/downloadEquFilesAttach", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> downloadEquFilesAttach(
+            @RequestParam(value = "I_I_ID") String I_I_ID,
+            @RequestParam(value = "V_V_REPORTNAME") String V_V_REPORTNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map<String, Object> equFilesAttachBlob = specEquipService.loadEquFilesAttachBlob(I_I_ID);
+        Map<String, Object> result = new HashMap();
+
+        String agent = (String) request.getHeader("USER-AGENT");
+        if (agent != null && agent.toLowerCase().indexOf("firefox") > 0) {// 兼容火狐中文文件名下载
+            V_V_REPORTNAME = "=?UTF-8?B?" + (new String(Base64.encodeBase64(V_V_REPORTNAME.getBytes("UTF-8")))) + "?=";
+        } else {
+            V_V_REPORTNAME = java.net.URLEncoder.encode(V_V_REPORTNAME, "UTF-8");
+        }
+        response.reset();
+        response.setHeader("Content-Disposition", "attachment; filename=" + V_V_REPORTNAME);// 下载模式
+
+        InputStream fileStream = ((Blob) equFilesAttachBlob.get("B_CONTENT")).getBinaryStream();
+        BufferedInputStream reader = new BufferedInputStream(fileStream);
+        BufferedOutputStream writer = new BufferedOutputStream(response.getOutputStream());
+
+        byte[] bytes = new byte[1024 * 1024];
+        int length = reader.read(bytes);
+        while ((length > 0)) {
+            writer.write(bytes, 0, length);
+            length = reader.read(bytes);
+        }
+        reader.close();
+        writer.close();
+
+        result.put("success", true);
+        return result;
+
+    }
+
+    //档案附件录入
+    @RequestMapping(value = "/deleteEquFilesAttach", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteEquFilesAttach(@RequestParam(value = "I_I_ID") String I_I_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = specEquipService.deleteEquFilesAttach(I_I_ID);
+
+        result.put("success", true);
+        return result;
     }
 
 }
