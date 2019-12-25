@@ -236,7 +236,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '厂矿',
             listeners: {
@@ -256,7 +256,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '作业区',
             listeners: {
@@ -275,7 +275,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUTYPECODE',
             displayField: 'V_EQUTYPENAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备类型',
             listeners: {
@@ -293,7 +293,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUCODE',
             displayField: 'V_EQUNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备名称'
         }, {
@@ -301,13 +301,17 @@ Ext.onReady(function () {
             id: 'V_V_BDATE',
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
-            fieldLabel: '开始时间'
+            fieldLabel: '开始时间',
+            editable: false,
+            value: Ext.util.Format.date(new Date(), "Y-m-") + "01"
         }, {
             xtype: 'datefield',
             id: 'V_V_EDATE',
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
-            fieldLabel: '结束时间'
+            fieldLabel: '结束时间',
+            editable: false,
+            value: new Date()
         }, {
             xtype: 'combo',
             id: 'V_V_STATUS',
@@ -315,7 +319,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'CODE_',
             displayField: 'NAME_',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '状态'
         }]
