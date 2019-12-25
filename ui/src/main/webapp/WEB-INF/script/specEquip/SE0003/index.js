@@ -161,6 +161,14 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
+                if (store.first().data.V_EQUCODE != '%') {
+                    store.insert(0, {
+                        V_EQUCODE : '%',
+                        V_EQUNAME : '全部',
+                        V_EQUSITE : '%',
+                        V_EQUSITENAME : '全部'
+                    });
+                }
                 Ext.getCmp('equip').select(store.first());
             }
         }

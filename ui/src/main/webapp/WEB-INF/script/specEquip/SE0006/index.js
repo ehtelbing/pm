@@ -135,6 +135,14 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
+                if (store.first().data.V_EQUCODE != '%') {
+                    store.insert(0, {
+                        V_EQUCODE : '%',
+                        V_EQUNAME : '全部',
+                        V_EQUSITE : '%',
+                        V_EQUSITENAME : '全部'
+                    });
+                }
                 Ext.getCmp('equip').select(store.first());
             }
         }
@@ -307,7 +315,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '厂矿',
             listeners: {
@@ -327,7 +335,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '作业区',
             listeners: {
@@ -346,7 +354,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUTYPECODE',
             displayField: 'V_EQUTYPENAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备类型',
             listeners: {
@@ -364,7 +372,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUCODE',
             displayField: 'V_EQUNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备名称'
         }, {
@@ -373,13 +381,15 @@ Ext.onReady(function () {
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
             fieldLabel: '开始时间',
-            value: new Date()
+            editable: false,
+            value: Ext.util.Format.date(new Date(), "Y-m-") + "01"
         }, {
             xtype: 'datefield',
             id: 'V_V_EDATE',
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
             fieldLabel: '结束时间',
+            editable: false,
             value: new Date()
         } ]
     });
