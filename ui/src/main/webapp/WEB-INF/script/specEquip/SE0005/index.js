@@ -133,7 +133,6 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
-                store.data.removeAt(0);//在返回的数据源里去掉全部选项
                 Ext.getCmp('equipType').select(store.first());
             }
         }
@@ -498,7 +497,7 @@ function _excelPlanApply() {
     if (I_I_ID_LIST.length > 0) {
         document.location.href = AppUrl + 'specEquip/excelPlanApply?I_I_ID_LIST=' + I_I_ID_LIST;
     } else {
-        document.location.href = AppUrl + 'specEquip/excelPlanApply?I_I_ID_LIST=' + I_I_ID_LIST + '&V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + Ext.getCmp('DEPT_CODE_').getValue() + '&V_V_EQUTYPECODE=' + Ext.getCmp('equipType').getValue() + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue() + '&V_V_EQUCODE=' + Ext.getCmp('equip').getValue() + '&V_V_BDATE=' + Ext.getCmp('V_V_BDATE').getSubmitValue() + '&V_V_EDATE=' + Ext.getCmp('V_V_EDATE').getSubmitValue() + '&V_V_STATUS=' + encodeURI(encodeURI(Ext.getCmp('V_V_STATUS').getValue())) + '&page=1&limit=-1';
+        document.location.href = AppUrl + 'specEquip/excelPlanApply?I_I_ID_LIST=' + I_I_ID_LIST + '&V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + encodeURI(encodeURI(Ext.getCmp('DEPT_CODE_').getValue())) + '&V_V_EQUTYPECODE=' + encodeURI(encodeURI(Ext.getCmp('equipType').getValue())) + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue() + '&V_V_EQUCODE=' + encodeURI(encodeURI(Ext.getCmp('equip').getValue())) + '&V_V_BDATE=' + Ext.getCmp('V_V_BDATE').getSubmitValue() + '&V_V_EDATE=' + Ext.getCmp('V_V_EDATE').getSubmitValue() + '&V_V_STATUS=' + encodeURI(encodeURI(Ext.getCmp('V_V_STATUS').getValue())) + '&page=1&limit=-1';
     }
 }
 
