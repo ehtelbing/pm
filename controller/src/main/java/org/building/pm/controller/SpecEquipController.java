@@ -160,12 +160,7 @@ public class SpecEquipController {
                                                HttpServletRequest request,
                                                HttpServletResponse response) throws Exception {
 
-        Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = specEquipService.selectEquFilesAttach(V_V_ECODE, V_V_ATTACH_TYPE, page.toString(), limit.toString());
-
-        List<Map<String, Object>> list = (List) data.get("list");
-
-        result.put("list", list);
+        Map<String, Object> result = specEquipService.selectEquFilesAttach(V_V_ECODE, V_V_ATTACH_TYPE, page.toString(), limit.toString());
         result.put("success", true);
 
         return result;
@@ -318,6 +313,96 @@ public class SpecEquipController {
         try {
             response.setContentType("application/vnd.ms-excel;charset=UTF-8");
             String fileName = new String("检定计划申请.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            OutputStream out = response.getOutputStream();
+
+            wb.write(out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //档案查询
+    @RequestMapping(value = "/selectArchives", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectArchives( @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                               @RequestParam(value = "V_V_OPTYPE") String V_V_OPTYPE,
+                                               Integer page,
+                                               Integer limit,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map result = specEquipService.selectArchives(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_OPTYPE, page.toString(), limit.toString());
+        return result;
+    }
+
+    //导出检定计划查询申请
+    @RequestMapping(value = "/excelArchives", method = RequestMethod.GET)
+    @ResponseBody
+    public void excelArchives( String V_V_PERSONCODE,
+                               String V_V_DEPTCODE,
+                               String V_V_DEPTCODENEXT,
+                               String V_V_EQUTYPECODE,
+                               String V_V_EQUTYPENAME,
+                               String V_V_EQUCODE,
+                               String V_V_OPTYPE,
+                               String page,
+                               String limit,
+                               HttpServletRequest request,
+                               HttpServletResponse response) throws Exception {
+        V_V_DEPTCODENEXT = URLDecoder.decode(V_V_DEPTCODENEXT, "UTF-8");
+        V_V_EQUTYPECODE = URLDecoder.decode(V_V_EQUTYPECODE, "UTF-8");
+        V_V_EQUCODE = URLDecoder.decode(V_V_EQUCODE, "UTF-8");
+
+        Map<String, Object> result = specEquipService.selectArchives(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_OPTYPE, page, limit);
+
+        List<String> columnList = (List<String>)result.get("columnList");
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        if(columnList.size() > 0){
+            HSSFRow row = sheet.createRow((int) 0);
+            row.setHeightInPoints(30);
+            //标题栏样式
+            HSSFCellStyle style = wb.createCellStyle();
+            HSSFFont font = wb.createFont();
+            style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 垂直
+            style.setFillForegroundColor(HSSFColor.GREY_50_PERCENT.index);
+            style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            font.setFontHeightInPoints((short) 12);// 设置字体大小
+            font.setColor(HSSFColor.WHITE.index);
+            style.setFont(font);
+            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+            for (int i = 0; i < columnList.size(); i++) {
+                sheet.setColumnWidth(i, 8000);
+                HSSFCell cell = row.createCell((short) i);
+                cell.setCellValue(columnList.get(i));
+                cell.setCellStyle(style);
+            }
+            List<Map<String, Object>> archivesList = new ArrayList<Map<String, Object>>();
+            archivesList = (List<Map<String, Object>>) result.get("list");
+
+            if(archivesList != null && archivesList.size() > 0){
+                for (int i = 0; i < archivesList.size(); i++) {
+                    row = sheet.createRow(i + 1);
+                    row.setHeightInPoints(20);
+                    HSSFCell cellContent = row.createCell(i);
+                    cellContent.setCellValue(archivesList.get(i).get(columnList.get(i)) == null ? "" : archivesList.get(i).get(columnList.get(i)).toString());
+                }
+            }
+        }
+
+
+        try {
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            String fileName = new String("设备档案.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
             response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
             OutputStream out = response.getOutputStream();
 

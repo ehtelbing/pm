@@ -133,6 +133,7 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
+                store.data.removeAt(0);//在返回的数据源里去掉全部选项
                 Ext.getCmp('equipType').select(store.first());
             }
         }
@@ -160,6 +161,14 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
+                if (store.first().data.V_EQUCODE != '%') {
+                    store.insert(0, {
+                        V_EQUCODE: '%',
+                        V_EQUNAME: '全部',
+                        V_EQUSITE: '%',
+                        V_EQUSITENAME: '全部'
+                    });
+                }
                 Ext.getCmp('equip').select(store.first());
             }
         }
@@ -224,7 +233,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '厂矿',
             listeners: {
@@ -244,7 +253,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '作业区',
             listeners: {
@@ -263,7 +272,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUTYPECODE',
             displayField: 'V_EQUTYPENAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备类型',
             listeners: {
@@ -281,7 +290,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUCODE',
             displayField: 'V_EQUNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备名称'
         }, {
@@ -289,13 +298,15 @@ Ext.onReady(function () {
             id: 'V_V_BDATE',
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
-            fieldLabel: '开始时间'
+            fieldLabel: '开始时间',
+            value: Ext.util.Format.date(new Date(), "Y-m-") + "01"
         }, {
             xtype: 'datefield',
             id: 'V_V_EDATE',
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
-            fieldLabel: '结束时间'
+            fieldLabel: '结束时间',
+            value: new Date()
         }, {
             xtype: 'combo',
             id: 'V_V_STATUS',
@@ -303,7 +314,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'CODE_',
             displayField: 'NAME_',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '状态'
         }]
@@ -486,8 +497,8 @@ function _excelPlanApply() {
 
     if (I_I_ID_LIST.length > 0) {
         document.location.href = AppUrl + 'specEquip/excelPlanApply?I_I_ID_LIST=' + I_I_ID_LIST;
-    }else{
-        document.location.href = AppUrl + 'specEquip/excelPlanApply?I_I_ID_LIST='+ I_I_ID_LIST +'&V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + Ext.getCmp('DEPT_CODE_').getValue() + '&V_V_EQUTYPECODE=' + Ext.getCmp('equipType').getValue() + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue()+ '&V_V_EQUCODE=' + Ext.getCmp('equip').getValue()+ '&V_V_BDATE=' + Ext.getCmp('V_V_BDATE').getSubmitValue()+ '&V_V_EDATE=' + Ext.getCmp('V_V_EDATE').getSubmitValue() + '&V_V_STATUS='+ encodeURI(encodeURI(Ext.getCmp('V_V_STATUS').getValue())) + '&page=1&limit=-1';
+    } else {
+        document.location.href = AppUrl + 'specEquip/excelPlanApply?I_I_ID_LIST=' + I_I_ID_LIST + '&V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + Ext.getCmp('DEPT_CODE_').getValue() + '&V_V_EQUTYPECODE=' + Ext.getCmp('equipType').getValue() + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue() + '&V_V_EQUCODE=' + Ext.getCmp('equip').getValue() + '&V_V_BDATE=' + Ext.getCmp('V_V_BDATE').getSubmitValue() + '&V_V_EDATE=' + Ext.getCmp('V_V_EDATE').getSubmitValue() + '&V_V_STATUS=' + encodeURI(encodeURI(Ext.getCmp('V_V_STATUS').getValue())) + '&page=1&limit=-1';
     }
 }
 
