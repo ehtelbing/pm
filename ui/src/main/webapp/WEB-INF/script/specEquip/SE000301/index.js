@@ -111,6 +111,7 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
+                store.data.removeAt(0);//在返回的数据源里去掉全部选项
                 Ext.getCmp('equipType').select(store.first());
             }
         }
@@ -229,6 +230,7 @@ Ext.onReady(function () {
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
             fieldLabel: '检定时间',
+            value: Ext.util.Format.date(new Date(), "Y-m-") + "01",
             allowBlank: false
         }, {
             xtype: 'textfield',
