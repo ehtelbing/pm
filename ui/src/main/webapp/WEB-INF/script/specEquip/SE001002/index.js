@@ -521,10 +521,6 @@ function _insert() {
             Ext.Msg.alert('提示', '请选择具体设备名称');
         } else if (Ext.getCmp('V_NEWDEPTNAME').getRawValue() == '--全部--') {
             Ext.Msg.alert('提示', '请选择具体接收作业区');
-        } else if (Ext.getCmp('V_NEWADD').getValue() == '') {
-            Ext.Msg.alert('提示', '请输入新使用地点');
-        } else if (Ext.getCmp('V_NEWSITE').getValue() == '') {
-            Ext.Msg.alert('提示', '请输入新安装位置');
         }
     }
 }
