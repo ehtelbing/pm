@@ -898,19 +898,27 @@ public class SpecEquipController {
 
         //如果是选择了很多列
         if (I_I_ID_LIST.size() > 0) {
-
             for (int i = 0; i < I_I_ID_LIST.size(); i++) {
                 Map<String, Object> checkResultDate = new HashMap<String, Object>();
-
-                checkResultDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
-                checkResultDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
-                checkResultDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
-                checkResultDate.put("V_CHECKTIME", (String) V_CHECKTIME_LIST.get(i));
-                checkResultDate.put("V_CHECKPART", (String) V_CHECKPART_LIST.get(i));
-                checkResultDate.put("V_CHECKDEPT", (String) V_CHECKDEPT_LIST.get(i));
-                checkResultDate.put("V_FCHECKTIME", (String) V_FCHECKTIME_LIST.get(i));
-                checkResultDate.put("V_COST", (String) V_COST_LIST.get(i));
-
+                if(V_FCHECKTIME_LIST.size() == 0 || V_COST_LIST.size() == 0){
+                    checkResultDate.put("V_DEPTNAME", (String)V_DEPTNAME_LIST.get(i));
+                    checkResultDate.put("V_EQUTYPENAME", (String)V_EQUTYPENAME_LIST.get(i));
+                    checkResultDate.put("V_EQUNAME", (String)V_EQUNAME_LIST.get(i));
+                    checkResultDate.put("V_CHECKTIME", (String)V_CHECKTIME_LIST.get(i));
+                    checkResultDate.put("V_CHECKPART", (String)V_CHECKPART_LIST.get(i));
+                    checkResultDate.put("V_CHECKDEPT", (String)V_CHECKDEPT_LIST.get(i));
+                    checkResultDate.put("V_FCHECKTIME", "");
+                    checkResultDate.put("V_COST", "");
+                }else{
+                    checkResultDate.put("V_DEPTNAME", (String)V_DEPTNAME_LIST.get(i));
+                    checkResultDate.put("V_EQUTYPENAME", (String)V_EQUTYPENAME_LIST.get(i));
+                    checkResultDate.put("V_EQUNAME", (String)V_EQUNAME_LIST.get(i));
+                    checkResultDate.put("V_CHECKTIME", (String)V_CHECKTIME_LIST.get(i));
+                    checkResultDate.put("V_CHECKPART", (String)V_CHECKPART_LIST.get(i));
+                    checkResultDate.put("V_CHECKDEPT", (String)V_CHECKDEPT_LIST.get(i));
+                    checkResultDate.put("V_FCHECKTIME", (String)V_FCHECKTIME_LIST.get(i));
+                    checkResultDate.put("V_COST", (String)V_COST_LIST.get(i));
+                }
                 checkResultList.add(checkResultDate);
             }
         } else {
@@ -1125,15 +1133,25 @@ public class SpecEquipController {
             for (int i = 0; i < I_I_ID_LIST.size(); i++) {
                 Map<String, Object> checkResultDate = new HashMap<String, Object>();
 
-                checkResultDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
-                checkResultDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
-                checkResultDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
-                checkResultDate.put("V_CHECKTIME", (String) V_CHECKTIME_LIST.get(i));
-                checkResultDate.put("V_CHECKPART", (String) V_CHECKPART_LIST.get(i));
-                checkResultDate.put("V_CHECKDEPT", (String) V_CHECKDEPT_LIST.get(i));
-                checkResultDate.put("V_FCHECKTIME", (String) V_FCHECKTIME_LIST.get(i));
-                checkResultDate.put("V_COST", (String) V_COST_LIST.get(i));
-
+                if(V_FCHECKTIME_LIST.size() == 0 || V_COST_LIST.size() == 0){
+                    checkResultDate.put("V_DEPTNAME", (String)V_DEPTNAME_LIST.get(i));
+                    checkResultDate.put("V_EQUTYPENAME", (String)V_EQUTYPENAME_LIST.get(i));
+                    checkResultDate.put("V_EQUNAME", (String)V_EQUNAME_LIST.get(i));
+                    checkResultDate.put("V_CHECKTIME", (String)V_CHECKTIME_LIST.get(i));
+                    checkResultDate.put("V_CHECKPART", (String)V_CHECKPART_LIST.get(i));
+                    checkResultDate.put("V_CHECKDEPT", (String)V_CHECKDEPT_LIST.get(i));
+                    checkResultDate.put("V_FCHECKTIME", "");
+                    checkResultDate.put("V_COST", "");
+                }else{
+                    checkResultDate.put("V_DEPTNAME", (String)V_DEPTNAME_LIST.get(i));
+                    checkResultDate.put("V_EQUTYPENAME", (String)V_EQUTYPENAME_LIST.get(i));
+                    checkResultDate.put("V_EQUNAME", (String)V_EQUNAME_LIST.get(i));
+                    checkResultDate.put("V_CHECKTIME", (String)V_CHECKTIME_LIST.get(i));
+                    checkResultDate.put("V_CHECKPART", (String)V_CHECKPART_LIST.get(i));
+                    checkResultDate.put("V_CHECKDEPT", (String)V_CHECKDEPT_LIST.get(i));
+                    checkResultDate.put("V_FCHECKTIME", (String)V_FCHECKTIME_LIST.get(i));
+                    checkResultDate.put("V_COST", (String)V_COST_LIST.get(i));
+                }
                 checkResultList.add(checkResultDate);
             }
         } else {
@@ -1262,6 +1280,25 @@ public class SpecEquipController {
         Map<String, Object> result = specEquipService.deleteEquFilesAttach(I_I_ID);
 
         result.put("success", true);
+        return result;
+    }
+
+    //SE0008检定逾期查询
+    @RequestMapping(value = "/selectCheckOverTime", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectCheckOverTime(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                               @RequestParam(value = "V_V_BDATE") String V_V_BDATE,
+                                               @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
+                                               Integer page,
+                                               Integer limit,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map result = specEquipService.selectCheckOverTime(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, page.toString(), limit.toString());
         return result;
     }
 

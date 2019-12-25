@@ -792,4 +792,40 @@ public class SpecEquipService {
         return result;
     }
 
+    //SE0008检定逾期查询
+    public HashMap selectCheckOverTime(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_EQUCODE, String V_V_BDATE, String V_V_EDATE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+        logger.info("begin selectCheckOverTime");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_CHECK_OVERTIME_GET(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTCODENEXT,:V_V_EQUTYPECODE,:V_V_EQUTYPENAME,:V_V_EQUCODE,:V_V_BDATE,:V_V_EDATE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUTYPENAME", V_V_EQUTYPENAME);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_BDATE", V_V_BDATE);
+            cstmt.setString("V_V_EDATE", V_V_EDATE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectCheckOverTime");
+        return result;
+    }
+
 }
