@@ -820,7 +820,7 @@ public class SpecEquipController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 10; i++) {
             if (i == 0) {
                 sheet.setColumnWidth(i, 2000);
             } else if (i == 8) {
@@ -897,18 +897,18 @@ public class SpecEquipController {
         if (I_I_ID_LIST.size() > 0) {
 
             for (int i = 0; i < I_I_ID_LIST.size(); i++) {
-                Map<String, Object> v_deptName = new HashMap<String, Object>();
+                Map<String, Object> checkResultDate = new HashMap<String, Object>();
 
-                v_deptName.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
-                v_deptName.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
-                v_deptName.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
-                v_deptName.put("V_CHECKTIME", (String) V_CHECKTIME_LIST.get(i));
-                v_deptName.put("V_CHECKPART", (String) V_CHECKPART_LIST.get(i));
-                v_deptName.put("V_CHECKDEPT", (String) V_CHECKDEPT_LIST.get(i));
-                v_deptName.put("V_FCHECKTIME", (String) V_FCHECKTIME_LIST.get(i));
-                v_deptName.put("V_COST", (String) V_COST_LIST.get(i));
+                checkResultDate.put("V_DEPTNAME", (String)V_DEPTNAME_LIST.get(i));
+                checkResultDate.put("V_EQUTYPENAME", (String)V_EQUTYPENAME_LIST.get(i));
+                checkResultDate.put("V_EQUNAME", (String)V_EQUNAME_LIST.get(i));
+                checkResultDate.put("V_CHECKTIME", (String)V_CHECKTIME_LIST.get(i));
+                checkResultDate.put("V_CHECKPART", (String)V_CHECKPART_LIST.get(i));
+                checkResultDate.put("V_CHECKDEPT", (String)V_CHECKDEPT_LIST.get(i));
+                checkResultDate.put("V_FCHECKTIME", (String)V_FCHECKTIME_LIST.get(i));
+                checkResultDate.put("V_COST", (String)V_COST_LIST.get(i));
 
-                checkResultList.add(v_deptName);
+                checkResultList.add(checkResultDate);
             }
         } else {
             Map<String, Object> data = specEquipService.selectCheckResult(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, page.toString(), limit.toString());
@@ -947,6 +947,232 @@ public class SpecEquipController {
             cellContent.setCellValue("");// 预计下次检定时间
 
             cellContent = row.createCell(9);
+            cellContent.setCellValue(checkResultList.get(j).get("V_COST") == null ? "" : checkResultList.get(j).get("V_COST").toString());// 检定费用
+        }
+
+        try {
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            String fileName = new String("检定实绩录入.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            OutputStream out = response.getOutputStream();
+
+            wb.write(out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //SE0007检定实绩查询导出附件
+    @RequestMapping(value = "/loadCheckResultFiles", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> loadCheckResultFiles(
+            @RequestParam(value = "I_I_ID") String I_I_ID,
+            @RequestParam(value = "V_V_REPORTNAME") String V_V_REPORTNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data= specEquipService.loadCheckResultFiles(I_I_ID);
+        Map result = new HashMap();
+
+        String agent = (String) request.getHeader("USER-AGENT");
+        if (agent != null && agent.toLowerCase().indexOf("firefox") > 0) {// 兼容火狐中文文件名下载
+            V_V_REPORTNAME = "=?UTF-8?B?" + (new String(Base64.encodeBase64(V_V_REPORTNAME.getBytes("UTF-8")))) + "?=";
+        } else {
+            V_V_REPORTNAME = java.net.URLEncoder.encode(V_V_REPORTNAME, "UTF-8");
+        }
+        response.reset();
+        response.setHeader("Content-Disposition", "attachment; filename=" + V_V_REPORTNAME);// 下载模式
+
+        InputStream fileStream = ((Blob) data.get("B_CHECKREPORT")).getBinaryStream();
+        BufferedInputStream reader = new BufferedInputStream(fileStream);
+        BufferedOutputStream writer = new BufferedOutputStream(response.getOutputStream());
+
+        byte[] bytes = new byte[1024 * 1024];
+        int length = reader.read(bytes);
+        while ((length > 0)) {
+            writer.write(bytes, 0, length);
+            length = reader.read(bytes);
+        }
+        reader.close();
+        writer.close();
+
+        result.put("success",true);
+        return result;
+
+    }
+
+    //SE0007导出检定实绩查询
+    @RequestMapping(value = "/excelGetCheckResult", method = RequestMethod.GET)
+    @ResponseBody
+    public void excelGetCheckResult(@RequestParam(value = "I_I_ID_LIST", required = false) List<String> I_I_ID_LIST,
+                                 @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
+                                 @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
+                                 @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
+                                 @RequestParam(value = "V_CHECKTIME_LIST", required = false) List<String> V_CHECKTIME_LIST,
+                                 @RequestParam(value = "V_CHECKPART_LIST", required = false) List<String> V_CHECKPART_LIST,
+                                 @RequestParam(value = "V_CHECKDEPT_LIST", required = false) List<String> V_CHECKDEPT_LIST,
+                                 @RequestParam(value = "V_FCHECKTIME_LIST", required = false) List<String> V_FCHECKTIME_LIST,
+                                 @RequestParam(value = "V_COST_LIST", required = false) List<String> V_COST_LIST,
+                                 String V_V_PERSONCODE,
+                                 String V_V_DEPTCODE,
+                                 String V_V_DEPTCODENEXT,
+                                 String V_V_EQUTYPECODE,
+                                 String V_V_EQUTYPENAME,
+                                 String V_V_EQUCODE,
+                                 String V_V_BDATE,
+                                 String V_V_EDATE,
+                                 Integer page,
+                                 Integer limit,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i < 11; i++) {
+            if(i== 0){
+                sheet.setColumnWidth(i, 2000);
+            }else if(i ==1 ){
+                sheet.setColumnWidth(i, 6000);
+            }else if(i ==2 ){
+                sheet.setColumnWidth(i, 6000);
+            }else if(i ==3 ){
+                sheet.setColumnWidth(i, 6000);
+            }else if(i ==4 ){
+                sheet.setColumnWidth(i, 5000);
+            }else if(i ==5 ){
+                sheet.setColumnWidth(i, 4000);
+            }else if(i ==6 ){
+                sheet.setColumnWidth(i, 4000);
+            }else if(i ==7 ){
+                sheet.setColumnWidth(i, 6000);
+            }else if(i ==8 ){
+                sheet.setColumnWidth(i, 4000);
+            }else if(i ==9 ){
+                sheet.setColumnWidth(i, 4000);
+            }else{
+                sheet.setColumnWidth(i, 4000);
+            }
+        }
+
+        HSSFRow row = sheet.createRow((int) 0);
+        row.setHeightInPoints(30);
+        //标题栏样式
+        HSSFCellStyle style = wb.createCellStyle();
+        HSSFFont font = wb.createFont();
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 垂直
+        style.setFillForegroundColor(HSSFColor.GREY_50_PERCENT.index);
+        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        font.setFontHeightInPoints((short) 12);// 设置字体大小
+        font.setColor(HSSFColor.WHITE.index);
+        style.setFont(font);
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell1 = row.createCell((short) 0);
+        cell1.setCellValue("序号");
+        cell1.setCellStyle(style);
+
+        HSSFCell cell2 = row.createCell((short) 1);
+        cell2.setCellValue("作业区");
+        cell2.setCellStyle(style);
+
+        HSSFCell cell3 = row.createCell((short) 2);
+        cell3.setCellValue("设备类型");
+        cell3.setCellStyle(style);
+
+        HSSFCell cell4 = row.createCell((short) 3);
+        cell4.setCellValue("设备名称");
+        cell4.setCellStyle(style);
+
+        HSSFCell cell5 = row.createCell((short) 4);
+        cell5.setCellValue("申请检定时间");
+        cell5.setCellStyle(style);
+
+        HSSFCell cell6 = row.createCell((short) 5);
+        cell6.setCellValue("申请检定部位");
+        cell6.setCellStyle(style);
+
+        HSSFCell cell7 = row.createCell((short) 6);
+        cell7.setCellValue("申请检定单位");
+        cell7.setCellStyle(style);
+
+        HSSFCell cell8 = row.createCell((short) 7);
+        cell8.setCellValue("实际检定时间");
+        cell8.setCellStyle(style);
+
+        HSSFCell cell9 = row.createCell((short) 8);
+        cell9.setCellValue("当前审批人");
+        cell9.setCellStyle(style);
+
+        HSSFCell cell10 = row.createCell((short) 9);
+        cell10.setCellValue("审批状态");
+        cell10.setCellStyle(style);
+
+        HSSFCell cell11 = row.createCell((short) 10);
+        cell11.setCellValue("检定费用(元)");
+        cell11.setCellStyle(style);
+
+        List<Map<String, Object>> checkResultList = new ArrayList<Map<String, Object>>();
+
+        //如果是选择了很多列
+        if (I_I_ID_LIST.size() > 0) {
+
+            for (int i = 0; i < I_I_ID_LIST.size(); i++) {
+                Map<String, Object> checkResultDate = new HashMap<String, Object>();
+
+                checkResultDate.put("V_DEPTNAME", (String)V_DEPTNAME_LIST.get(i));
+                checkResultDate.put("V_EQUTYPENAME", (String)V_EQUTYPENAME_LIST.get(i));
+                checkResultDate.put("V_EQUNAME", (String)V_EQUNAME_LIST.get(i));
+                checkResultDate.put("V_CHECKTIME", (String)V_CHECKTIME_LIST.get(i));
+                checkResultDate.put("V_CHECKPART", (String)V_CHECKPART_LIST.get(i));
+                checkResultDate.put("V_CHECKDEPT", (String)V_CHECKDEPT_LIST.get(i));
+                checkResultDate.put("V_FCHECKTIME", (String)V_FCHECKTIME_LIST.get(i));
+                checkResultDate.put("V_COST", (String)V_COST_LIST.get(i));
+
+                checkResultList.add(checkResultDate);
+            }
+        } else {
+            Map<String, Object> data = specEquipService.selectCheckResult(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, page.toString(), limit.toString());
+
+            checkResultList = (List<Map<String, Object>>) data.get("list");
+        }
+
+        for (int j = 0; j < checkResultList.size(); j++) {
+            row = sheet.createRow(j + 1);
+            row.setHeightInPoints(25);
+            HSSFCell cellContent = row.createCell(0);
+            cellContent.setCellValue(j + 1);// 序号
+
+            cellContent = row.createCell(1);
+            cellContent.setCellValue(checkResultList.get(j).get("V_DEPTNAME") == null ? "" : checkResultList.get(j).get("V_DEPTNAME").toString());// 作业区名称
+
+            cellContent = row.createCell(2);
+            cellContent.setCellValue(checkResultList.get(j).get("V_EQUTYPENAME") == null ? "" : checkResultList.get(j).get("V_EQUTYPENAME").toString());// 设备类型名称
+
+            cellContent = row.createCell(3);
+            cellContent.setCellValue(checkResultList.get(j).get("V_EQUNAME") == null ? "" : checkResultList.get(j).get("V_EQUNAME").toString());// 设备名称
+
+            cellContent = row.createCell(4);
+            cellContent.setCellValue(checkResultList.get(j).get("V_CHECKTIME") == null ? "" : checkResultList.get(j).get("V_CHECKTIME").toString());// 申请检定时间
+
+            cellContent = row.createCell(5);
+            cellContent.setCellValue(checkResultList.get(j).get("V_CHECKPART") == null ? "" : checkResultList.get(j).get("V_CHECKPART").toString());// 申请检定部位
+
+            cellContent = row.createCell(6);
+            cellContent.setCellValue(checkResultList.get(j).get("V_CHECKDEPT") == null ? "" : checkResultList.get(j).get("V_CHECKDEPT").toString());// 申请检定单位
+
+            cellContent = row.createCell(7);
+            cellContent.setCellValue(checkResultList.get(j).get("V_FCHECKTIME") == null ? "" : checkResultList.get(j).get("V_FCHECKTIME").toString());// 实际检定时间
+
+            cellContent = row.createCell(8);
+            cellContent.setCellValue("");// 当前审批人
+
+            cellContent = row.createCell(9);
+            cellContent.setCellValue("");// 审批状态
+
+            cellContent = row.createCell(10);
             cellContent.setCellValue(checkResultList.get(j).get("V_COST") == null ? "" : checkResultList.get(j).get("V_COST").toString());// 检定费用
         }
 

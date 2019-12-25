@@ -681,4 +681,32 @@ public class SpecEquipService {
         return result;
     }
 
+    //SE0007检定实绩查询的导出附件
+    public HashMap loadCheckResultFiles(String I_I_ID) throws SQLException {
+
+        logger.info("begin loadCheckResultFiles");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_CHECK_RESULT_FILE_GET(:I_I_ID,:B_CHECKREPORT)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("B_CHECKREPORT", OracleTypes.BLOB);
+            cstmt.execute();
+            result.put("B_CHECKREPORT", ((Blob) cstmt.getObject("B_CHECKREPORT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadCheckResultFiles");
+        return result;
+
+    }
+
 }
