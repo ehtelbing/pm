@@ -964,4 +964,88 @@ public class SpecEquipService {
         return result;
     }
 
+    //SE0008逾期原因的set
+    public HashMap setCheckOverTime(String I_I_PLANID, String V_V_OVERREASON, String V_V_PERSONCODE) throws SQLException {
+
+        logger.info("begin setCheckOverTime");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call SE_CHECK_OVERTIME_SET(:I_I_PLANID,:V_V_OVERREASON,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("I_I_PLANID", I_I_PLANID);
+            cstmt.setString("V_V_OVERREASON", V_V_OVERREASON);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end setCheckOverTime");
+        return result;
+    }
+
+    //SE000801页面默认加载
+    public HashMap loadCheckOverRange() throws SQLException {
+
+        logger.info("begin loadCheckOverRange");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_CHECKOVER_RANGE_GET" + "(:V_RET)}");
+            cstmt.registerOutParameter("V_RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_RET", (String) cstmt.getObject("V_RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadCheckOverRange");
+        return result;
+    }
+
+    //SE000801报警周期的保存
+    public HashMap setCheckOverRange(Double V_V_OVERDAY) throws SQLException {
+
+        logger.info("begin setCheckOverRange");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call SE_CHECKOVER_RANGE_SET(:V_V_OVERDAY,:V_INFO)}");
+            cstmt.setDouble("V_V_OVERDAY", V_V_OVERDAY);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end setCheckOverRange");
+        return result;
+    }
+
 }
