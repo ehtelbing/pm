@@ -215,6 +215,12 @@ Ext.onReady(function() {
                 click : OnGridButtonClicked
             }
         }, {
+                xtype: 'button',
+                text: '导出excel',
+                icon: imgpath + '/excel.gif',
+                width: 85,
+                listeners: {click: OnClickExcelButton}
+            }, {
             xtype : 'hidden',
             id : 'tabid'
         }]
@@ -586,4 +592,21 @@ function OnGridButtonClicked() {
     Ext.ComponentManager.get('lookgrid').hide();
     Ext.ComponentManager.get('grid').show();
     Ext.ComponentManager.get('chart').hide();
+}
+
+function OnClickExcelButton(){
+    var orgcode = Ext.getCmp("ck").getValue() == '%' ? '0' : Ext.getCmp("ck").getValue();
+    var deptcode = Ext.getCmp("zyq").getValue() == '%' ? '0' : Ext.getCmp("zyq").getValue();
+    var equtypecode = Ext.getCmp("sbtype").getValue() == '%' ? '0' : Ext.getCmp("sbtype").getValue();
+    var equcode = Ext.getCmp("sbname").getValue() == '%' ? '0' : Ext.getCmp("sbname").getValue();
+    var sourcecode =  Ext.getCmp("tabid").getValue() == '%' ? '0' : Ext.getCmp("tabid").getValue();
+
+    document.location.href = AppUrl +'excel/QXTJ_EXCEL?V_D_DEFECTDATE_B='+ Ext.getCmp("yeartime").getValue() + "/1/1" +
+        '&V_D_DEFECTDATE_E='+ Ext.getCmp("yeartime").getValue() + "/12/31" +
+        '&V_V_DEPTCODE2=' + orgcode +
+        '&V_V_DEPTCODENEXT=' + deptcode +
+        '&V_V_EQUTYPECODE=' + equtypecode +
+        '&V_V_EQUCODE=' + equcode +
+        '&V_V_SOURCECODE=' + sourcecode ;
+
 }

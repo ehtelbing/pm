@@ -100,8 +100,8 @@ Ext.onReady(function () {
                 handler: function () {
                     Query();
                 }
-            }
-            /*, {
+            },
+            {
                 xtype: 'button',
                 text: '导出excel',
                 style: ' margin: 5px 0px 5px 5px',
@@ -110,7 +110,7 @@ Ext.onReady(function () {
                 listeners: {
                     click: OnClickExcelButton
                 }
-            }*/
+            }
             ,{xtype:'label', style: ' margin: 8px 0px 5px 5px;color:red',
                 text:'*注：1.消缺率=已下达工单缺陷数量（并且工单验收）/缺陷总数\n' +
                           '2.处理率=已下达工单缺陷数量/缺陷总数'}
@@ -174,4 +174,10 @@ function Query(){
             V_YF: Ext.getCmp('month').getValue()
         }
     });
+}
+function OnClickExcelButton(){
+
+    document.location.href = AppUrl +'excel/QXTJ_EXCEL_SBB?V_NF='+ Ext.getCmp('year').getValue() +
+        '&V_YF='+ Ext.getCmp('month').getValue();
+
 }

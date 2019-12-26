@@ -4,6 +4,7 @@ if (location.href.split('?')[1] != null) {
 }
 Ext.onReady(function() {
     Ext.QuickTips.init();
+
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         pageSize: 15,
@@ -111,7 +112,17 @@ Ext.onReady(function() {
                 text : '查询',
                 width : 80,
                 handler : queryGrid
-            } ]
+            },
+            {
+                xtype: 'button',
+                text: '导出excel',
+                style: ' margin: 5px 0px 5px 5px',
+                icon: imgpath + '/excel.gif',
+                width: 100,
+                listeners: {
+                    click: OnClickExcelButton
+                }
+            }]
     });
 
     Ext.define('gridModel', {
@@ -204,4 +215,13 @@ function GridSum(grid) {
         RATE : gdzsSum == 0 ? 0 : Math.round(ysSum / gdzsSum * 100)
     });
     grid.store.insert(n, ins_rec);
+
+}
+
+function OnClickExcelButton(){
+
+    document.location.href = AppUrl +'excel/GDZXQK_EXCEL?V_D_ENTER_DATE_B='+ Ext.Date.format(Ext.getCmp("begintime").getValue(), 'Y-m-d') +
+        '&V_D_ENTER_DATE_E='+ Ext.Date.format(Ext.getCmp("endtime").getValue(), 'Y-m-d') +
+        '&V_V_ORGCODE=' + Ext.util.Cookies.get('v_orgCode');
+
 }

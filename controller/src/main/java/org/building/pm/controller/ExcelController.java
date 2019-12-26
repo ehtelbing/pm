@@ -4894,4 +4894,242 @@ public class ExcelController {
         }
     }
 
+    @RequestMapping(value = "/QXTJ_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void QXTJ_EXCEL(
+            @RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
+            @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+            @RequestParam(value = "V_V_DEPTCODE2") String V_V_DEPTCODE2,
+            @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+
+            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+        Map<String, Object> data = qxService.PRO_PM_07_DEFECT_TJ_VIEW(V_D_DEFECTDATE_B.equals("0") ? "%" :V_D_DEFECTDATE_B,
+                V_D_DEFECTDATE_E.equals("0") ? "%" : V_D_DEFECTDATE_E, V_V_DEPTCODE2.equals("0") ? "%" : V_V_DEPTCODE2,
+                V_V_DEPTCODENEXT.equals("0") ? "%" : V_V_DEPTCODENEXT, V_V_EQUTYPECODE.equals("0") ? "%" : V_V_EQUTYPECODE,
+                V_V_EQUCODE.equals("0") ? "%" : V_V_EQUCODE, V_V_SOURCECODE.equals("0") ? "%": V_V_SOURCECODE);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("月份");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("缺陷数量");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("手工消缺数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("下达工单数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("已处理数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("未处理数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("处理率");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("消缺率");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(map.get("月份") == null ? "" : map.get("月份").toString());
+                row.createCell((short) 1).setCellValue(map.get("缺陷数量") == null ? "" : map.get("缺陷数量").toString());
+                row.createCell((short) 2).setCellValue(map.get("手工消缺数量") == null ? "" : map.get("手工消缺数量").toString());
+                row.createCell((short) 3).setCellValue(map.get("下达工单数量") == null ? "" : map.get("下达工单数量").toString());
+                row.createCell((short) 4).setCellValue(map.get("已处理数量") == null ? "" : map.get("已处理数量").toString());
+                row.createCell((short) 5).setCellValue(map.get("未处理数量") == null ? "" : map.get("未处理数量").toString());
+                row.createCell((short) 6).setCellValue(map.get("处理率") == null ? "" : map.get("处理率").toString());
+                row.createCell((short) 7).setCellValue(map.get("消缺率") == null ? "" : map.get("消缺率").toString());
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("缺陷查询excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "/QXTJ_EXCEL_SBB", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void QXTJ_EXCEL_SBB(
+            @RequestParam(value = "V_NF") String V_NF,
+            @RequestParam(value = "V_YF") String V_YF,
+            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+        Map<String, Object> data = dx_fileService.PRO_PM_07_DEF_SBBTJ_VIEW(V_NF.equals("0") ? "%" : V_NF,
+                V_YF.equals("0") ? "%" : V_YF);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("厂矿编码");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("厂矿名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("缺陷数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("下工单数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("处理率(%)");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("消缺率（%)");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("V_ORGCODE") == null ? "" : map.get("V_ORGCODE").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_V_SUMNUM") == null ? "" : map.get("V_V_SUMNUM").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_V_XDGX_NUM") == null ? "" : map.get("V_V_XDGX_NUM").toString());
+                row.createCell((short) 5).setCellValue(map.get("V_V_CLL_NUM") == null ? "" : map.get("V_V_CLL_NUM").toString());
+                row.createCell((short) 6).setCellValue(map.get("V_V_XQL_NUM") == null ? "" : map.get("V_V_XQL_NUM").toString());
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("缺陷查询(设备部)statis" +
+                        "excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "/GDZXQK_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void GDZXQK_EXCEL(
+            @RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+            @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+
+            HttpServletResponse response) throws  SQLException {
+
+        List list = new ArrayList();
+        Map<String, Object> data = dx_fileService.PRO_PM_DEPT_SORT(V_D_ENTER_DATE_B.equals("0") ? "%" : V_D_ENTER_DATE_B,
+                V_D_ENTER_DATE_E.equals("0") ? "%" : V_D_ENTER_DATE_E, V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("作业区");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("验收工单数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("未验收数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("工单总数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("工单执行率(%)");
+        cell.setCellStyle(style);
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("WR_OK") == null ? "" : map.get("WR_OK").toString());
+                row.createCell((short) 3).setCellValue(map.get("WR_TOTAL") == null ? "" : map.get("WR_TOTAL").toString());
+                row.createCell((short) 4).setCellValue(map.get("WR_TOTAL") == null ? "" : map.get("WR_TOTAL").toString());
+                row.createCell((short) 5).setCellValue(map.get("RATE") == null ? "" : map.get("RATE").toString());
+
+            }
+
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("工单执行情况statis" + "excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
