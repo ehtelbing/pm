@@ -28,7 +28,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
-    let ftyStore = Ext.create('Ext.data.Store', {
+    var ftyStore = Ext.create('Ext.data.Store', {
         storeId: 'ftyStore',
         autoLoad: true,//true为自动加载
         loading: true,//自动加载时必须为true
@@ -114,7 +114,7 @@ Ext.onReady(function () {
         }
     });
 
-    let equipStore = Ext.create('Ext.data.Store', {
+    var equipStore = Ext.create('Ext.data.Store', {
         storeId: 'equipStore',
         autoLoad: false,
         loading: false,
@@ -149,7 +149,7 @@ Ext.onReady(function () {
         }
     });
 
-    let archivesStore = Ext.create('Ext.data.Store', {
+    var archivesStore = Ext.create('Ext.data.Store', {
         storeId: 'archivesStore',
         autoLoad: false,
         loading: false,
@@ -400,7 +400,7 @@ function _replaceColumnTitle(fieldsList) {
             align: 'center',
             width: '50px'
         });
-        for (let i = 0; i < fieldsList.length; i++) {
+        for (var i = 0; i < fieldsList.length; i++) {
             if (fieldsList[i] == '档案附件') {
                 console.log('档案附件');
                 columnList.push({
@@ -438,7 +438,7 @@ function _excelArchives() {
 }
 
 function _selectDept() {
-    let deptStore = Ext.data.StoreManager.lookup('deptStore');
+    var deptStore = Ext.data.StoreManager.lookup('deptStore');
     deptStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
@@ -449,7 +449,7 @@ function _selectDept() {
 }
 
 function _selectEquipType() {
-    let equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
+    var equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
     equipTypeStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue()
@@ -458,7 +458,7 @@ function _selectEquipType() {
 }
 
 function _selectEquip() {
-    let equipStore = Ext.data.StoreManager.lookup('equipStore');
+    var equipStore = Ext.data.StoreManager.lookup('equipStore');
     equipStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),

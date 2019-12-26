@@ -40,7 +40,7 @@ Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
     //附件类型store
-    let attachDicStore = Ext.create('Ext.data.Store', {
+    var attachDicStore = Ext.create('Ext.data.Store', {
         storeId: 'attachDicStore',
         autoLoad: true,//true为自动加载
         loading: true,//自动加载时必须为true
@@ -67,7 +67,7 @@ Ext.onReady(function () {
         }
     });
 
-    let equFilesAttachStore = Ext.create('Ext.data.Store', {
+    var equFilesAttachStore = Ext.create('Ext.data.Store', {
         storeId: 'equFilesAttachStore',
         autoLoad: false,
         loading: false,
