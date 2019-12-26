@@ -1,18 +1,5 @@
 var win;//父窗口对象，由子窗口调用
 var returnValue;//父窗口对象，由子窗口调用
-var statusList = [{
-    NAME_: '全部',
-    CODE_: '%'
-}, {
-    NAME_: '未上报',
-    CODE_: '未上报'
-}, {
-    NAME_: '在审',
-    CODE_: '在审'
-}, {
-    NAME_: '完成',
-    CODE_: '完成'
-}];
 
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
@@ -39,18 +26,6 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
-
-    var statusStore = Ext.create("Ext.data.Store", {//年份
-        storeId: 'statusStore',
-        fields: ['NAME_', 'CODE_'],
-        data: statusList,
-        proxy: {
-            type: 'memory',
-            reader: {
-                type: 'json'
-            }
-        }
-    });
 
     var ftyStore = Ext.create('Ext.data.Store', {
         storeId: 'ftyStore',
@@ -138,49 +113,14 @@ Ext.onReady(function () {
         }
     });
 
-    var equipNameStore = Ext.create('Ext.data.Store', {
-        storeId: 'equipNameStore',
-        autoLoad: false,
-        loading: false,
-        pageSize: -1,
-        fields: ['V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            url: AppUrl + 'pm_19/PRO_GET_DEPTEQU_PER',
-            type: 'ajax',
-            async: false,
-            actionMethods: {
-                read: 'POST'
-            },
-            extraParams: {},
-            reader: {
-                type: 'json',
-                root: 'list',
-                totalProperty: 'total'
-            }
-        }),
-        listeners: {
-            load: function (store, records, successful, eOpts) {
-                if (store.first().data.V_EQUCODE != '%') {
-                    store.insert(0, {
-                        V_EQUCODE : '%',
-                        V_EQUNAME : '全部',
-                        V_EQUSITE : '%',
-                        V_EQUSITENAME : '全部'
-                    });
-                }
-                Ext.getCmp('equip').select(store.first());
-            }
-        }
-    });
-
-    var equipMoveApplyStore = Ext.create('Ext.data.Store', {
-        storeId: 'equipMoveApplyStore',
+    var checkCostStore = Ext.create('Ext.data.Store', {
+        storeId: 'checkCostStore',
         autoLoad: false,
         loading: false,
         pageSize: 10,
-        fields: ['I_PLANID', 'V_ORGNAME', 'V_ORGCODE', 'V_DEPTNAME', 'V_DEPTCODE', 'V_EQUTYPENAME', 'V_EQUTYPECODE', 'V_EQUNAME', 'V_EQUNCODE', 'V_SITE', 'V_NEWORGCODE', 'V_NEWORGNAME', 'V_NEWDEPTNAME', 'V_NEWDEPTCODE', 'V_NEWADD', 'V_STATUS', 'V_STATE', 'V_NEWSITE'],
+        fields: ['V_DEPTNAME', 'V_EQUTYPENAME', 'V_EQUNAME', 'V_COST'],
         proxy: {
-            url: AppUrl + 'specEquip/selectEquipMoveApply',
+            url: AppUrl + 'specEquip/selectCheckCost',
             type: 'ajax',
             async: true,
             actionMethods: {
@@ -203,10 +143,10 @@ Ext.onReady(function () {
             xtype: 'button',
             text: '查询',
             handler: _select
-        },{
+        }, {
             xtype: 'button',
             text: '导出EXCEL',
-            handler: _excelEquipMove
+            handler: _excelCheckCost
         }]
     });
 
@@ -240,7 +180,6 @@ Ext.onReady(function () {
                     if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
                         _selectOperation();
                         _selectEquipType();
-                        _selectEquipName();
                     }
                 }
             }
@@ -259,7 +198,6 @@ Ext.onReady(function () {
                 select: function (combo, records) {
                     if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
                         _selectEquipType();
-                        _selectEquipName();
                     }
                 }
             }
@@ -273,25 +211,7 @@ Ext.onReady(function () {
             displayField: 'V_EQUTYPENAME',
             editable: false,
             forceSelection: true,
-            fieldLabel: '设备类型',
-            listeners: {
-                select: function (combo, records) {
-                    if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        _selectEquipName()
-                    }
-                }
-            }
-        }, {
-            xtype: 'combo',
-            id: 'equip',
-            name: 'equip',
-            store: equipNameStore,
-            queryMode: 'local',
-            valueField: 'V_EQUCODE',
-            displayField: 'V_EQUNAME',
-            editable: false,
-            forceSelection: true,
-            fieldLabel: '设备名称'
+            fieldLabel: '设备类型'
         }, {
             xtype: 'datefield',
             id: 'V_V_BDATE',
@@ -306,28 +226,21 @@ Ext.onReady(function () {
             submitFormat: 'Y-m-d',
             fieldLabel: '结束时间',
             value: new Date()
-        }, {
-            xtype: 'combo',
-            id: 'V_V_STATUS',
-            store: statusStore,
-            queryMode: 'local',
-            valueField: 'CODE_',
-            displayField: 'NAME_',
-            editable: false,
-            forceSelection: true,
-            fieldLabel: '状态'
         }]
     });
 
     var selectPanel = Ext.create('Ext.grid.Panel', {
         id: 'selectPanel',
-        store: equipMoveApplyStore,
-        title: '设备移装申请',
+        store: checkCostStore,
+        title: '检测费用台账',
         columnLines: true,
         frame: true,
         style: {
             border: 0
         },
+        features: [{
+            ftype: 'summary'
+        }],
         selModel: {
             selType: 'checkboxmodel',
             mode: 'SIMPLE'
@@ -335,13 +248,21 @@ Ext.onReady(function () {
         columns: [{
             text: '序号',
             xtype: "rownumberer",
-            width: '100px'
+            width: '100px',
+            summaryRenderer: function (value) {
+                return '合计';
+            },
         }, {
             text: 'ID',
             dataIndex: 'I_PLANID',
             style: 'text-align: center;',
             flex: 1,
             hidden: true
+        }, {
+            text: '作业区',
+            dataIndex: 'V_DEPTNAME',
+            style: 'text-align: center;',
+            flex: 1
         }, {
             text: '设备类型',
             dataIndex: 'V_EQUTYPENAME',
@@ -353,45 +274,14 @@ Ext.onReady(function () {
             style: 'text-align: center;',
             flex: 1
         }, {
-            text: '原矿场',
-            dataIndex: 'V_ORGNAME',
+            text: '金额',
+            dataIndex: 'V_COST',
             style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '原作业区',
-            dataIndex: 'V_DEPTNAME',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '原使用地点',
-            dataIndex: 'V_SITE',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '接收矿场',
             flex: 1,
-            dataIndex: 'V_NEWORGNAME',
-            style: 'text-align: center;',
-        }, {
-            text: '接收作业区',
-            dataIndex: 'V_NEWDEPTNAME',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '新使用地点',
-            dataIndex: 'V_NEWADD',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '新安装位置',
-            dataIndex: 'V_NEWSITE',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '状态',
-            dataIndex: 'V_STATUS',
-            style: 'text-align: center;',
-            width: '50px'
+            summaryType: 'sum',
+            renderer: function (val) {
+                return Ext.util.Format.round(val, 6);
+            }
         }],
         viewConfig: {
             emptyText: '<div style="text-align: center; padding-top: 50px; font: italic bold 20px Microsoft YaHei;">没有数据</div>',
@@ -400,7 +290,7 @@ Ext.onReady(function () {
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
-            store: equipMoveApplyStore,
+            store: checkCostStore,
             dock: 'bottom',
             displayInfo: true,
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
@@ -445,27 +335,23 @@ function _init() {
     _selectOperation();
     Ext.getCmp('DEPT_CODE_').setValue(Ext.util.Cookies.get('v_deptcode'));
     _selectEquipType();
-    _selectEquipName();
-    Ext.getCmp('V_V_STATUS').select(Ext.data.StoreManager.lookup('statusStore').first());
     _select();//查询加载主表数据
     Ext.getBody().unmask();
 
 }
 
 function _select() {
-    var equipMoveApplyStore = Ext.data.StoreManager.lookup('equipMoveApplyStore');
-    equipMoveApplyStore.proxy.extraParams = {
+    var checkCostStore = Ext.data.StoreManager.lookup('checkCostStore');
+    checkCostStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
         V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue(),
         V_V_EQUTYPENAME: Ext.getCmp('equipType').getRawValue(),
-        V_V_EQUCODE: Ext.getCmp('equip').getValue(),
         V_V_BDATE: Ext.getCmp('V_V_BDATE').getSubmitValue(),
         V_V_EDATE: Ext.getCmp('V_V_EDATE').getSubmitValue(),
-        V_V_STATUS: Ext.getCmp('V_V_STATUS').getValue()
     };
-    equipMoveApplyStore.load();
+    checkCostStore.load();
 }
 
 function _selectOperation() {
@@ -488,27 +374,24 @@ function _selectEquipType() {
     equipTypeStore.load();
 }
 
-function _selectEquipName() {
-    var equipNameStore = Ext.data.StoreManager.lookup('equipNameStore');
-    equipNameStore.proxy.extraParams = {
-        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
-        V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue()
-    };
-    equipNameStore.load();
-}
-
-function _excelEquipMove() {
+function _excelCheckCost() {
     var records = Ext.getCmp('selectPanel').getSelectionModel().getSelection();
-
     var I_I_ID_LIST = new Array();
+    var V_DEPTNAME_LIST = new Array();
+    var V_EQUTYPENAME_LIST = new Array();
+    var V_EQUNAME_LIST = new Array();
+    var V_COST_LIST = new Array();
     for (var i = 0; i < records.length; i++) {
-        I_I_ID_LIST.push(records[i].get('I_PLANID'));
+        I_I_ID_LIST.push(i);
+        V_DEPTNAME_LIST.push(records[i].get('V_DEPTNAME'));
+        V_EQUTYPENAME_LIST.push(records[i].get('V_EQUTYPENAME'));
+        V_EQUNAME_LIST.push(records[i].get('V_EQUNAME'));
+        V_COST_LIST.push(records[i].get('V_COST'));
     }
 
     if (I_I_ID_LIST.length > 0) {
-        document.location.href = AppUrl + 'specEquip/excelEquipMove?I_I_ID_LIST=' + I_I_ID_LIST;
-    }else{
-        document.location.href = AppUrl + 'specEquip/excelEquipMove?I_I_ID_LIST='+ I_I_ID_LIST +'&V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + Ext.getCmp('DEPT_CODE_').getValue() + '&V_V_EQUTYPECODE=' + Ext.getCmp('equipType').getValue() + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue()+ '&V_V_EQUCODE=' + Ext.getCmp('equip').getValue()+ '&V_V_BDATE=' + Ext.getCmp('V_V_BDATE').getSubmitValue()+ '&V_V_EDATE=' + Ext.getCmp('V_V_EDATE').getSubmitValue() + '&V_V_STATUS='+ encodeURI(encodeURI(Ext.getCmp('V_V_STATUS').getValue())) + '&page=1&limit=-1';
+        document.location.href = AppUrl + 'specEquip/excelCheckCost?I_I_ID_LIST=' + I_I_ID_LIST + '&V_DEPTNAME_LIST=' + V_DEPTNAME_LIST + '&V_EQUTYPENAME_LIST=' + V_EQUTYPENAME_LIST + '&V_EQUNAME_LIST=' + V_EQUNAME_LIST + '&V_COST_LIST=' + V_COST_LIST;
+    } else {
+        document.location.href = AppUrl + 'specEquip/excelCheckCost?I_I_ID_LIST=' + I_I_ID_LIST + '&V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + Ext.getCmp('DEPT_CODE_').getValue() + '&V_V_EQUTYPECODE=' + Ext.getCmp('equipType').getValue() + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue() + '&V_V_BDATE=' + Ext.getCmp('V_V_BDATE').getSubmitValue() + '&V_V_EDATE=' + Ext.getCmp('V_V_EDATE').getSubmitValue() + '&page=1&limit=-1';
     }
 }

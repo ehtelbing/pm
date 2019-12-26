@@ -289,7 +289,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("total", (String) cstmt.getObject("V_V_SNUM"));
-            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -303,7 +303,7 @@ public class SpecEquipService {
 
 
     //检定实绩(实际检定时间、检测费用)录入
-    public HashMap setCheckResult(String I_I_ID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE, String V_V_CHECKTIME, String V_V_CHECKPART, String V_V_CHECKDEPT, String V_V_COST, String I_I_PLANID, String V_V_PERSONCODE ) throws SQLException {
+    public HashMap setCheckResult(String I_I_ID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE, String V_V_CHECKTIME, String V_V_CHECKPART, String V_V_CHECKDEPT, String V_V_COST, String I_I_PLANID, String V_V_PERSONCODE) throws SQLException {
 
         logger.info("begin setCheckResult");
 
@@ -345,7 +345,7 @@ public class SpecEquipService {
     }
 
     //检定实绩（附件）录入
-    public HashMap setCheckResultFiles(String I_I_ID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE, String V_V_CHECKTIME, String V_V_CHECKPART, String V_V_CHECKDEPT, String V_V_REPORTNAME, InputStream B_B_CHECKREPORT, String I_I_PLANID, String V_V_PERSONCODE ) throws SQLException {
+    public HashMap setCheckResultFiles(String I_I_ID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE, String V_V_CHECKTIME, String V_V_CHECKPART, String V_V_CHECKDEPT, String V_V_REPORTNAME, InputStream B_B_CHECKREPORT, String I_I_PLANID, String V_V_PERSONCODE) throws SQLException {
 
         logger.info("begin setCheckResultFiles");
 
@@ -369,7 +369,7 @@ public class SpecEquipService {
             cstmt.setString("V_V_CHECKPART", V_V_CHECKPART);
             cstmt.setString("V_V_CHECKDEPT", V_V_CHECKDEPT);
             cstmt.setString("V_V_REPORTNAME", V_V_REPORTNAME);
-            cstmt.setBlob("B_B_CHECKREPORT",B_B_CHECKREPORT);
+            cstmt.setBlob("B_B_CHECKREPORT", B_B_CHECKREPORT);
             cstmt.setString("I_I_PLANID", I_I_PLANID);
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
@@ -385,6 +385,41 @@ public class SpecEquipService {
         logger.debug("result:" + result);
         logger.info("end setCheckResultFiles");
         return result;
+    }
+
+    //V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE,V_V_EQUTYPENAME, V_V_BDATE, V_V_EDATE,  page.toString(), limit.toString()
+    public HashMap selectCheckCost(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_BDATE, String V_V_EDATE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+        logger.info("begin selectCheckCost");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_CHECK_COST_GET" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTCODENEXT,:V_V_EQUTYPECODE,:V_V_EQUTYPENAME,:V_V_BDATE,:V_V_EDATE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUTYPENAME", V_V_EQUTYPENAME);
+            cstmt.setString("V_V_BDATE", V_V_BDATE);
+            cstmt.setString("V_V_EDATE", V_V_EDATE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List list = ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            result.put("list", list);
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectCheckCost");
+        return result;
+
     }
 
     public HashMap selectEquipMoveApply(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_EQUCODE, String V_V_BDATE, String V_V_EDATE, String V_V_STATUS, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
@@ -412,7 +447,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("total", (String) cstmt.getObject("V_V_SNUM"));
-            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
 
         } catch (SQLException e) {
             logger.error(e);
@@ -426,7 +461,7 @@ public class SpecEquipService {
 
     }
 
-    public HashMap insertEquipMove(String I_I_ID,String V_V_PERSONCODE, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE,String V_V_NEWORGNAME,String V_V_NEWORGCODE,String V_V_NEWDEPTNAME,String V_V_NEWDEPTCODE,String V_V_NEWADD,String V_V_NEWSITE) throws SQLException {
+    public HashMap insertEquipMove(String I_I_ID, String V_V_PERSONCODE, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE, String V_V_NEWORGNAME, String V_V_NEWORGCODE, String V_V_NEWDEPTNAME, String V_V_NEWDEPTCODE, String V_V_NEWADD, String V_V_NEWSITE) throws SQLException {
 
         logger.info("begin insertEquipMove");
 
@@ -538,7 +573,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
-            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -570,7 +605,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("total", (String) cstmt.getObject("V_V_SNUM"));
-            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -602,7 +637,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("total", (String) cstmt.getObject("V_V_SNUM"));
-            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -669,7 +704,7 @@ public class SpecEquipService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("total", (String) cstmt.getObject("V_V_SNUM"));
-            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

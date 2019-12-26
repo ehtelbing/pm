@@ -423,6 +423,24 @@ public class SpecEquipController {
         }
     }
 
+    //检测费用台账查询
+    @RequestMapping(value = "/selectCheckCost", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectCheckCost(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_BDATE") String V_V_BDATE,
+                                               @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
+                                               Integer page,
+                                               Integer limit,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map result = specEquipService.selectCheckCost(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_BDATE, V_V_EDATE, page.toString(), limit.toString());
+        return result;
+    }
+
     //设备移动申请查询
     @RequestMapping(value = "/selectEquipMoveApply", method = RequestMethod.POST)
     @ResponseBody
@@ -800,26 +818,26 @@ public class SpecEquipController {
     @RequestMapping(value = "/excelCheckResult", method = RequestMethod.GET)
     @ResponseBody
     public void excelCheckResult(@RequestParam(value = "I_I_ID_LIST", required = false) List<String> I_I_ID_LIST,
-                                 @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
-                                 @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
-                                 @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
-                                 @RequestParam(value = "V_CHECKTIME_LIST", required = false) List<String> V_CHECKTIME_LIST,
-                                 @RequestParam(value = "V_CHECKPART_LIST", required = false) List<String> V_CHECKPART_LIST,
-                                 @RequestParam(value = "V_CHECKDEPT_LIST", required = false) List<String> V_CHECKDEPT_LIST,
-                                 @RequestParam(value = "V_FCHECKTIME_LIST", required = false) List<String> V_FCHECKTIME_LIST,
-                                 @RequestParam(value = "V_COST_LIST", required = false) List<String> V_COST_LIST,
-                                 String V_V_PERSONCODE,
-                                 String V_V_DEPTCODE,
-                                 String V_V_DEPTCODENEXT,
-                                 String V_V_EQUTYPECODE,
-                                 String V_V_EQUTYPENAME,
-                                 String V_V_EQUCODE,
-                                 String V_V_BDATE,
-                                 String V_V_EDATE,
-                                 Integer page,
-                                 Integer limit,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                               @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
+                               @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
+                               @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
+                               @RequestParam(value = "V_CHECKTIME_LIST", required = false) List<String> V_CHECKTIME_LIST,
+                               @RequestParam(value = "V_CHECKPART_LIST", required = false) List<String> V_CHECKPART_LIST,
+                               @RequestParam(value = "V_CHECKDEPT_LIST", required = false) List<String> V_CHECKDEPT_LIST,
+                               @RequestParam(value = "V_FCHECKTIME_LIST", required = false) List<String> V_FCHECKTIME_LIST,
+                               @RequestParam(value = "V_COST_LIST", required = false) List<String> V_COST_LIST,
+                               String V_V_PERSONCODE,
+                               String V_V_DEPTCODE,
+                               String V_V_DEPTCODENEXT,
+                               String V_V_EQUTYPECODE,
+                               String V_V_EQUTYPENAME,
+                               String V_V_EQUCODE,
+                               String V_V_BDATE,
+                               String V_V_EDATE,
+                               Integer page,
+                               Integer limit,
+                               HttpServletRequest request,
+                               HttpServletResponse response) throws Exception {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -1363,5 +1381,144 @@ public class SpecEquipController {
     }
 
 
+
+    //导出检测费用台账
+    @RequestMapping(value = "/excelCheckCost", method = RequestMethod.GET)
+    @ResponseBody
+    public void excelCheckCost(@RequestParam(value = "I_I_ID_LIST", required = false) List<String> I_I_ID_LIST,
+                               @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
+                               @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
+                               @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
+                               @RequestParam(value = "V_CHECKTIME_LIST", required = false) List<String> V_CHECKTIME_LIST,
+                               @RequestParam(value = "V_CHECKPART_LIST", required = false) List<String> V_CHECKPART_LIST,
+                               @RequestParam(value = "V_CHECKDEPT_LIST", required = false) List<String> V_CHECKDEPT_LIST,
+                               @RequestParam(value = "V_FCHECKTIME_LIST", required = false) List<String> V_FCHECKTIME_LIST,
+                               @RequestParam(value = "V_COST_LIST", required = false) List<String> V_COST_LIST,
+                               String V_V_PERSONCODE,
+                               String V_V_DEPTCODE,
+                               String V_V_DEPTCODENEXT,
+                               String V_V_EQUTYPECODE,
+                               String V_V_EQUTYPENAME,
+                               String V_V_EQUCODE,
+                               String V_V_BDATE,
+                               String V_V_EDATE,
+                               Integer page,
+                               Integer limit,
+                               HttpServletRequest request,
+                               HttpServletResponse response) throws Exception {
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i < 10; i++) {
+            if (i == 0) {
+                sheet.setColumnWidth(i, 2000);
+            } else if (i == 8) {
+                sheet.setColumnWidth(i, 6000);
+            } else if (i == 7) {
+                sheet.setColumnWidth(i, 4000);
+            } else if (i == 10) {
+                sheet.setColumnWidth(i, 6000);
+            } else if (i == 4) {
+                sheet.setColumnWidth(i, 5000);
+            } else if (i == 9) {
+                sheet.setColumnWidth(i, 4000);
+            } else {
+                sheet.setColumnWidth(i, 8000);
+            }
+        }
+
+        HSSFRow row = sheet.createRow((int) 0);
+        row.setHeightInPoints(30);
+        //标题栏样式
+        HSSFCellStyle style = wb.createCellStyle();
+        HSSFFont font = wb.createFont();
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 垂直
+        style.setFillForegroundColor(HSSFColor.GREY_50_PERCENT.index);
+        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        font.setFontHeightInPoints((short) 12);// 设置字体大小
+        font.setColor(HSSFColor.WHITE.index);
+        style.setFont(font);
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell1 = row.createCell((short) 0);
+        cell1.setCellValue("序号");
+        cell1.setCellStyle(style);
+
+        HSSFCell cell2 = row.createCell((short) 1);
+        cell2.setCellValue("作业区");
+        cell2.setCellStyle(style);
+
+        HSSFCell cell3 = row.createCell((short) 2);
+        cell3.setCellValue("设备类型");
+        cell3.setCellStyle(style);
+
+        HSSFCell cell4 = row.createCell((short) 3);
+        cell4.setCellValue("设备名称");
+        cell4.setCellStyle(style);
+
+        HSSFCell cell5 = row.createCell((short) 4);
+        cell5.setCellValue("金额");
+        cell5.setCellStyle(style);
+
+        List<Map<String, Object>> checkCostList = new ArrayList<Map<String, Object>>();
+
+        //如果是选择了很多列
+        if (I_I_ID_LIST.size() > 0) {
+            for (int i = 0; i < I_I_ID_LIST.size(); i++) {
+                Map<String, Object> checkResultDate = new HashMap<String, Object>();
+                checkResultDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
+                checkResultDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
+                checkResultDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
+                checkResultDate.put("V_COST", (String) V_COST_LIST.get(i));
+                checkCostList.add(checkResultDate);
+            }
+        } else {
+            Map<String, Object> data = specEquipService.selectCheckCost(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_BDATE, V_V_EDATE, page.toString(), limit.toString());
+
+            checkCostList = (List<Map<String, Object>>) data.get("list");
+        }
+        float sum = (float) 0.00;
+        float cost = (float) 0.00;
+        int size = checkCostList.size();
+        for (int j = 0; j < checkCostList.size(); j++) {
+            if (j < size) {
+                cost = Float.parseFloat(((checkCostList.get(j).get("V_COST")).toString()));
+                sum = sum + cost;
+            }
+            row = sheet.createRow(j + 1);
+            row.setHeightInPoints(25);
+            HSSFCell cellContent = row.createCell(0);
+
+            cellContent.setCellValue(j + 1);// 序号
+            cellContent = row.createCell(1);
+            cellContent.setCellValue(checkCostList.get(j).get("V_DEPTNAME") == null ? "" : checkCostList.get(j).get("V_DEPTNAME").toString());// 作业区名称
+
+            cellContent = row.createCell(2);
+            cellContent.setCellValue(checkCostList.get(j).get("V_EQUTYPENAME") == null ? "" : checkCostList.get(j).get("V_EQUTYPENAME").toString());// 设备类型名称
+
+            cellContent = row.createCell(3);
+            cellContent.setCellValue(checkCostList.get(j).get("V_EQUNAME") == null ? "" : checkCostList.get(j).get("V_EQUNAME").toString());// 设备名称
+
+            cellContent = row.createCell(4);
+            cellContent.setCellValue(checkCostList.get(j).get("V_COST") == null ? "" : checkCostList.get(j).get("V_COST").toString());// 金额
+            if (j == checkCostList.size() - 1) {
+                row = sheet.createRow(j + 2);
+                row.createCell(1).setCellValue("合计 :");
+                row.createCell(4).setCellValue(String.format("%.2f", sum));
+            }
+        }
+        try {
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            String fileName = new String("检测费用台账.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            OutputStream out = response.getOutputStream();
+
+            wb.write(out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
