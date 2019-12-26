@@ -36,7 +36,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/app/pm/oil")
-public class oilController {
+public class OilController {
 
     @Value("#{configProperties['PM_JST']}")
     private String pm_jst;
