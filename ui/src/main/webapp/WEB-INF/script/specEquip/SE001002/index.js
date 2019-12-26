@@ -167,6 +167,7 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
+                store.data.removeAt(0);//在返回的数据源里去掉全部选项
                 Ext.getCmp("DEPT_EQUIP_TYPE_").select(store.first());
             }
         }
@@ -292,7 +293,7 @@ Ext.onReady(function () {
             queryMode: 'local',//获取本地数据
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,//输入错误，会显示一个最接近的值
             fieldLabel: '接收厂矿',
             allowBlank: false,
@@ -312,7 +313,7 @@ Ext.onReady(function () {
             queryMode: 'local',//获取本地数据
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,//输入错误，会显示一个最接近的值
             fieldLabel: '接收作业区',
             allowBlank: false

@@ -30,7 +30,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
-    Ext.getBody().mask('<spring:message code="loading" />');
+    Ext.getBody().mask('加载中...');
 
     Ext.Ajax.request({//加载被修改对象
         url : AppUrl + 'specEquip/loadPlanApply',
@@ -124,12 +124,13 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
+                store.data.removeAt(0);//在返回的数据源里去掉全部选项
                 Ext.getCmp('equipType').select(store.first());
             }
         }
     });
 
-    let equipStore = Ext.create('Ext.data.Store', {
+    var equipStore = Ext.create('Ext.data.Store', {
         storeId: 'equipStore',
         autoLoad: false,
         loading: false,
@@ -175,7 +176,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '厂矿',
             listeners: {
@@ -195,7 +196,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '作业区',
             listeners: {
@@ -214,7 +215,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUTYPECODE',
             displayField: 'V_EQUTYPENAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备类型',
             listeners: {
@@ -232,7 +233,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUCODE',
             displayField: 'V_EQUNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备名称'
         }, {
@@ -241,6 +242,7 @@ Ext.onReady(function () {
             name : 'TEST_OF_TIME_',
             format : 'Y-m-d',
             submitFormat : 'Y-m-d',
+            editable: false,
             fieldLabel : '检定时间'
         }, {
             xtype : 'textfield',
@@ -354,7 +356,7 @@ function _selectOrg() {
 }
 
 function _selectDept() {
-    let deptStore = Ext.data.StoreManager.lookup('deptStore');
+    var deptStore = Ext.data.StoreManager.lookup('deptStore');
     deptStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
@@ -365,7 +367,7 @@ function _selectDept() {
 }
 
 function _selectEquipType() {
-    let equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
+    var equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
     equipTypeStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue()
@@ -374,7 +376,7 @@ function _selectEquipType() {
 }
 
 function _selectEquip() {
-    let equipStore = Ext.data.StoreManager.lookup('equipStore');
+    var equipStore = Ext.data.StoreManager.lookup('equipStore');
     equipStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
