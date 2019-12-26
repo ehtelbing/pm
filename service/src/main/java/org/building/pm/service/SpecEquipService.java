@@ -649,34 +649,6 @@ public class SpecEquipService {
         return result;
     }
 
-    //导出附件
-    public HashMap loadEnclosure(String V_ID) throws SQLException {
-
-        logger.info("begin loadEnclosure");
-
-        HashMap result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call SE_EQU_ATTACH_FILE_GET(:V_ID,:B_CONTENT)}");
-            cstmt.setString("V_ID", V_ID);
-            cstmt.registerOutParameter("B_CONTENT", OracleTypes.BLOB);
-            cstmt.execute();
-            result.put("B_CONTENT", ((Blob) cstmt.getObject("B_CONTENT")));
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end loadEnclosure");
-        return result;
-
-    }
-
     //报废设备查询
     public HashMap selectEquScrap(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_EQUCODE, String V_V_BDATE, String V_V_EDATE, String V_V_STATUS, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 

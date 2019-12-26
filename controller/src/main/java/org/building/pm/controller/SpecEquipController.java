@@ -754,46 +754,6 @@ public class SpecEquipController {
         return result;
     }
 
-
-    //导出附件
-    @RequestMapping(value = "/loadEnclosure", method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> loadEnclosure(
-            @RequestParam(value = "V_ID") String V_ID,
-            @RequestParam(value = "V_FILENAME") String V_FILENAME,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-
-        Map data = specEquipService.loadEnclosure(V_ID);
-        Map result = new HashMap();
-
-        String agent = (String) request.getHeader("USER-AGENT");
-        if (agent != null && agent.toLowerCase().indexOf("firefox") > 0) {// 兼容火狐中文文件名下载
-            V_FILENAME = "=?UTF-8?B?" + (new String(Base64.encodeBase64(V_FILENAME.getBytes("UTF-8")))) + "?=";
-        } else {
-            V_FILENAME = java.net.URLEncoder.encode(V_FILENAME, "UTF-8");
-        }
-        response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=" + V_FILENAME);// 下载模式
-
-        InputStream fileStream = ((Blob) data.get("B_CONTENT")).getBinaryStream();
-        BufferedInputStream reader = new BufferedInputStream(fileStream);
-        BufferedOutputStream writer = new BufferedOutputStream(response.getOutputStream());
-
-        byte[] bytes = new byte[1024 * 1024];
-        int length = reader.read(bytes);
-        while ((length > 0)) {
-            writer.write(bytes, 0, length);
-            length = reader.read(bytes);
-        }
-        reader.close();
-        writer.close();
-
-        result.put("success", true);
-        return result;
-
-    }
-
     //报废设备查询
     @RequestMapping(value = "/selectEquScrap", method = RequestMethod.POST)
     @ResponseBody
