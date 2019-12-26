@@ -777,9 +777,9 @@ public class SpecEquipController {
     }
 
     //报废设备查询
-    @RequestMapping(value = "/selectScrapGet", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectEquScrap", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> selectScrapGet(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+    public Map<String, Object> selectEquScrap(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                               @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
@@ -792,7 +792,7 @@ public class SpecEquipController {
                                               Integer limit,
                                               HttpServletRequest request,
                                               HttpServletResponse response) throws Exception {
-        Map result = specEquipService.selectScrapGet(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, page.toString(), limit.toString());
+        Map result = specEquipService.selectEquScrap(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, page.toString(), limit.toString());
         return result;
     }
 
@@ -1301,5 +1301,67 @@ public class SpecEquipController {
         Map result = specEquipService.selectCheckOverTime(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, page.toString(), limit.toString());
         return result;
     }
+
+    //设备报废新增修改
+    @RequestMapping(value = "/setEquScrap", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> setEquScrap(@RequestParam(value = "I_I_ID") String I_I_ID,
+                                               @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+                                               @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                               @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                               @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                               @RequestParam(value = "V_V_SCRAPREASON") String V_V_SCRAPREASON,
+                                               @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = specEquipService.setEquScrap(I_I_ID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE, V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_EQUNAME, V_V_EQUCODE, V_V_SCRAPREASON, V_V_PERSONCODE);
+        result.put("success", true);
+        result.put("data", data);
+        result.put("V_INFO", data.get("V_INFO"));
+        if(StringUtils.isNotEmpty(I_I_ID)){
+            result.put("equScrap",specEquipService.loadEquScrap(I_I_ID));
+        }
+
+        return result;
+    }
+
+    //查询某个报废设备信息
+    @RequestMapping(value = "/loadEquScrap", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> loadEquScrap(
+            @RequestParam(value = "I_I_ID") String I_I_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> equScrap = specEquipService.loadEquScrap(I_I_ID);
+
+        result.put("equScrap", equScrap);
+        result.put("success", true);
+        return result;
+   }
+
+   //删除报废申请
+    @RequestMapping(value = "/deleteEquipScrap", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteEquipScrap(@RequestParam(value = "I_I_ID", required = false) String I_I_ID,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = specEquipService.deleteEquipScrap(I_I_ID);
+
+        result.put("data", data);
+        result.put("success", true);
+
+        return result;
+    }
+
+
 
 }
