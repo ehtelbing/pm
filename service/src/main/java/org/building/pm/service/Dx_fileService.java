@@ -1675,12 +1675,13 @@ public class Dx_fileService {
     }
 
     // 工单执行率
-    public HashMap PRO_PM_DEPT_SORT(String V_D_ENTER_DATE_B, String V_D_ENTER_DATE_E, String V_V_ORGCODE) throws Exception, SQLException {
-        HashMap result = new HashMap();
+    public Map PRO_PM_DEPT_SORT(String V_D_ENTER_DATE_B, String V_D_ENTER_DATE_E, String V_V_ORGCODE) throws  SQLException {
+        logger.info("begin PRO_PM_DEPT_SORT");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
-            logger.info("begin PRO_PM_DEPT_SORT");
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PRO_PM_DEPT_SORT(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_V_ORGCODE,:V_CURSOR)}");
@@ -7370,5 +7371,218 @@ public class Dx_fileService {
         return result;
     }
 
+    public Map PRO_PM_06_PLAN_DXGC_SAVE(String V_V_YEAR, String V_V_ORGCODE, String V_V_ORGNAME, String  V_V_DEPTCODE, String  V_V_DEPTNAME, String  V_V_TYPECODE, String  V_V_TYPEDESC, String  V_V_BASECODE, String  V_V_QSTEXT) throws SQLException {
+        logger.info("begin PRO_PM_06_PLAN_DXGC_SAVE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_06_PLAN_DXGC_SAVE" + "(:V_V_YEAR,:V_V_ORGCODE,:V_V_ORGNAME,:V_V_DEPTCODE,:V_V_DEPTNAME,:V_V_TYPECODE,:V_V_TYPEDESC,:V_V_BASECODE,:V_V_QSTEXT,:V_INFO)}");
+
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_ORGNAME", V_V_ORGNAME);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
+            cstmt.setString("V_V_TYPECODE", V_V_TYPECODE);
+            cstmt.setString("V_V_TYPEDESC", V_V_TYPEDESC);
+            cstmt.setString("V_V_BASECODE", V_V_BASECODE);
+            cstmt.setString("V_V_QSTEXT", V_V_QSTEXT);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO",cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_06_PLAN_DXGC_SAVE");
+        return result;
+
+    }
+
+    public Map PRO_PM_06_PLAN_DXGC_VIEW_Q(String  V_V_YEAR, String  V_V_ORGCODE, String  V_V_DEPTCODE, String  V_V_TYPECODE, String  V_V_BASECODE) throws SQLException {
+        logger.info("begin PRO_PM_06_PLAN_DXGC_VIEW_Q");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_06_PLAN_DXGC_VIEW_Q" + "(:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_TYPECODE,:V_V_BASECODE,:V_CURSOR)}");
+
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_TYPECODE", V_V_TYPECODE);
+            cstmt.setString("V_V_BASECODE", V_V_BASECODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_06_PLAN_DXGC_VIEW_Q");
+        return result;
+
+    }
+
+    public Map PRO_PM_06_PLAN_DXGC_VIEW_Q_SYS(Date X_TIMELOWERLIMIT, Date X_TIMEUPPERLIMIT, String  V_V_YEAR, String  V_V_ORGCODE, String  V_V_DEPTCODE, String  V_V_TYPECODE, String  V_V_BASECODE) throws SQLException {
+        logger.info("begin PRO_PM_06_PLAN_DXGC_VIEW_Q");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_06_PLAN_DXGC_VIEW_Q_SYS" + "(:X_TIMELOWERLIMIT,:X_TIMEUPPERLIMIT,:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_TYPECODE,:V_V_BASECODE,:V_CURSOR)}");
+
+            cstmt.setDate("X_TIMELOWERLIMIT", X_TIMELOWERLIMIT);
+            cstmt.setDate("X_TIMEUPPERLIMIT", X_TIMEUPPERLIMIT);
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_TYPECODE", V_V_TYPECODE);
+            cstmt.setString("V_V_BASECODE", V_V_BASECODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_06_PLAN_DXGC_VIEW_Q_SYS");
+        return result;
+
+    }
+
+    public Map PRO_PM_06_PLAN_DXGC_DEL(String V_V_GUID) throws SQLException {
+        logger.info("begin PRO_PM_06_PLAN_DXGC_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_06_PLAN_DXGC_DEL" + "(:V_V_GUID,:V_INFO)}");
+
+
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+            result.put("V_INFO",cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_06_PLAN_DXGC_DEL");
+        return result;
+    }
+
+    public Map PM_06_PLAN_DXGC_EQU_SELNUM(String V_V_GUID) throws SQLException {
+        logger.info("begin PM_06_PLAN_DXGC_EQU_SELNUM");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_06_PLAN_DXGC_EQU_SELNUM" + "(:V_V_GUID)}");
+            
+            cstmt.setString("V_V_GUID", V_V_GUID);
+//            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+//            result.put("V_INFO",cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_PLAN_DXGC_EQU_SELNUM");
+        return result;
+    }
+
+    public Map PRO_PM_06_PLAN_DXGC_SEL(String V_V_GUID) throws SQLException {
+        logger.info("begin PRO_PM_06_PLAN_DXGC_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_06_PLAN_DXGC_SEL" + "(:V_V_GUID,:V_CURSOR)}");
+
+
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_06_PLAN_DXGC_SEL");
+        return result;
+    }
+
+    public Map PRO_PM_06_PLAN_DXGC_UPDATE(String  V_V_GUID, String  V_V_YEAR, String  V_V_ORGCODE, String V_V_ORGNAME, String  V_V_DEPTCODE, String  V_V_DEPTNAME, String  V_V_TYPECODE, String  V_V_TYPEDESC, String  V_V_BASECODE, String  V_V_QSTEXT) throws SQLException {
+        logger.info("begin PRO_PM_06_PLAN_DXGC_UPDATE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_06_PLAN_DXGC_UPDATE" + "(:V_V_GUID,:V_V_YEAR,:V_V_ORGCODE,:V_V_ORGNAME,:V_V_DEPTCODE,:V_V_DEPTNAME,:V_V_TYPECODE,:V_V_TYPEDESC,:V_V_BASECODE,:V_V_QSTEXT,:V_INFO)}");
+
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_ORGNAME", V_V_ORGNAME);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
+            cstmt.setString("V_V_TYPECODE", V_V_TYPECODE);
+            cstmt.setString("V_V_TYPEDESC", V_V_TYPEDESC);
+            cstmt.setString("V_V_BASECODE", V_V_BASECODE);
+            cstmt.setString("V_V_QSTEXT", V_V_QSTEXT);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO",cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_06_PLAN_DXGC_UPDATE");
+        return result;
+
+    }
 }
 

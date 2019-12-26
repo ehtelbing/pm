@@ -679,19 +679,38 @@ function OnButtonAdd() {
     });
 
 
-    if(Ext.getCmp('zclb').getValue() != '%'){
 
-        Ext.getCmp('winzclb').select(Ext.getCmp('zclb').getValue());
-
-
-    }else{
-        //Ext.data.StoreManager.lookup('winzclbStore').on('load',function(){
-        Ext.getCmp('winzclb').select(Ext.data.StoreManager.lookup("winzclbStore").getAt(0));
-        //});
-    }
 
 
     Ext.getCmp('winyear').select(Ext.getCmp('year').getValue());
+
+    Ext.data.StoreManager.lookup('winzclbStore').on('load',function(){
+
+        if(Ext.getCmp('winzyq').getValue() == Ext.getCmp('zyq').getValue()){
+            Ext.getCmp('winzclb').select(Ext.getCmp('zclb').getValue());
+        }else{
+            Ext.getCmp('winzclb').select(Ext.data.StoreManager.lookup('winzclbStore').getAt(0));
+        }
+        // if(Ext.getCmp('zclb').getValue() != '%'){
+        //
+        //     Ext.getCmp('winzclb').select(Ext.getCmp('zclb').getValue());
+        //
+        //
+        // }else{
+        //     //Ext.data.StoreManager.lookup('winzclbStore').on('load',function(){
+        //     Ext.getCmp('winzclb').select(Ext.data.StoreManager.lookup("winzclbStore").getAt(0));
+        //     //});
+        // }
+
+        // Ext.getCmp('winzclb').select(Ext.getCmp('winzclb').getValue());
+        // if(Ext.getCmp('zclb').getValue() != '%'){
+        //     // Ext.data.StoreManager.lookup('winzclbStore').on('load',function(){});
+        //     Ext.getCmp('winzclb').select(Ext.getCmp('zclb').getValue());
+        //
+        // }else{
+        //     Ext.getCmp('winzclb').select(Ext.data.StoreManager.lookup("winzclbStore").getAt(0));
+        // }
+    });
 
     if(Ext.getCmp('lb').getValue() == '%'){
 
@@ -750,7 +769,11 @@ function OnButtonEdit() {
     });
 
     Ext.data.StoreManager.lookup('winzyqStore').on('load',function(){
-        Ext.getCmp('winzyq').select(Ext.getCmp('zyq').getValue());
+        if(Ext.getCmp('winck').getValue() == Ext.getCmp(' ck').getValue()){
+            Ext.getCmp('winzyq').select(Ext.getCmp('winzyq').getValue());
+        }else{
+            Ext.getCmp('winzyq').select(Ext.data.StoreManager.lookup('winzyqStore').getAt(0));
+        }
         Ext.data.StoreManager.lookup('winzclbStore').load({
             params: {
                 'V_V_ORGCODE':Ext.getCmp('winck').getValue(),
@@ -759,18 +782,23 @@ function OnButtonEdit() {
         });
     });
 
-    Ext.getCmp('winzclb').select(Ext.getCmp('winzclb').getValue());
+    // Ext.getCmp('winzclb').select(Ext.getCmp('winzclb').getValue());
 
-    // Ext.data.StoreManager.lookup('winzclbStore').on('load',function(){
-    //     Ext.getCmp('winzclb').select(Ext.getCmp('winzclb').getValue());
-    //     // if(Ext.getCmp('zclb').getValue() != '%'){
-    //     //     // Ext.data.StoreManager.lookup('winzclbStore').on('load',function(){});
-    //     //     Ext.getCmp('winzclb').select(Ext.getCmp('zclb').getValue());
-    //     //
-    //     // }else{
-    //     //     Ext.getCmp('winzclb').select(Ext.data.StoreManager.lookup("winzclbStore").getAt(0));
-    //     // }
-    // });
+    Ext.data.StoreManager.lookup('winzclbStore').on('load',function(){
+        if(Ext.getCmp('winzyq').getValue() == Ext.getCmp('zyq').getValue()){
+            Ext.getCmp('winzclb').select(Ext.getCmp('winzclb').getValue());
+        }else{
+            Ext.getCmp('winzclb').select(Ext.data.StoreManager.lookup('winzclbStore').getAt(0));
+        }
+        // Ext.getCmp('winzclb').select(Ext.getCmp('winzclb').getValue());
+        // if(Ext.getCmp('zclb').getValue() != '%'){
+        //     // Ext.data.StoreManager.lookup('winzclbStore').on('load',function(){});
+        //     Ext.getCmp('winzclb').select(Ext.getCmp('zclb').getValue());
+        //
+        // }else{
+        //     Ext.getCmp('winzclb').select(Ext.data.StoreManager.lookup("winzclbStore").getAt(0));
+        // }
+    });
 
     Ext.getCmp('win').show();
 
@@ -779,6 +807,10 @@ function OnButtonEdit() {
 function save() {
 
     if (flag == 'TY') {
+        if(Ext.getCmp('winzyq').getValue() == '%'){
+            alert('保存失败！不能选择全部');
+            // Ext.getCmp('win').hide();
+        }else {
         Ext.Ajax.request({
             url: AppUrl + 'dxfile/PRO_PM_06_PLAN_DXGC_SAVE',
             method: 'POST',
@@ -802,33 +834,39 @@ function save() {
                 OnButtonQuery();
             }
         })
+        }
 
     }else {
         if (Ext.getCmp('mainpanel').getSelectionModel().getSelection()[0].data.sid != '') {
-            Ext.Ajax.request({
-                url: AppUrl + '/dxfile/PRO_PM_06_PLAN_DXGC_UPDATE',
-                method: 'POST',
-                async: false,
-                params: {
-                    V_V_GUID: Ext.getCmp('mainpanel').getSelectionModel().getSelection()[0].data.V_GUID,
-                    V_V_YEAR: Ext.getCmp('winyear').getValue(),
-                    V_V_ORGCODE: Ext.getCmp('winck').getValue(),
-                    V_V_ORGNAME: Ext.getCmp('winck').rawValue,
-                    V_V_DEPTCODE: Ext.getCmp('winzyq').getValue(),//Ext.util.Cookies.get('v_deptcode')
-                    V_V_DEPTNAME: Ext.getCmp('winzyq').rawValue,
-                    V_V_TYPECODE: Ext.getCmp('winzclb').getValue(),
-                    V_V_TYPEDESC: Ext.getCmp('winzclb').rawValue,
-                    V_V_BASECODE: Ext.getCmp('winlb').getValue(),
-                    V_V_BASENAME: Ext.getCmp('winlb').rawValue,
-                    V_V_QSTEXT: Ext.getCmp('winqstext').getValue()
-                },
-                success: function (ret) {
-                    var resp = Ext.JSON.decode(ret.responseText);
-                    alert('保存成功！');
-                    Ext.getCmp('win').hide();
-                    OnButtonQuery();
-                }
-            });
+            if(Ext.getCmp('winzyq').getValue() == '%'){
+                alert('保存失败！不能选择全部');
+                // Ext.getCmp('win').hide();
+            }else {
+                Ext.Ajax.request({
+                    url: AppUrl + '/dxfile/PRO_PM_06_PLAN_DXGC_UPDATE',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: Ext.getCmp('mainpanel').getSelectionModel().getSelection()[0].data.V_GUID,
+                        V_V_YEAR: Ext.getCmp('winyear').getValue(),
+                        V_V_ORGCODE: Ext.getCmp('winck').getValue(),
+                        V_V_ORGNAME: Ext.getCmp('winck').rawValue,
+                        V_V_DEPTCODE: Ext.getCmp('winzyq').getValue(),//Ext.util.Cookies.get('v_deptcode')
+                        V_V_DEPTNAME: Ext.getCmp('winzyq').rawValue,
+                        V_V_TYPECODE: Ext.getCmp('winzclb').getValue(),
+                        V_V_TYPEDESC: Ext.getCmp('winzclb').rawValue,
+                        V_V_BASECODE: Ext.getCmp('winlb').getValue(),
+                        V_V_BASENAME: Ext.getCmp('winlb').rawValue,
+                        V_V_QSTEXT: Ext.getCmp('winqstext').getValue()
+                    },
+                    success: function (ret) {
+                        var resp = Ext.JSON.decode(ret.responseText);
+                        alert('保存成功！');
+                        Ext.getCmp('win').hide();
+                        OnButtonQuery();
+                    }
+                });
+            }
         }
     }
 }
@@ -871,7 +909,7 @@ function deleteData(){
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
-                if (resp.V_CURSOR == 'SUCCESS') {
+                if (resp.V_INFO == 'SUCCESS') {
                     num++;
                 }else{
                     alert("删除中信息有误");

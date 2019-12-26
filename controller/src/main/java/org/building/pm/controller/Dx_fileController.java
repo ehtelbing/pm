@@ -5306,7 +5306,6 @@ public class Dx_fileController {
         return result;
     }
 
-    //维修简版查询
     @RequestMapping(value = "PRO_PM_06_PLAN_DXGC_VIEW_Q", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_06_PLAN_DXGC_VIEW_Q(
