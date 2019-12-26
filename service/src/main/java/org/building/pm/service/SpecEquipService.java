@@ -1047,5 +1047,4 @@ public class SpecEquipService {
         logger.info("end setCheckOverRange");
         return result;
     }
-
 }

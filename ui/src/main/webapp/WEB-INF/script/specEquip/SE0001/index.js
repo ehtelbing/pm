@@ -472,7 +472,6 @@ function _excelArchives() {
 }
 
 function _manageArchives(value) {
-    console.log(value);
     returnValue = null;
     win = Ext.create('Ext.window.Window', {
         title: '管理附件',
@@ -482,12 +481,7 @@ function _manageArchives(value) {
         maximizable: true,
         width : 900,
         height : document.documentElement.clientHeight * 0.8,
-        html: '<iframe src=' + AppUrl + value + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
-        listeners: {
-            close: function (panel, eOpts) {
-                console.log(returnValue);
-            }
-        }
+        html: '<iframe src=' + AppUrl + value + ' style="width: 100%; height: 100%;" frameborder="0"/ >'
     });
 }
 

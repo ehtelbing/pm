@@ -1769,5 +1769,4 @@ public class SpecEquipController {
             e.printStackTrace();
         }
     }
-
 }
