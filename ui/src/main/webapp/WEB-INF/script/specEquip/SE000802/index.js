@@ -311,6 +311,7 @@ function _refresh() {
 function _newAdd() {
     var attachmentTypeStore = Ext.data.StoreManager.lookup('attachmentTypeStore');
     var isUseStore = Ext.data.StoreManager.lookup('isUseStore');
+    Ext.getCmp('I_ID').setValue('');
     Ext.getCmp('V_V_ATTACHNAME').setValue('');
     Ext.getCmp('V_V_EQUTYPE').setRawValue(attachmentTypeStore.getById().get('V_EQUTYPE'));
     Ext.getCmp('I_I_ISUSE').setRawValue(isUseStore.getById().get('I_ISUSE_NAME'));
