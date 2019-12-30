@@ -6,7 +6,6 @@ Ext.onReady(function() {
     Ext.QuickTips.init();
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
-        pageSize: 15,
         autoLoad: false,
         fields: ['V_DEPTNAME', 'WR_OK', 'WR_TOTAL','RATE'],
         proxy: {
@@ -18,8 +17,7 @@ Ext.onReady(function() {
             },
             reader: {
                 type: 'json',
-                root: 'list',
-                total: 'total'
+                root: 'list'
             }
         }
 

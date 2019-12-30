@@ -1702,6 +1702,31 @@ public class Dx_fileService {
         return result;
     }
 
+    public HashMap PRO_PM_ORG_SORT(String V_D_ENTER_DATE_B, String V_D_ENTER_DATE_E) throws Exception, SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_PM_ORG_SORT");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_ORG_SORT(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_CURSOR)}");
+            cstmt.setString("V_D_ENTER_DATE_B", V_D_ENTER_DATE_B);
+            cstmt.setString("V_D_ENTER_DATE_E", V_D_ENTER_DATE_E);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEPT_SORT");
+        return result;
+    }
+
     public HashMap PRO_03_PLAN_YEAR_GET(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZYCODE, String V_V_CXCODE,
                                         String V_V_YEARNAME, String V_V_PERNAME, String V_V_PERCODE, String V_V_PAGE, String V_V_PAGESIZE) throws Exception, SQLException {
         HashMap result = new HashMap();

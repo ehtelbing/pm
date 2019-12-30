@@ -760,7 +760,7 @@ public class LxmService {
         return result;
     }
 
-    public HashMap PM_03_PLAN_CREATE_WORKORDER(String V_V_GUID, String V_V_PERCODE) throws SQLException {
+    public HashMap PM_03_PLAN_CREATE_WORKORDER(String V_V_GUID,String V_V_DEFECTGUID, String V_V_PERCODE) throws SQLException {
 
         logger.info("begin PM_03_PLAN_CREATE_WORKORDER");
         HashMap result = new HashMap();
@@ -769,8 +769,9 @@ public class LxmService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_03_PLAN_CREATE_WORKORDER" + "(:V_V_GUID,:V_V_PERCODE,:V_INFO,:V_V_ORDERGUID,:V_V_SOURCECODE,:V_V_EQUTYPE,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PM_03_PLAN_CREATE_WORKORDER" + "(:V_V_GUID,:V_V_DEFECTGUID,:V_V_PERCODE,:V_INFO,:V_V_ORDERGUID,:V_V_SOURCECODE,:V_V_EQUTYPE,:V_CURSOR)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
             cstmt.setString("V_V_PERCODE", V_V_PERCODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_V_ORDERGUID", OracleTypes.VARCHAR);

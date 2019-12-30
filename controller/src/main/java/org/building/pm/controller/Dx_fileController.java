@@ -1530,6 +1530,17 @@ public class Dx_fileController {
         return data;
     }
 
+    @RequestMapping(value = "PRO_PM_ORG_SORT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_ORG_SORT(
+            @RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+            @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_PM_ORG_SORT(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E);
+        return data;
+    }
+
     @RequestMapping(value = "PRO_03_PLAN_YEAR_GET", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_03_PLAN_YEAR_GET(

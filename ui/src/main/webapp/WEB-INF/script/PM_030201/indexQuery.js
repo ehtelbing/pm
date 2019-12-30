@@ -600,7 +600,16 @@ function OnButtonQuery() {
 }
 
 function OnButtonOut() {
-
+    var V_V_YEAR=Ext.getCmp('year').getValue();
+    var V_V_MONTH=Ext.getCmp('month').getValue() == "%" ? "all" : Ext.getCmp('month').getValue();
+    var V_V_ORGCODE=Ext.getCmp('ck').getValue() == "%" ? "all" : Ext.getCmp('ck').getValue();
+    var V_V_DEPT=Ext.getCmp('zyq').getValue() == "%" ? "all" : Ext.getCmp('zyq').getValue();
+    var V_V_STATE=Ext.getCmp('state').getValue() == "%" ? "all" : Ext.getCmp('state').getValue();
+    var V_V_ZY=Ext.getCmp('zy').getValue() == "%" ? "all" : Ext.getCmp('zy').getValue();
+    var V_V_PERCODE=Ext.util.Cookies.get('v_personcode');
+    document.location.href = AppUrl + 'PM_03/PRO_PM_03_PLAN_YEAR_Excel?V_V_YEAR='+ V_V_YEAR
+        + '&V_V_MONTH=' + V_V_MONTH + '&V_V_ORGCODE=' +V_V_ORGCODE + '&V_V_DEPT=' +V_V_DEPT
+        + '&V_V_STATE=' + V_V_STATE + '&V_V_ZY=' + V_V_ZY+ '&V_V_PERCODE=' + V_V_PERCODE;
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {

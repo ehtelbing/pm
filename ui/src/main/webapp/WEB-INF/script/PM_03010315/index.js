@@ -1140,7 +1140,7 @@ function pageLoadInfo() {
         });
     });
 
-    Ext.data.StoreManager.lookup('gxStore').on('load',function(){
+    Ext.data.StoreManager.lookup('gxStore').on('load', function () {
         Ext.getCmp('gx').select(Ext.data.StoreManager.lookup('gxStore').getAt(0));
     })
 
@@ -1174,12 +1174,6 @@ function pageLoadInfo() {
     Ext.getCmp('sbmcName').setValue(V_EQUNAME);
     Ext.getCmp('sbmc').setValue(V_EQUCODE);
 
-    Ext.getCmp('jhtgdate').setValue(new Date(KSTIME));		//编辑窗口计划停工时间默认值
-    Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-    Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-    Ext.getCmp('jhjgdate').setValue(new Date(KSTIME));       //编辑窗口计划竣工时间默认值
-    Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-    Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
 
 }
 
@@ -1217,6 +1211,45 @@ Ext.onReady(function () {
         }
     });
 
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            'V_V_WEEKPLAN_GUID': V_WEEKPLAN_GUID
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.list.length == 1) {
+                Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE); //预计寿命
+                Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
+
+
+                if(resp.list[0].V_STARTTIME!='' && resp.list[0].V_STARTTIME!=null){
+                    Ext.getCmp('jhtgdate').setValue(resp.list[0].V_STARTTIME.split(" ")[0]);		//编辑窗口计划停工时间默认值
+                    Ext.getCmp('jhtghour').select(resp.list[0].V_STARTTIME.split(" ")[1].split(":")[0]);
+                    Ext.getCmp('jhtgminute').select(resp.list[0].V_STARTTIME.split(" ")[1].split(":")[1]);
+                }else{
+                    Ext.getCmp('jhtgdate').setValue(new Date(KSTIME));		//编辑窗口计划停工时间默认值
+                    Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
+                    Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
+
+                }
+
+                if(resp.list[0].V_ENDTIME!='' && resp.list[0].V_ENDTIME!=null) {
+                    Ext.getCmp('jhjgdate').setValue(resp.list[0].V_ENDTIME.split(" ")[0]);       //编辑窗口计划竣工时间默认值
+                    Ext.getCmp('jhjghour').select(resp.list[0].V_ENDTIME.split(" ")[1].split(":")[0]);
+                    Ext.getCmp('jhjgminute').select(resp.list[0].V_ENDTIME.split(" ")[1].split(":")[1]);
+                }else{
+                    Ext.getCmp('jhjgdate').setValue(new Date(KSTIME));       //编辑窗口计划竣工时间默认值
+                    Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
+                    Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
+                }
+
+                Ext.getCmp('jhgshj').setValue(resp.list[0].V_HOUR);
+            }
+        }
+    });
 });
 
 //第几周
