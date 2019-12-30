@@ -300,6 +300,7 @@ Ext.onReady(function () {
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
             fieldLabel: '开始时间',
+            editable: false,//只能选已有的选项,不能编辑
             value: Ext.util.Format.date(new Date(), "Y-m-") + "01"
         }, {
             xtype: 'datefield',
@@ -307,6 +308,7 @@ Ext.onReady(function () {
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
             fieldLabel: '结束时间',
+            editable: false,//只能选已有的选项,不能编辑
             value: new Date()
         }, {
             xtype: 'combo',
