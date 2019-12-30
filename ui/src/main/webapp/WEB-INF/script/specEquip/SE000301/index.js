@@ -30,7 +30,7 @@ if (location.href.split('?')[1] != undefined) {
 Ext.onReady(function () {
     Ext.getBody().mask('<spring:message code="loading" />');
 
-    let ftyStore = Ext.create('Ext.data.Store', {
+    var ftyStore = Ext.create('Ext.data.Store', {
         storeId: 'ftyStore',
         autoLoad: true,//true为自动加载
         loading: true,//自动加载时必须为true
@@ -117,7 +117,7 @@ Ext.onReady(function () {
         }
     });
 
-    let equipStore = Ext.create('Ext.data.Store', {
+    var equipStore = Ext.create('Ext.data.Store', {
         storeId: 'equipStore',
         autoLoad: false,
         loading: false,
@@ -163,7 +163,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '厂矿',
             listeners: {
@@ -183,7 +183,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '作业区',
             listeners: {
@@ -202,7 +202,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUTYPECODE',
             displayField: 'V_EQUTYPENAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备类型',
             listeners: {
@@ -220,7 +220,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUCODE',
             displayField: 'V_EQUNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备名称'
         }, {
@@ -230,7 +230,8 @@ Ext.onReady(function () {
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
             fieldLabel: '检定时间',
-            value: Ext.util.Format.date(new Date(), "Y-m-") + "01",
+            value: new Date(),
+            editable: false,
             allowBlank: false
         }, {
             xtype: 'textfield',
@@ -317,7 +318,7 @@ function _init() {
 }
 
 function _selectDept() {
-    let deptStore = Ext.data.StoreManager.lookup('deptStore');
+    var deptStore = Ext.data.StoreManager.lookup('deptStore');
     deptStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
@@ -328,7 +329,7 @@ function _selectDept() {
 }
 
 function _selectEquipType() {
-    let equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
+    var equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
     equipTypeStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue()
@@ -337,7 +338,7 @@ function _selectEquipType() {
 }
 
 function _selectEquip() {
-    let equipStore = Ext.data.StoreManager.lookup('equipStore');
+    var equipStore = Ext.data.StoreManager.lookup('equipStore');
     equipStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),

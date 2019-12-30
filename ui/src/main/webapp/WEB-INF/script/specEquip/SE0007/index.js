@@ -1,7 +1,3 @@
-var columnList = [];
-var win;//父窗口对象，由子窗口调用
-var returnValue;//父窗口对象，由子窗口调用
-
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -25,6 +21,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
         return request;
     }
 });
+
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
@@ -149,41 +146,26 @@ Ext.onReady(function () {
         }
     });
 
-    var archivesStore = Ext.create('Ext.data.Store', {
-        storeId: 'archivesStore',
+    var checkResultStore = Ext.create('Ext.data.Store', { //grid数据的store
+        storeId: 'checkResultStore',
         autoLoad: false,
         loading: false,
-        pageSize: 11,
-        fields: ['I_PLANID', 'V_ORGNAME', 'V_ORGCODE', 'V_DEPTNAME', 'V_DEPTCODE', 'V_EQUTYPENAME', 'V_EQUTYPECODE', 'V_EQUNAME', 'V_EQUNCODE', 'V_CHECKTIME', 'V_CHECKPART', 'V_CHECKDEPT', 'V_COST', 'V_OVERREASON', 'V_STATUS', 'V_STATE'],
+        pageSize: 10,
+        fields: ['I_PLANID', 'V_ORGNAME', 'V_ORGCODE', 'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME', 'V_CHECKTIME', 'V_CHECKPART', 'V_CHECKDEPT', 'V_FCHECKTIME', 'V_REPORTNAME', 'B_CHECKREPORT', 'V_NEXT_DATE', 'V_COST', 'I_ID'],
         proxy: {
-            url: AppUrl + 'specEquip/selectArchives',
+            url: AppUrl + 'specEquip/selectCheckResult',
             type: 'ajax',
             async: true,
             actionMethods: {
                 read: 'POST'
             },
+            extraParams: {},
             reader: {
                 type: 'json',
                 root: 'list',
-                total: 'total'
+                totalProperty: 'total'
             }
         }
-    });
-
-    var buttonPanel = Ext.create('Ext.Panel', {
-        id: 'buttonPanel',
-        defaults: {
-            style: 'margin: 2px;'
-        },
-        items: [{
-            xtype: 'button',
-            text: '查询',
-            handler: _selectArchives
-        }, {
-            xtype: 'button',
-            text: '导出EXCEL',
-            handler: _excelArchives
-        }]
     });
 
     var formPanel = Ext.create('Ext.form.Panel', {
@@ -268,23 +250,122 @@ Ext.onReady(function () {
             editable: false,
             forceSelection: true,
             fieldLabel: '设备名称'
-        }]
+        }, {
+            xtype: 'datefield',
+            id: 'V_V_BDATE',
+            format: 'Y-m-d',
+            submitFormat: 'Y-m-d',
+            fieldLabel: '开始时间',
+            value: Ext.util.Format.date(new Date(), "Y-m-") + "01"
+        }, {
+            xtype: 'datefield',
+            id: 'V_V_EDATE',
+            format: 'Y-m-d',
+            submitFormat: 'Y-m-d',
+            fieldLabel: '结束时间',
+            value: new Date()
+        } ]
     });
 
-    var archivesPanel = Ext.create('Ext.grid.Panel', {
-        id: 'archivesPanel',
-        store: archivesStore,
-        columnLines: true,
-        title: '档案',
-        frame: true,
-        style: {
-            border: 0
+    var buttonPanel = Ext.create('Ext.Panel', {
+        id: 'buttonPanel',
+        defaults: {
+            style: 'margin: 2px;'
         },
-        selModel: {
-            selType: 'checkboxmodel',
-            mode: 'SIMPLE'
+        items: [{
+            xtype: 'button',
+            text: '查询',
+            handler: _select
+        }, {
+            xtype: 'button',
+            text: '导出EXCEL',
+            handler: _export
+        } ]
+    });
+
+    var checkResultPanel = Ext.create('Ext.grid.Panel', {
+        id : 'checkResultPanel',
+        store : checkResultStore,
+        title : '检定实绩查询',
+        columnLines : true,
+        frame : true,
+        selModel : {
+            selType : 'checkboxmodel',
+            mode : 'SIMPLE'
         },
-        columns: columnList,
+        columns: [{
+            text: '序号',
+            xtype: "rownumberer",
+            width: '100px'
+        }, {
+            text : '作业区',
+            dataIndex : 'V_DEPTNAME',
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : '设备类型',
+            dataIndex : 'V_EQUTYPENAME',
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : '设备编码',
+            dataIndex : 'V_EQUCODE',
+            style : 'text-align: center;',
+            flex : 1,
+            hidden: true
+        }, {
+            text : '设备名称',
+            dataIndex : 'V_EQUNAME',
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : '检定时间',
+            dataIndex : 'V_CHECKTIME', //不定
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : '检定部位',
+            dataIndex : 'V_CHECKPART',
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : '检定单位',
+            dataIndex : 'V_CHECKDEPT',
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : '实际检定时间',
+            dataIndex : 'V_FCHECKTIME',
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : '检定报告',
+            dataIndex : 'V_REPORTNAME',
+            style : 'text-align: center;',
+            flex : 1,
+            renderer : function(value, metaData, record, rowIndex, colIndex, store, view) {
+                return (value != null) ? '<a href=javascript:_loadRider(' + rowIndex + ')>' + value + '</a>' : '';//超链接导出
+            }
+        }, {
+            text : '当前审批人',
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : '审批状态',
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : '检定费用(元)',
+            dataIndex : 'V_COST',
+            style : 'text-align: center;',
+            flex : 1
+        }, {
+            text : 'ID',
+            dataIndex : 'I_ID',
+            style : 'text-align: center;',
+            flex : 1,
+            hidden: true
+        }],
         viewConfig: {
             emptyText: '<div style="text-align: center; padding-top: 50px; font: italic bold 20px Microsoft YaHei;">没有数据</div>',
             enableTextSelection: true
@@ -292,13 +373,13 @@ Ext.onReady(function () {
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
-            store: archivesStore,
+            store: checkResultStore,
             dock: 'bottom',
             displayInfo: true,
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
             emptyMsg: '没有记录'
         }]
-    });
+    })
 
     Ext.create('Ext.container.Viewport', {
         layout: {
@@ -315,16 +396,17 @@ Ext.onReady(function () {
         },
         items: [{
             region: 'north',
-            items: [buttonPanel, formPanel]
+            items: [formPanel, buttonPanel]
         }, {
             region: 'center',
             layout: 'fit',
-            items: [archivesPanel]
+            items: [checkResultPanel]
         }]
     });
 
     _init();
-});
+
+})
 
 function _init() {
     for (var i = 0; i < Ext.data.StoreManager.getCount(); i++) {//检查是否所有自动加载数据全部加载完毕
@@ -339,102 +421,8 @@ function _init() {
     _selectEquipType();
     _selectEquip();
 
-    _selectArchives();//查询加载主表数据
+    _select();
     Ext.getBody().unmask();
-
-}
-
-function _selectArchives() {
-    Ext.Ajax.request({
-        url: AppUrl + 'specEquip/selectArchives',
-        async: false,
-        params: {
-            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
-            V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
-            V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue(),
-            V_V_EQUTYPENAME: Ext.getCmp('equipType').getRawValue(),
-            //测试用传电梯
-            //V_V_EQUTYPENAME: '电梯',
-            V_V_EQUCODE: Ext.getCmp('equip').getValue(),
-            V_V_OPTYPE: 'EDIT',
-            page: 1,
-            limit: 9999999
-        },
-        callback: function (options, success, response) {
-            if (success) {
-                var data = Ext.decode(response.responseText);
-                var fieldsList = data.columnList;
-                _replaceColumnTitle(fieldsList);
-                _selectArchivesDate();
-            } else {
-                Ext.MessageBox.alert('错误', '系统错误', Ext.MessageBox.ERROR);
-            }
-        }
-    });
-}
-
-function _selectArchivesDate() {
-    var archivesStore = Ext.data.StoreManager.lookup('archivesStore');
-    archivesStore.proxy.extraParams = {
-        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
-        V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
-        V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue(),
-        V_V_EQUTYPENAME: Ext.getCmp('equipType').getRawValue(),
-        //测试用传电梯
-        //V_V_EQUTYPENAME: '电梯',
-        V_V_EQUCODE: Ext.getCmp('equip').getValue(),
-        V_V_OPTYPE: 'EDIT',
-    };
-    archivesStore.currentPage = 1;
-    archivesStore.load();
-}
-
-function _replaceColumnTitle(fieldsList) {
-    columnList = [];
-    if (fieldsList.length > 0) {
-        columnList.push({
-            text: '序号',
-            xtype: "rownumberer",
-            align: 'center',
-            width: '50px'
-        });
-        for (var i = 0; i < fieldsList.length; i++) {
-            if (fieldsList[i] == '档案附件') {
-                console.log('档案附件');
-                columnList.push({
-                    text: fieldsList[i],
-                    dataIndex: fieldsList[i],
-                    align: 'center',
-                    width: '120',
-                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                        return '<a href=javascript:_manageArchives(\'' + record.data.档案附件 + '\')>' + '管理附件' + '</a>';
-                        //return '档案附件';
-                    }
-                })
-            } else {
-                columnList.push({
-                    text: fieldsList[i],
-                    dataIndex: fieldsList[i],
-                    style: 'text-align: center;',
-                    align: 'center',
-                    flex: 1
-                })
-            }
-
-
-        }
-    }
-
-    var model = Ext.getCmp('archivesPanel').store.model;
-    model.setFields(fieldsList, null, null);
-    Ext.getCmp('archivesPanel').reconfigure(Ext.getCmp('archivesPanel').store, columnList);
-}
-
-
-function _excelArchives() {
-
 }
 
 function _selectDept() {
@@ -467,22 +455,62 @@ function _selectEquip() {
     equipStore.load();
 }
 
-function _excelArchives() {
-    document.location.href = AppUrl + 'specEquip/excelArchives?V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + encodeURI(encodeURI(Ext.getCmp('DEPT_CODE_').getValue())) + '&V_V_EQUTYPECODE=' + encodeURI(encodeURI(Ext.getCmp('equipType').getValue())) + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue() + '&V_V_EQUCODE=' + encodeURI(encodeURI(Ext.getCmp('equip').getValue())) + '&V_V_OPTYPE=EDIT&page=1&limit=9999999999';
+//点击查询按钮
+function _select() {
+    if (Ext.getCmp("V_V_BDATE").getSubmitValue() == '' || Ext.getCmp("V_V_EDATE").getSubmitValue() == '') {
+        alert('开始时间或者结束时间不能为空');
+        return;
+    }
+    var checkResultStore = Ext.data.StoreManager.lookup('checkResultStore');
+    checkResultStore.proxy.extraParams = {
+        'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+        'V_V_DEPTCODE': Ext.getCmp("FTY_CODE_").getValue(), //选取的厂矿的值
+        'V_V_DEPTCODENEXT': Ext.getCmp("DEPT_CODE_").getValue(), //选取的作业区的值
+        'V_V_EQUTYPECODE': Ext.getCmp("equipType").getValue(), //选取的设备类型的值
+        'V_V_EQUTYPENAME': Ext.getCmp("equipType").getRawValue(), //选取设备类型的显示值
+        'V_V_EQUCODE': Ext.getCmp("equip").getValue(), //选取设备名称的值
+        'V_V_BDATE': Ext.getCmp("V_V_BDATE").getSubmitValue(),
+        'V_V_EDATE': Ext.getCmp("V_V_EDATE").getSubmitValue()
+    }
+    checkResultStore.currentPage = 1;
+    checkResultStore.load();
 }
 
-function _manageArchives(value) {
-    returnValue = null;
-    win = Ext.create('Ext.window.Window', {
-        title: '管理附件',
-        modal: true,
-        autoShow: true,
-        maximized: false,
-        maximizable: true,
-        width : 900,
-        height : document.documentElement.clientHeight * 0.8,
-        html: '<iframe src=' + AppUrl + value + ' style="width: 100%; height: 100%;" frameborder="0"/ >'
-    });
+//点击导出excel按钮
+function _export() {
+    var records = Ext.getCmp('checkResultPanel').getSelectionModel().getSelection();
+
+    var I_I_ID_LIST = new Array();
+    var V_DEPTNAME_LIST = new Array();
+    var V_EQUTYPENAME_LIST = new Array();
+    var V_EQUNAME_LIST = new Array();
+    var V_CHECKTIME_LIST = new Array();
+    var V_CHECKPART_LIST = new Array();
+    var V_CHECKDEPT_LIST = new Array();
+    var V_FCHECKTIME_LIST = new Array();
+    var V_COST_LIST = new Array();
+    for (var i = 0; i < records.length; i++) {
+        I_I_ID_LIST.push(records[i].get('I_PLANID'));
+        V_DEPTNAME_LIST.push(records[i].get('V_DEPTNAME'));
+        V_EQUTYPENAME_LIST.push(records[i].get('V_EQUTYPENAME'));
+        V_EQUNAME_LIST.push(records[i].get('V_EQUNAME'));
+        V_CHECKTIME_LIST.push(records[i].get('V_CHECKTIME'));
+        V_CHECKPART_LIST.push(records[i].get('V_CHECKPART'));
+        V_CHECKDEPT_LIST.push(records[i].get('V_CHECKDEPT'));
+        V_FCHECKTIME_LIST.push(records[i].get('V_FCHECKTIME'));
+        V_COST_LIST.push(records[i].get('V_COST'));
+    }
+
+    if (I_I_ID_LIST.length > 0) {
+        document.location.href = AppUrl + 'specEquip/excelGetCheckResult?I_I_ID_LIST=' + I_I_ID_LIST + '&V_DEPTNAME_LIST=' + V_DEPTNAME_LIST + '&V_EQUTYPENAME_LIST=' + V_EQUTYPENAME_LIST + '&V_EQUNAME_LIST=' + V_EQUNAME_LIST + '&V_CHECKTIME_LIST=' + V_CHECKTIME_LIST + '&V_CHECKPART_LIST=' + V_CHECKPART_LIST + '&V_CHECKDEPT_LIST=' + V_CHECKDEPT_LIST + '&V_FCHECKTIME_LIST=' + V_FCHECKTIME_LIST + '&V_COST_LIST=' + V_COST_LIST;
+    }else{
+        document.location.href = AppUrl + 'specEquip/excelGetCheckResult?I_I_ID_LIST='+ I_I_ID_LIST +'&V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + Ext.getCmp('DEPT_CODE_').getValue() + '&V_V_EQUTYPECODE=' + Ext.getCmp('equipType').getValue() + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue()+ '&V_V_EQUCODE=' + Ext.getCmp('equip').getValue()+ '&V_V_BDATE=' + Ext.getCmp('V_V_BDATE').getSubmitValue()+ '&V_V_EDATE=' + Ext.getCmp('V_V_EDATE').getSubmitValue() + '&page=1&limit=-1';
+    }
 }
 
-
+//下载附件
+function _loadRider(rowIndex) {
+    var checkResultStore = Ext.data.StoreManager.lookup('checkResultStore');
+    var record = checkResultStore.getAt(rowIndex);
+    document.location.href = AppUrl + 'specEquip/loadCheckResultFiles?I_I_ID='+ record.data.I_ID +'&V_V_REPORTNAME=' + record.data.V_REPORTNAME;
+}

@@ -1,3 +1,7 @@
+var win;//父窗口对象，由子窗口调用
+var returnValue;//父窗口对象，由子窗口调用
+
+
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -21,8 +25,6 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
         return request;
     }
 });
-
-var setFileData = null;
 
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
@@ -137,10 +139,10 @@ Ext.onReady(function () {
             load: function (store, records, successful, eOpts) {
                 if (store.first().data.V_EQUCODE != '%') {
                     store.insert(0, {
-                        V_EQUCODE : '%',
-                        V_EQUNAME : '全部',
-                        V_EQUSITE : '%',
-                        V_EQUSITENAME : '全部'
+                        V_EQUCODE: '%',
+                        V_EQUNAME: '全部',
+                        V_EQUSITE: '%',
+                        V_EQUSITENAME: '全部'
                     });
                 }
                 Ext.getCmp('equip').select(store.first());
@@ -148,14 +150,14 @@ Ext.onReady(function () {
         }
     });
 
-    var checkResultStore = Ext.create('Ext.data.Store', { //grid数据的store
-        storeId: 'checkResultStore',
+    var checkOverTimeStore = Ext.create('Ext.data.Store', { //grid数据的store
+        storeId: 'checkOverTimeStore',
         autoLoad: false,
         loading: false,
         pageSize: 10,
-        fields: ['I_PLANID', 'V_ORGNAME', 'V_ORGCODE', 'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUNCODE', 'V_EQUNAME', 'V_CHECKTIME', 'V_CHECKPART', 'V_CHECKDEPT', 'V_FCHECKTIME', 'V_NEXT_DATE', 'V_COST', 'I_ID', 'V_REPORTNAME'],
+        fields: ['I_PLANID', 'V_DEPTNAME', 'V_EQUTYPENAME', 'V_EQUNAME', 'V_LCHECKTIME', 'V_CHECKCYCLE', 'V_CHECKTIME', 'V_OVERREASON'],
         proxy: {
-            url: AppUrl + 'specEquip/selectCheckResult',
+            url: AppUrl + 'specEquip/selectCheckOverTime',
             type: 'ajax',
             async: true,
             actionMethods: {
@@ -170,8 +172,8 @@ Ext.onReady(function () {
         }
     });
 
-    var fileFormPanel = Ext.create('Ext.form.Panel', {
-        id: 'fileFormPanel',
+    var overReasonFormPanel = Ext.create('Ext.form.Panel', {
+        id: 'overReasonFormPanel',
         layout: 'column',
         frame: true,
         autoScroll: true,
@@ -180,117 +182,54 @@ Ext.onReady(function () {
         },
         defaults: {
             labelAlign: 'right',
-            labelWidth: 100,
-            inputWidth: 140,
+            labelWidth: 200,
+            inputWidth: 240,
             margin: '4'
         },
         items: [{
-            xtype : 'textfield',
-            name : 'I_I_ID',
-            fieldLabel : 'I_I_ID',
+            xtype: 'textfield',
+            name: 'I_I_PLANID',
+            fieldLabel: 'I_I_PLANID',
             hidden: true
         }, {
-            xtype : 'textfield',
-            name : 'V_V_ORGNAME',
-            fieldLabel : 'V_V_ORGNAME',
+            xtype: 'textfield',
+            name: 'V_V_PERSONCODE',
+            fieldLabel: 'V_V_PERSONCODE',
             hidden: true
         }, {
-            xtype : 'textfield',
-            name : 'V_V_ORGCODE',
-            fieldLabel : 'V_V_ORGCODE',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_DEPTNAME',
-            fieldLabel : 'V_V_DEPTNAME',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_DEPTCODE',
-            fieldLabel : 'V_V_DEPTCODE',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_EQUTYPENAME',
-            fieldLabel : 'V_V_EQUTYPENAME',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_EQUTYPECODE',
-            fieldLabel : 'V_V_EQUTYPECODE',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_EQUNAME',
-            fieldLabel : 'V_V_EQUNAME',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_EQUCODE',
-            fieldLabel : 'V_V_EQUCODE',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_CHECKTIME',
-            fieldLabel : 'V_V_CHECKTIME',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_CHECKPART',
-            fieldLabel : 'V_V_CHECKPART',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_CHECKDEPT',
-            fieldLabel : 'V_V_CHECKDEPT',
-            hidden: true
-        }, {
-            xtype : 'filefield',//上传文件录入
-            name : 'B_B_CHECKREPORT',
-            fieldLabel : '附件',
-            buttonText : '请选择',
-            inputWidth : 340,
-            style : 'clear: both'//换行显示
-        }, {
-            xtype : 'textfield',
-            name : 'I_I_PLANID',
-            fieldLabel : 'I_I_PLANID',
-            hidden: true
-        }, {
-            xtype : 'textfield',
-            name : 'V_V_PERSONCODE',
-            fieldLabel : 'V_V_PERSONCODE',
-            hidden: true
-        } ]
+            xtype: 'textarea',
+            name: 'V_V_OVERREASON',
+            fieldLabel: '逾期原因'
+        }]
     });
 
-    var chooseFileWindow = Ext.create('Ext.window.Window', {
-        id : 'chooseFileWindow',
-        layout : 'column',
-        modal : true,//弹出窗口时后面背景不可编辑
-        title : '选择附件',
-        closeAction : 'hide',
-        closable : true,
-        defaults : {
-            labelAlign : 'right',
-            labelWidth : 100,
-            inputWidth : 140,
-            margin : '4,0,0,0'
+    var overReasonWindow = Ext.create('Ext.window.Window', {
+        id: 'overReasonWindow',
+        layout: 'column',
+        modal: true,//弹出窗口时后面背景不可编辑
+        title: '逾期原因批量审批',
+        closeAction: 'hide',
+        closable: true,
+        defaults: {
+            labelAlign: 'right',
+            labelWidth: 100,
+            inputWidth: 140,
+            margin: '4,0,0,0'
         },
-        items : [ fileFormPanel ],
-        buttons : [ {
-            xtype : 'button',
-            text : '确定',
-            width : 40,
-            handler : _setCheckResultFiles
+        items: [overReasonFormPanel],
+        buttons: [{
+            xtype: 'button',
+            text: '确定',
+            width: 40,
+            handler: _setCheckOverTime
         }, {
-            xtype : 'button',
-            text : '取消',
-            width : 40,
-            handler : function() {
-                Ext.getCmp('chooseFileWindow').hide();
+            xtype: 'button',
+            text: '取消',
+            width: 40,
+            handler: function () {
+                Ext.getCmp('overReasonWindow').hide();
             }
-        } ]
+        }]
     });
 
     var formPanel = Ext.create('Ext.form.Panel', {
@@ -391,7 +330,7 @@ Ext.onReady(function () {
             fieldLabel: '结束时间',
             editable: false,
             value: new Date()
-        } ]
+        }]
     });
 
     var buttonPanel = Ext.create('Ext.Panel', {
@@ -405,70 +344,56 @@ Ext.onReady(function () {
             handler: _select
         }, {
             xtype: 'button',
+            text: '批量填写',
+            handler: _write
+        }, {
+            xtype: 'button',
+            text: '报警周期设置',
+            handler: _callCycleSet
+        }, {
+            xtype: 'button',
             text: '导出EXCEL',
             handler: _export
         }]
     });
 
-    var checkResultPanel = Ext.create('Ext.grid.Panel', {
-        id : 'checkResultPanel',
-        store : checkResultStore,
-        title : '检定实绩录入',
-        columnLines : true,
-        frame : true,
-        selModel : {
-            selType : 'checkboxmodel',
-            mode : 'SIMPLE'
+    var checkOverTimePanel = Ext.create('Ext.grid.Panel', {
+        id: 'checkOverTimePanel',
+        store: checkOverTimeStore,
+        title: '检定逾期管理',
+        columnLines: true,
+        frame: true,
+        selModel: {
+            selType: 'checkboxmodel',
+            mode: 'SIMPLE'
         },
-        selType : 'rowmodel',
-        plugins : [ Ext.create('Ext.grid.plugin.RowEditing', {
-            clicksToEdit : 2,
-            autoCancel : false,
-            errorSummary : false,
-            saveBtnText : '保存',
-            cancelBtnText : '取消',
-            errorsText : '提示',
-            dirtyText : '<div style="font: italic bold 20px Microsoft YaHei; color: red;">请保存或取消</div>',
-            listeners : {
-                beforeedit : function(editor, context, eOpts) {
+        selType: 'rowmodel',
+        plugins: [Ext.create('Ext.grid.plugin.RowEditing', {
+            clicksToEdit: 2,
+            autoCancel: false,
+            errorSummary: false,
+            saveBtnText: '保存',
+            cancelBtnText: '取消',
+            errorsText: '提示',
+            dirtyText: '<div style="font: italic bold 20px Microsoft YaHei; color: red;">请保存或取消</div>',
+            listeners: {
+                beforeedit: function (editor, context, eOpts) {
                     Ext.getCmp('buttonPanel').disable();
                 },
-                edit : function(editor, context, eOpts) {
+                edit: function (editor, context, eOpts) {
                     var record = context.record;
-                    var year = new Date(record.get('V_FCHECKTIME')).getFullYear();
-                    var month = new Date(record.get('V_FCHECKTIME')).getMonth() + 1;
-                    var day = new Date(record.get('V_FCHECKTIME')).getDate();
-                    if(month < 10){
-                        month ="0" + month;
-                    }
-                    if(day < 10){
-                        day ="0" + day;
-                    }
-                    var date = year +"-" + month + "-" + day;
                     Ext.Ajax.request({
-                        url: AppUrl + 'specEquip/setCheckResult',
-                        async : false,
-                        params : {
-                            'I_I_ID' : record.get('I_ID'),
-                            'V_V_ORGNAME' : record.get('V_ORGNAME'),
-                            'V_V_ORGCODE' : record.get('V_ORGCODE'),
-                            'V_V_DEPTNAME' : record.get('V_DEPTNAME'),
-                            'V_V_DEPTCODE' : record.get('V_DEPTCODE'),
-                            'V_V_EQUTYPENAME' : record.get('V_EQUTYPENAME'),
-                            'V_V_EQUTYPECODE' : record.get('V_EQUTYPECODE'),
-                            'V_V_EQUNAME' : record.get('V_EQUNAME'),
-                            'V_V_EQUCODE' : record.get('V_EQUNCODE'),
-                            'V_V_CHECKTIME' : date,
-                            'V_V_CHECKPART' : record.get('V_CHECKPART'),
-                            'V_V_CHECKDEPT' : record.get('V_CHECKDEPT'),
-                            'V_V_COST' : record.get('V_COST'),
-                            'I_I_PLANID' : record.get('I_PLANID'),
-                            'V_V_PERSONCODE' : Ext.util.Cookies.get('v_personcode')
+                        url: AppUrl + 'specEquip/setCheckOverTime',
+                        async: false,
+                        params: {
+                            'I_I_PLANID': record.get('I_PLANID'),
+                            'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                            'V_V_OVERREASON': record.get('V_OVERREASON'),
                         },
-                        callback : function(options, success, response) {
+                        callback: function (options, success, response) {
                             var resp = Ext.JSON.decode(response.responseText);
                             if (resp.success) {
-                                Ext.MessageBox.alert('提示',resp.data.V_INFO);
+                                Ext.MessageBox.alert('提示', resp.data.V_INFO);
                                 _select();
                             } else {
                                 Ext.MessageBox.alert('提示', '保存失败');
@@ -478,129 +403,80 @@ Ext.onReady(function () {
                     });
                     Ext.getCmp('buttonPanel').enable();
                 },
-                canceledit : function(editor, context, eOpts) {
+                canceledit: function (editor, context, eOpts) {
                     Ext.getCmp('buttonPanel').enable();
                 }
             }
-        }) ],
-        columns : [ {
+        })],
+        columns: [{
             text: '序号',
             xtype: "rownumberer",
             width: '100px'
-        }, {
-            text: '计划号',
-            dataIndex: 'I_PLANID',
-            style: 'text-align: center;',
-            flex: 1,
-            hidden: true
-        }, {
-            text: '厂矿',
-            dataIndex: 'V_ORGNAME',
-            style: 'text-align: center;',
-            flex: 1,
-            hidden: true
-        }, {
-            text: '厂矿编码',
-            dataIndex: 'V_ORGCODE',
-            style: 'text-align: center;',
-            flex: 1,
-            hidden: true
-        }, {
-            text: '作业区编码',
-            dataIndex: 'V_DEPTCODE',
-            style: 'text-align: center;',
-            flex: 1,
-            hidden: true
         }, {
             text: '作业区',
             dataIndex: 'V_DEPTNAME',
             style: 'text-align: center;',
             flex: 1
         }, {
-            text: '设备类型编码',
-            dataIndex: 'V_EQUTYPECODE',
-            style: 'text-align: center;',
-            flex: 1,
-            hidden: true
-        }, {
             text: '设备类型',
             dataIndex: 'V_EQUTYPENAME',
             style: 'text-align: center;',
             flex: 1
-        }, {
-            text: '设备编码',
-            dataIndex: 'V_EQUNCODE',
-            style: 'text-align: center;',
-            flex: 1,
-            hidden: true
         }, {
             text: '设备名称',
             dataIndex: 'V_EQUNAME',
             style: 'text-align: center;',
             flex: 1
         }, {
-            text: '申请检定时间',
+            text: '上次检定时间',
+            dataIndex: 'V_LCHECKTIME', //不定
+            style: 'text-align: center;',
+            flex: 1
+        }, {
+            text: '检定周期',
+            dataIndex: 'V_CHECKCYCLE',
+            style: 'text-align: center;',
+            flex: 1
+        }, {
+            text: '计划检定日期',
             dataIndex: 'V_CHECKTIME',
             style: 'text-align: center;',
             flex: 1
         }, {
-            text: '申请检定部位',
-            dataIndex: 'V_CHECKPART',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '申请检定单位',
-            dataIndex: 'V_CHECKDEPT',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '实际检定时间',
-            dataIndex: 'V_FCHECKTIME',
+            text: '检测申请',
             style: 'text-align: center;',
             flex: 1,
-            editor: {
-                xtype: 'datefield',
-                format: 'Y-m-d',
-                submitFormat: 'Y-m-d'
+            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                return '<a href=javascript:_viewPlanApply(' + record.data.I_PLANID + ')>' + '查看' + '</a>';//超链接导出
             }
         }, {
-            text: '检定报告名称',
-            dataIndex: 'V_REPORTNAME',
+            text: '逾期原因',
+            dataIndex: 'V_OVERREASON',
             style: 'text-align: center;',
-            flex: 1,
-            renderer : function(value, metaData, record, rowIndex, colIndex, store, view) {
-                return (value != '') ? '<a href=javascript:_loadResultFile(' + rowIndex + ')>' + value + '</a>' : '<a href=javascript:_loadResultFile(' + rowIndex + ')>' + '上传' + '</a>';//超链接导出
+            flex: 2,
+            editor: {//行编辑-多行录入框
+                xtype: 'textareafield',
+                listeners: {
+                    afterrender: function (cmp, eOpts) {
+                        this.getEl().swallowEvent(['keypress', 'keydown']);
+                    }
+                }
             }
         }, {
-            text: '预计下次检定时间',
-            dataIndex: 'V_NEXT_DATE',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '检定费用(元)',
-            dataIndex: 'V_COST',
-            style: 'text-align: center;',
-            flex: 1,
-            editor: {
-                xtype: 'numberfield',
-                decimalPrecision: 2,
-                value: 0
-            }
-        }, {
-            text: 'ID',
-            dataIndex: 'I_ID',
+            text: 'I_PLANID',
+            dataIndex: 'I_PLANID',
             style: 'text-align: center;',
             flex: 1,
             hidden: true
-        } ],
-        viewConfig : {
+        }],
+        viewConfig: {
             emptyText: '<div style="text-align: center; padding-top: 50px; font: italic bold 20px Microsoft YaHei;">没有数据</div>',
             enableTextSelection: true
         },
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
-            store: checkResultStore,
+            store: checkOverTimeStore,
             dock: 'bottom',
             displayInfo: true,
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
@@ -627,12 +503,11 @@ Ext.onReady(function () {
         }, {
             region: 'center',
             layout: 'fit',
-            items: [checkResultPanel]
+            items: [checkOverTimePanel]
         }]
     });
 
     _init();
-
 })
 
 function _init() {
@@ -641,7 +516,6 @@ function _init() {
             return;
         }
     }
-
     Ext.getCmp('FTY_CODE_').setValue(Ext.util.Cookies.get('v_orgCode'));
     _selectDept();
     Ext.getCmp('DEPT_CODE_').setValue(Ext.util.Cookies.get('v_deptcode'));
@@ -688,8 +562,8 @@ function _select() {
         alert('开始时间或者结束时间不能为空');
         return;
     }
-    var checkResultStore = Ext.data.StoreManager.lookup('checkResultStore');
-    checkResultStore.proxy.extraParams = {
+    var checkOverTimeStore = Ext.data.StoreManager.lookup('checkOverTimeStore');
+    checkOverTimeStore.proxy.extraParams = {
         'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
         'V_V_DEPTCODE': Ext.getCmp("FTY_CODE_").getValue(), //选取的厂矿的值
         'V_V_DEPTCODENEXT': Ext.getCmp("DEPT_CODE_").getValue(), //选取的作业区的值
@@ -699,82 +573,117 @@ function _select() {
         'V_V_BDATE': Ext.getCmp("V_V_BDATE").getSubmitValue(),
         'V_V_EDATE': Ext.getCmp("V_V_EDATE").getSubmitValue()
     }
-    checkResultStore.currentPage = 1;
-    checkResultStore.load();
+    checkOverTimeStore.currentPage = 1;
+    checkOverTimeStore.load();
 }
 
-//点击导出excel按钮
+//点击批量填写
+function _write() {
+    var records = Ext.getCmp('checkOverTimePanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.alert('提示', '请选择数据');
+        return;
+    }
+
+    var I_I_ID_LIST = new Array();
+
+    for (var i = 0; i < records.length; i++) {
+        I_I_ID_LIST.push(records[i].get('I_PLANID'));
+    }
+
+    var fileForm = Ext.getCmp('overReasonFormPanel').getForm();
+    fileForm.findField('I_I_PLANID').setValue(I_I_ID_LIST);
+    fileForm.findField('V_V_PERSONCODE').setValue(Ext.util.Cookies.get('v_personcode'));
+    fileForm.findField('V_V_OVERREASON').setValue('');
+
+    Ext.getCmp('overReasonWindow').show();
+
+}
+
+//点击报警周期设置
+function _callCycleSet() {
+    returnValue = null;
+    win = Ext.create('Ext.window.Window', {
+        title: '设备报警周期设置',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 300,
+        height: 220,
+        html: '<iframe src=' + AppUrl + 'page/specEquip/SE000801/index.html' + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+        listeners: {
+            close: function (panel, eOpts) {
+                if (returnValue == '保存成功！') {
+                    Ext.MessageBox.alert('提示', returnValue);
+                    _select();
+                }
+            }
+        }
+    });
+}
+
+//点击导出excel
 function _export() {
-    var records = Ext.getCmp('checkResultPanel').getSelectionModel().getSelection();
+    var records = Ext.getCmp('checkOverTimePanel').getSelectionModel().getSelection();
 
     var I_I_ID_LIST = new Array();
     var V_DEPTNAME_LIST = new Array();
     var V_EQUTYPENAME_LIST = new Array();
     var V_EQUNAME_LIST = new Array();
+    var V_LCHECKTIME_LIST = new Array();
+    var V_CHECKCYCLE_LIST = new Array();
     var V_CHECKTIME_LIST = new Array();
-    var V_CHECKPART_LIST = new Array();
-    var V_CHECKDEPT_LIST = new Array();
-    var V_FCHECKTIME_LIST = new Array();
-    var V_COST_LIST = new Array();
+    var V_OVERREASON_LIST = new Array();
     for (var i = 0; i < records.length; i++) {
         I_I_ID_LIST.push(records[i].get('I_PLANID'));
         V_DEPTNAME_LIST.push(records[i].get('V_DEPTNAME'));
         V_EQUTYPENAME_LIST.push(records[i].get('V_EQUTYPENAME'));
         V_EQUNAME_LIST.push(records[i].get('V_EQUNAME'));
+        V_LCHECKTIME_LIST.push(records[i].get('V_LCHECKTIME'));
+        V_CHECKCYCLE_LIST.push(records[i].get('V_CHECKCYCLE'));
         V_CHECKTIME_LIST.push(records[i].get('V_CHECKTIME'));
-        V_CHECKPART_LIST.push(records[i].get('V_CHECKPART'));
-        V_CHECKDEPT_LIST.push(records[i].get('V_CHECKDEPT'));
-        V_FCHECKTIME_LIST.push(records[i].get('V_FCHECKTIME'));
-        V_COST_LIST.push(records[i].get('V_COST'));
+        V_OVERREASON_LIST.push(records[i].get('V_OVERREASON'));
     }
 
     if (I_I_ID_LIST.length > 0) {
-        document.location.href = AppUrl + 'specEquip/excelCheckResult?I_I_ID_LIST=' + I_I_ID_LIST + '&V_DEPTNAME_LIST=' + V_DEPTNAME_LIST + '&V_EQUTYPENAME_LIST=' + V_EQUTYPENAME_LIST + '&V_EQUNAME_LIST=' + V_EQUNAME_LIST + '&V_CHECKTIME_LIST=' + V_CHECKTIME_LIST + '&V_CHECKPART_LIST=' + V_CHECKPART_LIST + '&V_CHECKDEPT_LIST=' + V_CHECKDEPT_LIST + '&V_FCHECKTIME_LIST=' + V_FCHECKTIME_LIST + '&V_COST_LIST=' + V_COST_LIST;
-    }else{
-        document.location.href = AppUrl + 'specEquip/excelCheckResult?I_I_ID_LIST='+ I_I_ID_LIST +'&V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + Ext.getCmp('DEPT_CODE_').getValue() + '&V_V_EQUTYPECODE=' + Ext.getCmp('equipType').getValue() + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue()+ '&V_V_EQUCODE=' + Ext.getCmp('equip').getValue()+ '&V_V_BDATE=' + Ext.getCmp('V_V_BDATE').getSubmitValue()+ '&V_V_EDATE=' + Ext.getCmp('V_V_EDATE').getSubmitValue() + '&page=1&limit=-1';
+        document.location.href = AppUrl + 'specEquip/excelCheckOverTime?I_I_ID_LIST=' + I_I_ID_LIST + '&V_DEPTNAME_LIST=' + V_DEPTNAME_LIST + '&V_EQUTYPENAME_LIST=' + V_EQUTYPENAME_LIST + '&V_EQUNAME_LIST=' + V_EQUNAME_LIST + '&V_LCHECKTIME_LIST=' + V_LCHECKTIME_LIST + '&V_CHECKCYCLE_LIST=' + V_CHECKCYCLE_LIST + '&V_CHECKTIME_LIST=' + V_CHECKTIME_LIST + '&V_OVERREASON_LIST=' + V_OVERREASON_LIST;
+    } else {
+        document.location.href = AppUrl + 'specEquip/excelCheckOverTime?I_I_ID_LIST=' + I_I_ID_LIST + '&V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + Ext.getCmp('DEPT_CODE_').getValue() + '&V_V_EQUTYPECODE=' + Ext.getCmp('equipType').getValue() + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue() + '&V_V_EQUCODE=' + Ext.getCmp('equip').getValue() + '&V_V_BDATE=' + Ext.getCmp('V_V_BDATE').getSubmitValue() + '&V_V_EDATE=' + Ext.getCmp('V_V_EDATE').getSubmitValue() + '&page=1&limit=-1';
     }
 }
 
-//报告管理
-function _loadResultFile(rowIdx) {
-    var checkResultStore = Ext.data.StoreManager.lookup('checkResultStore');
-    var record = checkResultStore.getAt(rowIdx);
-    setFileData = record.data;
-    var fileForm = Ext.getCmp('fileFormPanel').getForm();
-    fileForm.findField('I_I_ID').setValue(setFileData.I_ID);
-    fileForm.findField('V_V_ORGNAME').setValue(setFileData.V_ORGNAME);
-    fileForm.findField('V_V_ORGCODE').setValue(setFileData.V_ORGCODE);
-    fileForm.findField('V_V_DEPTNAME').setValue(setFileData.V_DEPTNAME);
-    fileForm.findField('V_V_DEPTCODE').setValue(setFileData.V_DEPTCODE);
-    fileForm.findField('V_V_EQUTYPENAME').setValue(setFileData.V_EQUTYPENAME);
-    fileForm.findField('V_V_EQUTYPECODE').setValue(setFileData.V_EQUTYPECODE);
-    fileForm.findField('V_V_EQUNAME').setValue(setFileData.V_EQUNAME);
-    fileForm.findField('V_V_EQUCODE').setValue(setFileData.V_EQUNCODE);
-    fileForm.findField('V_V_CHECKTIME').setValue(setFileData.V_FCHECKTIME);
-    fileForm.findField('V_V_CHECKPART').setValue(setFileData.V_CHECKPART);
-    fileForm.findField('V_V_CHECKDEPT').setValue(setFileData.V_CHECKDEPT);
-    fileForm.findField('I_I_PLANID').setValue(setFileData.I_PLANID);
-    fileForm.findField('V_V_PERSONCODE').setValue(Ext.util.Cookies.get('v_personcode'));
-    Ext.getCmp('chooseFileWindow').show();
+//点击查看
+function _viewPlanApply(I_PLANID) {
+    win = Ext.create('Ext.window.Window', {
+        title: '检定计划申请查看',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 560,
+        height: 420,
+        html: '<iframe src=' + AppUrl + 'page/specEquip/SE000303/index.html?P_ID=' + I_PLANID + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+    });
 }
 
-//点击报告弹出的窗口的保存
-function _setCheckResultFiles() {
-    Ext.getCmp('fileFormPanel').getForm().submit({
-        url : AppUrl + 'specEquip/setCheckResultFiles',
-        submitEmptyText : false,
-        waitMsg : '处理中',
-        success : function(form, action) {
+//逾期原因
+function _setCheckOverTime() {
+    Ext.getCmp('overReasonFormPanel').getForm().submit({
+        url: AppUrl + 'specEquip/setCheckOverTime',
+        submitEmptyText: false,
+        waitMsg: '处理中',
+        success: function (form, action) {
             var data = action.result;
-            Ext.MessageBox.alert('提示', data.V_INFO );
-            Ext.getCmp('chooseFileWindow').hide();
+            Ext.MessageBox.alert('提示', data.data.V_INFO);
+            Ext.getCmp('overReasonWindow').hide();
             _select();
         },
-        failure : function(form, action) {
+        failure: function (form, action) {
             var data = action.result;
-            Ext.MessageBox.alert('提示', data.V_INFO );
+            Ext.MessageBox.alert('提示', '保存失败！');
             return;
         }
     });
-
 }

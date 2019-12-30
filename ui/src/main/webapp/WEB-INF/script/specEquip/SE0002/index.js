@@ -2,23 +2,24 @@ var columnList = [];
 var win;//父窗口对象，由子窗口调用
 var returnValue;//父窗口对象，由子窗口调用
 
+//处理store异步
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
-    async: true,
-    doRequest: function (operation, callback, scope) {
-        var writer = this.getWriter(),
+    async:true,
+    doRequest: function(operation, callback, scope) {
+        var writer  = this.getWriter(),
             request = this.buildRequest(operation);
         if (operation.allowWrite()) {
             request = writer.write(request);
         }
         Ext.apply(request, {
-            async: this.async,
-            binary: this.binary,
-            headers: this.headers,
-            timeout: this.timeout,
-            scope: this,
-            callback: this.createRequestCallback(request, operation, callback, scope),
-            method: this.getMethod(request),
+            async         : this.async,
+            binary        : this.binary,
+            headers       : this.headers,
+            timeout       : this.timeout,
+            scope         : this,
+            callback      : this.createRequestCallback(request, operation, callback, scope),
+            method        : this.getMethod(request),
             disableCaching: false
         });
         Ext.Ajax.request(request);
@@ -28,6 +29,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
+    //厂矿store
     var ftyStore = Ext.create('Ext.data.Store', {
         storeId: 'ftyStore',
         autoLoad: true,//true为自动加载
@@ -60,13 +62,14 @@ Ext.onReady(function () {
         }
     });
 
+    //作业区store
     var deptStore = Ext.create('Ext.data.Store', {
         storeId: 'deptStore',
         autoLoad: false,
         loading: false,
         pageSize: -1,
         fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax",{
             url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
             type: 'ajax',
             async: false,
@@ -87,13 +90,14 @@ Ext.onReady(function () {
         }
     });
 
+    //设备类型store
     var equipTypeStore = Ext.create('Ext.data.Store', {
         storeId: 'equipTypeStore',
         autoLoad: false,
         loading: false,
         pageSize: -1,
         fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax",{
             url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
             type: 'ajax',
             async: false,
@@ -114,13 +118,14 @@ Ext.onReady(function () {
         }
     });
 
+    //设备名称store
     var equipStore = Ext.create('Ext.data.Store', {
         storeId: 'equipStore',
         autoLoad: false,
         loading: false,
         pageSize: -1,
         fields: ['V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax",{
             url: AppUrl + 'pm_19/PRO_GET_DEPTEQU_PER',
             type: 'ajax',
             async: false,
@@ -149,6 +154,7 @@ Ext.onReady(function () {
         }
     });
 
+    //档案表单store
     var archivesStore = Ext.create('Ext.data.Store', {
         storeId: 'archivesStore',
         autoLoad: false,
@@ -179,10 +185,10 @@ Ext.onReady(function () {
             xtype: 'button',
             text: '查询',
             handler: _selectArchives
-        }, {
-            xtype: 'button',
-            text: '导出EXCEL',
-            handler: _excelArchives
+        },{
+            xtype : 'button',
+            text : '导出Excel',
+            handler : _excelArchives
         }]
     });
 
@@ -357,7 +363,7 @@ function _selectArchives() {
             //测试用传电梯
             //V_V_EQUTYPENAME: '电梯',
             V_V_EQUCODE: Ext.getCmp('equip').getValue(),
-            V_V_OPTYPE: 'EDIT',
+            V_V_OPTYPE: 'QUERY',
             page: 1,
             limit: 9999999
         },
@@ -385,7 +391,7 @@ function _selectArchivesDate() {
         //测试用传电梯
         //V_V_EQUTYPENAME: '电梯',
         V_V_EQUCODE: Ext.getCmp('equip').getValue(),
-        V_V_OPTYPE: 'EDIT',
+        V_V_OPTYPE: 'QUERY',
     };
     archivesStore.currentPage = 1;
     archivesStore.load();
@@ -432,46 +438,13 @@ function _replaceColumnTitle(fieldsList) {
     Ext.getCmp('archivesPanel').reconfigure(Ext.getCmp('archivesPanel').store, columnList);
 }
 
-
+//导出Excel
 function _excelArchives() {
-
-}
-
-function _selectDept() {
-    var deptStore = Ext.data.StoreManager.lookup('deptStore');
-    deptStore.proxy.extraParams = {
-        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
-        V_V_DEPTCODENEXT: '%',
-        V_V_DEPTTYPE: '主体作业区'
-    };
-    deptStore.load();
-}
-
-function _selectEquipType() {
-    var equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
-    equipTypeStore.proxy.extraParams = {
-        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue()
-    };
-    equipTypeStore.load();
-}
-
-function _selectEquip() {
-    var equipStore = Ext.data.StoreManager.lookup('equipStore');
-    equipStore.proxy.extraParams = {
-        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
-        V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue()
-    };
-    equipStore.load();
-}
-
-function _excelArchives() {
-    document.location.href = AppUrl + 'specEquip/excelArchives?V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + encodeURI(encodeURI(Ext.getCmp('DEPT_CODE_').getValue())) + '&V_V_EQUTYPECODE=' + encodeURI(encodeURI(Ext.getCmp('equipType').getValue())) + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue() + '&V_V_EQUCODE=' + encodeURI(encodeURI(Ext.getCmp('equip').getValue())) + '&V_V_OPTYPE=EDIT&page=1&limit=9999999999';
+    document.location.href = AppUrl + 'specEquip/excelArchives?V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.getCmp('FTY_CODE_').getValue() + '&V_V_DEPTCODENEXT=' + encodeURI(encodeURI(Ext.getCmp('DEPT_CODE_').getValue())) + '&V_V_EQUTYPECODE=' + encodeURI(encodeURI(Ext.getCmp('equipType').getValue())) + '&V_V_EQUTYPENAME=' + Ext.getCmp('equipType').getRawValue() + '&V_V_EQUCODE=' + encodeURI(encodeURI(Ext.getCmp('equip').getValue())) + '&V_V_OPTYPE=QUERY&page=1&limit=9999999999';
 }
 
 function _manageArchives(value) {
+    console.log(value);
     returnValue = null;
     win = Ext.create('Ext.window.Window', {
         title: '管理附件',
@@ -481,8 +454,70 @@ function _manageArchives(value) {
         maximizable: true,
         width : 900,
         height : document.documentElement.clientHeight * 0.8,
-        html: '<iframe src=' + AppUrl + value + ' style="width: 100%; height: 100%;" frameborder="0"/ >'
+        html: '<iframe src=' + AppUrl + value + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+        listeners: {
+            close: function (panel, eOpts) {
+                console.log(returnValue);
+            }
+        }
     });
 }
+
+function _selectDept(){
+    var deptStore = Ext.data.StoreManager.lookup('deptStore');
+    deptStore.proxy.extraParams = {
+        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+        V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
+        V_V_DEPTCODENEXT: '%',
+        V_V_DEPTTYPE: '主体作业区'
+
+    };
+    deptStore.load();
+}
+
+function _selectEquipType(){
+    var equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
+    equipTypeStore.proxy.extraParams = {
+        V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+        V_V_DEPTCODENEXT : Ext.getCmp('DEPT_CODE_').getValue()
+    };
+    equipTypeStore.load();
+}
+
+function  _selectEquip(){
+    var equipStore = Ext.data.StoreManager.lookup('equipStore');
+    equipStore.proxy.extraParams = {
+        V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+        V_V_DEPTCODENEXT : Ext.getCmp('DEPT_CODE_').getValue(),
+        V_V_EQUTYPECODE : Ext.getCmp('equipType').getValue()
+    };
+    equipStore.load();
+}
+
+//查看档案附件
+// function _selectFiles () {
+//     returnValue = null;
+//     win = Ext.create('Ext.window.Window',{
+//         title : '档案附件下载',
+//         modal : true,
+//         autoShow : true,
+//         maximized : false,
+//         maximizable : true,
+//         width : 1500,
+//         height : document.documentElement.clientHeight * 1,
+//        html : '<iframe src=' + AppUrl + 'page/specEquip/SE000201/index.html' + ' style="width: 100%; height: 100%;" frameborder="0"></iframe>'
+//     })
+// }
+
+
+
+
+
+
+
+
+
+
+
 
 

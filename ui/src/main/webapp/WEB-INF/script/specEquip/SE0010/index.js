@@ -52,7 +52,7 @@ Ext.onReady(function () {
         }
     });
 
-    let ftyStore = Ext.create('Ext.data.Store', {
+    var ftyStore = Ext.create('Ext.data.Store', {
         storeId: 'ftyStore',
         autoLoad: true,//true为自动加载
         loading: true,//自动加载时必须为true
@@ -138,7 +138,7 @@ Ext.onReady(function () {
         }
     });
 
-    let equipNameStore = Ext.create('Ext.data.Store', {
+    var equipNameStore = Ext.create('Ext.data.Store', {
         storeId: 'equipNameStore',
         autoLoad: false,
         loading: false,
@@ -173,7 +173,7 @@ Ext.onReady(function () {
         }
     });
 
-    let equipMoveApplyStore = Ext.create('Ext.data.Store', {
+    var equipMoveApplyStore = Ext.create('Ext.data.Store', {
         storeId: 'equipMoveApplyStore',
         autoLoad: false,
         loading: false,
@@ -244,7 +244,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '厂矿',
             listeners: {
@@ -264,7 +264,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '作业区',
             listeners: {
@@ -283,7 +283,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUTYPECODE',
             displayField: 'V_EQUTYPENAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备类型',
             listeners: {
@@ -301,7 +301,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'V_EQUCODE',
             displayField: 'V_EQUNAME',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '设备名称'
         }, {
@@ -310,13 +310,15 @@ Ext.onReady(function () {
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
             fieldLabel: '开始时间',
-            value: new Date()
+            editable: false,
+            value: Ext.util.Format.date(new Date(), "Y-m-") + "01"
         }, {
             xtype: 'datefield',
             id: 'V_V_EDATE',
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
             fieldLabel: '结束时间',
+            editable: false,
             value: new Date()
         }, {
             xtype: 'combo',
@@ -325,7 +327,7 @@ Ext.onReady(function () {
             queryMode: 'local',
             valueField: 'CODE_',
             displayField: 'NAME_',
-            emptyText: '全部',
+            editable: false,
             forceSelection: true,
             fieldLabel: '状态'
         }]
@@ -482,7 +484,7 @@ function _select() {
 
 
 function _selectOperation() {
-    let operationStore = Ext.data.StoreManager.lookup('operationStore');
+    var operationStore = Ext.data.StoreManager.lookup('operationStore');
     operationStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
@@ -604,7 +606,7 @@ function _Submission() {
 }
 
 function _selectEquipType() {
-    let equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
+    var equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
     equipTypeStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue()
@@ -613,7 +615,7 @@ function _selectEquipType() {
 }
 
 function _selectEquipName() {
-    let equipNameStore = Ext.data.StoreManager.lookup('equipNameStore');
+    var equipNameStore = Ext.data.StoreManager.lookup('equipNameStore');
     equipNameStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_DEPTCODENEXT: Ext.getCmp('DEPT_CODE_').getValue(),
