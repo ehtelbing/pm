@@ -315,7 +315,7 @@ Ext.onReady(function () {
         },
         items: [{
             region: 'north',
-            items: [buttonPanel, formPanel]
+            items: [formPanel, buttonPanel]
         }, {
             region: 'center',
             layout: 'fit',

@@ -110,6 +110,7 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
+                store.data.removeAt(0);//在返回的数据源里去掉全部选项
                 Ext.getCmp('equipType').select(store.first());
             }
         }
