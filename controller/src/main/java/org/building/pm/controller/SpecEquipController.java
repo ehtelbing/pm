@@ -1729,4 +1729,53 @@ public class SpecEquipController {
             e.printStackTrace();
         }
     }
+
+    //附件类型配置查询
+
+    @RequestMapping(value = "/selectAttachmentType", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectAttachmentType(
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map result = specEquipService.selectAttachmentType();
+        return result;
+    }
+
+    //附件类型配置保存
+
+    @RequestMapping(value = "/setAttachmentType", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> setAttachmentType(@RequestParam(value = "I_ID") String I_ID,
+                                               @RequestParam(value = "V_V_ATTACHNAME") String V_V_ATTACHNAME,
+                                               @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                               @RequestParam(value = "I_I_ISUSE") String I_I_ISUSE,
+                                               @RequestParam(value = "I_I_ORDERID") String I_I_ORDERID,
+                                               @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = specEquipService.setAttachmentType(I_ID, V_V_ATTACHNAME, V_V_EQUTYPE, I_I_ISUSE, I_I_ORDERID,V_V_PERSONCODE);
+
+        result.put("data", data);
+        result.put("success", true);
+        result.put("AttachmentType", specEquipService.loadPlanApply(I_ID));
+        return result;
+    }
+
+    //附件类型配置删除
+
+    @RequestMapping(value = "/deleteAttachmentType", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteAttachmentType(@RequestParam(value = "I_I_ID", required = false) String I_I_ID,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = specEquipService.deleteAttachmentType(I_I_ID);
+
+        result.put("data", data);
+
+        return result;
+    }
+
 }
