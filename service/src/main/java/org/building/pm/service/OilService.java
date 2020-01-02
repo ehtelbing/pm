@@ -138,4 +138,151 @@ public class OilService {
         return result;
     }
 
+    //查询某个润滑标准（用油）
+    public Map<String, Object> loadStaYy(String I_I_ID) throws SQLException {
+
+        logger.info("begin loadStaYy");
+
+        Map<String, Object> result = new HashMap();
+        List<Map<String, Object>> list = new ArrayList<>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_YY_NODE_GET" + "(:I_I_ID,:V_CURSOR)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            list = ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadStaYy");
+
+        if (list.size() == 1) {
+            return list.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    //润滑标准新增修改（用油）
+    public HashMap yyInfoSet(String I_I_ID, String V_V_GUID, String V_V_YZ_ID, String v_v_oil_way, String v_v_oil_num, String v_v_oil_zqms, String v_v_oil_pd, String v_v_oil_zqunit, String v_v_oil_zqsz,String v_v_zxr, String V_V_PERSONCODE) throws SQLException {
+
+        logger.info("begin yyInfoSet");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_YY_INFO_SET(:I_I_ID,:V_V_GUID,:V_V_YZ_ID,:v_v_oil_way,:v_v_oil_num,:v_v_oil_zqms,:v_v_oil_pd,:v_v_oil_zqunit,:v_v_oil_zqsz,:v_v_zxr,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_YZ_ID", V_V_YZ_ID);
+            cstmt.setString("v_v_oil_way", v_v_oil_way);
+            cstmt.setString("v_v_oil_num", v_v_oil_num);
+            cstmt.setString("v_v_oil_zqms", v_v_oil_zqms);
+            cstmt.setString("v_v_oil_pd", v_v_oil_pd);
+            cstmt.setString("v_v_oil_zqunit", v_v_oil_zqunit);
+            cstmt.setString("v_v_oil_zqsz", v_v_oil_zqsz);
+            cstmt.setString("v_v_zxr", v_v_zxr);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end yyInfoSet");
+        return result;
+    }
+
+    //查询某个润滑标准（油脂）
+    public Map<String, Object> loadStaYz(String I_I_ID) throws SQLException {
+
+        logger.info("begin loadStaYz");
+
+        Map<String, Object> result = new HashMap();
+        List<Map<String, Object>> list = new ArrayList<>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_YZ_NODE_GET" + "(:I_I_ID,:V_CURSOR)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            list = ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadStaYz");
+
+        if (list.size() == 1) {
+            return list.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    //润滑标准新增修改（油脂）
+    public HashMap yzInfoSet(String I_I_ID, String V_V_GUID, String V_V_PARTNAME, String N_V_OIL_NUM, String V_V_LOC_CODE, String V_V_LOC_NAME, String v_v_oil_season, String v_v_oiltype, String v_v_oil_sign, String v_v_oil_mat_code, String v_v_oil_mat_name, String V_V_PERSONCODE) throws SQLException {
+
+        logger.info("begin yzInfoSet");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_YZ_INFO_SET(:I_I_ID,:V_V_GUID,:V_V_PARTNAME,:N_V_OIL_NUM,:V_V_LOC_CODE,:V_V_LOC_NAME,:v_v_oil_season,:v_v_oiltype,:v_v_oil_sign,:v_v_oil_mat_code,:v_v_oil_mat_name,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_PARTNAME", V_V_PARTNAME);
+            cstmt.setString("N_V_OIL_NUM", N_V_OIL_NUM);
+            cstmt.setString("V_V_LOC_CODE", V_V_LOC_CODE);
+            cstmt.setString("V_V_LOC_NAME", V_V_LOC_NAME);
+            cstmt.setString("v_v_oil_season", v_v_oil_season);
+            cstmt.setString("v_v_oiltype", v_v_oiltype);
+            cstmt.setString("v_v_oil_sign", v_v_oil_sign);
+            cstmt.setString("v_v_oil_mat_code", v_v_oil_mat_code);
+            cstmt.setString("v_v_oil_mat_name", v_v_oil_mat_name);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end yzInfoSet");
+        return result;
+    }
+
 }

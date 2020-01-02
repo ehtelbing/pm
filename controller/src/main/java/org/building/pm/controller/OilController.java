@@ -69,4 +69,93 @@ public class OilController {
         return result;
     }
 
+    //查询某个润滑标准(用油)
+    @RequestMapping(value = "/loadStaYy", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> loadStaYy(
+            @RequestParam(value = "I_I_ID") String I_I_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> staYy = oilService.loadStaYy(I_I_ID);
+
+        result.put("staYy", staYy);
+        result.put("success", true);
+        return result;
+    }
+
+    //润滑标准新增修改(用油)
+    @RequestMapping(value = "/yyInfoSet", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> yyInfoSet(@RequestParam(value = "I_I_ID") String I_I_ID,
+                                           @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                           @RequestParam(value = "V_V_YZ_ID") String V_V_YZ_ID,
+                                           @RequestParam(value = "v_v_oil_way") String v_v_oil_way,
+                                           @RequestParam(value = "v_v_oil_num") String v_v_oil_num,
+                                           @RequestParam(value = "v_v_oil_zqms") String v_v_oil_zqms,
+                                           @RequestParam(value = "v_v_oil_pd") String v_v_oil_pd,
+                                           @RequestParam(value = "v_v_oil_zqunit") String v_v_oil_zqunit,
+                                           @RequestParam(value = "v_v_oil_zqsz") String v_v_oil_zqsz,
+                                           @RequestParam(value = "v_v_zxr") String v_v_zxr,
+                                           @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = oilService.yyInfoSet(I_I_ID, V_V_GUID, V_V_YZ_ID, v_v_oil_way, v_v_oil_num, v_v_oil_zqms, v_v_oil_pd, v_v_oil_zqunit, v_v_oil_zqsz, v_v_zxr, V_V_PERSONCODE);
+        result.put("success", true);
+        result.put("data", data);
+        result.put("V_INFO", data.get("V_INFO"));
+        if(StringUtils.isNotEmpty(I_I_ID)){
+            result.put("equScrap",oilService.loadStaYy(I_I_ID));
+        }
+
+        return result;
+    }
+
+    //查询某个润滑标准(油脂)
+    @RequestMapping(value = "/loadStaYz", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> loadStaYz(
+            @RequestParam(value = "I_I_ID") String I_I_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> staYz = oilService.loadStaYz(I_I_ID);
+
+        result.put("staYz", staYz);
+        result.put("success", true);
+        return result;
+    }
+
+    //润滑标准新增修改(油脂)
+    @RequestMapping(value = "/yzInfoSet", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> yzInfoSet(@RequestParam(value = "I_I_ID") String I_I_ID,
+                                         @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                         @RequestParam(value = "V_V_PARTNAME") String V_V_PARTNAME,
+                                         @RequestParam(value = "N_V_OIL_NUM") String N_V_OIL_NUM,
+                                         @RequestParam(value = "V_V_LOC_CODE") String V_V_LOC_CODE,
+                                         @RequestParam(value = "V_V_LOC_NAME") String V_V_LOC_NAME,
+                                         @RequestParam(value = "v_v_oil_season") String v_v_oil_season,
+                                         @RequestParam(value = "v_v_oiltype") String v_v_oiltype,
+                                         @RequestParam(value = "v_v_oil_sign") String v_v_oil_sign,
+                                         @RequestParam(value = "v_v_oil_mat_code") String v_v_oil_mat_code,
+                                         @RequestParam(value = "v_v_oil_mat_name") String v_v_oil_mat_name,
+                                         @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = oilService.yzInfoSet(I_I_ID, V_V_GUID, V_V_PARTNAME, N_V_OIL_NUM, V_V_LOC_CODE, V_V_LOC_NAME, v_v_oil_season, v_v_oiltype, v_v_oil_sign, v_v_oil_mat_code, v_v_oil_mat_name, V_V_PERSONCODE);
+        result.put("success", true);
+        result.put("data", data);
+        result.put("V_INFO", data.get("V_INFO"));
+        if(StringUtils.isNotEmpty(I_I_ID)){
+            result.put("equScrap",oilService.loadStaYz(I_I_ID));
+        }
+
+        return result;
+    }
+
 }
