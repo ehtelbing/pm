@@ -138,6 +138,75 @@ public class OilService {
         return result;
     }
 
+    public HashMap loadOilStandardInfo(String V_V_GUID, String I_I_ID) throws SQLException {
+        logger.info("begin loadOilStandardInfo");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_NODE_ALL_GET(:V_V_GUID,:I_I_ID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadOilStandardInfo");
+        return result;
+    }
+
+    public HashMap setOilStandardInfo(String I_I_ID,String V_V_GUID,String V_V_PARTNAME, Double N_V_OIL_NUM,String V_V_LOC_CODE,String V_V_LOC_NAME,String V_V_OIL_SEASON,String V_V_OILTYPE,String V_V_OIL_SIGN,String V_V_OIL_MAT_CODE,String V_V_OIL_MAT_NAME,String V_V_OIL_WAY,String V_V_OIL_PD, String V_V_OIL_NUM,String V_V_OIL_ZQMS,String V_V_OIL_ZQUNIT,String V_V_OIL_ZQSZ,String V_V_ZXR,String V_V_PERSONCODE) throws SQLException {
+        logger.info("begin setOilStandardInfo");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_M_SET(:V_V_GUID,:V_V_PARTNAME,:N_V_OIL_NUM,:V_V_LOC_CODE,:V_V_LOC_NAME,:V_V_OIL_SEASON,:V_V_OILTYPE,:V_V_OIL_SIGN,:V_V_OIL_MAT_CODE,:V_V_OIL_MAT_NAME,:I_I_ID,:V_V_OIL_WAY,:V_V_OIL_NUM,:V_V_OIL_ZQMS,:V_V_OIL_PD,:V_V_OIL_ZQUNIT,:V_V_OIL_ZQSZ,:V_V_ZXR,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_PARTNAME", V_V_PARTNAME);
+            cstmt.setDouble("N_V_OIL_NUM", N_V_OIL_NUM);
+            cstmt.setString("V_V_LOC_CODE", V_V_LOC_CODE);
+            cstmt.setString("V_V_LOC_NAME", V_V_LOC_NAME);
+            cstmt.setString("V_V_OIL_SEASON", V_V_OIL_SEASON);
+            cstmt.setString("V_V_OILTYPE", V_V_OILTYPE);
+            cstmt.setString("V_V_OIL_SIGN", V_V_OIL_SIGN);
+            cstmt.setString("V_V_OIL_MAT_CODE", V_V_OIL_MAT_CODE);
+            cstmt.setString("V_V_OIL_MAT_NAME", V_V_OIL_MAT_NAME);
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.setString("V_V_OIL_WAY", V_V_OIL_WAY);
+            cstmt.setString("V_V_OIL_NUM", V_V_OIL_NUM);
+            cstmt.setString("V_V_OIL_ZQMS", V_V_OIL_ZQMS);
+            cstmt.setString("V_V_OIL_PD", V_V_OIL_PD);
+            cstmt.setString("V_V_OIL_ZQUNIT", V_V_OIL_ZQUNIT);
+            cstmt.setString("V_V_OIL_ZQSZ", V_V_OIL_ZQSZ);
+            cstmt.setString("V_V_ZXR", V_V_ZXR);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end setOilStandardInfo");
+        return result;
+    }
+
     //查询某个润滑标准（用油）
     public Map<String, Object> loadStaYy(String I_I_ID) throws SQLException {
 

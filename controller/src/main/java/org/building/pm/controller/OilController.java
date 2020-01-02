@@ -69,6 +69,50 @@ public class OilController {
         return result;
     }
 
+
+    @RequestMapping(value = "/loadOilStandardInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> loadOilStandardInfo(  @RequestParam(value = "V_V_GUID") String V_V_GUID  ,
+                                                 @RequestParam(value = "I_I_ID") String I_I_ID,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map result = oilService.loadOilStandardInfo(V_V_GUID, I_I_ID);
+        return result;
+    }
+
+    @RequestMapping(value = "/setOilStandardInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> setOilStandardInfo(@RequestParam(value = "I_I_ID") String I_I_ID,
+                                                  @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                  @RequestParam(value = "V_V_PARTNAME") String V_V_PARTNAME,
+                                                  @RequestParam(value = "N_V_OIL_NUM") Double N_V_OIL_NUM,
+                                                  @RequestParam(value = "V_V_LOC_CODE") String V_V_LOC_CODE,
+                                                  @RequestParam(value = "V_V_LOC_NAME") String V_V_LOC_NAME,
+                                                  @RequestParam(value = "V_V_OIL_SEASON") String V_V_OIL_SEASON,
+                                                  @RequestParam(value = "V_V_OILTYPE") String V_V_OILTYPE,
+                                                  @RequestParam(value = "V_V_OIL_SIGN") String V_V_OIL_SIGN,
+                                                  @RequestParam(value = "V_V_OIL_MAT_CODE") String V_V_OIL_MAT_CODE,
+                                                  @RequestParam(value = "V_V_OIL_MAT_NAME") String V_V_OIL_MAT_NAME,
+                                                  @RequestParam(value = "V_V_OIL_WAY") String V_V_OIL_WAY,
+                                                  @RequestParam(value = "V_V_OIL_PD") String V_V_OIL_PD,
+                                                  @RequestParam(value = "V_V_OIL_NUM") String V_V_OIL_NUM,
+                                                  @RequestParam(value = "V_V_OIL_ZQMS") String V_V_OIL_ZQMS,
+                                                  @RequestParam(value = "V_V_OIL_ZQUNIT") String V_V_OIL_ZQUNIT,
+                                                  @RequestParam(value = "V_V_OIL_ZQSZ") String V_V_OIL_ZQSZ,
+                                                  @RequestParam(value = "V_V_ZXR") String V_V_ZXR,
+                                                  @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = oilService.setOilStandardInfo(I_I_ID, V_V_GUID, V_V_PARTNAME, N_V_OIL_NUM, V_V_LOC_CODE,V_V_LOC_NAME, V_V_OIL_SEASON, V_V_OILTYPE, V_V_OIL_SIGN, V_V_OIL_MAT_CODE, V_V_OIL_MAT_NAME, V_V_OIL_WAY, V_V_OIL_PD, V_V_OIL_NUM, V_V_OIL_ZQMS, V_V_OIL_ZQUNIT, V_V_OIL_ZQSZ, V_V_ZXR, V_V_PERSONCODE);
+
+        result.put("data", data);
+        result.put("success", true);
+        //result.put("AttachmentType", specEquipService.loadPlanApply(I_ID));
+        return result;
+    }
+
     //查询某个润滑标准(用油)
     @RequestMapping(value = "/loadStaYy", method = RequestMethod.POST)
     @ResponseBody
