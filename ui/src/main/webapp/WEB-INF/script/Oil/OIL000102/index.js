@@ -244,11 +244,11 @@ Ext.onReady(function () {
         },
         items: [{
             region: 'north',
-            items: [formPanel]
+            items: [buttonPanel]
         }, {
             region: 'center',
             layout: 'fit',
-            items: [buttonPanel]
+            items: [formPanel]
         }]
     });
 
@@ -309,8 +309,8 @@ function _yzInfoSet() {
             if (resp.success) {
                 var V_INFO = resp.V_INFO;
                 if (V_INFO == '保存成功！') {
-                    parent.returnValue = 'success';
-                    //_close()
+                    parent.returnValue = resp;
+                    _close()
                 } else {
                     Ext.Msg.alert('提示', '保存失败');
                 }

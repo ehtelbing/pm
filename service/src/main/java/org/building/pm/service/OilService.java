@@ -138,6 +138,240 @@ public class OilService {
         return result;
     }
 
+    public HashMap selectStandardInfo(String V_V_PERSONCODE, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_CXCODE, String V_V_EQUTYPECODE ,String V_V_GGXH , String V_V_PAGE , String V_V_PAGESIZE ) throws SQLException {
+        logger.info("begin selectStandardInfo");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_SEL_PART(:V_V_PERSONCODE,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_CXCODE,:V_V_EQUTYPECODE,:V_V_GGXH,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_CXCODE", V_V_CXCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectStandardInfo");
+        return result;
+    }
+
+    public HashMap setLubricationStandard(String V_V_GUID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE,String V_V_CXCODE,String V_V_CXNAME ,String V_V_EQUTYPENAME, String V_V_EQUTYPECODE,String V_V_BZ_CODE,String V_V_BA_NAME,String V_V_JSDX,String V_V_GGXH, String V_V_PERSONCODE) throws SQLException {
+
+        logger.info("begin setLubricationStandard");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_SET(:V_V_GUID,:V_V_ORGNAME,:V_V_ORGCODE,:V_V_DEPTNAME,:V_V_DEPTCODE,:V_V_CXCODE,:V_V_CXNAME,:V_V_EQUTYPENAME,:V_V_EQUTYPECODE,:V_V_BZ_CODE,:V_V_BA_NAME,:V_V_JSDX,:V_V_GGXH,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGNAME", V_V_ORGNAME);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_CXCODE", V_V_CXCODE);
+            cstmt.setString("V_V_CXNAME", V_V_CXNAME);
+            cstmt.setString("V_V_EQUTYPENAME", V_V_EQUTYPENAME);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_BZ_CODE", V_V_BZ_CODE);
+            cstmt.setString("V_V_BA_NAME", V_V_BA_NAME);
+            cstmt.setString("V_V_JSDX", V_V_JSDX);
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end setLubricationStandard");
+        return result;
+    }
+
+    public HashMap deleteAttachmentType(String V_V_GUID) throws SQLException {
+
+        logger.info("begin deleteAttachmentType");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_DEL" + "(:V_V_GUID,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end deleteAttachmentType");
+        return result;
+    }
+
+    public HashMap deleteGrease(String V_V_GUID,String I_I_ID) throws SQLException {
+
+        logger.info("begin deleteGrease");
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_YZ_INFO_DEL" + "(:V_V_GUID,:I_I_ID,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end deleteGrease");
+        return result;
+    }
+
+    public HashMap deleteUseOil(String V_V_GUID,String I_I_ID) throws SQLException {
+
+        logger.info("begin deleteUseOil");
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_YY_INFO_DEL" + "(:V_V_GUID,:I_I_ID,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end deleteUseOil");
+        return result;
+    }
+
+    public HashMap loadLubricationStandard(String V_V_GUID) throws SQLException {
+
+        logger.info("begin loadLubricationStandard");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_NODE_GET" + "(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadLubricationStandard");
+        return result;
+    }
+
+    public HashMap selectGrease(String V_V_GUID) throws SQLException {
+
+        logger.info("begin selectGrease");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_YZ_GET" + "(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectGrease");
+        return result;
+    }
+
+    public HashMap selectUseOil(String V_V_GUID,String V_V_YZ_ID) throws SQLException {
+
+        logger.info("begin selectUseOil");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_YY_GET" + "(:V_V_GUID,:V_V_YZ_ID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_YZ_ID", V_V_YZ_ID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectUseOil");
+        return result;
+    }
+
     public HashMap loadOilStandardInfo(String V_V_GUID, String I_I_ID) throws SQLException {
         logger.info("begin loadOilStandardInfo");
         HashMap result = new HashMap();

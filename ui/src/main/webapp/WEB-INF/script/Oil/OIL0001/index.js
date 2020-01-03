@@ -25,7 +25,6 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
     }
 });
 
-var tempButton =  [{ xtype: 'button', text: 'Button 1' }]
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
@@ -111,8 +110,8 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records, successful, eOpts) {
                 store.insert(0, {
-                    V_CXCODE : '%',
-                    V_CXNAME : '--全部--'
+                    V_CXCODE: '%',
+                    V_CXNAME: '--全部--'
                 });
                 Ext.getCmp('V_V_CXCODE').select(store.first());
             }
@@ -142,8 +141,8 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records, successful, eOpts) {
                 store.insert(0, {
-                    V_EQUTYPECODE : '%',
-                    V_EQUTYPENAME : '--全部--'
+                    V_EQUTYPECODE: '%',
+                    V_EQUTYPENAME: '--全部--'
                 });
                 Ext.getCmp('equipType').select(store.first());
             }
@@ -154,8 +153,8 @@ Ext.onReady(function () {
         storeId: 'standardInfoStore',
         autoLoad: false,
         loading: false,
-        pageSize: 11,
-        fields: ['V_GUID', 'V_OIL_ORDER', 'V_ORGNAME', 'V_ORGCODE', 'V_DEPTNAME', 'V_DEPTCODE', 'V_EQUTYPENAME', 'V_EQUTYPECODE', 'V_EQUCODE', 'V_EQUNAME', 'V_BZ_CODE', 'V_BZ_NAME', 'V_JSDX', 'V_GGXH', 'V_LOC_CODE', 'V_LOC_NAME', 'V_SOURCE'],
+        pageSize: 6,
+        fields: ['V_GUID', 'I_ID', 'V_OIL_ORDER', 'V_ORGNAME', 'V_ORGCODE', 'V_DEPTNAME', 'V_DEPTCODE', 'V_EQUTYPENAME', 'V_EQUTYPECODE', 'V_EQUCODE', 'V_EQUNAME', 'V_CXCODE', 'V_CXNAME', 'V_BZ_CODE', 'V_BZ_NAME', 'V_JSDX', 'V_GGXH', 'V_LOC_CODE', 'V_LOC_NAME', 'V_SOURCE'],
         proxy: {
             url: AppUrl + 'oil/selectStandardInfo',
             type: 'ajax',
@@ -166,9 +165,107 @@ Ext.onReady(function () {
             reader: {
                 type: 'json',
                 root: 'list',
-                total: 'total'
+                totalProperty: 'total'
             }
         }
+    });
+
+    var greaseStore = Ext.create('Ext.data.Store', {
+        storeId: 'greaseStore',
+        autoLoad: false,
+        loading: false,
+        fields: ['V_GUID', 'I_ID', 'V_PARTNAME', 'V_LOC_CODE', 'V_LOC_NAME', 'V_OIL_NUM', 'V_OILTYPE', 'V_OIL_SEASON', 'V_OIL_SIGN', 'V_OIL_MAT_CODE', 'V_OIL_MAT_NAME', 'V_SOURCE'],
+        proxy: {
+            url: AppUrl + 'oil/selectGrease',
+            type: 'ajax',
+            async: true,
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list',
+            }
+        }
+    });
+
+    var useOilStore = Ext.create('Ext.data.Store', {
+        storeId: 'useOilStore',
+        autoLoad: false,
+        loading: false,
+        fields: ['V_GUID', 'I_ID', 'V_OIL_WAY', 'V_OIL_NUM', 'V_OIL_PD', 'V_OIL_ZQMS', 'V_OIL_ZQUNIT', 'V_OIL_ZQSZ', 'V_ZXR', 'V_SOURCE'],
+        proxy: {
+            url: AppUrl + 'oil/selectUseOil',
+            type: 'ajax',
+            async: true,
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list',
+            }
+        }
+    });
+
+    var standardInfoButton = Ext.create('Ext.Panel', {
+        id: 'standardInfoButton',
+        defaults: {
+            style: 'margin: 2px;'
+        },
+        items: [{
+            xtype: 'button',
+            text: '新增',
+            handler: _newAdd
+        }, {
+            xtype: 'button',
+            text: '修改',
+            handler: _update
+        }, {
+            xtype: 'button',
+            text: '删除',
+            handler: _delete
+        }]
+    });
+
+    var greaseButton = Ext.create('Ext.Panel', {
+        id: 'greaseButton',
+        defaults: {
+            style: 'margin: 2px;'
+        },
+        items: [{
+            xtype: 'button',
+            text: '新增',
+            handler: _greaseNewAdd
+        }, {
+            xtype: 'button',
+            text: '修改',
+            handler: _greaseUpdate
+        }, {
+            xtype: 'button',
+            text: '删除',
+            handler: _greaseDelete
+        }]
+    });
+
+    var useOilButton = Ext.create('Ext.Panel', {
+        id: 'useOilButton',
+        defaults: {
+            style: 'margin: 2px;'
+        },
+        items: [{
+            xtype: 'button',
+            text: '新增',
+            handler: _useOilNewAdd
+        }, {
+            xtype: 'button',
+            text: '修改',
+            handler: _useOilUpdate
+        }, {
+            xtype: 'button',
+            text: '删除',
+            handler: _useOilDelete
+        }]
     });
 
     var buttonPanel = Ext.create('Ext.Panel', {
@@ -269,20 +366,21 @@ Ext.onReady(function () {
             editable: false,
             forceSelection: true,
             fieldLabel: '设备类型'
-        },
-            {
-                xtype: 'textfield',
-                name: 'V_V_GGXH',
-                fieldLabel: '设备规格'
-            }]
+        }, {
+            xtype: 'textfield',
+            name: 'V_V_GGXH',
+            id: 'V_V_GGXH',
+            fieldLabel: '设备规格'
+        }]
     });
 
     var standardInfoPanel = Ext.create('Ext.grid.Panel', {
         id: 'standardInfoPanel',
         store: standardInfoStore,
         columnLines: true,
-        title: '<span>润滑标准</span><button class="titleButton" type="button">新增</button><button class="titleButton" type="button">修改</button><button class="titleButton" type="button">删除</button>',
+        title: '润滑标准',
         frame: true,
+        height: 260,
         style: {
             border: 0
         },
@@ -295,51 +393,69 @@ Ext.onReady(function () {
             xtype: "rownumberer",
             width: '100px'
         }, {
+            text: 'V_GUID',
+            dataIndex: 'V_GUID',
+            align: 'center',
+            flex: 1,
+            hidden: true
+        }, {
+            text: 'I_ID',
+            dataIndex: 'I_ID',
+            align: 'center',
+            flex: 1,
+            hidden: true
+        }, {
             text: '厂矿',
             dataIndex: 'V_ORGNAME',
-            align : 'center',
+            align: 'center',
             flex: 1
         }, {
             text: '作业区',
             dataIndex: 'V_DEPTNAME',
-            align : 'center',
+            align: 'center',
             flex: 1
         }, {
             text: '产线',
             dataIndex: 'V_CXNAME',
-            align : 'center',
+            align: 'center',
             flex: 1
         }, {
             text: '设备类型',
             dataIndex: 'V_EQUTYPENAME',
-            align : 'center',
+            align: 'center',
             flex: 1
         }, {
             text: '润滑标准编码',
             dataIndex: 'V_BZ_CODE',
-            align : 'center',
+            align: 'center',
             flex: 1
         }, {
             text: '润滑标准描述',
             dataIndex: 'V_BZ_NAME',
-            align : 'center',
+            align: 'center',
             flex: 1
         }, {
             text: '技术对象',
             dataIndex: 'V_JSDX',
-            align : 'center',
+            align: 'center',
             flex: 1
         }, {
             text: '设备规格型号',
             dataIndex: 'V_GGXH',
-            align : 'center',
+            align: 'center',
             flex: 1
         }, {
             text: '数据来源',
             dataIndex: 'V_SOURCE',
-            align : 'center',
+            align: 'center',
             flex: 1
         }],
+        listeners: {
+            itemclick: function (panel, record, item, index, e, eOpts) {
+                _selectGrease(record.data.V_GUID);
+                useOilStore.removeAll();
+            }
+        },
         viewConfig: {
             emptyText: '<div style="text-align: center; padding-top: 50px; font: italic bold 20px Microsoft YaHei;">没有数据</div>',
             enableTextSelection: true
@@ -355,26 +471,206 @@ Ext.onReady(function () {
         }]
     });
 
+    var greasePanel = Ext.create('Ext.grid.Panel', {
+        id: 'greasePanel',
+        store: greaseStore,
+        columnLines: true,
+        title: '油脂',
+        frame: true,
+        height: 260,
+        style: {
+            border: 0
+        },
+        selModel: {
+            selType: 'checkboxmodel',
+            mode: 'SINGLE'
+        },
+        columns: [{
+            text: '序号',
+            xtype: "rownumberer",
+            width: '100px'
+        }, {
+            text: 'V_GUID',
+            dataIndex: 'V_GUID',
+            align: 'center',
+            flex: 1,
+            hidden: true
+        }, {
+            text: 'I_ID',
+            dataIndex: 'I_ID',
+            align: 'center',
+            flex: 1,
+            hidden: true
+        }, {
+            text: '部件名称',
+            dataIndex: 'V_PARTNAME',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '润滑位置编码',
+            dataIndex: 'V_LOC_CODE',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '润滑位置名称',
+            dataIndex: 'V_LOC_NAME',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '润滑点数',
+            dataIndex: 'V_OIL_NUM',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '加油方式',
+            dataIndex: 'V_OILTYPE',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '季节',
+            dataIndex: 'V_OIL_SEASON',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '油脂牌号',
+            dataIndex: 'V_OIL_SIGN',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '物料编码',
+            dataIndex: 'V_OIL_MAT_CODE',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '物料描述',
+            dataIndex: 'V_OIL_MAT_NAME',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '数据来源',
+            dataIndex: 'V_SOURCE',
+            align: 'center',
+            flex: 1
+        }],
+        listeners: {
+            itemclick: function (panel, record, item, index, e, eOpts) {
+                _selectUseOil(record.data.V_GUID, record.data.I_ID);
+            }
+        },
+        viewConfig: {
+            emptyText: '<div style="text-align: center; padding-top: 50px; font: italic bold 20px Microsoft YaHei;">没有数据</div>',
+            enableTextSelection: true
+        }
+    });
+
+    var useOilPanel = Ext.create('Ext.grid.Panel', {
+        id: 'useOilPanel',
+        store: useOilStore,
+        columnLines: true,
+        title: '用油',
+        frame: true,
+        height: 260,
+        style: {
+            border: 0
+        },
+        selModel: {
+            selType: 'checkboxmodel',
+            mode: 'SINGLE'
+        },
+        columns: [{
+            text: '序号',
+            xtype: "rownumberer",
+            width: '100px'
+        }, {
+            text: 'V_GUID',
+            dataIndex: 'V_GUID',
+            align: 'center',
+            flex: 1,
+            hidden: true
+        }, {
+            text: 'I_ID',
+            dataIndex: 'I_ID',
+            align: 'center',
+            flex: 1,
+            hidden: true
+        }, {
+            text: '用油方式',
+            dataIndex: 'V_OIL_WAY',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '用油数量（KG）',
+            dataIndex: 'V_OIL_NUM',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '频度',
+            dataIndex: 'V_OIL_PD',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '周期模式',
+            dataIndex: 'V_OIL_ZQMS',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '周期单位',
+            dataIndex: 'V_OIL_ZQUNIT',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '周期设置',
+            dataIndex: 'V_OIL_ZQSZ',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '执行人',
+            dataIndex: 'V_ZXR',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '数据来源',
+            dataIndex: 'V_SOURCE',
+            align: 'center',
+            flex: 1
+        }],
+        viewConfig: {
+            emptyText: '<div style="text-align: center; padding-top: 50px; font: italic bold 20px Microsoft YaHei;">没有数据</div>',
+            enableTextSelection: true
+        }
+    });
+
     Ext.create('Ext.container.Viewport', {
         layout: {
-            type: 'border',
-            regionWeights: {
-                west: -1,
-                north: 1,
-                south: 1,
-                east: -1
-            }
+            type: 'column',
         },
         defaults: {
             border: false
         },
         items: [{
-            region: 'north',
-            items: [buttonPanel, formPanel]
+            items: [buttonPanel],
+            columnWidth: 1,
         }, {
-            region: 'center',
-            layout: 'fit',
-            items: [standardInfoPanel]
+            items: [formPanel],
+            columnWidth: 1,
+        }, {
+            items: [standardInfoButton],
+            columnWidth: 1,
+        }, {
+            items: [standardInfoPanel],
+            columnWidth: 1,
+        }, {
+            items: [greaseButton],
+            columnWidth: 1,
+        }, {
+            items: [greasePanel],
+            columnWidth: 1,
+        }, {
+            items: [useOilButton],
+            columnWidth: 1,
+        }, {
+            items: [useOilPanel],
+            columnWidth: 1,
         }]
     });
 
@@ -400,7 +696,17 @@ function _init() {
 }
 
 function _selectStandardInfo() {
-
+    var standardInfoStore = Ext.data.StoreManager.lookup('standardInfoStore');
+    standardInfoStore.proxy.extraParams = {
+        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+        V_V_ORGCODE: Ext.getCmp('FTY_CODE_').getValue(),
+        V_V_DEPTCODE: Ext.getCmp('DEPT_CODE_').getValue(),
+        V_V_CXCODE: Ext.getCmp('V_V_CXCODE').getValue(),
+        V_V_EQUTYPECODE: Ext.getCmp('equipType').getValue(),
+        V_V_GGXH: Ext.getCmp('V_V_GGXH').getValue(),
+    };
+    standardInfoStore.currentPage = 1;
+    standardInfoStore.load();
 }
 
 function _selectProductLine() {
@@ -487,7 +793,7 @@ function _replaceColumnTitle(fieldsList) {
                 columnList.push({
                     text: fieldsList[i],
                     dataIndex: fieldsList[i],
-                    align : 'center',
+                    align: 'center',
                     align: 'center',
                     flex: 1
                 })
@@ -522,9 +828,9 @@ function _selectEquipType() {
     var equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
     equipTypeStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_ORGCODE  :Ext.getCmp('FTY_CODE_').getValue(),
-        V_V_DEPTCODE :Ext.getCmp('DEPT_CODE_').getValue(),
-        V_V_CXCODE :Ext.getCmp('V_V_CXCODE').getValue()
+        V_V_ORGCODE: Ext.getCmp('FTY_CODE_').getValue(),
+        V_V_DEPTCODE: Ext.getCmp('DEPT_CODE_').getValue(),
+        V_V_CXCODE: Ext.getCmp('V_V_CXCODE').getValue()
     };
     equipTypeStore.load();
 }
@@ -563,4 +869,352 @@ function _manageArchives(value) {
     });
 }
 
+//润滑标准修改
+function _update() {
+    var records = Ext.getCmp('standardInfoPanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.alert('提示', '请选择一条润滑标准数据');
+        return;
+    }
+    returnValue = null;
+    win = Ext.create('Ext.window.Window', {
+        title: '修改油脂标准',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 560,
+        height: 420,
+        html: '<iframe src=' + AppUrl + 'page/Oil/OIL000101/index.html?V_GUID=' + records[0].get('V_GUID') + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+        listeners: {
+            close: function (panel, eOpts) {
+                if (returnValue != null) {
+                    if (returnValue.V_INFO == '保存成功！') {
+                        var map = returnValue.LubricationStandard[0];
+                        for (var key in map) {
+                            records[0].set(key, map[key]);
+                            Ext.Msg.alert('提示', '修改成功！');
+                        }
+                    } else {
+                        Ext.Msg.alert('提示', '修改失败！');
+                    }
+                }
+            }
+        }
+    });
+}
+
+//润滑标准新增
+function _newAdd() {
+    returnValue = null;
+    win = Ext.create('Ext.window.Window', {
+        title: '新增油脂标准',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 560,
+        height: 420,
+        html: '<iframe src=' + AppUrl + 'page/Oil/OIL000101/index.html?V_GUID=' + "" + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+        listeners: {
+            close: function (panel, eOpts) {
+                var resp = returnValue;
+                if (returnValue != null) {
+                    _selectStandardInfo();
+                    Ext.Msg.alert('提示', resp.V_INFO);
+                }
+            }
+        }
+    });
+}
+
+//润滑标准删除
+function _delete() {
+    var records = Ext.getCmp('standardInfoPanel').getSelectionModel().getSelection();
+    var record2 = Ext.getCmp('greasePanel').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.Msg.alert('提示', '请选择一条数据！');
+        return;
+    }
+
+    Ext.MessageBox.show({
+        title: '请确认',
+        msg: '删除',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'oil/deleteAttachmentType',
+                    async: false,
+                    params: {
+                        'V_V_GUID': records[0].get('V_GUID')
+                    },
+                    callback: function (options, success, response) {
+                        if (success) {
+                            var data = Ext.decode(response.responseText);
+                            if (data.data.V_INFO == '删除成功！') {
+                                Ext.MessageBox.alert('删除成功', data.data.V_INFO);
+                                _selectStandardInfo();
+                                _selectGrease(records[0].get('V_GUID'));
+                                _selectUseOil(records[0].get('V_GUID'), record2[0].get('I_ID'));
+                                Ext.data.StoreManager.lookup('standardInfoStore').remove(records[0]);//前台删除被删除数据
+                            } else {
+                                Ext.MessageBox.alert('删除失败', data.data.V_INFO);
+                            }
+                        } else {
+                            Ext.MessageBox.alert('删除失败', '删除失败');
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+//油脂修改
+function _greaseUpdate() {
+    var record1 = Ext.getCmp('standardInfoPanel').getSelectionModel().getSelection();
+    var record2 = Ext.getCmp('greasePanel').getSelectionModel().getSelection();
+
+    if (record2.length == 0) {
+        Ext.MessageBox.alert('提示', '请选择一条油脂数据');
+        return;
+    }
+    returnValue = null;
+    win = Ext.create('Ext.window.Window', {
+        title: '修改油脂标准',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 560,
+        height: 420,
+        html: '<iframe src=' + AppUrl + 'page/Oil/OIL000102/index.html?P_ID=' + record2[0].get('I_ID') + '&P_GID=' + record1[0].get('V_GUID') + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+        listeners: {
+            close: function (panel, eOpts) {
+                if (returnValue != null) {
+                    if (returnValue.V_INFO == '保存成功！') {
+                        var map = returnValue.equScrap;
+                        for (var key in map) {
+                            record2[0].set(key, map[key]);
+                            Ext.Msg.alert('提示', '修改成功！');
+                        }
+                    } else {
+                        Ext.Msg.alert('提示', '修改失败！');
+                    }
+                }
+            }
+        }
+    });
+}
+
+//油脂新增
+function _greaseNewAdd() {
+    var records = Ext.getCmp('standardInfoPanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.alert('提示', '请选择润滑标准');
+        return;
+    }
+
+    returnValue = null;
+    win = Ext.create('Ext.window.Window', {
+        title: '新增油脂标准',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 560,
+        height: 420,
+        html: '<iframe src=' + AppUrl + 'page/Oil/OIL000102/index.html?P_ID=' + "" + '&P_GID=' + records[0].get('V_GUID') + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+        listeners: {
+            close: function (panel, eOpts) {
+                if (returnValue != null) {
+                    if (returnValue.V_INFO == '保存成功！') {
+                        _selectGrease(records[0].get('V_GUID'));
+                        Ext.Msg.alert('提示', '保存成功');
+                    }
+                }
+            }
+        }
+    });
+}
+
+//油脂删除
+function _greaseDelete() {
+    var record1 = Ext.getCmp('standardInfoPanel').getSelectionModel().getSelection();
+    var record2 = Ext.getCmp('greasePanel').getSelectionModel().getSelection();
+    if (record2.length == 0) {
+        Ext.Msg.alert('提示', '请选择一条数据！');
+        return;
+    }
+
+    Ext.MessageBox.show({
+        title: '请确认',
+        msg: '删除',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'oil/deleteGrease',
+                    async: false,
+                    params: {
+                        'V_V_GUID': record1[0].get('V_GUID'),
+                        'I_I_ID': record2[0].get('I_ID')
+                    },
+                    callback: function (options, success, response) {
+                        if (success) {
+                            var data = Ext.decode(response.responseText);
+                            if (data.data.V_INFO == '删除成功！') {
+                                Ext.MessageBox.alert('删除成功', data.data.V_INFO);
+                                _selectUseOil(record1[0].get('V_GUID'), record2[0].get('I_ID'));
+                                Ext.data.StoreManager.lookup('greaseStore').remove(record2[0]);//前台删除被删除数据
+                            } else {
+                                Ext.MessageBox.alert('删除失败', data.data.V_INFO);
+                            }
+                        } else {
+                            Ext.MessageBox.alert('删除失败', '删除失败');
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+//用油修改
+function _useOilUpdate() {
+
+    var record1 = Ext.getCmp('standardInfoPanel').getSelectionModel().getSelection();
+    var record2 = Ext.getCmp('greasePanel').getSelectionModel().getSelection();
+    var record3 = Ext.getCmp('useOilPanel').getSelectionModel().getSelection();
+
+    if (record3.length == 0) {
+        Ext.MessageBox.alert('提示', '请选择一条用油数据');
+        return;
+    }
+    returnValue = null;
+    win = Ext.create('Ext.window.Window', {
+        title: '修改用油',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 560,
+        height: 420,
+        html: '<iframe src=' + AppUrl + 'page/Oil/OIL000103/index.html?P_ID=' + record3[0].get('I_ID') + '&P_GID=' + record1[0].get('V_GUID') + '&P_YZID=' + record2[0].get('I_ID') + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+        listeners: {
+            close: function (panel, eOpts) {
+                if (returnValue != null) {
+                    if (returnValue.V_INFO == '保存成功！') {
+                        var map = returnValue.equScrap;
+                        for (var key in map) {
+                            record3[0].set(key, map[key]);
+                            Ext.Msg.alert('提示', '修改成功！');
+                        }
+                    } else {
+                        Ext.Msg.alert('提示', '修改失败！');
+                    }
+                }
+            }
+        }
+    });
+}
+
+//用油新增
+function _useOilNewAdd() {
+
+    var record1 = Ext.getCmp('standardInfoPanel').getSelectionModel().getSelection();
+    var record2 = Ext.getCmp('greasePanel').getSelectionModel().getSelection();
+
+    if (record2.length == 0) {
+        Ext.MessageBox.alert('提示', '请选择油脂，若未选择油脂请选择润滑标准');
+        return;
+    }
+
+    returnValue = null;
+    win = Ext.create('Ext.window.Window', {
+        title: '新增用油',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 560,
+        height: 420,
+        html: '<iframe src=' + AppUrl + 'page/Oil/OIL000103/index.html?V_GUID=' + "" + '&P_GID=' + record1[0].get('V_GUID') + '&P_YZID=' + record2[0].get('I_ID') + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+        listeners: {
+            close: function (panel, eOpts) {
+                if (returnValue != null) {
+                    if (returnValue.V_INFO == '保存成功！') {
+                        _selectUseOil(record1[0].get('V_GUID'), record2[0].get('I_ID'));
+                        Ext.Msg.alert('提示', '保存成功');
+                    }
+                }
+            }
+        }
+    });
+}
+
+//用油删除
+function _useOilDelete() {
+
+    var record = Ext.getCmp('useOilPanel').getSelectionModel().getSelection();
+
+    if (record.length == 0) {
+        Ext.Msg.alert('提示', '请选择一条数据！');
+        return;
+    }
+
+    Ext.MessageBox.show({
+        title: '请确认',
+        msg: '删除',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'oil/deleteUseOil',
+                    async: false,
+                    params: {
+                        'V_V_GUID': record[0].get('V_GUID'),
+                        'I_I_ID': record[0].get('I_ID'),
+                    },
+                    callback: function (options, success, response) {
+                        if (success) {
+                            var data = Ext.decode(response.responseText);
+                            if (data.data.V_INFO == '删除成功！') {
+                                Ext.MessageBox.alert('删除成功', data.data.V_INFO);
+                                Ext.data.StoreManager.lookup('useOilStore').remove(record[0]);//前台删除被删除数据
+                            } else {
+                                Ext.MessageBox.alert('删除失败', data.data.V_INFO);
+                            }
+                        } else {
+                            Ext.MessageBox.alert('删除失败', '删除失败');
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function _selectGrease(V_GUID) {
+    var greaseStore = Ext.data.StoreManager.lookup('greaseStore');
+    greaseStore.proxy.extraParams = {
+        V_V_GUID: V_GUID
+    };
+    greaseStore.load();
+}
+
+function _selectUseOil(V_GUID, I_ID) {
+    var useOilStore = Ext.data.StoreManager.lookup('useOilStore');
+    useOilStore.proxy.extraParams = {
+        V_V_GUID: V_GUID,
+        V_V_YZ_ID: I_ID
+    };
+    useOilStore.load();
+}
 

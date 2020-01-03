@@ -68,6 +68,155 @@ public class OilController {
         Map result = oilService.selectEquipType(V_V_PERSONCODE, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE);
         return result;
     }
+    //润滑标准查询
+    @RequestMapping(value = "/selectStandardInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectStandardInfo(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                         @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                         @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
+                                                         @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                         @RequestParam(value = "V_V_GGXH") String V_V_GGXH,
+                                                    Integer page,
+                                                    Integer limit,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = oilService.selectStandardInfo(V_V_PERSONCODE,V_V_ORGCODE,V_V_DEPTCODE,V_V_CXCODE,V_V_EQUTYPECODE,V_V_GGXH,page.toString(), limit.toString());
+        result.put("success", true);
+
+        return result;
+    }
+    //润滑标准保存
+    @RequestMapping(value = "/setLubricationStandard", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> setLubricationStandard(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                      @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+                                                      @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                      @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+                                                      @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                      @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
+                                                      @RequestParam(value = "V_V_CXNAME") String V_V_CXNAME,
+                                                      @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                                      @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                      @RequestParam(value = "V_V_BZ_CODE") String V_V_BZ_CODE,
+                                                      @RequestParam(value = "V_V_BZ_NAME") String V_V_BA_NAME,
+                                                      @RequestParam(value = "V_V_JSDX") String V_V_JSDX,
+                                                      @RequestParam(value = "V_V_GGXH") String V_V_GGXH,
+                                                      @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                      HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = oilService.setLubricationStandard(V_V_GUID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE,V_V_CXCODE, V_V_CXNAME,V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_BZ_CODE, V_V_BA_NAME, V_V_JSDX, V_V_GGXH, V_V_PERSONCODE);
+        result.put("success", true);
+        result.put("data", data);
+        result.put("V_INFO", data.get("V_INFO"));
+        result.put("LubricationStandard", oilService.loadLubricationStandard(V_V_GUID).get("list"));
+        return result;
+    }
+
+    //润滑标准删除
+    @RequestMapping(value = "/deleteAttachmentType", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteAttachmentType(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = oilService.deleteAttachmentType(V_V_GUID);
+
+        result.put("data", data);
+
+        return result;
+    }
+
+
+    //通过id查询油脂标准
+    @RequestMapping(value = "/loadLubricationStandard", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> loadLubricationStandard(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = oilService.loadLubricationStandard(V_V_GUID);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+
+        return data;
+    }
+
+    //通过id查询油脂
+    @RequestMapping(value = "/selectGrease", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectGrease(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = oilService.selectGrease(V_V_GUID);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+
+        return data;
+    }
+
+    //通过id查询用油
+    @RequestMapping(value = "/selectUseOil", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectUseOil(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_YZ_ID") String   V_V_YZ_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = oilService.selectUseOil(V_V_GUID,  V_V_YZ_ID);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+
+        return data;
+    }
+
+    //油脂删除
+    @RequestMapping(value = "/deleteGrease", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteGrease(@RequestParam(value = "V_V_GUID", required = false) String V_V_GUID,
+                                            @RequestParam(value = "I_I_ID", required = false) String I_I_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = oilService.deleteGrease(V_V_GUID,I_I_ID);
+
+        result.put("data", data);
+
+        return result;
+    }
+
+    //用油删除
+    @RequestMapping(value = "/deleteUseOil", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteUseOil(@RequestParam(value = "V_V_GUID", required = false) String V_V_GUID,
+                                            @RequestParam(value = "I_I_ID", required = false) String I_I_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = oilService.deleteUseOil(V_V_GUID,I_I_ID);
+
+        result.put("data", data);
+
+        return result;
+    }
 
 
     @RequestMapping(value = "/loadOilStandardInfo", method = RequestMethod.POST)
