@@ -1518,7 +1518,7 @@ public class SpecEquipController {
     //SE000801报警周期的保存
     @RequestMapping(value = "/setCheckOverRange", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> insertPlanApply(@RequestParam(value = "V_V_OVERDAY") Double V_V_OVERDAY,
+    public Map<String, Object> setCheckOverRange(@RequestParam(value = "V_V_OVERDAY") Double V_V_OVERDAY,
                                                HttpServletRequest request,
                                                HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
