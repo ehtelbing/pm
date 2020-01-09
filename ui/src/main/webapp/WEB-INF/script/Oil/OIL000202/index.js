@@ -389,7 +389,9 @@ function _setStandardInfo(){
         waitMsg : '进行中...',
         success : function(form, action) {
             var data = action.result;
-            parent.returnValue = 'success';
+            if(data.success){
+                parent.returnValue = data
+            }
             _close();
         },
         failure : function(form, action) {

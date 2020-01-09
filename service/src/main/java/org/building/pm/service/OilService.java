@@ -138,6 +138,161 @@ public class OilService {
         return result;
     }
 
+    //OIL0002设备型号和润滑标准查询
+    public HashMap selectStandardInfoEquType(String V_V_PERSONCODE, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE) throws SQLException {
+
+        logger.info("begin selectStandardInfoEquType");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_EQUTYPE(:V_V_PERSONCODE,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPECODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectStandardInfoEquType");
+        return result;
+    }
+
+    //OIL0002查询 润滑标准历史表格
+    public HashMap selectStandardInfoHis(String V_V_PERSONCODE, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_GGXH) throws SQLException {
+
+        logger.info("begin selectStandardInfoHis");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_HIS(:V_V_PERSONCODE,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPECODE,:V_V_GGXH,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectStandardInfoHis");
+        return result;
+    }
+
+    //OIL0002查询 当前设备
+    public HashMap selectStardArdInfoGet(String V_V_PERSONCODE, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_GGXH, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin selectStardArdInfoGet");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_GET(:V_V_PERSONCODE,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPECODE,:V_V_GGXH,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectStardArdInfoGet");
+        return result;
+    }
+
+    //庄玉凯 新写的查询设备类型
+    public HashMap GET_DEPTEQUTYPE_NEW_ZYK(String V_V_PERSONCODE, String V_V_DEPTCODENEXT) throws SQLException {
+
+        logger.info("begin GET_DEPTEQUTYPE_NEW_ZYK");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call GET_DEPTEQUTYPE_NEW_ZYK" + "(:V_V_PERSONCODE,:V_V_DEPTCODENEXT,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GET_DEPTEQUTYPE_NEW_ZYK");
+        return result;
+    }
+
+    //庄玉凯新写的根据设备型号查询上级
+    public HashMap OIL_ORG_DEPT_EQUTYPE_GET(String V_V_GGXH) throws SQLException {
+        logger.info("begin OIL_ORG_DEPT_EQUTYPE_GET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_ORG_DEPT_EQUTYPE_GET" + "(:V_V_GGXH,:V_CURSOR)}");
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end OIL_ORG_DEPT_EQUTYPE_GET");
+        return result;
+    }
+
     public HashMap selectStandardInfo(String V_V_PERSONCODE, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_CXCODE, String V_V_EQUTYPECODE ,String V_V_GGXH , String V_V_PAGE , String V_V_PAGESIZE ) throws SQLException {
         logger.info("begin selectStandardInfo");
         HashMap result = new HashMap();
@@ -585,6 +740,186 @@ public class OilService {
         }
         logger.debug("result:" + result);
         logger.info("end yzInfoSet");
+        return result;
+    }
+
+    //OIL000201查询
+    public HashMap selectStardArdInfo(String V_V_PERSONCODE, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_GGXH, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin selectStardArdInfo");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_EQUGGXH_SEL(:V_V_PERSONCODE,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_GGXH,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectStardArdInfo");
+        return result;
+    }
+
+    //OIL000201新增规格型号
+    public HashMap insertGgxh(String V_V_GUID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME,
+                              String V_V_DEPTCODE, String V_V_CXCODE, String V_V_CXNAME, String V_V_EQUTYPENAME, String V_V_EQUTYPECODE,
+                              String V_V_BZ_CODE, String V_V_BZ_NAME, String V_V_JSDX, String V_V_GGXH, String V_V_PERSONCODE) throws SQLException {
+
+        logger.info("begin insertGgxh");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_SET(:V_V_GUID,:V_V_ORGNAME,:V_V_ORGCODE,:V_V_DEPTNAME,:V_V_DEPTCODE,:V_V_CXCODE,:V_V_CXNAME,:V_V_EQUTYPENAME,:V_V_EQUTYPECODE,:V_V_BZ_CODE,:V_V_BZ_NAME,:V_V_JSDX,:V_V_GGXH,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGNAME", V_V_ORGNAME);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_CXCODE", V_V_CXCODE);
+            cstmt.setString("V_V_CXNAME", V_V_CXNAME);
+            cstmt.setString("V_V_EQUTYPENAME", V_V_EQUTYPENAME);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_BZ_CODE", V_V_BZ_CODE);
+            cstmt.setString("V_V_BZ_NAME", V_V_BZ_NAME);
+            cstmt.setString("V_V_JSDX", V_V_JSDX);
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end insertGgxh");
+        return result;
+    }
+
+    //OIL000201查询 新增设备的查询
+    public HashMap selectInsertEquip(String V_V_PERSONCODE, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin selectInsertEquip");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_EQU_SEL(:V_V_PERSONCODE,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPECODE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectInsertEquip");
+        return result;
+    }
+
+    //OIL000201新增设备
+    public HashMap setOilStandardEqu(String V_V_GUID, String V_V_ORGNAME, String V_V_ORGCODE, String V_V_DEPTNAME, String V_V_DEPTCODE, String V_V_EQUTYPENAME,
+                                     String V_V_EQUTYPECODE, String V_V_EQUNAME, String V_V_EQUCODE, String V_V_GGXH,  String V_V_PERSONCODE) throws SQLException {
+
+        logger.info("begin setOilStandardEqu");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_EQU_SET(:V_V_GUID,:V_V_ORGNAME,:V_V_ORGCODE,:V_V_DEPTNAME,:V_V_DEPTCODE,:V_V_EQUTYPENAME,:V_V_EQUTYPECODE,:V_V_EQUNAME,:V_V_EQUCODE,:V_V_GGXH,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGNAME", V_V_ORGNAME);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPENAME", V_V_EQUTYPENAME);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUNAME", V_V_EQUNAME);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end setOilStandardEqu");
+        return result;
+    }
+
+    //OIL000201删除设备
+    public HashMap deleteEquGgxh(String I_I_ID) throws SQLException {
+
+        logger.info("begin deleteEquGgxh");
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_INFO_EQUGGXH_DEL" + "(:I_I_ID,:V_INFO)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end deleteEquGgxh");
         return result;
     }
 
