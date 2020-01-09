@@ -778,26 +778,26 @@ public class SpecEquipController {
     @RequestMapping(value = "/excelCheckResult", method = RequestMethod.GET)
     @ResponseBody
     public void excelCheckResult(@RequestParam(value = "I_I_ID_LIST", required = false) List<String> I_I_ID_LIST,
-                               @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
-                               @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
-                               @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
-                               @RequestParam(value = "V_CHECKTIME_LIST", required = false) List<String> V_CHECKTIME_LIST,
-                               @RequestParam(value = "V_CHECKPART_LIST", required = false) List<String> V_CHECKPART_LIST,
-                               @RequestParam(value = "V_CHECKDEPT_LIST", required = false) List<String> V_CHECKDEPT_LIST,
-                               @RequestParam(value = "V_FCHECKTIME_LIST", required = false) List<String> V_FCHECKTIME_LIST,
-                               @RequestParam(value = "V_COST_LIST", required = false) List<String> V_COST_LIST,
-                               String V_V_PERSONCODE,
-                               String V_V_DEPTCODE,
-                               String V_V_DEPTCODENEXT,
-                               String V_V_EQUTYPECODE,
-                               String V_V_EQUTYPENAME,
-                               String V_V_EQUCODE,
-                               String V_V_BDATE,
-                               String V_V_EDATE,
-                               Integer page,
-                               Integer limit,
-                               HttpServletRequest request,
-                               HttpServletResponse response) throws Exception {
+                                 @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
+                                 @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
+                                 @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
+                                 @RequestParam(value = "V_CHECKTIME_LIST", required = false) List<String> V_CHECKTIME_LIST,
+                                 @RequestParam(value = "V_CHECKPART_LIST", required = false) List<String> V_CHECKPART_LIST,
+                                 @RequestParam(value = "V_CHECKDEPT_LIST", required = false) List<String> V_CHECKDEPT_LIST,
+                                 @RequestParam(value = "V_FCHECKTIME_LIST", required = false) List<String> V_FCHECKTIME_LIST,
+                                 @RequestParam(value = "V_COST_LIST", required = false) List<String> V_COST_LIST,
+                                 String V_V_PERSONCODE,
+                                 String V_V_DEPTCODE,
+                                 String V_V_DEPTCODENEXT,
+                                 String V_V_EQUTYPECODE,
+                                 String V_V_EQUTYPENAME,
+                                 String V_V_EQUCODE,
+                                 String V_V_BDATE,
+                                 String V_V_EDATE,
+                                 Integer page,
+                                 Integer limit,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -887,7 +887,7 @@ public class SpecEquipController {
                     checkResultDate.put("V_CHECKDEPT", (String) V_CHECKDEPT_LIST.get(i));
                     checkResultDate.put("V_FCHECKTIME", "");
                     checkResultDate.put("V_COST", "");
-                } else if (V_FCHECKTIME_LIST.size() == 0){
+                } else if (V_FCHECKTIME_LIST.size() == 0) {
                     checkResultDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
                     checkResultDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
                     checkResultDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
@@ -896,7 +896,7 @@ public class SpecEquipController {
                     checkResultDate.put("V_CHECKDEPT", (String) V_CHECKDEPT_LIST.get(i));
                     checkResultDate.put("V_FCHECKTIME", "");
                     checkResultDate.put("V_COST", (String) V_COST_LIST.get(i));
-                } else if (V_COST_LIST.size() == 0){
+                } else if (V_COST_LIST.size() == 0) {
                     checkResultDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
                     checkResultDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
                     checkResultDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
@@ -1138,7 +1138,7 @@ public class SpecEquipController {
                     checkResultDate.put("V_CHECKDEPT", (String) V_CHECKDEPT_LIST.get(i));
                     checkResultDate.put("V_FCHECKTIME", "");
                     checkResultDate.put("V_COST", "");
-                } else if (V_FCHECKTIME_LIST.size() == 0){
+                } else if (V_FCHECKTIME_LIST.size() == 0) {
                     checkResultDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
                     checkResultDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
                     checkResultDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
@@ -1147,7 +1147,7 @@ public class SpecEquipController {
                     checkResultDate.put("V_CHECKDEPT", (String) V_CHECKDEPT_LIST.get(i));
                     checkResultDate.put("V_FCHECKTIME", "");
                     checkResultDate.put("V_COST", (String) V_COST_LIST.get(i));
-                } else if (V_COST_LIST.size() == 0){
+                } else if (V_COST_LIST.size() == 0) {
                     checkResultDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
                     checkResultDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
                     checkResultDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
@@ -1426,7 +1426,7 @@ public class SpecEquipController {
                     checkOverTimeDate.put("V_CHECKCYCLE", "");
                     checkOverTimeDate.put("V_CHECKTIME", (String) V_CHECKTIME_LIST.get(i));
                     checkOverTimeDate.put("V_OVERREASON", "");
-                } else if(V_OVERREASON_LIST.size() == 0){
+                } else if (V_OVERREASON_LIST.size() == 0) {
                     checkOverTimeDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
                     checkOverTimeDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
                     checkOverTimeDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
@@ -1434,7 +1434,7 @@ public class SpecEquipController {
                     checkOverTimeDate.put("V_CHECKCYCLE", (String) V_CHECKCYCLE_LIST.get(i));
                     checkOverTimeDate.put("V_CHECKTIME", (String) V_CHECKTIME_LIST.get(i));
                     checkOverTimeDate.put("V_OVERREASON", "");
-                } else if (V_CHECKCYCLE_LIST.size() == 0 ){
+                } else if (V_CHECKCYCLE_LIST.size() == 0) {
                     checkOverTimeDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
                     checkOverTimeDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
                     checkOverTimeDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
@@ -1442,7 +1442,7 @@ public class SpecEquipController {
                     checkOverTimeDate.put("V_CHECKCYCLE", "");
                     checkOverTimeDate.put("V_CHECKTIME", (String) V_CHECKTIME_LIST.get(i));
                     checkOverTimeDate.put("V_OVERREASON", (String) V_OVERREASON_LIST.get(i));
-                } else{
+                } else {
                     checkOverTimeDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
                     checkOverTimeDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
                     checkOverTimeDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
@@ -1506,8 +1506,8 @@ public class SpecEquipController {
     @RequestMapping(value = "/loadCheckOverRange", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> loadCheckOverRange(
-                                               HttpServletRequest request,
-                                               HttpServletResponse response) throws Exception {
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         result.put("checkOverRange", specEquipService.loadCheckOverRange());
@@ -1518,7 +1518,7 @@ public class SpecEquipController {
     //SE000801报警周期的保存
     @RequestMapping(value = "/setCheckOverRange", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> insertPlanApply(@RequestParam(value = "V_V_OVERDAY") Double V_V_OVERDAY,
+    public Map<String, Object> setCheckOverRange(@RequestParam(value = "V_V_OVERDAY") Double V_V_OVERDAY,
                                                HttpServletRequest request,
                                                HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -1533,25 +1533,25 @@ public class SpecEquipController {
     @RequestMapping(value = "/setEquScrap", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setEquScrap(@RequestParam(value = "I_I_ID") String I_I_ID,
-                                               @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
-                                               @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                               @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
-                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                               @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
-                                               @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
-                                               @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
-                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                               @RequestParam(value = "V_V_SCRAPREASON") String V_V_SCRAPREASON,
-                                               @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                               HttpServletRequest request,
-                                               HttpServletResponse response) throws Exception {
+                                           @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                           @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                           @RequestParam(value = "V_V_EQUTYPENAME") String V_V_EQUTYPENAME,
+                                           @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                           @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                           @RequestParam(value = "V_V_SCRAPREASON") String V_V_SCRAPREASON,
+                                           @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
         HashMap data = specEquipService.setEquScrap(I_I_ID, V_V_ORGNAME, V_V_ORGCODE, V_V_DEPTNAME, V_V_DEPTCODE, V_V_EQUTYPENAME, V_V_EQUTYPECODE, V_V_EQUNAME, V_V_EQUCODE, V_V_SCRAPREASON, V_V_PERSONCODE);
         result.put("success", true);
         result.put("data", data);
         result.put("V_INFO", data.get("V_INFO"));
-        if(StringUtils.isNotEmpty(I_I_ID)){
-            result.put("equScrap",specEquipService.loadEquScrap(I_I_ID));
+        if (StringUtils.isNotEmpty(I_I_ID)) {
+            result.put("equScrap", specEquipService.loadEquScrap(I_I_ID));
         }
 
         return result;
@@ -1571,14 +1571,14 @@ public class SpecEquipController {
         result.put("equScrap", equScrap);
         result.put("success", true);
         return result;
-   }
+    }
 
-   //删除报废申请
+    //删除报废申请
     @RequestMapping(value = "/deleteEquipScrap", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> deleteEquipScrap(@RequestParam(value = "I_I_ID", required = false) String I_I_ID,
-                                               HttpServletRequest request,
-                                               HttpServletResponse response) throws Exception {
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = specEquipService.deleteEquipScrap(I_I_ID);
@@ -1729,4 +1729,188 @@ public class SpecEquipController {
             e.printStackTrace();
         }
     }
+
+    //附件类型配置查询
+
+    @RequestMapping(value = "/selectAttachmentType", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectAttachmentType(
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map result = specEquipService.selectAttachmentType();
+        return result;
+    }
+
+    //附件类型配置保存
+
+    @RequestMapping(value = "/setAttachmentType", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> setAttachmentType(@RequestParam(value = "I_ID") String I_ID,
+                                               @RequestParam(value = "V_V_ATTACHNAME") String V_V_ATTACHNAME,
+                                               @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                               @RequestParam(value = "I_I_ISUSE") String I_I_ISUSE,
+                                               @RequestParam(value = "I_I_ORDERID") String I_I_ORDERID,
+                                               @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = specEquipService.setAttachmentType(I_ID, V_V_ATTACHNAME, V_V_EQUTYPE, I_I_ISUSE, I_I_ORDERID,V_V_PERSONCODE);
+
+        result.put("data", data);
+        result.put("success", true);
+        result.put("AttachmentType", specEquipService.loadPlanApply(I_ID));
+        return result;
+    }
+
+    //附件类型配置删除
+
+    @RequestMapping(value = "/deleteAttachmentType", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteAttachmentType(@RequestParam(value = "I_I_ID", required = false) String I_I_ID,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = specEquipService.deleteAttachmentType(I_I_ID);
+
+        result.put("data", data);
+
+        return result;
+    }
+
+
+    //导出报废申请
+    @RequestMapping(value = "/excelEquScrap", method = RequestMethod.GET)
+    @ResponseBody
+    public void excelEquScrap(@RequestParam(value = "I_I_ID_LIST", required = false) List<String> I_I_ID_LIST,
+                              @RequestParam(value = "V_ORGNAME_LIST", required = false) List<String> V_ORGNAME_LIST,
+                              @RequestParam(value = "V_DEPTNAME_LIST", required = false) List<String> V_DEPTNAME_LIST,
+                              @RequestParam(value = "V_EQUTYPENAME_LIST", required = false) List<String> V_EQUTYPENAME_LIST,
+                              @RequestParam(value = "V_EQUNAME_LIST", required = false) List<String> V_EQUNAME_LIST,
+                              @RequestParam(value = "V_SCRAPREASON_LIST", required = false) List<String> V_SCRAPREASON_LIST,
+                              @RequestParam(value = "V_STATUS_LIST", required = false) List<String> V_STATUS_LIST,
+                              String V_V_PERSONCODE,
+                              String V_V_DEPTCODE,
+                              String V_V_DEPTCODENEXT,
+                              String V_V_EQUTYPECODE,
+                              String V_V_EQUTYPENAME,
+                              String V_V_EQUCODE,
+                              String V_V_BDATE,
+                              String V_V_EDATE,
+                              String V_V_STATUS,
+                              Integer page,
+                              Integer limit,
+                              HttpServletRequest request,
+                              HttpServletResponse response) throws Exception {
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+
+        sheet.setColumnWidth(0, 2000);
+        sheet.setColumnWidth(1, 5000);
+        sheet.setColumnWidth(2, 5000);
+        sheet.setColumnWidth(3, 5000);
+        sheet.setColumnWidth(4, 5000);
+        sheet.setColumnWidth(5, 8000);
+        sheet.setColumnWidth(6, 4000);
+
+        HSSFRow row = sheet.createRow((int) 0);
+        row.setHeightInPoints(30);
+        //标题栏样式
+        HSSFCellStyle style = wb.createCellStyle();
+        HSSFFont font = wb.createFont();
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 垂直
+        style.setFillForegroundColor(HSSFColor.GREY_50_PERCENT.index);
+        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        font.setFontHeightInPoints((short) 12);// 设置字体大小
+        font.setColor(HSSFColor.WHITE.index);
+        style.setFont(font);
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell1 = row.createCell((short) 0);
+        cell1.setCellValue("序号");
+        cell1.setCellStyle(style);
+
+        HSSFCell cell2 = row.createCell((short) 1);
+        cell2.setCellValue("厂矿");
+        cell2.setCellStyle(style);
+
+        HSSFCell cell3 = row.createCell((short) 2);
+        cell3.setCellValue("作业区");
+        cell3.setCellStyle(style);
+
+        HSSFCell cell4 = row.createCell((short) 3);
+        cell4.setCellValue("设备类型");
+        cell4.setCellStyle(style);
+
+        HSSFCell cell5 = row.createCell((short) 4);
+        cell5.setCellValue("设备名称");
+        cell5.setCellStyle(style);
+
+        HSSFCell cell6 = row.createCell((short) 5);
+        cell6.setCellValue("报废原因");
+        cell6.setCellStyle(style);
+
+        HSSFCell cell7 = row.createCell((short) 6);
+        cell7.setCellValue("状态");
+        cell7.setCellStyle(style);
+
+        List<Map<String, Object>> equScrapList = new ArrayList<Map<String, Object>>();
+
+        //如果是选择了很多列
+        if (I_I_ID_LIST.size() > 0) {
+            for (int i = 0; i < I_I_ID_LIST.size(); i++) {
+                Map<String, Object> equScrapDate = new HashMap<String, Object>();
+                equScrapDate.put("V_ORGNAME", (String) V_ORGNAME_LIST.get(i));
+                equScrapDate.put("V_DEPTNAME", (String) V_DEPTNAME_LIST.get(i));
+                equScrapDate.put("V_EQUTYPENAME", (String) V_EQUTYPENAME_LIST.get(i));
+                equScrapDate.put("V_EQUNAME", (String) V_EQUNAME_LIST.get(i));
+                equScrapDate.put("V_SCRAPREASON", (String) V_SCRAPREASON_LIST.get(i));
+                equScrapDate.put("V_STATUS", (String) V_STATUS_LIST.get(i));
+                equScrapList.add(equScrapDate);
+            }
+        } else {
+            Map<String, Object> data = specEquipService.selectEquScrap(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE, V_V_EQUTYPENAME, V_V_EQUCODE, V_V_BDATE, V_V_EDATE, V_V_STATUS, page.toString(), limit.toString());
+
+            equScrapList = (List<Map<String, Object>>) data.get("list");
+        }
+        for (int j = 0; j < equScrapList.size(); j++) {
+            row = sheet.createRow(j + 1);
+            row.setHeightInPoints(25);
+            HSSFCell cellContent = row.createCell(0);
+            cellContent.setCellValue(j + 1);// 序号
+
+            cellContent = row.createCell(1);
+            cellContent.setCellValue(equScrapList.get(j).get("V_ORGNAME") == null ? "" : equScrapList.get(j).get("V_ORGNAME").toString());// 厂矿
+
+            cellContent = row.createCell(2);
+            cellContent.setCellValue(equScrapList.get(j).get("V_DEPTNAME") == null ? "" : equScrapList.get(j).get("V_DEPTNAME").toString());// 作业区
+
+            cellContent = row.createCell(3);
+            cellContent.setCellValue(equScrapList.get(j).get("V_EQUTYPENAME") == null ? "" : equScrapList.get(j).get("V_EQUTYPENAME").toString());// 设备类型
+
+            cellContent = row.createCell(4);
+            cellContent.setCellValue(equScrapList.get(j).get("V_EQUNAME") == null ? "" : equScrapList.get(j).get("V_EQUNAME").toString());// 设备名称
+
+            cellContent = row.createCell(5);
+            cellContent.setCellValue(equScrapList.get(j).get("V_SCRAPREASON") == null ? "" : equScrapList.get(j).get("V_SCRAPREASON").toString());// 报废原因
+
+            cellContent = row.createCell(6);
+            cellContent.setCellValue(equScrapList.get(j).get("V_STATUS") == null ? "" : equScrapList.get(j).get("V_STATUS").toString());// 状态
+
+        }
+        try {
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            String fileName = new String("报废申请.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            OutputStream out = response.getOutputStream();
+
+            wb.write(out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

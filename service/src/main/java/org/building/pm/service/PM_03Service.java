@@ -2696,6 +2696,32 @@ public class PM_03Service {
         return result;
     }
 
+    public HashMap PRO_PM_WEEK_DEFECT_UNUSE(String V_V_GUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WEEK_DEFECT_UNUSE");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WEEK_DEFECT_UNUSE(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WEEK_DEFECT_UNUSE");
+        return result;
+    }
+
     public HashMap PRO_PM_MONTH_STATE_SET(String V_V_GUID, String V_V_STATE) throws SQLException {
 
         logger.info("begin PRO_PM_MONTH_STATE_SET");

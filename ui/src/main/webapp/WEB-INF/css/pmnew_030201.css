@@ -186,6 +186,10 @@
 }
 
 .trTitleDiv{
+    position: relative;
+
+}
+.trTitleInnerDiv{
     position: absolute;
     width: 70px;
     height: 23px;
@@ -193,24 +197,27 @@
     border-radius:0 30px 30px 0;
     color: white;
     background-color: #909399;
-    top: 1px;
+    top: -12px;
     line-height: 23px;
     font-size: 11px;
     opacity: 0.5;
     cursor :pointer;
     font-weight : bold;
     overflow: hidden;
-
 }
-#ganttTable tr td .trTitleDiv:hover {
+
+#ganttTable tr td .trTitleInnerDiv:hover {
     background-color: yellow;
     color: #72767b;
 }
 
+.svgDiv{
+    position: relative;
+}
 .svgDivX {
     position: absolute;
     border:0px solid #00b0ff;
     height: 23px;
-    top: 1px;
+    top: -12px;
     opacity: 0.5;
 }

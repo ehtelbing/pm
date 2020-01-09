@@ -528,10 +528,11 @@ Ext.onReady(function () {
 function beforeloadStore(store) {
     store.proxy.extraParams.V_V_YEAR = Ext.getCmp('year').getValue();
     store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp('ck').getValue();
-    store.proxy.extraParams.V_V_DEPTCODE = ""; //Ext.getCmp('zyq').getValue();
+    store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp('zyq').getValue();
     store.proxy.extraParams.V_V_ZY = Ext.getCmp('zy').getValue();
+    store.proxy.extraParams.V_V_STATE=Ext.getCmp('state').getValue();
     store.proxy.extraParams.V_V_QSTEXT = Ext.getCmp('gcqs').getValue();
-
+    store.proxy.extraParams.V_V_INMANCODE=Ext.getCmp('sbPer').getValue();
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
 }

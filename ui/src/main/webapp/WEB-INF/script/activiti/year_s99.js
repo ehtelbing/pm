@@ -825,7 +825,7 @@ function OnBtnUp() {
         method: 'POST',
         params: {
             taskId: taskId,
-            idea: '内部结束',
+            idea: '流程结束',
             parName: ['lcjs', "flow_yj", 'shtgtime'],
             parVal: ['lcjs', spyj, Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s')],
             processKey: processKey,
@@ -851,7 +851,7 @@ function OnBtnUp() {
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
                         Ext.getBody().unmask();
-                        if (resp.V_INFO == 'SUCCESS') {
+                        if (resp.V_INFO == 'SUCCESS' || resp.V_INFO == 'success') {
                             window.opener.QueryTabY();
                             window.opener.QuerySum();
                             window.opener.QueryGrid();
@@ -935,7 +935,7 @@ function OnBtnBack() {
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);
                             Ext.getBody().unmask();
-                            if (resp.V_INFO == 'success') {
+                            if (resp.V_INFO == 'success' || resp.V_INFO == 'SUCCESS') {
                                 window.opener.QueryTabY();
                                 window.opener.QuerySum();
                                 window.opener.QueryGrid();

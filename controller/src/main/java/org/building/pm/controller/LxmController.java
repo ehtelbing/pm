@@ -434,25 +434,12 @@ public class LxmController {
     @ResponseBody
     public Map<String, Object> PM_03_PLAN_CREATE_WORKORDER(
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-
-        HashMap data = mService.PM_03_PLAN_CREATE_WORKORDER(V_V_GUID,V_V_PERCODE);
-
-        List<Map<String, Object>> rlist = (List) data.get("list");
-        String v_info = (String) data.get("V_INFO");
-        String V_V_ORDERGUID=data.get("V_V_ORDERGUID").toString();
-        String V_V_SOURCECODE=data.get("V_V_SOURCECODE").toString();
-        String V_V_EQUTYPE=data.get("V_V_EQUTYPE").toString();
-        result.put("list", rlist);
-        result.put("v_info", v_info);
-        result.put("V_V_ORDERGUID", V_V_ORDERGUID);
-        result.put("V_V_SOURCECODE", V_V_SOURCECODE);
-        result.put("V_V_EQUTYPE", V_V_EQUTYPE);
-        result.put("success", true);
-        return result;
+        HashMap data = mService.PM_03_PLAN_CREATE_WORKORDER(V_V_GUID,V_V_DEFECTGUID,V_V_PERCODE);
+        return data;
     }
 
     @RequestMapping(value = "/PM_03_PLAN_WEEK_SEL", method = RequestMethod.POST)

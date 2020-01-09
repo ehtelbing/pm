@@ -2,41 +2,35 @@
 /*月计划添加保存从缺陷添加*/
 
 var V_WEEKPLAN_GUID = 0;
-if (location.href.split('?')[1] != undefined) {
-    V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).monthGuid;
-}
 var V_PLANTYPE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_PLANTYPE = Ext.urlDecode(location.href.split('?')[1]).V_PLANTYPE;
-}
 var YEAR = null;
-if (location.href.split('?')[1] != undefined) {
-    YEAR = Ext.urlDecode(location.href.split('?')[1]).YEAR;
-}
 var MONTH = null;
-if (location.href.split('?')[1] != undefined) {
-    MONTH = Ext.urlDecode(location.href.split('?')[1]).MONTH;
-}
 var V_ORGCODE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
-}
 var V_DEPTCODE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
-}
 var V_EQUTYPECODE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPECODE;
-}
 var V_EQUCODE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
-}
 var V_JXMX_CODE = null;
 var V_JXGX_CODE = null;
-
 var V_PLANCODE = null;
+var nmonth='';
+
+
+if (location.href.split('?')[1] != undefined) {
+    V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).monthGuid;
+    V_PLANTYPE = Ext.urlDecode(location.href.split('?')[1]).V_PLANTYPE;
+    YEAR = Ext.urlDecode(location.href.split('?')[1]).YEAR;
+    MONTH = Ext.urlDecode(location.href.split('?')[1]).MONTH;
+    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
+    V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
+    V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPECODE;
+    V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
+}
+
+if (MONTH<10){
+    nmonth='0'+MONTH;
+}else{
+    nmonth=MONTH;
+}
 
 var date = new Date();
 //年份
@@ -575,6 +569,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             margin: '5 0 0 5',
                             labelWidth: 80,
                             width: 280,
+                            minValue:YEAR+'-'+nmonth+'-01',
                             listeners: {
                                 select: function () {
                                     Ext.getCmp('jhjgdate').setValue(Ext.getCmp('jhtgdate').getSubmitValue());
@@ -662,7 +657,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             margin: '5 0 0 5',
                             labelWidth: 80,
                             width: 280,
-                            minValue: new Date(),
+                            minValue:YEAR+'-'+nmonth+'-01',
                             listeners: {
                                 select: function () {
                                     _gongshiheji();
@@ -909,10 +904,10 @@ function pageLoadInfo() {
         Ext.getCmp('gx').select(Ext.data.StoreManager.lookup('gxStore').getAt(0));
     });
 
-    Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
+    Ext.getCmp('jhtgdate').setValue(YEAR+'-'+nmonth+'-01'); 		//编辑窗口计划停工时间默认值
     Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
     Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-    Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
+    Ext.getCmp('jhjgdate').setValue(YEAR+'-'+nmonth+'-01');       //编辑窗口计划竣工时间默认值
     Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
     Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
 

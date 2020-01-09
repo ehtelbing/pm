@@ -248,41 +248,14 @@ var stateStore = Ext.create('Ext.data.Store', {
 //页面表格信息加载
 var gridStore = Ext.create('Ext.data.Store', {
     id: 'gridStore',
-    pageSize: 15,
+    pageSize: 50,
     autoLoad: false,
-    fields: ['I_ID',
-        'V_WEEKPLAN_GUID',
-        'V_YEAR',
-        'V_MONTH',
-        'V_WEEK',
-        'V_ORGCODE',                          //厂矿
-        'V_ORGNAME',
-        'V_DEPTCODE',                         //作业区
-        'V_DEPTNAME',
-        'V_EQUTYPECODE',                     //设备类型
-        'V_EQUTYPENAME',
-        'V_EQUCODE',
-        'V_EQUNAME',
-        'V_REPAIRMAJOR_CODE',
-        'V_CONTENT',
-        'V_STARTTIME',
-        'V_ENDTIME',
-        'V_HOUR',
-        'V_REPAIRDEPT_CODE',
-        'V_MANNAME',
-        'V_TEL',
-        'V_INDATE',
-        'V_INPER',
-        'V_PERSONNAME',
-        'V_FLOWCODE',
-        'V_JXMX_CODE',
-        'V_JXGX_CODE',
-        'V_MONTHPLAN_CODE',
-        'V_WEEKID',
-        'V_STATUSNAME', 'V_GUID', 'V_STATE', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
-        'V_MAIN_DEFECT',
-        'V_EXPECT_AGE',
-        'V_REPAIR_PER', 'V_SGWAY', 'V_SGWAYNAME', 'WORKORDERNUM'],
+    fields: ['I_ID', 'V_WEEKPLAN_GUID', 'V_YEAR', 'V_MONTH', 'V_WEEK', 'V_ORGCODE', 'V_ORGNAME',
+        'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME',
+        'V_REPAIRMAJOR_CODE', 'V_CONTENT', 'V_STARTTIME', 'V_ENDTIME', 'V_HOUR', 'V_REPAIRDEPT_CODE',
+        'V_MANNAME', 'V_TEL', 'V_INDATE', 'V_INPER', 'V_PERSONNAME', 'V_FLOWCODE', 'V_JXMX_CODE', 'V_JXGX_CODE',
+        'V_MONTHPLAN_CODE', 'V_WEEKID', 'V_STATUSNAME', 'V_GUID', 'V_STATE', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
+        'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_SGWAY', 'V_SGWAYNAME', 'WORKORDERNUM'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -294,6 +267,25 @@ var gridStore = Ext.create('Ext.data.Store', {
             type: 'json',
             root: 'list',
             total: 'total'
+        }
+    }
+});
+
+var qxGridStore = Ext.create('Ext.data.Store', {
+    id: 'qxGridStore',
+    autoLoad: false,
+    fields: ['WBSCODE', 'WBSNAME', 'V_DEFECTGUID', 'V_WEEKGUID', 'V_EQUNAME', 'V_DEFECTLIST', 'V_IDEA',
+        'D_DEFECTDATE', 'V_ORGNAME', 'V_PERNAME'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_03/PRO_PM_WEEK_DEFECT_UNUSE',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
         }
     }
 });
@@ -551,7 +543,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     text: '从缺陷添加',
                     margin: '5 0 5 5',
                     icon: imgpath + '/add.png',
-                    hidden:true,
+                    hidden: true,
                     handler: OnButtonDefectAddClicked
                 },
                 {
@@ -559,7 +551,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     text: '从备件添加',
                     margin: '5 0 5 5',
                     icon: imgpath + '/add.png',
-                    hidden:true,
+                    hidden: true,
                     handler: OnButtonDefPartAddClicked
                 },
                 {
@@ -571,7 +563,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     text: '模型选择',
                     margin: '5 0 5 5',
                     icon: imgpath + '/add.png',
-                    hidden:true,
+                    hidden: true,
                     handler: OnButtonSelectClicked
                 },
                 {
@@ -709,6 +701,49 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         }
     ]
 });
+
+var delpanel=Ext.create('Ext.panel.Panel',{
+    frame:true,
+    region:'north',
+    width:'100%',
+    layout:'column',
+    items:[{xtype:'button',text:'确认选择',margin: '5 0 5 5',listeners:{click:OnBtnDefC}}]
+})
+
+var delgrid = Ext.create('Ext.grid.Panel', {
+    id: 'delgrid',
+    region: 'center',
+    columnLines: true,
+    border: false,
+    store: qxGridStore,
+    autoScroll: true,
+    selType: 'checkboxmodel',
+    columns: [
+        {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+        {text: 'WBS编码', width: 120, dataIndex: 'WBSCODE', align: 'center', renderer: atleft},
+        {text: '维修工程项目名称', width: 120, dataIndex: 'WBSNAME', align: 'center', renderer: atleft},
+        {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
+        {text: '缺陷明细', width: 280, dataIndex: 'V_DEFECTLIST', align: 'center', renderer: atleft},
+        {text: '处理意见', width: 140, dataIndex: 'V_IDEA', align: 'center', renderer: atleft},
+        {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center', renderer: atleft},
+        {text: '单位', width: 140, dataIndex: 'V_ORGNAME', align: 'center', renderer: atleft},
+        {text: '负责人', width: 120, dataIndex: 'V_PERNAME', align: 'center', renderer: atleft}
+    ],
+});
+
+var win = Ext.create('Ext.window.Window', {
+    id: 'win',
+    width: 800,
+    height: 600,
+    title: '周计划缺陷',
+    frame: true,
+    closeAction: 'hide',
+    closable: true,
+    layout: 'border',
+    items: [delpanel,delgrid]
+});
+
+
 Ext.onReady(function () {
     Ext.QuickTips.init();
     Ext.getBody().mask();
@@ -1054,6 +1089,74 @@ function OnButtonSelectClicked() {
         "&endUpTime=" + Ext.getCmp("zjs").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 
+//周计划生成工单选择缺陷
+function OnBtnDefC(){
+    var seldata = Ext.getCmp('delgrid').getSelectionModel().getSelection();
+    if(seldata.length==0){
+        Ext.Msg.alert('操作信息', '请选择缺陷！');
+        return;
+    }
+
+    var wbsCode='';
+    var snum=0;
+    var num=0;
+
+    for(var i=0;i<seldata.length;i++){
+        if(seldata[i].WBSCODE!=''){
+            if(wbsCode==''){
+                wbsCode=seldata[i].WBSCODE;
+            }else{
+                if(wbsCode!=seldata[i].WBSCODE){
+                    num++;
+                }
+            }
+        }
+        snum++;
+    }
+
+    if(snum==seldata.length){
+        if(num>0){
+            Ext.Msg.alert('操作信息', '请选择相同维修工程！');
+            return;
+        }
+    }
+
+    var WeekGuid='';
+    var DefectGuid='';
+
+    for(var i=0;i<seldata.length;i++){
+        if(i==0){
+            WeekGuid=seldata[i].data.V_WEEKGUID;
+            DefectGuid=seldata[i].data.V_DEFECTGUID;
+        }else{
+            WeekGuid=WeekGuid+","+seldata[i].data.V_WEEKGUID;
+            DefectGuid=DefectGuid+","+seldata[i].data.V_DEFECTGUID;
+        }
+    }
+
+    Ext.Ajax.request({
+        url: AppUrl + 'lxm/PM_03_PLAN_CREATE_WORKORDER',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID: WeekGuid,
+            V_V_DEFECTGUID: DefectGuid,
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.V_INFO == "SUCCESS") {
+                window.open(AppUrl + "page/PM_03010301/createWork.html?V_V_ORDERGUID=" + resp.V_V_ORDERGUID + "&V_V_SOURCECODE=" + resp.V_V_SOURCECODE + '&V_V_EQUTYPE=' + resp.V_V_EQUTYPE,
+                    "", "dialogHeight:700px;dialogWidth:1100px");
+
+                Ext.getCmp('win').hide();
+            }
+        }
+    });
+
+
+}
+
 //修改
 function OnButtonEditClicked() {
     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
@@ -1066,7 +1169,7 @@ function OnButtonEditClicked() {
         return;
     }
     if (seldata[0].data.V_STATE == 10 || seldata[0].data.V_STATE == 100 || seldata[0].data.V_STATE == 99) {
-        window.open(AppUrl + 'page/PM_03010318/index.html?WEEKGUID=' + seldata[0].data.V_GUID+ "&startUpTime=" + Ext.getCmp("zks").getValue()
+        window.open(AppUrl + 'page/PM_03010318/index.html?WEEKGUID=' + seldata[0].data.V_GUID + "&startUpTime=" + Ext.getCmp("zks").getValue()
             + "&endUpTime=" + Ext.getCmp("zjs").getValue() + '', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
     } else {
         Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
@@ -1497,16 +1600,16 @@ function createWorkorder() {
             alert("该计划状态无法生成工单");
             return;
         }
-        if (record[i].data.V_STATE == '31') {
-            alert("存在一下票工单，请重新选择");
-            return false;
-        }
+    }
+
+    for (var i = 0; i < record.length; i++) {
         if (i == 0) {
             V_GUIDList = record[i].data.V_GUID;
         } else {
-            V_GUIDList += ',' + record[i].data.V_GUID;
+            V_GUIDList = V_GUIDList + "," + record[i].data.V_GUID;
         }
     }
+
 
     //设备判别
     Ext.Ajax.request({
@@ -1520,92 +1623,21 @@ function createWorkorder() {
             var resp = Ext.decode(resp.responseText);
             if (resp.v_info == "SUCCESS") {
                 //WEBCODE判别
-                Ext.Ajax.request({
-                    url: AppUrl + 'dxfile/PM_03_PLAN_WBS_COMPARE',
-                    method: 'POST',
-                    async: false,
-                    params: {
+                Ext.data.StoreManager.lookup("qxGridStore").load({
+                    params:{
                         V_V_GUID: V_GUIDList
-                    },
-                    success: function (resp) {
-                        var resp = Ext.decode(resp.responseText);
-                        if (resp.RET == "SUCCESS") {
-
-                            Ext.Ajax.request({
-                                url: AppUrl + 'lxm/PM_03_PLAN_CREATE_WORKORDER',
-                                method: 'POST',
-                                async: false,
-                                params: {
-                                    V_V_GUID: V_GUIDList,
-                                    V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
-                                },
-                                success: function (resp) {
-                                    var resp = Ext.decode(resp.responseText);
-                                    var V_V_ORDERGUID = resp.V_V_ORDERGUID;
-                                    var V_V_SOURCECODE = resp.V_V_SOURCECODE;
-                                    var V_V_EQUTYPE = resp.V_V_EQUTYPE;
-                                    if (url_guid != undefined) {
-                                        Ext.Ajax.request({
-                                            url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
-                                            type: 'post',
-                                            async: false,
-                                            params: {
-                                                V_V_IP: GetIP().ip,
-                                                V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                                                V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
-                                                V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
-                                                V_V_GUID: url_guid
-                                            },
-                                            success: function (response) {
-                                                var resp = Ext.decode(response.responseText);
-                                                if (resp.v_info == "success") {
-                                                    for (var i = 0; i < record.length; i++) {//录入关系表
-                                                        Ext.Ajax.request({//
-                                                            method: 'POST',
-                                                            async: false,
-                                                            url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_W',
-                                                            params: {
-                                                                V_V_WORKORDER_GUID: V_V_ORDERGUID,
-                                                                V_V_WEEK_GUID: record[i].data.V_GUID
-                                                            },
-                                                            success: function (response) {
-                                                                var respm = Ext.decode(response.responseText);
-                                                                if (respm.V_INFO == 'success') {
-
-                                                                } else {
-                                                                    alert("关系数据保存错误,工单生成失败");
-                                                                    return;
-                                                                }
-
-                                                            }
-                                                        });
-
-                                                    }
-                                                    // window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID + "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
-                                                    //     "", "dialogHeight:700px;dialogWidth:1100px");
-                                                    window.open(AppUrl + "page/PM_03010301/createWork.html?V_V_ORDERGUID=" + V_V_ORDERGUID + "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
-                                                        "", "dialogHeight:700px;dialogWidth:1100px");
-                                                }
-                                            }
-                                        });
-                                    } else {
-                                        alert(resp.v_info);
-                                    }
-                                }
-                            });
-                        } else {
-                            alert(resp.RET);
-                        }
                     }
-                });
-
+                })
+                Ext.getCmp('win').show();
             } else {
                 alert(resp.v_info);
             }
 
         }
     });
-
+    /*
+    *
+    * */
 
 }
 
@@ -1665,7 +1697,7 @@ function OnButtonFromMonth() {
         method: 'POST',
         async: false,
         params: {
-            V_V_ORGCODE:Ext.getCmp('jhck').getValue(),
+            V_V_ORGCODE: Ext.getCmp('jhck').getValue(),
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
         },
         success: function (resp) {
@@ -1673,7 +1705,7 @@ function OnButtonFromMonth() {
             var owidth = window.screen.availWidth;
             var oheight = window.screen.availHeight - 50;
             window.open(AppUrl + 'page/PM_03010317/newadd.html?WeekGuid='
-                + resp.V_INFO+"&YEAR=" + Ext.getCmp("nf").getValue() +
+                + resp.V_INFO + "&YEAR=" + Ext.getCmp("nf").getValue() +
                 "&MONTH=" + Ext.getCmp("yf").getValue() +
                 "&WEEK=" + Ext.getCmp("zhou").getValue() +
                 "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +

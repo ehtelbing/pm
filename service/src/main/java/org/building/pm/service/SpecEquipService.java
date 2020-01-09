@@ -387,7 +387,6 @@ public class SpecEquipService {
         return result;
     }
 
-    //V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE,V_V_EQUTYPENAME, V_V_BDATE, V_V_EDATE,  page.toString(), limit.toString()
     public HashMap selectCheckCost(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUTYPENAME, String V_V_BDATE, String V_V_EDATE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
         logger.info("begin selectCheckCost");
 
@@ -933,6 +932,87 @@ public class SpecEquipService {
         }
         logger.debug("result:" + result);
         logger.info("end deleteEquipScrap");
+        return result;
+    }
+    //附件类型配置查询
+    public HashMap selectAttachmentType( ) throws SQLException {
+        logger.info("begin selectAttachmentType");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SE_ATTACH_DIC_GET" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectAttachmentType");
+        return result;
+    }
+
+    public HashMap setAttachmentType(String I_ID, String V_V_ATTACHNAME, String V_V_EQUTYPE, String I_I_ISUSE, String I_I_ORDERID,String V_V_PERSONCODE) throws SQLException {
+        logger.info("begin setAttachmentType");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call SE_ATTACH_DIC_SET(:I_ID,:V_V_ATTACHNAME,:V_V_EQUTYPE,:I_I_ISUSE,:I_I_ORDERID,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("I_ID", I_ID);
+            cstmt.setString("V_V_ATTACHNAME", V_V_ATTACHNAME);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("I_I_ISUSE", I_I_ISUSE);
+            cstmt.setString("I_I_ORDERID", I_I_ORDERID);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end setAttachmentType");
+        return result;
+    }
+
+    public HashMap deleteAttachmentType(String I_I_ID) throws SQLException {
+        logger.info("begin deleteAttachmentType");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call SE_ATTACH_DIC_DEL" + "(:I_I_ID,:V_INFO)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end deleteAttachmentType");
         return result;
     }
 

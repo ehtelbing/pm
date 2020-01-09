@@ -433,37 +433,6 @@ function CreateBill() {
         } else {
             Ext.getBody().mask('<p>工单生成中请稍候...</p>');//页面笼罩效果
             setTimeout(BillGo, 500);
-            /*Ext.Ajax.request({
-                url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
-                type : 'post',
-                async : false,
-                params : {
-                    V_V_PERNAME: $.cookies.get('v_personcode'),
-                    V_DEFECT_GUID:  $.url().param("V_GUID"),
-                    V_V_ORDERGUID:  $("#V_ORDERGUID").val(),
-                    V_V_EQUCODE:$("#V_EQUCODE").val(),
-                    V_V_WORKORDER_TYPE:$("#selType").val(),
-                    V_V_DEPTCODEREPARIR: $("#selPlant").val(),
-                    V_V_SHORT_TXT:  $("#V_DEFECTLIST").val(),
-                    V_V_WBS:  $("#wbsCode").val(),
-                    V_V_WBS_TXT: $("#proName").val(),
-                    V_D_START_DATE: $("#planStartDate").val(),
-                    V_D_FINISH_DATE: $("#planFinDate").val()
-                },
-                success : function(response) {
-                    var resp = Ext.decode(response.responseText);
-                    if (resp.RET=='成功'){
-                        Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
-                        orderissued();
-                       /!* window.close();
-                        window.opener.addTab();
-                        window.opener.queryGrid();*!/
-
-                    }else{
-                        alert("失败");
-                    }
-                }
-            });*/
         }
     }
 }
@@ -471,7 +440,6 @@ function CreateBill() {
 function BillGo() {
 
     Ext.Ajax.request({
-        // url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
         url:AppUrl+'WorkOrder/PRO_PM_WORK_FWEEK_DEFECT_SAVE',
         type: 'post',
         async: false,

@@ -377,7 +377,7 @@ function CreateGanttData(resDateList) {
                     if (leftNoStartDay - tempIndex + 1 > 0) {
                         let jtwidth = (leftNoStartDay - tempIndex) * 26;
                         let jtwidth1 = jtwidth - 10;
-                        tempHtmlContent += '<td><div class = "svgDivX" style="width: ' + (leftNoStartDay - tempIndex) * 26 + 'px"><svg xmlns="http://www.w3.org/2000/svg" width="' + ((leftNoStartDay - tempIndex) * 26) + '"  height="23"><polygon points="0 6 '+ jtwidth1 +' 6 '+ jtwidth1 +' 2 '+ jtwidth +' 11 '+ jtwidth1 +' 20 '+ jtwidth1 +' 16 0 16" stroke="none" fill="red"></polygon></svg></div></td>';
+                        tempHtmlContent += '<td><div class="svgDiv"><div class = "svgDivX" style="width: ' + (leftNoStartDay - tempIndex) * 26 + 'px"><svg xmlns="http://www.w3.org/2000/svg" width="' + ((leftNoStartDay - tempIndex) * 26) + '"  height="23"><polygon points="0 8 '+ jtwidth1 +' 8 '+ jtwidth1 +' 4 '+ jtwidth +' 11 '+ jtwidth1 +' 18 '+ jtwidth1 +' 14 0 14" stroke="none" fill="black"></polygon></svg></div></div></td>';
                     }
                 } else if (k < leftNoStartDay) {
                     tempHtmlContent += '<td>&nbsp;</td>';
