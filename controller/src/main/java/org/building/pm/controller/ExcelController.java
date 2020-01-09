@@ -51,6 +51,9 @@ public class ExcelController {
     private QxService qxService;
 
     @Autowired
+    private CglService cglService;
+
+    @Autowired
     private WorkOrderService workOrderService;
 
     @Autowired
@@ -5132,4 +5135,216 @@ public class ExcelController {
         }
     }
 
+    @RequestMapping(value = "/QXTJ_EXCEL_WCL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void QXTJ_EXCEL_WCL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+
+            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+        Map<String, Object> data = cglService.PRO_PM_07_DEFECT_TJ_VIEW_WCL(V_V_YEAR.equals("0") ? "%" :V_V_YEAR,
+                V_V_MONTH.equals("0") ? "%" : V_V_MONTH, V_V_WEEK.equals("0") ? "%" : V_V_WEEK,
+                V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE, V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("总数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("完成数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("完成率（%)");
+        cell.setCellStyle(style);
+
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_V_SUMNUM") == null ? "" : map.get("V_V_SUMNUM").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_V_YXQNUM") == null ? "" : map.get("V_V_YXQNUM").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_V_WCNUM") == null ? "" : map.get("V_V_WCNUM").toString());
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("缺陷成功率查询excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "/GDCX_EXCEL_WCL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void GDCX_EXCEL_WCL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+
+            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+        Map<String, Object> data = cglService.PRO_PM_DEPT_SORT_WCL(V_V_YEAR.equals("0") ? "%" :V_V_YEAR,
+                V_V_MONTH.equals("0") ? "%" : V_V_MONTH, V_V_WEEK.equals("0") ? "%" : V_V_WEEK,
+                V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE, V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("总数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("完成数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("完成率（%)");
+        cell.setCellStyle(style);
+
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_V_SUMNUM") == null ? "" : map.get("V_V_SUMNUM").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_V_WCLNUM") == null ? "" : map.get("V_V_WCLNUM").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_V_WCNUM") == null ? "" : map.get("V_V_WCNUM").toString());
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("工单成功率查询excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "/ZJH_EXCEL_WCL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void ZJH_EXCEL_WCL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+
+            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+        Map<String, Object> data = cglService.PM_03_PLAN_CKSTAT_SEL_WCL(V_V_YEAR.equals("0") ? "%" :V_V_YEAR,
+                V_V_MONTH.equals("0") ? "%" : V_V_MONTH, V_V_WEEK.equals("0") ? "%" : V_V_WEEK,
+                V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE, V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("总数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("完成数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("完成率（%)");
+        cell.setCellStyle(style);
+
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_V_SUMNUM") == null ? "" : map.get("V_V_SUMNUM").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_V_YXQNUM") == null ? "" : map.get("V_V_YXQNUM").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_V_WCLNUM") == null ? "" : map.get("V_V_WCLNUM").toString());
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("周计划成功率查询excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
