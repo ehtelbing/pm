@@ -891,4 +891,23 @@ public class OilController {
         return result;
     }
 
+    //OIL0005查询
+    @RequestMapping(value = "/selectStandardFactInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectStandardFactInfo(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                      @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                      @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                      @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
+                                                      @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                      @RequestParam(value = "V_V_PLANTIME") String V_V_PLANTIME,
+                                                      @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                      @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+                                                      Integer page,
+                                                      Integer limit,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = oilService.selectStandardFactInfo(V_V_PERSONCODE, V_V_ORGCODE, V_V_CXCODE, V_V_DEPTCODE, V_V_EQUTYPECODE, V_V_PLANTIME, V_V_EQUCODE, V_V_EQUNAME, page.toString(), limit.toString());
+        return result;
+    }
+
 }
