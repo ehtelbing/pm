@@ -520,7 +520,6 @@ function _init() {
     }
 
     _selectTree();
-    _select();
     Ext.getBody().unmask();
 }
 
@@ -560,10 +559,7 @@ function selectTreeByKey(key) {
     };
     treeStore.load();
     var rootnode = Ext.getCmp('treePanel').getRootNode();
-    if (rootnode.childNodes.length > 0) {
-        rootnode.expand();
-        rootnode.childNodes[0].expand();
-    }
+    expandTree(rootnode);
 }
 
 //点击树的节点查询设备名称
@@ -776,4 +772,15 @@ function _setValue() {
     V_EQUTYPECODE = '';
     V_EQUTYPENAME = '';
     V_GGXH = '';
+}
+
+//展开所有的树节点
+function expandTree(rootnode) {
+    if (rootnode.childNodes.length > 0) {
+        for(var i = 0; i < rootnode.childNodes.length; i++){
+            rootnode.childNodes[i].expand();
+            var rootnodechild = rootnode.childNodes[i];
+            expandTree(rootnodechild);
+        }
+    }
 }

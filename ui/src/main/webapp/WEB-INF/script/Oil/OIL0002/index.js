@@ -680,7 +680,6 @@ function _insert() {
             close: function (panel, eOpts) {
                 if (returnValue != null) {
                     selectStandardInfoGet(V_GGXH);
-                    console.log(returnValue);
                     Ext.MessageBox.alert('提示', returnValue.data.V_INFO);
                 }
             }
@@ -753,7 +752,7 @@ function _delete() {
                             var data = Ext.decode(response.responseText);
                             if (data.data.V_INFO == '删除成功！') {
                                 Ext.MessageBox.alert('提示', '删除成功！');
-                                //selectStandardInfoGet(V_GGXH);
+                                _selectStardArdInfoEqutype(V_EQUTYPECODE);
                             } else {
                                 Ext.MessageBox.alert('错误', data.message, Ext.MessageBox.ERROR);
                             }
