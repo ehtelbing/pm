@@ -29,7 +29,6 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
     }
 });
 
-/*var tempButton =  [{ xtype: 'button', text: 'Button 1' }]*/
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
     if (V_GUID != null) {
@@ -77,7 +76,6 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records, successful, eOpts) {
-
                 _init();//自动加载时必须调用
             }
         }
@@ -133,10 +131,6 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
-            /*    store.insert(0, {
-                    V_CXCODE: '%',
-                    V_CXNAME: '--全部--'
-                });*/
                 Ext.getCmp('V_CXCODE').select(store.first());
             }
         }
@@ -164,10 +158,6 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
-             /*   store.insert(0, {
-                    V_EQUTYPECODE: '%',
-                    V_EQUTYPENAME: '--全部--'
-                });*/
                 Ext.getCmp('equipType').select(store.first());
             }
         }
@@ -368,7 +358,6 @@ function _init() {
         _selectProductLine();
         Ext.getCmp('V_CXCODE').select(Ext.data.StoreManager.lookup('productLineStore').first());
         _selectEquipType();
-        /* _selectStandardInfo();//查询加载主表数据*/
 
     } else {
         var form = Ext.getCmp('formPanel').getForm();
@@ -454,6 +443,7 @@ function _insert() {
 }
 
 function _insert() {
+
 if(Ext.getCmp('V_GGXH').getValue() != '' && Ext.getCmp('V_JSDX').getValue() != '' && Ext.getCmp('V_BZ_NAME').getValue() != '' && Ext.getCmp('V_BZ_CODE').getValue() != ''){
     Ext.Ajax.request({
         url: AppUrl + 'oil/setLubricationStandard',

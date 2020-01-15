@@ -207,8 +207,8 @@ Ext.onReady(function () {
         },
         items: [{
             xtype: 'combo',
-            id: 'FTY_CODE_',
-            name: 'FTY_CODE_',
+            id: 'V_V_ORGCODE',
+            name: 'V_V_ORGCODE',
             store: ftyStore,
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
@@ -227,8 +227,8 @@ Ext.onReady(function () {
             }
         }, {
             xtype: 'combo',
-            id: 'DEPT_CODE_',
-            name: 'DEPT_CODE_',
+            id: 'V_V_DEPTCODE',
+            name: 'V_V_DEPTCODE',
             store: deptStore,
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
@@ -264,8 +264,8 @@ Ext.onReady(function () {
             }
         }, {
             xtype: 'combo',
-            id: 'equipType',
-            name: 'equipType',
+            id: 'V_V_EQUTYPECODE',
+            name: 'V_V_EQUTYPECODE',
             store: equipTypeStore,
             queryMode: 'local',
             valueField: 'V_EQUTYPECODE',
@@ -275,7 +275,7 @@ Ext.onReady(function () {
             fieldLabel: '设备类型'
         }, {
             xtype: 'datefield',
-            id: 'planTime',
+            id: 'V_V_PLANTIME',
             format: 'Y-m-d',
             submitFormat: 'Y-m-d',
             fieldLabel: '计划时间',
@@ -283,13 +283,13 @@ Ext.onReady(function () {
             value: new Date()
         }, {
             xtype: 'textfield',
-            name: 'equipCode',
-            id: 'equipCode',
+            name: 'V_V_EQUCODE',
+            id: 'V_V_EQUCODE',
             fieldLabel: '设备编码'
         }, {
             xtype: 'textfield',
-            name: 'equipName',
-            id: 'equipName',
+            name: 'V_V_EQUNAME',
+            id: 'V_V_EQUNAME',
             fieldLabel: '设备名称'
         }]
     });
@@ -440,7 +440,7 @@ Ext.onReady(function () {
     });
 
     _init();
-})
+});
 
 function _init() {
     for (var i = 0; i < Ext.data.StoreManager.getCount(); i++) {//检查是否所有自动加载数据全部加载完毕
@@ -467,6 +467,7 @@ function _selectProductLine() {
         V_V_CXNAME: '%'
     };
     productLineStore.load();
+    console.log('111')
 }
 
 function _selectDept() {
@@ -493,11 +494,15 @@ function _selectEquipType() {
 
 //编辑按钮
 function _edit() {
-    
+
+
+
 }
 
 //修改按钮
 function _update() {
+
+
     
 }
 
@@ -506,14 +511,14 @@ function _select() {
     var standardFactInfoStore = Ext.data.StoreManager.lookup('standardFactInfoStore');
     standardFactInfoStore.proxy.extraParams = {
         'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-        'V_V_ORGCODE': Ext.getCmp("FTY_CODE_").getValue(),
-        'V_V_DEPTCODE': Ext.getCmp("DEPT_CODE_").getValue(),
+        'V_V_ORGCODE': Ext.getCmp("V_V_ORGCODE").getValue(),
+        'V_V_DEPTCODE': Ext.getCmp("V_V_DEPTCODE").getValue(),
         'V_V_CXCODE': Ext.getCmp("V_V_CXCODE").getValue(),
-        'V_V_EQUTYPECODE': Ext.getCmp("equipType").getRawValue(),
-        'V_V_PLANTIME': Ext.getCmp("planTime").getSubmitValue(),
-        'V_V_EQUCODE': Ext.getCmp("equipCode").getSubmitValue(),
-        'V_V_EQUNAME': Ext.getCmp("equipName").getSubmitValue()
-    }
+        'V_V_EQUTYPECODE': Ext.getCmp("V_V_EQUTYPECODE").getRawValue(),
+        'V_V_PLANTIME': Ext.getCmp("V_V_PLANTIME").getSubmitValue(),
+        'V_V_EQUCODE': Ext.getCmp("V_V_EQUCODE").getSubmitValue(),
+        'V_V_EQUNAME': Ext.getCmp("V_V_EQUNAME").getSubmitValue()
+    };
     standardFactInfoStore.currentPage = 1;
     standardFactInfoStore.load();
 }
