@@ -1,6 +1,9 @@
-var V_DEPTCODE_UP = '99';
+var V_DEPTCODE_UP = '-1';
 
 var deptTypeList = [{
+    CODE_: '[公司]',
+    NAME_: '[公司]'
+},{
     CODE_: '[基层单位]',
     NAME_: '[基层单位]'
 }, {
@@ -142,13 +145,11 @@ Ext.onReady(function () {
             xtype: 'numberfield',
             name: 'I_ORDERID',
             fieldLabel: '部门排序',
-            allowBlank: false,
             allowDecimals: false
         }, {
             xtype: 'numberfield',
             name: 'I_FLAG',
             fieldLabel: '启用标识',
-            allowBlank: false,
             allowDecimals: false
         }, {
             xtype: 'textfield',
@@ -159,20 +160,17 @@ Ext.onReady(function () {
             xtype: 'textfield',
             name: 'V_SAP_WORK',
             fieldLabel: 'sap维护工厂',
-            maxLength: 50,
-            allowBlank: false
+            maxLength: 50
         }, {
             xtype: 'textfield',
             name: 'V_SAP_JHGC',
             fieldLabel: 'SAP计划工厂',
-            maxLength: 50,
-            allowBlank: false
+            maxLength: 50
         }, {
             xtype: 'textfield',
             name: 'V_SAP_YWFW',
             fieldLabel: 'SAP业务范围',
-            maxLength: 50,
-            allowBlank: false
+            maxLength: 50
         }, {
             xtype: 'datefield',
             name: 'D_DATE_EDITTIME',
@@ -239,38 +237,29 @@ function _init() {
 function _insertBaseDept() {
     var baseDeptStore = Ext.data.StoreManager.lookup('baseDeptStore');
     var form = Ext.getCmp('formPanel').getForm();
-    var V_DEPTCODE_VALUE = form.findField("V_DEPTCODE").getValue();
-    var data = baseDeptStore.proxy.reader.rawData.baseDeptList;
-    for(var i = 0;i < data.length;i++){
-        if(data[i].V_DEPTCODE == V_DEPTCODE_VALUE){
-            Ext.MessageBox.alert('错误','有相同的部门编码，请重新输入');
-            return;
-        }else if( i == data.length - 1) {
-            Ext.getCmp('formPanel').getForm().submit({
-                url: AppUrl + 'Ydj/insertBaseDept',
-                submitEmptyText: false,
-                waitMsg: '请稍候...',
-                success: function (form, action) {
-                    var data = action.result;
-                    parent.returnValue = data.baseDept;
-                    _close();
-                },
-                failure: function (form, action) {
-                    switch (action.failureType) {
-                        case Ext.form.action.Action.CLIENT_INVALID:
-                            Ext.MessageBox.alert('错误', '请填写相关项');
-                            break;
-                        case Ext.form.action.Action.SERVER_INVALID:
-                            Ext.MessageBox.alert('错误', '服务器异常');
-                            break;
-                        case Ext.form.action.Action.CONNECT_FAILURE:
-                            Ext.MessageBox.alert('错误', '参数异常');
-                            break;
-                    }
-                }
-            });
+    Ext.getCmp('formPanel').getForm().submit({
+        url: AppUrl + 'Ydj/insertBaseDept',
+        submitEmptyText: false,
+        waitMsg: '请稍候...',
+        success: function (form, action) {
+            var data = action.result;
+            parent.returnValue = data.baseDept;
+            _close();
+        },
+        failure: function (form, action) {
+            switch (action.failureType) {
+                case Ext.form.action.Action.CLIENT_INVALID:
+                    Ext.MessageBox.alert('错误', '请填写相关项');
+                    break;
+                case Ext.form.action.Action.SERVER_INVALID:
+                    Ext.MessageBox.alert('错误', action.result.message);
+                    break;
+                case Ext.form.action.Action.CONNECT_FAILURE:
+                    Ext.MessageBox.alert('错误', '参数异常');
+                    break;
+            }
         }
-    }
+    });
 }
 
 function _close() {

@@ -154,7 +154,7 @@ public class YdjService {
             casm.setString("V_V_DEPTFULLNAME",V_DEPTFULLNAME);
             casm.setString("V_V_DEPTTYPE",V_V_DEPTTYPE);
             casm.setString("V_V_DEPTCODE_UP",V_DEPTCODE_UP);
-            casm.setDouble("V_I_ORDERID",I_ORDERID);
+            casm.setDouble("V_I_ORDERID",I_ORDERID == null ? 0 : I_ORDERID);
             casm.setDouble("V_I_FLAG",I_FLAG);
             casm.setString("V_V_SAP_DEPT",V_SAP_DEPT);
             casm.setString("V_V_SAP_WORK",V_SAP_WORK);

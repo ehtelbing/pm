@@ -24,9 +24,27 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
     }
 });
 
+var rootBaseDept ;
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
     //已有根节点则加载树的根节点，无需root创建
+
+   /* Ext.Ajax.request({
+        url : AppUrl+'Ydj/selectBaseDept',
+        async : false,
+        params : {
+            'V_V_DEPTCODE_UP' : '-1'
+        },
+        callback : function(options, success, response) {
+            if (success) {
+                var data = Ext.decode(response.responseText);
+                if (data.success) {
+                    rootBaseDept = data.baseDept;
+                }
+            }
+        }
+    });*/
+
 
     var baseDeptStore = Ext.create('Ext.data.TreeStore',{
        storeId : 'baseDeptStore',
@@ -35,7 +53,7 @@ Ext.onReady(function () {
        root : {},//保证autoLoad有效
        pageSize : 20,
        fields : ['I_DEPTID','V_DEPTCODE','V_DEPTNAME','V_DEPTCODE_UP','V_DEPTSMALLNAME','V_DEPTFULLNAME','V_DEPTTYPE','I_ORDERID','I_FLAG','V_SAP_DEPT','V_SAP_WORK','V_SAP_JHGC','V_SAP_YWFW','D_DATE_EDITTIME','V_DEPT_WBS','V_WBS_NUM','V_WXJH_REPAIRGUID'],
-       proxy : {
+       proxy : Ext.create("Ext.ux.data.proxy.Ajax", {
            url : AppUrl+'Ydj/selectBaseDept',
            type : 'ajax',
            async : false,
@@ -48,7 +66,7 @@ Ext.onReady(function () {
                root : 'list',
                totalProperty : 'total'
            }
-       }
+       })
     });
 
     var buttonPanel = Ext.create('Ext.Panel',{
@@ -177,14 +195,14 @@ Ext.onReady(function () {
         viewConfig : {
             emptyText : '<div style="text-align: center; padding-top: 50px; font: italic bold 20px Microsoft YaHei;">没有数据</div>',
             enableTextSelection : true
-        },
+        }/*,
         listeners:{
             beforeitemexpand : function (node,eOpts) {
                 baseDeptStore.proxy.extraParams = {
                     'V_DEPTCODE_UP' : node.get('V_DEPTCODE')
                 };
             }
-        }
+        }*/
     });
 
     Ext.create('Ext.container.Viewport',{
@@ -220,16 +238,24 @@ function _init(){
         }
     }
     var baseDeptStore = Ext.data.StoreManager.lookup('baseDeptStore');
-    Ext.getCmp('baseDeptPanel').expandAll();
+    //Ext.getCmp('baseDeptPanel').expandAll();
+
+    _selectBaseDeptStore();
+
     Ext.getBody().unmask();
 }
 function _selectBaseDeptStore(){
     var baseDeptStore = Ext.data.StoreManager.lookup('baseDeptStore');//找到数据集
     baseDeptStore.currentPage = 1;
     baseDeptStore.load();//加载
+
+    var rootnode = Ext.getCmp('baseDeptPanel').getRootNode();
+    if (rootnode.childNodes.length > 0) {
+        rootnode.expand();
+        rootnode.childNodes[0].expand();
+    }
 }
 function _preInsertBaseDeptRoot(){
-
     returnValue = null;
     win = Ext.create('Ext.window.Window',{
         title : '新增根节点界面',
@@ -245,7 +271,6 @@ function _preInsertBaseDeptRoot(){
                 if(returnValue != null){
                     Ext.MessageBox.alert('添加','成功！');
                     _selectBaseDeptStore();
-                    Ext.getCmp('baseDeptPanel').expandAll();
                 }
             }
         }

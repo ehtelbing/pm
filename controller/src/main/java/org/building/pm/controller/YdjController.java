@@ -38,7 +38,7 @@ public class YdjController {
             Map<String,Object> map ;
             for(int i = 0;i < baseDeptList.size();i++){
                 map = baseDeptList.get(i);
-                if(map.get("V_DEPTCODE_UP").equals( "99")){
+                if("-1".equals(map.get("V_DEPTCODE_UP"))){
                     list.add(map);
                     fillChildCode(map,baseDeptList);
                 }
@@ -105,11 +105,17 @@ public class YdjController {
         Map<String,Object> result =new HashMap<String,Object>();
         try {
             Map<String,Object> resultMap = ydjService.insertBaseDept(V_DEPTCODE,V_DEPTNAME,V_DEPTSMALLNAME,V_DEPTFULLNAME,V_DEPTTYPE,V_DEPTCODE_UP,I_ORDERID,I_FLAG,V_SAP_DEPT,V_SAP_WORK,V_SAP_JHGC,V_SAP_YWFW,V_DEPT_WBS,V_WBS_NUM,V_WXJH_REPAIRGUID);
+
+            if(!"success".equals(resultMap.get("V_INFO"))){
+                throw new Exception((String)resultMap.get("V_INFO"));
+            }
             result.put("V_INFO",resultMap.get("V_INFO"));
             result.put("baseDept",ydjService.loadByCodeBaseDept(V_DEPTCODE));
             result.put("success",true);
         } catch (Exception e) {
             e.printStackTrace();
+            result.put("message", BaseUtils.getErrorMessage(e, request));
+            result.put("success", false);
         }
         return result;
     }
@@ -138,11 +144,17 @@ public class YdjController {
         Map<String,Object> result =new HashMap<String,Object>();
         try {
             Map<String,Object> resultMap = ydjService.updateBaseDept(I_DEPTID,V_DEPTCODE,V_DEPTNAME,V_DEPTSMALLNAME,V_DEPTFULLNAME,V_DEPTTYPE,V_DEPTCODE_UP,I_ORDERID,I_FLAG,V_SAP_DEPT,V_SAP_WORK,V_SAP_JHGC,V_SAP_YWFW,V_DEPT_WBS,V_WBS_NUM,V_WXJH_REPAIRGUID);
+            if(!"success".equals(resultMap.get("V_INFO"))){
+                throw new Exception((String)resultMap.get("V_INFO"));
+            }
+
             result.put("V_INFO",resultMap.get("V_INFO"));
             result.put("baseDept",ydjService.loadBaseDept(I_DEPTID));
             result.put("success",true);
         } catch (Exception e) {
             e.printStackTrace();
+            result.put("message", BaseUtils.getErrorMessage(e, request));
+            result.put("success", false);
         }
         return result;
     }
