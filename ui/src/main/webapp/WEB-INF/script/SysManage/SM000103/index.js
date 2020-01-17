@@ -41,10 +41,10 @@ Ext.onReady(function(){
        root : {},
        pageSize : 20,
        fields : ['I_DEPTID','V_DEPTCODE','V_DEPTNAME','V_DEPTCODE_UP','V_DEPTSMALLNAME','V_DEPTFULLNAME','V_DEPTTYPE','I_ORDERID','I_FLAG','V_SAP_DEPT','V_SAP_WORK','V_SAP_JHGC','V_SAP_YWFW','D_DATE_EDITTIME','V_DEPT_WBS','V_WBS_NUM','V_WXJH_REPAIRGUID'],
-       proxy : {
+       proxy : Ext.create("Ext.ux.data.proxy.Ajax", {
            url : AppUrl+'Ydj/selectBaseDept',
            type : 'ajax',
-           async : true,
+           async : false,
            actionMethods : {
                read : 'POST'
            },
@@ -54,12 +54,13 @@ Ext.onReady(function(){
                root : 'list',
                totalProperty : 'total'
            }
-       },
+       })
+       /*,
        listeners : {
            load : function (store,node,records,successful,eOpts) {
                setTimeout('_expandSelectALL()',200);
            }
-       }
+       }*/
    });
 
    var buttonPanel = Ext.create('Ext.Panel',{
@@ -140,12 +141,6 @@ function _init(){
         }
     }
     _selectBaseDept();
-    var baseDeptStore = Ext.data.StoreManager.lookup('baseDeptStore');
-    for(var i = 0; i < baseDeptStore.getCount(); i++) {
-
-        var record = baseDeptStore.getAt(i);
-        if(record.get('I_DEPTID') == I_DEPTID) baseDeptStore.remove(i);
-    }
 
     Ext.getBody().unmask();
 }
@@ -154,11 +149,17 @@ function _selectBaseDept(){
     var baseDeptStore = Ext.data.StoreManager.lookup('baseDeptStore');
     baseDeptStore.currentPage = 1;
     baseDeptStore.load();
+
+    var rootnode = Ext.getCmp('baseDeptPanel').getRootNode();
+    if (rootnode.childNodes.length > 0) {
+        rootnode.expand();
+        rootnode.childNodes[0].expand();
+    }
 }
 
-function _expandSelectALL(){
+/*function _expandSelectALL(){
     Ext.getCmp('baseDeptPanel').expandAll();
-}
+}*/
 
 function _moveBaseDept(){
     var records = Ext.getCmp('baseDeptPanel').getSelectionModel().getSelection();

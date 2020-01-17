@@ -40,6 +40,14 @@ var deptTypeList = [{
     NAME_: '[主体作业区]'
 }];
 
+var identificationList =[{
+    CODE_ : 1,
+    NAME_ : '是'
+},{
+    CODE_ : 0,
+    NAME_ : '否'
+}]
+
 if(location.href.split('?')[1] != undefined){
     I_DEPTID = Ext.urlDecode(location.href.split('?')[1]).I_DEPTID;
 }
@@ -67,6 +75,12 @@ Ext.onReady(function(){
         storeId: 'deptTypeStore',
         fields: ['CODE_', 'NAME_'],
         data: deptTypeList
+    });
+
+    var identificationStore = Ext.create('Ext.data.Store', {
+        storeId: 'identificationStore',
+        fields: ['CODE_', 'NAME_'],
+        data: identificationList
     });
 
     var baseDeptStore = Ext.create('Ext.data.TreeStore',{
@@ -169,10 +183,14 @@ Ext.onReady(function(){
             fieldLabel : '部门排序',
             allowDecimals : false
         },{
-            xtype : 'numberfield',
-            name : 'I_FLAG',
-            fieldLabel : '启用标识',
-            allowDecimals : false
+            xtype: 'combo',
+            queryMode : 'local',
+            store : identificationStore,
+            name: 'I_FLAG',
+            valueField : 'CODE_',
+            displayField : 'NAME_',
+            fieldLabel: '启用标识',
+            allowBlank: false
         },{
             xtype : 'textfield',
             name : 'V_SAP_DEPT',

@@ -17,6 +17,14 @@ var deptTypeList = [{
     NAME_: '[主体作业区]'
 }];
 
+var identificationList =[{
+    CODE_ : 1,
+    NAME_ : '是'
+},{
+    CODE_ : 0,
+    NAME_ : '否'
+}];
+
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -48,6 +56,12 @@ Ext.onReady(function () {
         storeId: 'deptTypeStore',
         fields: ['CODE_', 'NAME_'],
         data: deptTypeList
+    });
+
+    var identificationStore = Ext.create('Ext.data.Store', {
+        storeId: 'identificationStore',
+        fields: ['CODE_', 'NAME_'],
+        data: identificationList
     });
 
     var baseDeptStore = Ext.create('Ext.data.TreeStore',{
@@ -146,11 +160,15 @@ Ext.onReady(function () {
             name: 'I_ORDERID',
             fieldLabel: '部门排序',
             allowDecimals: false
-        }, {
-            xtype: 'numberfield',
+        },{
+            xtype: 'combo',
+            queryMode : 'local',
+            store : identificationStore,
             name: 'I_FLAG',
+            valueField : 'CODE_',
+            displayField : 'NAME_',
             fieldLabel: '启用标识',
-            allowDecimals: false
+            allowBlank: false
         }, {
             xtype: 'textfield',
             name: 'V_SAP_DEPT',
@@ -228,6 +246,7 @@ function _init() {
     }
     var form = Ext.getCmp('formPanel').getForm();
     form.findField("V_DEPTCODE_UP").setValue(V_DEPTCODE_UP);
+    form.findField("I_FLAG").setValue(1);
     var baseDeptStore = Ext.data.StoreManager.lookup('baseDeptStore');
     baseDeptStore.load();
     form.isValid();
