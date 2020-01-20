@@ -2639,7 +2639,7 @@ public class CjyController {
 
                         if (complresult.get("ret").toString().equals("任务提交成功")) {
                             if (V_STEPCODE.equals("sbbsp")) {
-                                flowresult = pm_03Service.PRO_PM_MONTH_STATE_SET(V_ORDERGUID[i],"98");
+                                flowresult = pm_03Service.PRO_PM_MONTH_STATE_SET(V_ORDERGUID[i], "98");
                             } else {
                                 flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], FlowType[i], ProcessDefinitionKey[i], V_STEPCODE, "fqrxg");
                             }
@@ -2684,12 +2684,12 @@ public class CjyController {
     @RequestMapping(value = "/batchDisAgreeForYear", method = RequestMethod.POST)
     @ResponseBody
     public Map batchDisAgreeForYear(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                     @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
-                                     @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
-                                     @RequestParam(value = "ProcessInstanceId") String[] ProcessInstanceId,
-                                     @RequestParam(value = "FlowType") String[] FlowType,
-                                     HttpServletRequest request,
-                                     HttpServletResponse response) throws Exception {
+                                    @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+                                    @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                    @RequestParam(value = "ProcessInstanceId") String[] ProcessInstanceId,
+                                    @RequestParam(value = "FlowType") String[] FlowType,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
         Map result = new HashMap();
         int sucNum = 0;
         int fqrNum = 0;
@@ -2747,7 +2747,7 @@ public class CjyController {
 
                         if (complresult.get("ret").toString().equals("任务提交成功")) {
                             if (V_STEPCODE.equals("sbbsp")) {
-                                flowresult = pm_06Service.PRO_PLAN_YEAR_STATE_SET(V_ORDERGUID[i],"98");
+                                flowresult = pm_06Service.PRO_PLAN_YEAR_STATE_SET(V_ORDERGUID[i], "98");
                             } else {
                                 flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], FlowType[i], ProcessDefinitionKey[i], V_STEPCODE, "fqrxg");
                             }
@@ -2787,7 +2787,6 @@ public class CjyController {
         result.put("mes", "年计划批量驳回成功" + sucNum + "条,失败" + faiNum + "条,无法批量驳回" + fqrNum + "条");
         return result;
     }
-
 
 
     @RequestMapping(value = "/PRO_PM_1917_JXGX_PER_DATA_VIEW", method = RequestMethod.POST)
@@ -3968,7 +3967,7 @@ public class CjyController {
 
                         if (V_STEPCODE.equals("ckjhysp")) {
                             spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "YearPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "上报设备部");
-                        }else{
+                        } else {
                             spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "YearPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
                         }
 
@@ -4002,14 +4001,14 @@ public class CjyController {
                             String[] parVal = new String[]{sppercode, "批量审批通过"};
                             if (V_STEPCODE.equals("ckjhysp")) {
                                 complresult = activitiController.TaskCompletePL(taskid, "上报设备部", parName, parVal, "请审批！", V_V_PERSONCODE, sppercode, V_STEPNAME, V_STEPCODE, processKey, V_ORDERGUID[i]);
-                            }else{
+                            } else {
                                 complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, "请审批！", V_V_PERSONCODE, sppercode, V_STEPNAME, V_STEPCODE, processKey, V_ORDERGUID[i]);
                             }
 
                             if (complresult.get("ret").toString().equals("任务提交成功")) {
                                 if (V_STEPCODE.equals("ckjhysp")) {
                                     flowresult = pm_06Service.PRO_PLAN_YEAR_STATE_SET(V_ORDERGUID[i], "70");
-                                }else{
+                                } else {
                                     flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "YearPlan", processKey, V_STEPCODE, V_NEXT_SETP);
                                 }
                                 if (flowresult.get("V_INFO").toString().equals("success") || flowresult.get("V_INFO").toString().equals("SUCCESS")) {
@@ -4198,6 +4197,14 @@ public class CjyController {
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_WEEK_D_U(@RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID) throws Exception {
         Map result = cjyService.PRO_PM_03_PLAN_WEEK_D_U(V_V_WEEKGUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_DEFECT_IMPORT_DATA_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DEFECT_IMPORT_DATA_SEL(@RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                          @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+        Map result = cjyService.PRO_DEFECT_IMPORT_DATA_SEL(V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 

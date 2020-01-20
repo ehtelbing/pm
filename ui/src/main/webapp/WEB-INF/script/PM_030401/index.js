@@ -185,7 +185,7 @@ Ext.onReady(function () {
         pageSize: 50,
         autoLoad: false,
         fields: ['I_ID', 'V_GUID', 'V_GUID_UP', 'V_YEAR', ' V_MONTH', 'V_ORGCODE', 'V_ORGNAME',
-            'V_DEPTCODE', 'V_DEPTNAME', 'V_PORJECT_CODE', 'V_PORJECT_NAME','V_DEPTNAME', 'V_SPECIALTY', 'V_SPECIALTYNAME',
+            'V_DEPTCODE', 'V_DEPTNAME', 'V_PORJECT_CODE', 'V_PORJECT_NAME', 'V_DEPTNAME', 'V_SPECIALTY', 'V_SPECIALTYNAME',
             'V_SPECIALTYMANCODE', 'V_SPECIALTYMAN', 'V_WXTYPECODE', 'V_WXTYPENAME', 'V_CONTENT', 'V_MONEYBUDGET',
             'V_REPAIRDEPTCODE', 'V_BDATE', 'V_EDATE', 'V_STATE', 'V_FLAG', 'V_INMAN', 'V_INMANCODE', 'V_INDATE',
             'V_STATENAME', 'V_QSTEXT', 'DEFNUM'],
@@ -286,13 +286,13 @@ Ext.onReady(function () {
                 displayField: 'V_ZYMC',
                 valueField: 'V_GUID',
                 labelWidth: 80
-            },{
-                xtype:'combo',
-                id:'state',
-                store:stateStore,
-                editable:false,
-                queryMode:'local',
-                fieldLabel:'状  态',
+            }, {
+                xtype: 'combo',
+                id: 'state',
+                store: stateStore,
+                editable: false,
+                queryMode: 'local',
+                fieldLabel: '状  态',
                 displayField: 'V_STATENAME',
                 valueField: 'V_STATECODE',
                 labelWidth: 80
@@ -327,7 +327,13 @@ Ext.onReady(function () {
                 labelWidth: 80,
                 labelAlign: 'right'
             }, {
-                xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 5px',
+                xtype: 'panel',
+                frame: true,
+                width: '100%',
+                layout: 'column',
+                colspan: 8,
+                baseCls: 'my-panel-noborder',
+                style: 'margin:5px 5px 0 5px',
                 items: [
                     {
                         xtype: 'button',
@@ -480,17 +486,16 @@ Ext.onReady(function () {
 
 
     Ext.data.StoreManager.lookup('zyStore').on('load', function () {
-        Ext.data.StoreManager.lookup('zyStore').insert(0,{V_GUID:'%', V_ZYMC:'全部'});
+        Ext.data.StoreManager.lookup('zyStore').insert(0, {V_GUID: '%', V_ZYMC: '全部'});
         Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
         // OnButtonQuery();
 
     });
-    Ext.data.StoreManager.lookup('stateStore').on('load',function(store,records){
-        store.insert(0,{V_STATENAME:'全部',V_STATECODE:'%'});
-        store.insert(1,{V_STATENAME:'编辑',V_STATECODE:'99'});
+    Ext.data.StoreManager.lookup('stateStore').on('load', function (store, records) {
+        store.insert(0, {V_STATENAME: '全部', V_STATECODE: '%'});
+        store.insert(1, {V_STATENAME: '编辑', V_STATECODE: '99'});
         Ext.getCmp('state').select(Ext.data.StoreManager.lookup("stateStore").getAt(0));
     });
-
 
 
     Ext.getCmp('ck').on('select', function () {
@@ -510,7 +515,7 @@ Ext.onReady(function () {
         OnButtonQuery();
         QueryZyFzr();
     });
-    Ext.getCmp('state').on('select',function(){
+    Ext.getCmp('state').on('select', function () {
         OnButtonQuery()
     });
 
@@ -518,7 +523,7 @@ Ext.onReady(function () {
         OnButtonQuery();
     });
 
-    Ext.getCmp('sbPer').on('select',function(){
+    Ext.getCmp('sbPer').on('select', function () {
         OnButtonQuery();
     });
     pageLoad();
@@ -530,9 +535,9 @@ function beforeloadStore(store) {
     store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp('ck').getValue();
     store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp('zyq').getValue();
     store.proxy.extraParams.V_V_ZY = Ext.getCmp('zy').getValue();
-    store.proxy.extraParams.V_V_STATE=Ext.getCmp('state').getValue();
+    store.proxy.extraParams.V_V_STATE = Ext.getCmp('state').getValue();
     store.proxy.extraParams.V_V_QSTEXT = Ext.getCmp('gcqs').getValue();
-    store.proxy.extraParams.V_V_INMANCODE=Ext.getCmp('sbPer').getValue();
+    store.proxy.extraParams.V_V_INMANCODE = Ext.getCmp('sbPer').getValue();
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
 }
@@ -627,7 +632,7 @@ function OnButtonQuery() {
             V_V_ORGCODE: Ext.getCmp('ck').getValue(),
             V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),//"",
             V_V_ZY: Ext.getCmp('zy').getValue(),
-            V_V_STATE:Ext.getCmp('state').getValue(),
+            V_V_STATE: Ext.getCmp('state').getValue(),
             V_V_QSTEXT: Ext.getCmp('gcqs').getValue(), //工程请示内容
             V_V_INMANCODE: Ext.getCmp('sbPer').getValue(),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
@@ -657,8 +662,8 @@ function OnButtonAdd() {
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
             if (resp.V_INFO == '成功') {
-                var owidth =  window.screen.availWidth - 50;
-                var oheight =  window.screen.availHeight - 100;
+                var owidth = window.screen.availWidth - 50;
+                var oheight = window.screen.availHeight - 100;
                 // window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
                 window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + resp.V_OUT_GUID + '&year=' + Ext.getCmp("year").getValue() + '&V_DEPTCODE=' + Ext.getCmp("zyq").getValue()
                     + '&sign=' + 'IN'
@@ -690,8 +695,8 @@ function OnButtonAdd2() {
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
             if (resp.V_INFO == '成功') {
-                var owidth =  window.screen.availWidth - 600;
-                var oheight =  window.screen.availWidth - 100;
+                var owidth = window.screen.availWidth - 600;
+                var oheight = window.screen.availWidth - 100;
                 // window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
                 window.open(AppUrl + 'page/PM_03040103/index.html?guid=' + resp.V_OUT_GUID + '&year=' + Ext.getCmp("year").getValue() + '&V_DEPTCODE=' + Ext.getCmp("zyq").getValue()
                     + '&sign=' + 'IN'
@@ -705,8 +710,8 @@ function OnButtonAdd2() {
 
 //编辑
 function OnButtonEdit() {
-    var owidth =  window.screen.availWidth - 50;
-    var oheight =  window.screen.availHeight - 100;
+    var owidth = window.screen.availWidth - 50;
+    var oheight = window.screen.availHeight - 100;
     var seldata = Ext.getCmp('mainpanel').getSelectionModel().getSelection();
 
     //非备件查询页面
@@ -714,37 +719,34 @@ function OnButtonEdit() {
         alert('请选择一条数据进行修改！');
         return;
     } else {
-        // 是否备件生成维修计划判别
-        Ext.Ajax.request({
-            url: AppUrl + 'dxfile/PM_03_PLAN_YEAR_EQU_SELNUM',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_PROGUID: seldata[0].get("V_GUID")
-            },
-            success: function (resp) {
-                var resp = Ext.decode(resp.responseText);
-                if (resp.RET == "0") {
-                    //备件修改页跳转
-                    window.open(AppUrl + 'page/PM_03040104/index.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
-                        + '&sign=' + 'UPDATE'
-                        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        if (seldata[0].data.V_STATE == 99 || seldata[0].data.V_STATE == 98) {
+            // 是否备件生成维修计划判别
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/PM_03_PLAN_YEAR_EQU_SELNUM',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_PROGUID: seldata[0].get("V_GUID")
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText);
+                    if (resp.RET == "0") {
+                        //备件修改页跳转
+                        window.open(AppUrl + 'page/PM_03040104/index.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
+                            + '&sign=' + 'UPDATE'
+                            + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    }
+                    else {
+                        window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
+                            + '&sign=' + 'UPDATE'
+                            + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    }
                 }
-                else {
-                    /*缺陷修改页跳转
-                    window.open(AppUrl + 'page/PM_03040101/newindex.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
-                        + '&sign=' + 'UPDATE'
-                        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');*/
-                    window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
-                        + '&sign=' + 'UPDATE'
-                        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-                }
-            }
-        });
-
-        // window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") +'&year='+seldata[0].get("V_YEAR")+'&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
-        //     +'&sign='+'UPDATE'
-        //     + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
+            });
+        } else {
+            alert('该维修申请已审批，无法编辑！');
+            return;
+        }
     }
 
 }
@@ -771,7 +773,7 @@ function OnButtonDel() {
                 if (button == "ok") {
                     deleteData();
                 }
-                else{
+                else {
                     return false;
                 }
 
@@ -779,18 +781,19 @@ function OnButtonDel() {
         });
     }
 }
-function deleteData(){
+
+function deleteData() {
     var chodata = Ext.getCmp('mainpanel').getSelectionModel().getSelection();
     for (var j = 0; j < chodata.length; j++) {
         Ext.Ajax.request({
-           url: AppUrl + 'dxfile/PM_PLAN_PROJECT_LOG_IN',
+            url: AppUrl + 'dxfile/PM_PLAN_PROJECT_LOG_IN',
             method: 'POST',
             async: false,
             params: {
                 V_V_GUID: chodata[j].data.V_GUID,
-                V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-                V_V_PERNAME:decodeURI(Ext.util.Cookies.get('v_personname')),
-                V_OPINION:'del'
+                V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_PERNAME: decodeURI(Ext.util.Cookies.get('v_personname')),
+                V_OPINION: 'del'
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);

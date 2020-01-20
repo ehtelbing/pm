@@ -691,7 +691,7 @@ public class TreeService {
                 Map temp = new HashMap();
                 if(!rs.getString("V_EQUCODE").toString().equals("%")){
                     temp.put("id", rs.getString("V_EQUCODE"));
-                    temp.put("text", rs.getString("V_EQUNAME"));
+                    temp.put("text", rs.getString("V_EQUNAME")+"--"+rs.getString("V_EQUSITENAME"));
                     temp.put("leaf", true);
                     temp.put("parentid",V_V_EQUTYPECODE);
                     temp.put("treeid",rs.getString("V_EQUCODE"));

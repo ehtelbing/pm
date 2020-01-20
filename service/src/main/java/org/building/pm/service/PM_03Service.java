@@ -2659,7 +2659,7 @@ public class PM_03Service {
         return result;
     }
 
-    public HashMap PRO_PM_03_PLAN_YEAR_ROLE(String V_V_YEAR, String V_V_MONTH, String V_V_ORGCODE, String V_V_DEPT, String V_V_STATE, String V_V_ZY, String V_V_PERCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+    public HashMap PRO_PM_03_PLAN_YEAR_ROLE(String V_V_YEAR, String V_V_MONTH, String V_V_ORGCODE, String V_V_DEPT, String V_V_STATE, String V_V_ZY, String V_V_PERCODE,String V_V_CONTENT, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PRO_PM_03_PLAN_YEAR_ROLE");
 
@@ -2669,15 +2669,15 @@ public class PM_03Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_ROLE(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPT,:V_V_STATE,:V_V_ZY,:V_V_PERCODE,:V_V_PAGE,:V_V_PAGESIZE,:V_SUMNUM,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_ROLE(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPT,:V_V_STATE,:V_V_ZY,:V_V_PERCODE,:V_V_CONTENT,:V_V_PAGE,:V_V_PAGESIZE,:V_SUMNUM,:V_CURSOR)}");
             cstmt.setString("V_V_YEAR", V_V_YEAR);
             cstmt.setString("V_V_MONTH", V_V_MONTH);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPT", V_V_DEPT);
             cstmt.setString("V_V_STATE", V_V_STATE);
             cstmt.setString("V_V_ZY", V_V_ZY);
-
             cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
             cstmt.setString("V_V_PAGE", V_V_PAGE);
             cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
             cstmt.registerOutParameter("V_SUMNUM", OracleTypes.VARCHAR);

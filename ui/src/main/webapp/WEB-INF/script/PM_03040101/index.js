@@ -385,7 +385,7 @@ Ext.onReady(function () {
             xtype: 'treepanel',
             id: 'sectTree',
             region: 'west',
-            width: 200,
+            width: 400,
             store: equtree,
             rootVisible: false,
             autoScroll: true,

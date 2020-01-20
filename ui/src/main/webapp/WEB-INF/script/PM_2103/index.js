@@ -71,14 +71,7 @@ Ext.onReady(function () {
             {xtype: 'button', text: '查询', width: 70, icon: imgpath + '/search.png', handler: QueryGrid},
             {xtype: 'button', text: '批量通过', width: 100, id: 'agr', icon: imgpath + '/saved.png', handler: AgreeData},
             {xtype: 'button', text: '批量驳回', width: 100, id: 'dagr', icon: imgpath + '/cross.png', handler: DisAgreeData}
-        ], listeners: {
-            render: function () {
-                if (Ext.util.Cookies.get('v_orgCode') == "9900") {
-                    Ext.getCmp('dagr').hide();
-                    Ext.getCmp('dagr').hidden = true;
-                }
-            }
-        }
+        ]
     });
 
     var grid = Ext.create('Ext.grid.Panel', {

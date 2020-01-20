@@ -520,8 +520,10 @@ public class PM_06Controller {
     @RequestMapping(value = "/PRO_YEAR_CXEQU_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_YEAR_CXEQU_SEL(
-            @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE) throws Exception {
-        HashMap result = pm_06Service.PRO_YEAR_CXEQU_SEL(V_V_CXCODE);
+            @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE) throws Exception {
+        HashMap result = pm_06Service.PRO_YEAR_CXEQU_SEL(V_V_CXCODE,V_V_PERSONCODE,V_V_DEPTCODE);
         return result;
     }
 

@@ -1465,10 +1465,11 @@ public class PM_03Controller {
                                                         @RequestParam(value = "V_V_STATE") String V_V_STATE,
                                                         @RequestParam(value = "V_V_ZY") String V_V_ZY,
                                                         @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                        @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
 
-        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_ROLE(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPT, V_V_STATE, V_V_ZY, V_V_PERCODE, V_V_PAGE, V_V_PAGESIZE);
+        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_ROLE(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPT, V_V_STATE, V_V_ZY, V_V_PERCODE,V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
 
@@ -1491,9 +1492,10 @@ public class PM_03Controller {
                                           @RequestParam(value = "V_V_STATE") String V_V_STATE,
                                           @RequestParam(value = "V_V_ZY") String V_V_ZY,
                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                          @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
                                           HttpServletResponse response) throws Exception {
         List list = new ArrayList();
-        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_ROLE(V_V_YEAR, V_V_MONTH.equals("all")?"%":V_V_MONTH, V_V_ORGCODE.equals("all")?"%":V_V_ORGCODE, V_V_DEPT.equals("all")?"%":V_V_DEPT, V_V_STATE.equals("all")?"%":V_V_STATE, V_V_ZY.equals("all")?"%":V_V_ZY, V_V_PERCODE, "1", "100000");
+        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_ROLE(V_V_YEAR, V_V_MONTH.equals("all")?"%":V_V_MONTH, V_V_ORGCODE.equals("all")?"%":V_V_ORGCODE, V_V_DEPT.equals("all")?"%":V_V_DEPT, V_V_STATE.equals("all")?"%":V_V_STATE, V_V_ZY.equals("all")?"%":V_V_ZY, V_V_PERCODE,V_V_CONTENT, "1", "100000");
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -1517,30 +1519,38 @@ public class PM_03Controller {
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 3);
-        cell.setCellValue("专业");
+        cell.setCellValue("工程名称");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 4);
-        cell.setCellValue("工程请示内容");
+        cell.setCellValue("专业");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 5);
-        cell.setCellValue("计划作业区");
+        cell.setCellValue("工程请示内容");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 6);
-        cell.setCellValue("上报人");
+        cell.setCellValue("计划作业区");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 7);
-        cell.setCellValue("开工时间");
+        cell.setCellValue("上报人");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 8);
+        cell.setCellValue("上报时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("开工时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
         cell.setCellValue("竣工时间");
         cell.setCellStyle(style);
 
-        if (data.size() > 0) {
+            if (data.size() > 0) {
             list = (List) data.get("list");
             for (int i = 0; i < list.size(); i++) {
                 row = sheet.createRow((int) i + 1);
@@ -1562,9 +1572,11 @@ public class PM_03Controller {
 
                 row.createCell((short) 7).setCellValue(map.get("V_INMAN") == null ? "" : map.get("V_INMAN").toString());
 
-                row.createCell((short) 8).setCellValue(map.get("V_BDATE") == null ? "" : map.get("V_BDATE").toString());
+                row.createCell((short) 8).setCellValue(map.get("V_INDATE") == null ? "" : map.get("V_INDATE").toString());
 
-                row.createCell((short) 9).setCellValue(map.get("V_EDATE") == null ? "" : map.get("V_EDATE").toString());
+                row.createCell((short) 9).setCellValue(map.get("V_BDATE") == null ? "" : map.get("V_BDATE").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("V_EDATE") == null ? "" : map.get("V_EDATE").toString());
 
             }
             try {

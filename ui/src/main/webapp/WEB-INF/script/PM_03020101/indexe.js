@@ -428,7 +428,9 @@ Ext.onReady(function () {
         Ext.getCmp('cx').select(Ext.data.StoreManager.lookup('cxStore').getAt(0));
         Ext.data.StoreManager.lookup('equStore').load({
             params: {
-                'V_V_CXCODE': Ext.getCmp('cx').getValue()
+                V_V_CXCODE: Ext.getCmp('cx').getValue(),
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODE: Ext.getCmp('zyq').getValue()
             }
         });
     })
@@ -466,7 +468,9 @@ Ext.onReady(function () {
     Ext.getCmp('cx').on('select', function () {
         Ext.data.StoreManager.lookup('equStore').load({
             params: {
-                'V_V_CXCODE': Ext.getCmp('cx').getValue()
+                V_V_CXCODE: Ext.getCmp('cx').getValue(),
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODE: Ext.getCmp('zyq').getValue()
             }
         });
     })

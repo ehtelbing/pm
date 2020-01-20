@@ -900,7 +900,7 @@ public class PM_06Service {
         return result;
     }
 
-    public HashMap PRO_YEAR_CXEQU_SEL(String V_V_CXCODE) throws SQLException {
+    public HashMap PRO_YEAR_CXEQU_SEL(String V_V_CXCODE,String V_V_PERSONCODE,String V_V_DEPTCODE) throws SQLException {
         logger.info("begin PRO_YEAR_CXEQU_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -908,8 +908,10 @@ public class PM_06Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_YEAR_CXEQU_SEL" + "(:V_V_CXCODE,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_YEAR_CXEQU_SEL" + "(:V_V_CXCODE,:V_V_PERSONCODE,:V_V_DEPTCODE,:V_CURSOR)}");
             cstmt.setString("V_V_CXCODE", V_V_CXCODE);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
