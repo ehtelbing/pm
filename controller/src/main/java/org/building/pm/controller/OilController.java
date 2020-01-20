@@ -906,8 +906,40 @@ public class OilController {
                                                       Integer limit,
                                                       HttpServletRequest request,
                                                       HttpServletResponse response) throws Exception {
-        Map result = oilService.selectStandardFactInfo(V_V_PERSONCODE, V_V_ORGCODE, V_V_CXCODE, V_V_DEPTCODE, V_V_EQUTYPECODE, V_V_PLANTIME, V_V_EQUCODE, V_V_EQUNAME, page.toString(), limit.toString());
+        Map result = oilService.selectStandardFactInfo(V_V_PERSONCODE, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE, V_V_EQUTYPECODE, V_V_PLANTIME, V_V_EQUCODE, V_V_EQUNAME, page.toString(), limit.toString());
         return result;
     }
+
+    //OIL0005保存
+    @RequestMapping(value = "/setStandardFactInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> setStandardFactInfo(@RequestParam(value = "I_I_ID") String I_I_ID,
+                                                 @RequestParam(value = "V_V_P_GUID") String V_V_P_GUID,
+                                                 @RequestParam(value = "V_V_FACT_TIME") String V_V_FACT_TIME,
+                                                 @RequestParam(value = "V_V_FACT_OIL_NUM") String V_V_FACT_OIL_NUM,
+                                                 @RequestParam(value = "V_V_FACT_OIL_SIGN") String V_V_FACT_OIL_SIGN,
+                                                 @RequestParam(value = "V_V_ZXR") String V_V_ZXR,
+                                                 @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = oilService.setStandardFactInfo(I_I_ID, V_V_P_GUID, V_V_FACT_TIME, V_V_FACT_OIL_NUM, V_V_FACT_OIL_SIGN, V_V_ZXR, V_V_PERSONCODE);
+        result.put("data", data);
+        result.put("success", true);
+        result.put("StandardFactInfo", oilService.loadStandardFactInfo(V_V_PERSONCODE,V_V_P_GUID, I_I_ID));
+        return result;
+    }
+
+    @RequestMapping(value = "/loadStandardFactInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> loadStandardFactInfo( @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                   @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                   @RequestParam(value = "I_I_ID") String I_I_ID,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map result = oilService.loadStandardFactInfo(V_V_PERSONCODE,V_V_GUID, I_I_ID);
+        return result;
+    }
+
 
 }

@@ -1,4 +1,3 @@
-
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -23,83 +22,38 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
     }
 });
 
-var staYy;
+var StandardFactInfo;
 
 var P_ID = null;//解析URL参数
 var P_GID = null;//解析URL参数
-var P_YZID = null;//解析URL参数
 
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.P_ID != undefined) ? P_ID = parameters.P_ID : "";
     (parameters.P_GID != undefined) ? P_GID = parameters.P_GID : "";
-    (parameters.P_YZID != undefined) ? P_YZID = parameters.P_YZID : "";
 }
-// var P_ID = '3';
-// var P_GID = '123';//解析URL参数
-// var P_YZID = '11';
 
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
-    if (P_ID != "") {
-
+    if (P_GID != "") {
         Ext.Ajax.request({//加载被修改对象
-            url: AppUrl + 'oil/loadStaYy',
+            url: AppUrl + 'oil/loadStandardFactInfo',
             async: false,
             params: {
-                'I_I_ID': P_ID
+                'V_V_PERSONCODE':Ext.util.Cookies.get('v_personcode'),
+                'I_I_ID': P_ID,
+                'V_V_GUID':P_GID
             },
             callback: function (options, success, response) {
                 if (success) {
                     var resp = Ext.JSON.decode(response.responseText);
-                    staYy = resp.staYy;
+                    StandardFactInfo = resp.list[0];
                 }
             }
         });
-
     }
 
-    //用油方式store
-    var oilWayStore = Ext.create("Ext.data.Store", {//年份
-        storeId: 'oilWayStore',
-        fields: ['WAY_NAME_', 'WAY_CODE_'],
-        data: oilWayList,
-        proxy: {
-            type: 'memory',
-            reader: {
-                type: 'json'
-            }
-        }
-    });
-
-    //周期模式
-    var oilZqmsStore = Ext.create("Ext.data.Store", {//年份
-        storeId: 'oilZqmsStore',
-        fields: ['ZQMS_NAME_', 'ZQMS_CODE_'],
-        data: oilZqmsList,
-        proxy: {
-            type: 'memory',
-            reader: {
-                type: 'json'
-            }
-        }
-    });
-
-    //周期单位
-    var oilZqunitStore = Ext.create("Ext.data.Store", {//年份
-        storeId: 'oilZqunitStore',
-        fields: ['ZQUNIT_NAME_', 'ZQUNIT_CODE_'],
-        data: oilZqunitList,
-        proxy: {
-            type: 'memory',
-            reader: {
-                type: 'json'
-            }
-        }
-    });
-
-    //选框panel
     var formPanel = Ext.create('Ext.form.Panel', {
         id: 'formPanel',
         layout: 'column',
@@ -115,83 +69,135 @@ Ext.onReady(function () {
             margin: '4'
         },
         items: [{
-            xtype: 'combo',
-            name: 'V_OIL_WAY',
-            id: 'V_OIL_WAY',
-            store: oilWayStore,
+            xtype: 'textfield',
+            name: 'I_I_ID',
+            id: 'I_I_ID',
             queryMode: 'local',
-            valueField: 'WAY_CODE_',
-            displayField: 'WAY_NAME_',
-            editable: false,
-            forceSelection: true,
-            fieldLabel: '用油方式',
-            //readOnly: true
+            fieldLabel: 'I_I_ID：',
+            hidden:true
         }, {
-            xtype: 'numberfield',
-            name: 'V_OIL_PD',
-            id: 'V_OIL_PD',
+            xtype: 'textfield',
+            name: 'V_V_P_GUID',
+            id: 'V_V_P_GUID',
             queryMode: 'local',
-            forceSelection: true,
-            fieldLabel: '频度',
-            maxLength : 50,
-            allowBlank : false,
-            value : 0
-           // readOnly: true
+            fieldLabel: 'V_V_P_GUID：',
+            hidden:true
+        }, {
+            xtype: 'textfield',
+            name: 'V_V_PERSONCODE',
+            id: 'V_V_PERSONCODE',
+            queryMode: 'local',
+            fieldLabel: 'V_V_PERSONCODE：',
+            hidden:true
+        }, {
+            xtype: 'displayfield',
+            name: 'V_ORGNAME',
+            id: 'V_ORGNAME',
+            queryMode: 'local',
+            fieldLabel: '矿场：',
+        }, {
+            xtype: 'displayfield',
+            name: 'V_DEPTNAME',
+            id: 'V_DEPTNAME',
+            queryMode: 'local',
+            fieldLabel: '部门：',
         },  {
-            xtype: 'numberfield',
+            xtype: 'displayfield',
+            name: 'V_EQUTYPENAME',
+            id: 'V_EQUTYPENAME',
+            queryMode: 'local',
+            fieldLabel: '设备类型：',
+        }, {
+            xtype: 'displayfield',
+            name: 'V_GGXH',
+            id: 'V_GGXH',
+            queryMode: 'local',
+            fieldLabel: '设备规格：',
+        }, {
+            xtype: 'displayfield',
+            name: 'V_EQUCODE',
+            id: 'V_EQUCODE',
+            queryMode: 'local',
+            fieldLabel: '设备编码：',
+        }, {
+            xtype: 'displayfield',
+            name: 'V_EQUNAME',
+            id: 'V_EQUNAME',
+            queryMode: 'local',
+            fieldLabel: '设备名称：',
+        }, {
+            xtype: 'displayfield',
+            name: 'V_GNWZ',
+            id: 'V_GNWZ',
+            queryMode: 'local',
+            fieldLabel: '功能位置：',
+        },{
+            xtype: 'displayfield',
+            name: 'V_LOC_NAME',
+            id: 'V_LOC_NAME',
+            queryMode: 'local',
+            fieldLabel: '给油位置：',
+        },{
+            xtype: 'displayfield',
+            name: 'V_PARTNAME',
+            id: 'V_PARTNAME',
+            queryMode: 'local',
+            fieldLabel: '部件名称：',
+        },{
+            xtype: 'displayfield',
+            name: 'V_OIL_TYPE',
+            id: 'V_OIL_TYPE',
+            queryMode: 'local',
+            fieldLabel: '润滑方式：',
+        },{
+            xtype: 'displayfield',
+            name: 'V_PLAN_TIME',
+            id: 'V_PLAN_TIME',
+            queryMode: 'local',
+            fieldLabel: '计划润滑时间：',
+        },{
+            xtype: 'datefield',
+            name: 'V_V_FACT_TIME',
+            id: 'V_V_FACT_TIME',
+            queryMode: 'local',
+            format: 'Y-m-d',
+            submitFormat: 'Y-m-d',
+            fieldLabel: '实际润滑时间：',
+            allowBlank:false,
+            value: new Date()
+        },{
+            xtype: 'displayfield',
+            name: 'V_OIL_SIGN',
+            id: 'V_OIL_SIGN',
+            queryMode: 'local',
+            fieldLabel: '用油品牌：',
+        },{
+            xtype: 'textfield',
+            name: 'V_V_FACT_OIL_SIGN',
+            id: 'V_V_FACT_OIL_SIGN',
+            queryMode: 'local',
+            allowBlank:false,
+            fieldLabel: '实际用油品牌：',
+        },{
+            xtype: 'displayfield',
             name: 'V_OIL_NUM',
             id: 'V_OIL_NUM',
             queryMode: 'local',
-            decimalPrecision : 4,//小数
-            forceSelection: true,
-            fieldLabel: '用油数量',
-            maxLength : 50,
-            allowBlank : false,
-            value : 0
-            //readOnly: true
-        }, {
-            xtype: 'combo',
-            name: 'V_OIL_ZQMS',
-            id: 'V_OIL_ZQMS',
-            store: oilZqmsStore,
+            fieldLabel: '用油量：',
+        },{
+            xtype: 'textfield',
+            name: 'V_V_FACT_OIL_NUM',
+            id: 'V_V_FACT_OIL_NUM',
             queryMode: 'local',
-            valueField: 'ZQMS_CODE_',
-            displayField: 'ZQMS_NAME_',
-            editable: false,
-            forceSelection: true,
-            fieldLabel: '周期模式',
-            //readOnly: true
-        }, {
-            xtype: 'combo',
-            name: 'V_OIL_ZQUNIT',
-            id: 'V_OIL_ZQUNIT',
-            store: oilZqunitStore,
-            queryMode: 'local',
-            valueField: 'ZQUNIT_CODE_',
-            displayField: 'ZQUNIT_NAME_',
-            editable: false,
-            forceSelection: true,
-            fieldLabel: '周期单位',
-            //readOnly: true
-        }, {
-            xtype: 'numberfield',
-            name: 'V_OIL_ZQSZ',
-            id: 'V_OIL_ZQSZ',
-            queryMode: 'local',
-            forceSelection: true,
-            fieldLabel: '周期设置',
-            allowBlank : false,
-            value : 0
-            // readOnly: true
+            allowBlank:false,
+            fieldLabel: '实际用油量：',
         }, {
             xtype: 'textfield',
-            name: 'V_ZXR',
-            id: 'V_ZXR',
+            name: 'V_V_ZXR',
+            id: 'V_V_ZXR',
             queryMode: 'local',
-            forceSelection: true,
-            fieldLabel: '执行人',
-            maxLength : 20,
-            allowBlank : false
+            allowBlank:false,
+            fieldLabel: '执行人：',
         }]
     });
 
@@ -204,7 +210,7 @@ Ext.onReady(function () {
         items: [{
             xtype: 'button',
             text: '保存',
-            handler: _yyInfoSet
+            handler: _insert
         }, {
             xtype: 'button',
             text: '关闭',
@@ -246,62 +252,55 @@ function _init() {
         }
     }
 
-    if (staYy != null) {
+    if (StandardFactInfo != null) {
 
         var form = Ext.getCmp('formPanel').getForm();
-        form.findField("V_OIL_WAY").setValue(staYy.V_OIL_WAY);
-        form.findField("V_OIL_PD").setValue(staYy.V_OIL_PD);
-        form.findField("V_OIL_NUM").setValue(staYy.V_OIL_NUM);
-        form.findField("V_OIL_ZQMS").setValue(staYy.V_OIL_ZQMS);
-        form.findField("V_OIL_ZQUNIT").setValue(staYy.V_OIL_ZQUNIT);
-        form.findField("V_OIL_ZQSZ").setValue(staYy.V_OIL_ZQSZ);
-        form.findField("V_ZXR").setValue(staYy.V_ZXR);
+        form.findField("V_ORGNAME").setValue(StandardFactInfo.V_ORGNAME);
+        form.findField("V_DEPTNAME").setValue(StandardFactInfo.V_DEPTNAME);
+        form.findField("V_EQUTYPENAME").setValue(StandardFactInfo.V_EQUTYPENAME);
+        form.findField("V_GGXH").setValue(StandardFactInfo.V_GGXH);
+        form.findField("V_EQUCODE").setValue(StandardFactInfo.V_EQUCODE);
+        form.findField("V_EQUNAME").setValue(StandardFactInfo.V_EQUNAME);
+        form.findField("V_GNWZ").setValue(StandardFactInfo.V_GNWZ);
+        form.findField("V_LOC_NAME").setValue(StandardFactInfo.V_LOC_NAME);
+        form.findField("V_PARTNAME").setValue(StandardFactInfo.V_PARTNAME);
+        form.findField("V_OIL_TYPE").setValue(StandardFactInfo.V_OIL_TYPE);
+        form.findField("V_PLAN_TIME").setValue(StandardFactInfo.V_PLAN_TIME);
+        form.findField("V_V_FACT_TIME").setValue(new Date());
+        form.findField("V_OIL_SIGN").setValue(StandardFactInfo.V_OIL_SIGN);
+        form.findField("V_V_FACT_OIL_SIGN").setValue(StandardFactInfo.V_FACT_OIL_SIGN);
+        form.findField("V_OIL_NUM").setValue(StandardFactInfo.V_OIL_NUM);
+        form.findField("V_V_FACT_OIL_NUM").setValue(StandardFactInfo.V_FACT_OIL_NUM);
+        form.findField("V_V_ZXR").setValue(StandardFactInfo.V_ZXR);
+        form.findField("I_I_ID").setValue(StandardFactInfo.I_ID);
+        form.findField("V_V_P_GUID").setValue(StandardFactInfo.V_GUID);
+        form.findField("V_V_PERSONCODE").setValue(Ext.util.Cookies.get('v_personcode'));
 
         form.isValid();//校验数据
 
         Ext.getBody().unmask();
     }
-
-    Ext.getCmp('V_OIL_WAY').select(Ext.data.StoreManager.lookup('oilWayStore').first());
-    Ext.getCmp('V_OIL_ZQMS').select(Ext.data.StoreManager.lookup('oilZqmsStore').first());
-    Ext.getCmp('V_OIL_ZQUNIT').select(Ext.data.StoreManager.lookup('oilZqunitStore').first());
-
-    Ext.getBody().unmask();
-
 }
 
 //点击保存按钮
-function _yyInfoSet() {
-    Ext.Ajax.request({
-        url: AppUrl + 'oil/yyInfoSet',
-        method: 'POST',
-        params: {
-            I_I_ID: P_ID,
-            V_V_GUID: P_GID,//getRawValue()取下拉框显示的值
-            V_V_YZ_ID: P_YZID,//getValue()取下拉框选择的值
-            v_v_oil_way: Ext.getCmp('V_OIL_WAY').getRawValue(),
-            v_v_oil_num: Ext.getCmp('V_OIL_NUM').getValue(),
-            v_v_oil_zqms: Ext.getCmp('V_OIL_ZQMS').getRawValue(),
-            v_v_oil_pd: Ext.getCmp('V_OIL_PD').getValue(),
-            v_v_oil_zqunit: Ext.getCmp('V_OIL_ZQUNIT').getRawValue(),
-            v_v_oil_zqsz: Ext.getCmp('V_OIL_ZQSZ').getValue(),
-            v_v_zxr: Ext.getCmp('V_ZXR').getValue(),
-            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+function _insert() {
 
-        },
-        callback: function (options, success, response) {
-            var resp = Ext.decode(response.responseText);
+    Ext.getCmp('formPanel').getForm().submit({
+        url: AppUrl + 'oil/setStandardFactInfo',
+        submitEmptyText: false,
+        waitMsg: '<spring:message code="processing" />',
+        success: function (response,action) {
+            var resp = action.result;
             if (resp.success) {
-                var V_INFO = resp.V_INFO;
-                if (V_INFO == '保存成功！') {
-                    parent.returnValue = resp;
-                    _close()
-                } else {
-                    Ext.Msg.alert('提示', '保存失败');
-                }
+                parent.returnValue = resp;
+                _close();
             } else {
-                Ext.Msg.alert('保存失败');
+                Ext.MessageBox.alert('提示', '保存失败！');
+                return;
             }
+        },
+        failure: function (form, action) {
+            Ext.MessageBox.alert('操作失败', '操作失败');
         }
     });
 

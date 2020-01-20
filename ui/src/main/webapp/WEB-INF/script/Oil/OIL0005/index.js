@@ -82,7 +82,7 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records, successful, eOpts) {
-                Ext.getCmp('DEPT_CODE_').select(store.first());
+                Ext.getCmp('V_V_DEPTCODE').select(store.first());
             }
         }
     });
@@ -144,7 +144,7 @@ Ext.onReady(function () {
                     V_EQUTYPECODE: '%',
                     V_EQUTYPENAME: '--全部--'
                 });
-                Ext.getCmp('equipType').select(store.first());
+                Ext.getCmp('V_V_EQUTYPECODE').select(store.first());
             }
         }
     });
@@ -390,6 +390,11 @@ Ext.onReady(function () {
             dataIndex : 'V_FACT_OIL_SIGN',
             style : 'text-align: center;',
             flex : 1
+        },{
+            text : '用油量(KG)',
+            dataIndex : 'V_OIL_NUM',
+            style : 'text-align: center;',
+            flex : 1
         }, {
             text : '实际用油量(KG)',
             dataIndex : 'V_FACT_OIL_NUM',
@@ -449,7 +454,7 @@ function _init() {
         }
     }
 
-    Ext.getCmp('FTY_CODE_').setValue(Ext.util.Cookies.get('v_orgCode'));
+    Ext.getCmp('V_V_ORGCODE').setValue(Ext.util.Cookies.get('v_orgCode'));
     _selectDept();
     _selectProductLine();
     Ext.getCmp('V_V_CXCODE').select(Ext.data.StoreManager.lookup('productLineStore').first());
@@ -462,19 +467,18 @@ function _init() {
 function _selectProductLine() {
     var productLineStore = Ext.data.StoreManager.lookup('productLineStore');
     productLineStore.proxy.extraParams = {
-        V_V_ORGCODE: Ext.getCmp('FTY_CODE_').getValue(),
-        V_V_DEPTCODE: Ext.getCmp('DEPT_CODE_').getValue(),
+        V_V_ORGCODE: Ext.getCmp('V_V_ORGCODE').getValue(),
+        V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE').getValue(),
         V_V_CXNAME: '%'
     };
     productLineStore.load();
-    console.log('111')
 }
 
 function _selectDept() {
     var deptStore = Ext.data.StoreManager.lookup('deptStore');
     deptStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_DEPTCODE: Ext.getCmp('FTY_CODE_').getValue(),
+        V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE').getValue(),
         V_V_DEPTCODENEXT: '%',
         V_V_DEPTTYPE: '主体作业区'
     };
@@ -485,8 +489,8 @@ function _selectEquipType() {
     var equipTypeStore = Ext.data.StoreManager.lookup('equipTypeStore');
     equipTypeStore.proxy.extraParams = {
         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_ORGCODE: Ext.getCmp('FTY_CODE_').getValue(),
-        V_V_DEPTCODE: Ext.getCmp('DEPT_CODE_').getValue(),
+        V_V_ORGCODE: Ext.getCmp('V_V_ORGCODE').getValue(),
+        V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE').getValue(),
         V_V_CXCODE: Ext.getCmp('V_V_CXCODE').getValue()
     };
     equipTypeStore.load();
@@ -495,15 +499,79 @@ function _selectEquipType() {
 //编辑按钮
 function _edit() {
 
+    var record = Ext.getCmp('standardFactInfoPanel').getSelectionModel().getSelection();
+    if (record.length == 0) {
+        Ext.MessageBox.alert('提示', '请选择一条数据');
+        return;
+    }else if(record[0].get('V_FACT_OIL_NUM') != ''){
+        Ext.MessageBox.alert('提示', '数据已编辑，可点击修改按钮修改');
+        return;
+    }
 
+    returnValue = null;
+    win = Ext.create('Ext.window.Window', {
+        title: '润滑实绩',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 560,
+        height: 420,
+        html: '<iframe src=' + AppUrl + 'page/Oil/OIL000501/index.html?P_ID=' + record[0].get('I_ID') + '&P_GID=' + record[0].get('V_GUID') + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+        listeners: {
+            close: function (panel, eOpts) {
+                if (returnValue != null) {
+                    if (returnValue.data.V_INFO == '保存成功！') {
+                        var map = returnValue.StandardFactInfo.list[0];
+                        for (var key in map) {
+                            record[0].set(key, map[key]);
+                            Ext.Msg.alert('提示', '保存成功！');
+                        }
+                    } else {
+                        Ext.Msg.alert('提示', '保存失败！');
+                    }
+                }
+            }
+        }
+    });
 
 }
 
 //修改按钮
 function _update() {
 
+        var record = Ext.getCmp('standardFactInfoPanel').getSelectionModel().getSelection();
 
-    
+        if (record.length == 0) {
+            Ext.MessageBox.alert('提示', '请选择一条数据');
+            return;
+        }
+        returnValue = null;
+        win = Ext.create('Ext.window.Window', {
+            title: '润滑实绩',
+            modal: true,
+            autoShow: true,
+            maximized: false,
+            maximizable: true,
+            width: 560,
+            height: 420,
+            html: '<iframe src=' + AppUrl + 'page/Oil/OIL000501/index.html?P_ID=' + record[0].get('I_ID') + '&P_GID=' + record[0].get('V_GUID') + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+            listeners: {
+                close: function (panel, eOpts) {
+                    if (returnValue != null) {
+                        if (returnValue.data.V_INFO == '保存成功！') {
+                            var map = returnValue.StandardFactInfo.list[0];
+                            for (var key in map) {
+                                record[0].set(key, map[key]);
+                                Ext.Msg.alert('提示', '修改成功！');
+                            }
+                        } else {
+                            Ext.Msg.alert('提示', '修改失败！');
+                        }
+                    }
+                }
+            }
+        });
 }
 
 //查询按钮
@@ -514,7 +582,7 @@ function _select() {
         'V_V_ORGCODE': Ext.getCmp("V_V_ORGCODE").getValue(),
         'V_V_DEPTCODE': Ext.getCmp("V_V_DEPTCODE").getValue(),
         'V_V_CXCODE': Ext.getCmp("V_V_CXCODE").getValue(),
-        'V_V_EQUTYPECODE': Ext.getCmp("V_V_EQUTYPECODE").getRawValue(),
+        'V_V_EQUTYPECODE': Ext.getCmp("V_V_EQUTYPECODE").getValue(),
         'V_V_PLANTIME': Ext.getCmp("V_V_PLANTIME").getSubmitValue(),
         'V_V_EQUCODE': Ext.getCmp("V_V_EQUCODE").getSubmitValue(),
         'V_V_EQUNAME': Ext.getCmp("V_V_EQUNAME").getSubmitValue()

@@ -961,4 +961,63 @@ public class OilService {
         return result;
     }
 
+    public HashMap setStandardFactInfo(String I_I_ID, String V_V_P_GUID, String V_V_FACT_TIME, String V_V_FACT_OIL_NUM, String V_V_FACT_OIL_SIGN, String V_V_ZXR,
+                                     String V_V_PERSONCODE) throws SQLException {
+
+        logger.info("begin setStandardFactInfo");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_FACT_M_SET(:I_I_ID,:V_V_P_GUID,:V_V_FACT_TIME,:V_V_FACT_OIL_NUM,:V_V_FACT_OIL_SIGN,:V_V_ZXR,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.setString("V_V_P_GUID", V_V_P_GUID);
+            cstmt.setString("V_V_FACT_TIME", V_V_FACT_TIME);
+            cstmt.setString("V_V_FACT_OIL_NUM", V_V_FACT_OIL_NUM);
+            cstmt.setString("V_V_FACT_OIL_SIGN", V_V_FACT_OIL_SIGN);
+            cstmt.setString("V_V_ZXR", V_V_ZXR);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end setStandardFactInfo");
+        return result;
+    }
+
+    public HashMap loadStandardFactInfo(String V_V_PERSONCODE,String V_V_GUID, String I_I_ID) throws SQLException {
+        logger.info("begin loadStandardFactInfo");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_FACT_INFO_ID_GET(:V_V_PERSONCODE,:V_V_GUID,:I_I_ID,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("I_I_ID", I_I_ID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end loadStandardFactInfo");
+        return result;
+    }
 }
