@@ -129,6 +129,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
         return request;
     }
 });
+
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
@@ -177,126 +178,9 @@ Ext.onReady(function () {
         pageSize: -1,
         fields: ['V_DEPTCODE', 'V_DEPTNAME'],
         proxy: {
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+            url: AppUrl + 'planLockingDate/selectFactoriesMines',
             type: 'ajax',
             async: true,//false=同步
-            actionMethods: {
-                read: 'POST'
-            },
-            extraParams: {
-                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
-                V_V_DEPTCODENEXT: '%',
-                V_V_DEPTTYPE: '基层单位'
-            },
-            reader: {
-                type: 'json',
-                root: 'list',
-                totalProperty: 'total'
-            }
-        },
-        listeners: {
-            load: function (store, records, successful, eOpts) {
-                if (store.first().data.V_DEPTCODE != '%') {
-                    store.insert(0, {
-                        V_DEPTCODE: '%',
-                        V_DEPTNAME: '--全部--',
-                    });
-                }
-                Ext.getCmp('V_V_ORGCODE').select(store.first());
-                _init();//自动加载时必须调用
-            }
-        }
-    });
-
-    var ftyAllStore = Ext.create('Ext.data.Store', {
-        storeId: 'ftyAllStore',
-        autoLoad: true,//true为自动加载
-        loading: true,//自动加载时必须为true
-        pageSize: -1,
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: {
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            type: 'ajax',
-            async: true,//false=同步
-            actionMethods: {
-                read: 'POST'
-            },
-            extraParams: {
-                V_V_PERSONCODE: 'admin',
-                V_V_DEPTCODE: '%',
-                V_V_DEPTCODENEXT: '%',
-                V_V_DEPTTYPE: '%'
-            },
-            reader: {
-                type: 'json',
-                root: 'list',
-                totalProperty: 'total'
-            }
-        },
-        listeners: {
-            load: function (store, records, successful, eOpts) {
-                if (store.first().data.V_DEPTCODE != '%') {
-                    store.insert(0, {
-                        V_DEPTCODE: '%',
-                        V_DEPTNAME: '--全部--',
-                    });
-                }
-                Ext.getCmp('V_V_ORGCODE').select(store.first());
-                _init();//自动加载时必须调用
-            }
-        }
-    });
-
-    var ftyStoreByBatch = Ext.create('Ext.data.Store', {
-        storeId: 'ftyStoreByBatch',
-        autoLoad: true,//true为自动加载
-        loading: true,//自动加载时必须为true
-        pageSize: -1,
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: {
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            type: 'ajax',
-            async: true,//false=同步
-            actionMethods: {
-                read: 'POST'
-            },
-            extraParams: {
-                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
-                V_V_DEPTCODENEXT: '%',
-                V_V_DEPTTYPE: '基层单位'
-            },
-            reader: {
-                type: 'json',
-                root: 'list',
-                totalProperty: 'total'
-            }
-        },
-        listeners: {
-            load: function (store, records, successful, eOpts) {
-                if (store.first().data.V_DEPTCODE != '%') {
-                    store.insert(0, {
-                        V_DEPTCODE: '%',
-                        V_DEPTNAME: '--全部--',
-                    });
-                }
-                Ext.getCmp('V_V_ORGCODE').select(store.first());
-                _init();//自动加载时必须调用
-            }
-        }
-    });
-
-    var deptStore = Ext.create('Ext.data.Store', {
-        storeId: 'deptStore',
-        autoLoad: false,
-        loading: false,
-        pageSize: -1,
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            type: 'ajax',
-            async: false,
             actionMethods: {
                 read: 'POST'
             },
@@ -306,24 +190,31 @@ Ext.onReady(function () {
                 root: 'list',
                 totalProperty: 'total'
             }
-        }),
+        },
         listeners: {
             load: function (store, records, successful, eOpts) {
+                if (store.first().data.V_DEPTCODE != '%') {
+                    store.insert(0, {
+                        V_DEPTCODE: '%',
+                        V_DEPTNAME: '--全部--',
+                    });
+                }
                 Ext.getCmp('V_V_DEPTCODE').select(store.first());
+                _init();//自动加载时必须调用
             }
         }
     });
 
-    var deptStoreByBatch = Ext.create('Ext.data.Store', {
-        storeId: 'deptStoreByBatch',
-        autoLoad: false,
-        loading: false,
+    var ftyWinStore = Ext.create('Ext.data.Store', {
+        storeId: 'ftyWinStore',
+        autoLoad: true,//true为自动加载
+        loading: true,//自动加载时必须为true
         pageSize: -1,
         fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+        proxy: {
+            url: AppUrl + 'planLockingDate/selectFactoriesMines',
             type: 'ajax',
-            async: false,
+            async: true,//false=同步
             actionMethods: {
                 read: 'POST'
             },
@@ -333,10 +224,11 @@ Ext.onReady(function () {
                 root: 'list',
                 totalProperty: 'total'
             }
-        }),
+        },
         listeners: {
             load: function (store, records, successful, eOpts) {
-                Ext.getCmp('V_V_DEPTCODE').select(store.first());
+                Ext.getCmp('V_V_V_DEPTCODE').select(store.first());
+                _init();//自动加载时必须调用
             }
         }
     });
@@ -398,40 +290,21 @@ Ext.onReady(function () {
         closeAction : 'hide',
         closable : true,
         defaults : {
-            labelAlign : 'right',
             labelWidth : 100,
             inputWidth : 140,
             margin : '4,0,0,0'
         },
         items :[{
             xtype: 'combo',
-            id: 'V_V_V_ORGCODE',
-            name: 'V_V_V_ORGCODE',
-            store: ftyStoreByBatch,
+            id: 'V_V_V_DEPTCODE',
+            name: 'V_V_V_DEPTCODE',
+            store: ftyWinStore,
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
             editable: false,
             forceSelection: true,
             fieldLabel: '厂矿',
-            listeners: {
-                select: function (combo, records) {
-                    if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        _selectBatchDept();
-                    }
-                }
-            }
-        }, {
-            xtype: 'combo',
-            id: 'V_V_V_DEPTCODE',
-            name: 'V_V_V_DEPTCODE',
-            store: deptStoreByBatch,
-            queryMode: 'local',
-            valueField: 'V_DEPTCODE',
-            displayField: 'V_DEPTNAME',
-            editable: false,
-            forceSelection: true,
-            fieldLabel: '作业区'
         }],
         buttons : [ {
             xtype : 'button',
@@ -464,33 +337,15 @@ Ext.onReady(function () {
         },
         items: [{
             xtype: 'combo',
-            id: 'V_V_ORGCODE',
-            name: 'V_V_ORGCODE',
+            id: 'V_V_DEPTCODE',
+            name: 'V_V_DEPTCODE',
             store: ftyStore,
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
             editable: false,
             forceSelection: true,
-            fieldLabel: '厂矿',
-            listeners: {
-                select: function (combo, records) {
-                    if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        _selectDept();
-                    }
-                }
-            }
-        }, {
-            xtype: 'combo',
-            id: 'V_V_DEPTCODE',
-            name: 'V_V_DEPTCODE',
-            store: deptStore,
-            queryMode: 'local',
-            valueField: 'V_DEPTCODE',
-            displayField: 'V_DEPTNAME',
-            editable: false,
-            forceSelection: true,
-            fieldLabel: '作业区'
+            fieldLabel: '厂矿'
         }, {
             xtype: 'combo',
             id: 'I_I_YEAR',
@@ -590,26 +445,18 @@ Ext.onReady(function () {
             dataIndex: 'D_DATE_S',
             style: 'text-align: center;',
             flex: 1,
-            renderer: function(value) {
-                var date =  new Date(value);
-                return Ext.util.Format.date(date, 'Y-m-d')
-            }
         }, {
             text: '结束时间',
             dataIndex: 'D_DATE_E',
             style: 'text-align: center;',
             flex: 1,
-            renderer: function(value) {
-               var date =  new Date(value);
-                return Ext.util.Format.date(date, 'Y-m-d')
-            }
         }, {
-            text: '厂矿或作业区',
+            text: '厂矿',
             dataIndex: 'V_DEPTCODE',
             style: 'text-align: center;',
             flex: 1,
             renderer : function(value, metaData, record, rowIndex, colIndex, store, view) {
-                    return (value != null && value != '') ? ftyAllStore.findRecord('V_DEPTCODE', new RegExp('^' + value + '$')).get('V_DEPTNAME') : value;
+                    return (value != null && value != '') ? ftyStore.findRecord('V_DEPTCODE', new RegExp('^' + value + '$')).get('V_DEPTNAME') : value;
             }
         }],
         viewConfig: {
@@ -661,10 +508,7 @@ function _init() {
     var date=new Date();
     Ext.getCmp('I_I_YEAR').setValue((date.getFullYear().toString()));
     Ext.getCmp('I_I_MONTH').setValue(((date.getMonth()+1).toString()));
-    Ext.getCmp('V_V_ORGCODE').setValue(Ext.util.Cookies.get('v_orgCode'));
-    _selectDept();
-    _selectBatchDept();
-    Ext.getCmp('V_V_DEPTCODE').setValue(Ext.util.Cookies.get('v_deptcode'));
+    Ext.getCmp('V_V_DEPTCODE').setValue('%');
     _calculationWeek();
     Ext.getCmp('I_I_WEEKNUM').setValue('%');
     _select();
@@ -674,7 +518,6 @@ function _init() {
 function _selectPlanLockingDate() {
     var planLockingDateStore = Ext.data.StoreManager.lookup('planLockingDateStore');
     planLockingDateStore.proxy.extraParams = {
-        V_V_ORGCODE:'%',
         V_V_DEPTCODE:'%',
         I_I_YEAR:'%',
         I_I_MONTH:'%',
@@ -683,31 +526,7 @@ function _selectPlanLockingDate() {
     planLockingDateStore.load();
 }
 
-function _selectDept() {
-    var deptStore = Ext.data.StoreManager.lookup('deptStore');
-    deptStore.proxy.extraParams = {
-        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_DEPTCODE: Ext.getCmp('V_V_ORGCODE').getValue(),
-        V_V_DEPTCODENEXT: '%',
-        V_V_DEPTTYPE: '主体作业区'
-    };
-    deptStore.load();
-    console.log(deptStore);
-}
-
-function _selectBatchDept() {
-    var deptStoreByBatch = Ext.data.StoreManager.lookup('deptStoreByBatch');
-    deptStoreByBatch.proxy.extraParams = {
-        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_DEPTCODE: Ext.getCmp('V_V_ORGCODE').getValue(),
-        V_V_DEPTCODENEXT: '%',
-        V_V_DEPTTYPE: '主体作业区'
-    };
-    deptStoreByBatch.load();
-}
-
 function _select(){
-
     var planLockingDateStore = Ext.data.StoreManager.lookup('planLockingDateStore');
     var item;
     for (var i = 0; i < Ext.getCmp('formPanel').items.length; i++) {
@@ -715,9 +534,7 @@ function _select(){
         planLockingDateStore.proxy.extraParams[item.getName()] = item.getSubmitValue();
     }
     planLockingDateStore.load();
-
 }
-
 
 function _insert(){
     returnValue = null;
@@ -735,7 +552,7 @@ function _insert(){
                if(returnValue != null){
                    if (returnValue == '保存成功！') {
                        Ext.MessageBox.alert('提示','保存成功');
-                       _selectPlanLockingDate();
+                       _selectPlanLockingDate();   //全查询
                    }else if(returnValue == '数据已存在！'){
                        Ext.MessageBox.alert('提示','数据已存在');
                    }else {
@@ -747,9 +564,7 @@ function _insert(){
     });
 }
 
-
 function _update(){
-
     var records = Ext.getCmp('planLockingDatePanel').getSelectionModel().getSelection();
 
     if (records.length == 0) {
@@ -759,9 +574,8 @@ function _update(){
         Ext.MessageBox.alert('提示', '只能选择一条数据');
         return;
     }
-
-
     returnValue = null;
+
     win = Ext.create('Ext.window.Window', {
         title: '计划上报时间管理(修改)',
         modal: true,
@@ -780,7 +594,9 @@ function _update(){
                        }
                        if(returnValue.V_INFO == '保存成功！'){
                            Ext.MessageBox.alert('提示','修改成功');
-                       }else{
+                       }else if(returnValue.V_INFO == 'ORA-00001: 违反唯一约束条件 (PMNEW.UK_W)'){
+                           Ext.MessageBox.alert('提示','修改后的数据已存在');
+                       }else {
                            Ext.MessageBox.alert('提示','修改失败');
                        }
                    }
@@ -789,9 +605,7 @@ function _update(){
     });
 }
 
-
 function _delete(){
-
     var records = Ext.getCmp('planLockingDatePanel').getSelectionModel().getSelection();
 
     if (records.length == 0) {
@@ -802,40 +616,37 @@ function _delete(){
     for (var i = 0; i < records.length; i++) {
         I_ID_LIST.push(records[i].get('I_ID'));
     }
-
     Ext.MessageBox.show({
-        title : '请确认',
-        msg : '批量删除',
-        buttons : Ext.MessageBox.YESNO,
-        icon : Ext.MessageBox.QUESTION,
-        fn : function(btn) {
+        title: '请确认',
+        msg: '批量删除',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
             if (btn == 'yes') {
                 Ext.Ajax.request({
-                    url : AppUrl + 'planLockingDate/deletePlanLockingDate',
-                    async : false,
-                    params : {
-                        'I_I_ID_LIST' : I_ID_LIST
+                    url: AppUrl + 'planLockingDate/deletePlanLockingDate',
+                    async: false,
+                    params: {
+                        'I_I_ID_LIST': I_ID_LIST
                     },
-                    callback : function(options, success, response) {
-                            var data = Ext.decode(response.responseText);
-                            if(data.success=true){
-                                Ext.MessageBox.alert('提示',data.data.V_INFO);
-                                for (var i = 0; i < records.length; i++) {
-                                    Ext.data.StoreManager.lookup('planLockingDateStore').remove(records[i]);
-                                }
-                            }else{
-                                Ext.MessageBox.alert('提示', '删除失败');
+                    callback: function (options, success, response) {
+                        var data = Ext.decode(response.responseText);
+                        if (data.success = true) {
+                            Ext.MessageBox.alert('提示', data.data.V_INFO);
+                            for (var i = 0; i < records.length; i++) {
+                                Ext.data.StoreManager.lookup('planLockingDateStore').remove(records[i]);
                             }
+                        } else {
+                            Ext.MessageBox.alert('提示', '删除失败');
+                        }
                     }
                 });
             }
         }
     });
-
 }
 
-
-function _batchUpdate(){
+function _batchUpdate() {
 
     var records = Ext.getCmp('planLockingDatePanel').getSelectionModel().getSelection();
 
@@ -843,37 +654,36 @@ function _batchUpdate(){
         Ext.MessageBox.alert('提示', '请选择一条数据');
         return;
     }
-    Ext.getCmp('V_V_V_ORGCODE').setValue(Ext.util.Cookies.get('v_orgCode'));
-    Ext.getCmp('V_V_V_DEPTCODE').setValue(Ext.util.Cookies.get('v_deptcode'));
+
     Ext.getCmp('batchUpdateWindow').show();
 }
 
-function _calculationWeek(){
+function _calculationWeek() {
     var year = Ext.getCmp('I_I_YEAR').getValue();
     var month = Ext.getCmp('I_I_MONTH').getValue();
-    var firstDate = new Date(year,month-1,1);
-    var temp = new Date(year,month,0);
+    var firstDate = new Date(year, month - 1, 1);
+    var temp = new Date(year, month, 0);
     var Day = temp.getDate();
     var week_sum;
-    var week =  firstDate.getDay();
-    if(week==0){
-        week_sum = 1;                                                                                                                        
-    }else {
-        week_sum = 7 - week +1;
+    var week = firstDate.getDay();
+    if (week == 0) {
+        week_sum = 1;
+    } else {
+        week_sum = 7 - week + 1;
     }
-    var result = 1+Math.ceil((Day-week_sum)/7);
+    var result = 1 + Math.ceil((Day - week_sum) / 7);
     var weekStore = Ext.data.StoreManager.lookup('weekStore');
-    for (var i = 0; i<result+1 ; i++) {
+    for (var i = 0; i < result + 1; i++) {
         var map = List[i];
         weekStore.add(map);
     }
 }
 
-function _planLockingDateBatchUpdate(){
+function _planLockingDateBatchUpdate() {
 
     var records = Ext.getCmp('planLockingDatePanel').getSelectionModel().getSelection();
 
-    var I_ID_LIST =new Array();
+    var I_ID_LIST = new Array();
     for (var i = 0; i < records.length; i++) {
         I_ID_LIST.push(records[i].get('I_ID'));
     }
@@ -882,26 +692,28 @@ function _planLockingDateBatchUpdate(){
         async: false,
         params: {
             'I_I_ID_LIST': I_ID_LIST,
-            'V_V_V_ORGCODE':Ext.getCmp('V_V_V_ORGCODE').getValue(),
-            'V_V_V_DEPTCODE':Ext.getCmp('V_V_V_DEPTCODE').getValue()
+            'V_V_V_DEPTCODE': Ext.getCmp('V_V_V_DEPTCODE').getValue()
         },
         callback: function (options, success, response) {
             var data = Ext.decode(response.responseText);
-
             if (data != null) {
-                var  PlanLockingDate = data.insertPlanLockingDate;
-                var  size = data.size;
-                for (var i = 0; i < size; i++) {
-                    var map = PlanLockingDate[i];
-                    for (var key in map) {//前台更新被修改数据
-                        records[i].set(key, map[key]);
+                if (data.V_INFO == '保存成功！') {
+                    var PlanLockingDate = data.insertPlanLockingDate;
+                    var size = data.size;
+                    for (var i = 0; i < size; i++) {
+                        var map = PlanLockingDate[i];
+                        for (var key in map) {//前台更新被修改数据
+                            records[i].set(key, map[key]);
+                        }
                     }
-                    if (data.V_INFO == '保存成功！') {
-                        Ext.MessageBox.alert('提示', '修改成功');
-                        Ext.getCmp('batchUpdateWindow').hide();
-                    } else {
-                        Ext.MessageBox.alert('提示', '修改失败');
-                    }
+                    Ext.MessageBox.alert('提示', '修改成功');
+                    Ext.getCmp('batchUpdateWindow').hide();
+                } else if (data.V_INFO == 'ORA-00001: 违反唯一约束条件 (PMNEW.UK_W)') {
+                    Ext.MessageBox.alert('提示', '批量修改后的数据重复');
+                    Ext.getCmp('batchUpdateWindow').hide();
+                } else {
+                    Ext.MessageBox.alert('提示', '修改失败');
+                    Ext.getCmp('batchUpdateWindow').hide();
                 }
             }
         }

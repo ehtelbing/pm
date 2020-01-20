@@ -60,7 +60,7 @@ public class LcService {
         return result;
     }
 
-    public HashMap selectPlanLockingDate(String V_V_ORGCODE,String V_V_DEPTCODE,String I_I_YEAR,String I_I_MONTH,String I_I_WEEKNUM) throws SQLException {
+    public HashMap selectPlanLockingDate(String V_V_DEPTCODE,String I_I_YEAR,String I_I_MONTH,String I_I_WEEKNUM) throws SQLException {
         logger.info("begin selectPlanLockingDate");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -68,8 +68,7 @@ public class LcService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_PLAN_LOCKING_DATE_W_SEL(:V_V_ORGCODE,:V_V_DEPTCODE,:I_I_YEAR,:I_I_MONTH,:I_I_WEEKNUM,:V_CURSOR)}");
-            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt = conn.prepareCall("{call PM_PLAN_LOCKING_DATE_W_SEL(:V_V_DEPTCODE,:I_I_YEAR,:I_I_MONTH,:I_I_WEEKNUM,:V_CURSOR)}");
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("I_I_YEAR", I_I_YEAR);
             cstmt.setString("I_I_MONTH", I_I_MONTH);
@@ -88,7 +87,30 @@ public class LcService {
         return result;
     }
 
-    public HashMap insertPlanLockingDate(String V_V_ORGCODE, String V_V_DEPTCODE,  String I_I_YEAR, String I_I_MONTH,String I_I_WEEKNUM,String D_DATE_S ,String D_DATE_E) throws SQLException {
+    public HashMap selectFactoriesMines() throws SQLException {
+        logger.info("begin selectFactoriesMines");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PLAN_LOCKING_DATE_W_DPCODE(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectFactoriesMines");
+        return result;
+    }
+
+    public HashMap insertPlanLockingDate( String V_V_DEPTCODE,  String I_I_YEAR, String I_I_MONTH,String I_I_WEEKNUM,String D_D_DATE_S ,String D_D_DATE_E) throws SQLException {
 
         logger.info("begin insertPlanLockingDate");
 
@@ -98,14 +120,13 @@ public class LcService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_PLAN_LOCKING_DATE_W_INSERT(:V_V_ORGCODE,:V_V_DEPTCODE,:I_I_YEAR,:I_I_MONTH,:I_I_WEEKNUM,:D_DATE_S,:D_DATE_E,:V_INFO)}");
-            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt = conn.prepareCall("{call PM_PLAN_LOCKING_DATE_W_INSERT(:V_V_DEPTCODE,:I_I_YEAR,:I_I_MONTH,:I_I_WEEKNUM,:D_D_DATE_S,:D_D_DATE_E,:V_INFO)}");
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("I_I_YEAR", I_I_YEAR);
             cstmt.setString("I_I_MONTH", I_I_MONTH);
             cstmt.setString("I_I_WEEKNUM", I_I_WEEKNUM);
-            cstmt.setString("D_DATE_S", D_DATE_S);
-            cstmt.setString("D_DATE_E", D_DATE_E);
+            cstmt.setString("D_D_DATE_S", D_D_DATE_S);
+            cstmt.setString("D_D_DATE_E", D_D_DATE_E);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             String V_INFO = (String) cstmt.getObject("V_INFO");
@@ -122,7 +143,7 @@ public class LcService {
         return result;
     }
 
-    public HashMap updatePlanLockingDate(String I_I_ID,String V_V_ORGCODE, String V_V_DEPTCODE,  String I_I_YEAR, String I_I_MONTH,String I_I_WEEKNUM,String D_D_DATE_S ,String D_D_DATE_E) throws SQLException {
+    public HashMap updatePlanLockingDate(String I_I_ID, String V_V_DEPTCODE,  String I_I_YEAR, String I_I_MONTH,String I_I_WEEKNUM,String D_D_DATE_S ,String D_D_DATE_E) throws SQLException {
 
         logger.info("begin updatePlanLockingDate");
 
@@ -132,9 +153,8 @@ public class LcService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_PLAN_LOCKING_DATE_W_UPDATE(:I_I_ID,:V_V_ORGCODE,:V_V_DEPTCODE,:I_I_YEAR,:I_I_MONTH,:I_I_WEEKNUM,:D_D_DATE_S,:D_D_DATE_E,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PM_PLAN_LOCKING_DATE_W_UPDATE(:I_I_ID,:V_V_DEPTCODE,:I_I_YEAR,:I_I_MONTH,:I_I_WEEKNUM,:D_D_DATE_S,:D_D_DATE_E,:V_INFO)}");
             cstmt.setString("I_I_ID", I_I_ID);
-            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("I_I_YEAR", I_I_YEAR);
             cstmt.setString("I_I_MONTH", I_I_MONTH);
@@ -212,7 +232,7 @@ public class LcService {
         return result;
     }
 
-    public HashMap planLockingDateBatchUpdate(String I_I_ID,String V_V_ORGCODE, String V_V_DEPTCODE) throws SQLException {
+    public HashMap planLockingDateBatchUpdate(String I_I_ID,String V_V_DEPTCODE) throws SQLException {
 
         logger.info("begin planLockingDateBatchUpdate");
 
@@ -222,9 +242,8 @@ public class LcService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_PLAN_LOCKING_DATE_W_UPDATES(:I_I_ID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PM_PLAN_LOCKING_DATE_W_UPDATES(:I_I_ID,:V_V_DEPTCODE,:V_INFO)}");
             cstmt.setString("I_I_ID", I_I_ID);
-            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
