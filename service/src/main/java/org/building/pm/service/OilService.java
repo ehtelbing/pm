@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -323,6 +324,42 @@ public class OilService {
         }
         logger.debug("result:" + result);
         logger.info("end selectStandardInfo");
+        return result;
+    }
+
+    public HashMap selectStandardInfoFact(String V_V_PERSONCODE, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_CXCODE, String V_V_EQUTYPECODE, String V_V_PLANTIME, String V_V_EQUCODE, String V_V_EQUNAME, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+        logger.info("begin selectStandardInfoYdj");
+        String V_V_PLANTIME_NEW = V_V_PLANTIME.substring(0,10);
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call OIL_STANDARD_FACT_INFO_GET(:V_V_PERSONCODE,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_CXCODE,:V_V_EQUTYPECODE,:V_V_PLANTIME,:V_V_EQUCODE,:V_V_EQUNAME,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_CXCODE", V_V_CXCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_PLANTIME", V_V_PLANTIME_NEW);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUNAME", V_V_EQUNAME);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end selectStandardInfoYdj");
         return result;
     }
 

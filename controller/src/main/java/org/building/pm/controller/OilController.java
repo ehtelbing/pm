@@ -20,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLDecoder;
 import java.sql.Blob;
 import java.util.*;
@@ -88,6 +85,265 @@ public class OilController {
         result.put("success", true);
 
         return result;
+    }
+
+    //润滑标准查询Ydj
+    @RequestMapping(value = "/selectStandardInfoFact", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> selectStandardInfoFact(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                  @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                  @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                  @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
+                                                  @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                  @RequestParam(value = "V_V_PLANTIME") String V_V_PLANTIME,
+                                                  @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                  @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+                                                  Integer page,
+                                                  Integer limit,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = oilService.selectStandardInfoFact(V_V_PERSONCODE, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE, V_V_EQUTYPECODE, V_V_PLANTIME, V_V_EQUCODE,V_V_EQUNAME,page.toString(), limit.toString());
+        result.put("list", result.get("list"));
+
+        return result;
+    }
+    //导出Ydj
+    @RequestMapping(value = "/exportStandardInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public void exportStandardInfo(@RequestParam(value = "V_V_PERSONCODE_LIST", required = false) List<String> V_V_PERSONCODE_LIST,
+                                   @RequestParam(value = "V_V_ORGCODE_LIST", required = false) List<String> V_V_ORGCODE_LIST,
+                                   @RequestParam(value = "V_V_DEPTCODE_LIST", required = false) List<String> V_V_DEPTCODE_LIST,
+                                   @RequestParam(value = "V_V_CXCODE_LIST", required = false) List<String> V_V_CXCODE_LIST,
+                                   @RequestParam(value = "V_V_EQUTYPECODE_LIST", required = false) List<String> V_V_EQUTYPECODE_LIST,
+                                   @RequestParam(value = "V_V_PLANTIME_LIST", required = false) List<String> V_V_PLANTIME_LIST,
+                                   @RequestParam(value = "V_V_EQUCODE_LIST", required = false) List<String> V_V_EQUCODE_LIST,
+                                   @RequestParam(value = "V_V_EQUNAME_LIST", required = false) List<String> V_V_EQUNAME_LIST,
+
+                                   String V_V_PERSONCODE,
+                                   String V_V_ORGCODE,
+                                   String V_V_DEPTCODE,
+                                   String V_V_CXCODE,
+                                   String V_V_EQUTYPECODE,
+                                   String V_V_PLANTIME,
+                                   String V_V_EQUCODE,
+                                   String V_V_EQUNAME,
+                                   Integer page,
+                                   Integer limit,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
+        V_V_DEPTCODE = URLDecoder.decode(V_V_DEPTCODE, "UTF-8");
+        V_V_CXCODE = URLDecoder.decode(V_V_CXCODE, "UTF-8");
+        V_V_EQUTYPECODE = URLDecoder.decode(V_V_EQUTYPECODE, "UTF-8");
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for(int i = 0;i < 16 ;i++){
+            sheet.setColumnWidth(i,8000);
+        }
+
+        HSSFRow row = sheet.createRow(0);
+        row.setHeightInPoints(30);
+
+        //标题栏样式
+        HSSFCellStyle style = wb.createCellStyle();
+        HSSFFont font = wb.createFont();
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);//垂直
+        style.setFillBackgroundColor(HSSFColor.GREY_50_PERCENT.index);
+        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        font.setFontHeightInPoints((short) 12);//设置字体大小
+        font.setColor(HSSFColor.WHITE.index);
+        style.setFont(font);
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell0 = row.createCell(0);
+        cell0.setCellValue("序号");
+        cell0.setCellStyle(style);
+
+        HSSFCell cell1 = row.createCell(1);
+        cell1.setCellValue("计划润滑时间");
+        cell1.setCellStyle(style);
+
+        HSSFCell cell2 = row.createCell(2);
+        cell2.setCellValue("实际润滑时间");
+        cell2.setCellStyle(style);
+
+        HSSFCell cell3 = row.createCell(3);
+        cell3.setCellValue("部门");
+        cell3.setCellStyle(style);
+
+        HSSFCell cell4 = row.createCell(4);
+        cell4.setCellValue("设备类型");
+        cell4.setCellStyle(style);
+
+        HSSFCell cell5 = row.createCell(5);
+        cell5.setCellValue("设备规格");
+        cell5.setCellStyle(style);
+
+        HSSFCell cell6 = row.createCell(6);
+        cell6.setCellValue("设备编码");
+        cell6.setCellStyle(style);
+
+        HSSFCell cell7 = row.createCell(7);
+        cell7.setCellValue("设备名称");
+        cell7.setCellStyle(style);
+
+        HSSFCell cell8 = row.createCell(8);
+        cell8.setCellValue("功能位置");
+        cell8.setCellStyle(style);
+
+        HSSFCell cell9 = row.createCell(9);
+        cell9.setCellValue("给油脂位置");
+        cell9.setCellStyle(style);
+
+        HSSFCell cell10 = row.createCell(10);
+        cell10.setCellValue("部件名称");
+        cell10.setCellStyle(style);
+
+        HSSFCell cell11 = row.createCell(11);
+        cell11.setCellValue("润滑方式");
+        cell11.setCellStyle(style);
+
+        HSSFCell cell12 = row.createCell(12);
+        cell12.setCellValue("用油品牌");
+        cell12.setCellStyle(style);
+
+        HSSFCell cell13 = row.createCell(13);
+        cell13.setCellValue("实际用油品牌");
+        cell13.setCellStyle(style);
+
+        HSSFCell cell14 = row.createCell(14);
+        cell14.setCellValue("用油量(KG)");
+        cell14.setCellStyle(style);
+
+        HSSFCell cell15= row.createCell(15);
+        cell15.setCellValue("实际用油量(KG)");
+        cell15.setCellStyle(style);
+
+        HSSFCell cell16 = row.createCell(16);
+        cell16.setCellValue("执行人");
+        cell16.setCellStyle(style);
+
+
+        List<Map<String,Object>> excelApplyList = new ArrayList<Map<String,Object>>();
+
+        //如果是选择了很多列
+        if (V_V_EQUCODE_LIST !=null && V_V_EQUCODE_LIST.size() > 0) {
+            for (int i = 0; i < V_V_PERSONCODE_LIST.size(); i++) {
+                Map<String, Object> checkResultDate = new HashMap<String, Object>();
+                if (V_V_EQUCODE_LIST.size() == 0 && V_V_EQUNAME_LIST.size() == 0) {
+                    checkResultDate.put("V_V_PERSONCODE", (String) V_V_EQUCODE_LIST.get(i));
+                    checkResultDate.put("V_V_ORGCODE", (String) V_V_ORGCODE_LIST.get(i));
+                    checkResultDate.put("V_V_DEPTCODE", (String) V_V_DEPTCODE_LIST.get(i));
+                    checkResultDate.put("V_V_CXCODE", (String) V_V_CXCODE_LIST.get(i));
+                    checkResultDate.put("V_V_EQUTYPECODE", (String) V_V_EQUTYPECODE_LIST.get(i));
+                    checkResultDate.put("V_V_PLANTIME", (String) V_V_PLANTIME_LIST.get(i));
+                    checkResultDate.put("V_V_EQUCODE", "");
+                    checkResultDate.put("V_V_EQUNAME", "");
+                } else if (V_V_EQUCODE_LIST.size() == 0) {
+                    checkResultDate.put("V_V_PERSONCODE", (String) V_V_EQUCODE_LIST.get(i));
+                    checkResultDate.put("V_V_ORGCODE", (String) V_V_ORGCODE_LIST.get(i));
+                    checkResultDate.put("V_V_DEPTCODE", (String) V_V_DEPTCODE_LIST.get(i));
+                    checkResultDate.put("V_V_CXCODE", (String) V_V_CXCODE_LIST.get(i));
+                    checkResultDate.put("V_V_EQUTYPECODE", (String) V_V_EQUTYPECODE_LIST.get(i));
+                    checkResultDate.put("V_V_PLANTIME", (String) V_V_PLANTIME_LIST.get(i));
+                    checkResultDate.put("V_V_EQUCODE", "");
+                    checkResultDate.put("V_V_EQUNAME", (String) V_V_EQUNAME_LIST.get(i));
+                } else if (V_V_EQUNAME_LIST.size() == 0) {
+                    checkResultDate.put("V_V_PERSONCODE", (String) V_V_EQUCODE_LIST.get(i));
+                    checkResultDate.put("V_V_ORGCODE", (String) V_V_ORGCODE_LIST.get(i));
+                    checkResultDate.put("V_V_DEPTCODE", (String) V_V_DEPTCODE_LIST.get(i));
+                    checkResultDate.put("V_V_CXCODE", (String) V_V_CXCODE_LIST.get(i));
+                    checkResultDate.put("V_V_EQUTYPECODE", (String) V_V_EQUTYPECODE_LIST.get(i));
+                    checkResultDate.put("V_V_PLANTIME", (String) V_V_PLANTIME_LIST.get(i));
+                    checkResultDate.put("V_V_EQUCODE", (String) V_V_EQUCODE_LIST.get(i));
+                    checkResultDate.put("V_V_EQUNAME", "");
+                } else {
+                    checkResultDate.put("V_V_PERSONCODE", (String) V_V_EQUCODE_LIST.get(i));
+                    checkResultDate.put("V_V_ORGCODE", (String) V_V_ORGCODE_LIST.get(i));
+                    checkResultDate.put("V_V_DEPTCODE", (String) V_V_DEPTCODE_LIST.get(i));
+                    checkResultDate.put("V_V_CXCODE", (String) V_V_CXCODE_LIST.get(i));
+                    checkResultDate.put("V_V_EQUTYPECODE", (String) V_V_EQUTYPECODE_LIST.get(i));
+                    checkResultDate.put("V_V_PLANTIME", (String) V_V_PLANTIME_LIST.get(i));
+                    checkResultDate.put("V_V_EQUCODE", (String) V_V_EQUCODE_LIST.get(i));
+                    checkResultDate.put("V_V_EQUNAME", (String) V_V_EQUNAME_LIST.get(i));
+                }
+                excelApplyList.add(checkResultDate);
+            }
+        } else {
+            Map<String,Object> data = oilService.selectStandardInfoFact(V_V_PERSONCODE, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE, V_V_EQUTYPECODE, V_V_PLANTIME, V_V_EQUCODE,V_V_EQUNAME,page.toString(), limit.toString());
+            excelApplyList = (List<Map<String, Object>>) data.get("list");
+        }
+
+        if(excelApplyList != null){
+            for(int i = 0; i < excelApplyList.size();i++){
+                row = sheet.createRow(i + 1);
+                row.setHeightInPoints(25);
+                HSSFCell cellContent = row.createCell(0);
+                cellContent.setCellValue(i + 1);
+
+                cellContent = row.createCell(1);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_PLAN_TIME'") == null ? "" : excelApplyList.get(i).get("'V_PLAN_TIME'").toString());
+
+                cellContent = row.createCell(2);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_FACT_TIME") == null ? "" :excelApplyList.get(i).get("'V_FACT_TIME").toString());
+
+                cellContent = row.createCell(3);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_ORGNAME'") == null ? "":excelApplyList.get(i).get("'V_ORGNAME'").toString());
+
+                cellContent = row.createCell(4);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_EQUTYPENAME'") == null ? "" :excelApplyList.get(i).get("'V_EQUTYPENAME'").toString());
+
+                cellContent = row.createCell(5);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_GGXH'") == null ? "" :excelApplyList.get(i).get("'V_GGXH'").toString());
+
+                cellContent = row.createCell(6);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_EQUCODE'") == null ? "" :excelApplyList.get(i).get("'V_EQUCODE'").toString());
+
+                cellContent = row.createCell(7);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_EQUNAME'") == null ? "" :excelApplyList.get(i).get("'V_EQUNAME'").toString());
+
+                cellContent = row.createCell(8);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_GNWZ'") == null ? "" :excelApplyList.get(i).get("'V_GNWZ'").toString());
+
+                cellContent = row.createCell(9);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_LOC_NAME'") == null ? "" :excelApplyList.get(i).get("'V_LOC_NAME'").toString());
+
+                cellContent = row.createCell(10);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_PARTNAME'") == null ? "" :excelApplyList.get(i).get("'V_PARTNAME'").toString());
+
+                cellContent = row.createCell(11);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_OIL_TYPE'") == null ? "" :excelApplyList.get(i).get("'V_OIL_TYPE'").toString());
+
+                cellContent = row.createCell(12);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_OIL_SIGN'") == null ? "" :excelApplyList.get(i).get("'V_OIL_SIGN'").toString());
+
+                cellContent = row.createCell(13);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_FACT_OIL_SIGN'") == null ? "" :excelApplyList.get(i).get("'V_FACT_OIL_SIGN'").toString());
+
+                cellContent = row.createCell(14);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_OIL_NUM'") == null ? "" :excelApplyList.get(i).get("'V_OIL_NUM'").toString());
+
+                cellContent = row.createCell(15);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_FACT_OIL_NUM'") == null ? "" :excelApplyList.get(i).get("'V_FACT_OIL_NUM'").toString());
+
+                cellContent = row.createCell(16);
+                cellContent.setCellValue(excelApplyList.get(i).get("'V_ZXR'") == null ? "" :excelApplyList.get(i).get("'V_ZXR'").toString());
+            }
+        }
+
+
+        try {
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            String fileName = new String("润滑记录查询.xls".getBytes("UTF-8"),"ISO-8859-1");
+            response.setHeader("Content-Disposition","attachment;filename="+fileName);
+            OutputStream os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     //润滑标准保存
