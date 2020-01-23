@@ -797,7 +797,7 @@ function OnClickDelectWorkEdit(){
                 async: false,
                 method: 'POST',
                 params: {
-                    IV_WORKORDER_GUID: seldata[i].V_ORDERGUID,
+                    IV_WORKORDER_GUID: seldata[i].data.V_ORDERGUID,
                     v_usercode: Ext.util.Cookies.get('v_personcode')
                 },
                 success: function (ret) {
@@ -805,6 +805,7 @@ function OnClickDelectWorkEdit(){
                     var resp = respRoot.ret;
                     if(resp == 'success'){
                         Ext.Msg.alert('删除提示','删除成功！');
+                        QueryGrid();
                     }
                     }
                 });
