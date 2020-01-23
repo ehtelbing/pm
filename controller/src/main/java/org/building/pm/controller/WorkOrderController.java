@@ -1025,4 +1025,57 @@ public class WorkOrderController {
                 V_V_DEPTCODEREPARIR, V_V_STATECODE, V_EQUTYPE_CODE, V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT, V_V_BJ_TXT,V_V_WORKID);
         return result;
     }
+    /**
+     * 编辑状态工单查询*/
+    @RequestMapping(value = "/PRO_PM_WORKORDER_SELECT_EDIT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_SELECT_EDIT(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                                                         @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                                         @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                         @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                                         @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                                         @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                                         @RequestParam(value = "V_DJ_PERCODE") String V_DJ_PERCODE,
+                                                         @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                                         @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
+                                                         @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
+                                                         @RequestParam(value="V_V_WORKID") String V_V_WORKID,
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) throws Exception {
+        Map result = workOrderService.PRO_PM_WORKORDER_SELECT_EDIT(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE, V_V_DEPTCODE,
+                V_V_DEPTCODEREPARIR, V_EQUTYPE_CODE, V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT, V_V_BJ_TXT,V_V_ORDER_TYP,V_V_WORKID,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_PM_WORKEDITCOUNT_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKEDITCOUNT_N(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                                                     @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                                     @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                     @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                     @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                                     @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                                     @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                                     @RequestParam(value = "V_DJ_PERCODE") String V_DJ_PERCODE,
+                                                     @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                                     @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
+                                                     @RequestParam(value="V_V_WORKID") String V_V_WORKID,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        HashMap result = workOrderService.PRO_PM_WORKEDITCOUNT_N(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE, V_V_DEPTCODE,
+                V_V_DEPTCODEREPARIR, V_EQUTYPE_CODE, V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT, V_V_BJ_TXT,V_V_WORKID);
+        return result;
+    }
+//    工单删除
+    @RequestMapping(value = "/PRO_DELETE_WORKEDIT_DEFECT",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DELETE_WORKEDIT_DEFECT(@RequestParam(value = "IV_WORKORDER_GUID") String IV_WORKORDER_GUID,
+                                                          @RequestParam(value = "v_usercode") String v_usercode,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception{
+        HashMap result = workOrderService.PRO_DELETE_WORKEDIT_DEFECT(IV_WORKORDER_GUID, v_usercode);
+        return result;
+    }
 }

@@ -2617,4 +2617,113 @@ public class WorkOrderService {
         logger.info("end PRO_PM_WORKTYPCOUNT_N");
         return result;
     }
+    //编辑状态工单查询
+    public HashMap PRO_PM_WORKORDER_SELECT_EDIT(String V_D_ENTER_DATE_B,String V_D_ENTER_DATE_E,String V_V_ORGCODE,String V_V_DEPTCODE,
+                                             String V_V_DEPTCODEREPARIR,String V_EQUTYPE_CODE,String V_EQU_CODE,
+                                             String V_DJ_PERCODE,String V_V_SHORT_TXT,String V_V_BJ_TXT,String V_V_ORDER_TYP,
+                                             String V_V_WORKID,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+        logger.info("begin PRO_PM_WORKORDER_SELECT_EDIT");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SELECT_EDIT" + "(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_DEPTCODEREPARIR," +
+                    ":V_EQUTYPE_CODE,:V_EQU_CODE,:V_DJ_PERCODE,:V_V_SHORT_TXT," +
+                    ":V_V_BJ_TXT,:V_V_ORDER_TYP,:V_V_WORKID,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_D_ENTER_DATE_B", V_D_ENTER_DATE_B);
+            cstmt.setString("V_D_ENTER_DATE_E", V_D_ENTER_DATE_E);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTCODEREPARIR", V_V_DEPTCODEREPARIR);
+            cstmt.setString("V_EQUTYPE_CODE", V_EQUTYPE_CODE);
+            cstmt.setString("V_EQU_CODE", V_EQU_CODE);
+            cstmt.setString("V_DJ_PERCODE", V_DJ_PERCODE);
+            cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
+            cstmt.setString("V_V_BJ_TXT", V_V_BJ_TXT);
+            cstmt.setString("V_V_ORDER_TYP", V_V_ORDER_TYP);
+            cstmt.setString("V_V_WORKID",V_V_WORKID);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total",cstmt.getString("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        //result.put("list", resultList);
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SELECT_EDIT");
+        return result;
+    }
+    public HashMap PRO_PM_WORKEDITCOUNT_N(String V_D_ENTER_DATE_B,String V_D_ENTER_DATE_E,String V_V_ORGCODE,String V_V_DEPTCODE,
+                                         String V_V_DEPTCODEREPARIR,String V_EQUTYPE_CODE,String V_EQU_CODE,
+                                         String V_DJ_PERCODE,String V_V_SHORT_TXT,String V_V_BJ_TXT,String V_V_WORKID) throws SQLException {
+        logger.info("begin PRO_PM_WORKEDITCOUNT_N");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKEDITCOUNT_N" + "(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_DEPTCODEREPARIR,:V_EQUTYPE_CODE,:V_EQU_CODE,:V_DJ_PERCODE,:V_V_SHORT_TXT,:V_V_BJ_TXT,:V_V_WORKID,:V_CURSOR)}");
+            cstmt.setString("V_D_ENTER_DATE_B", V_D_ENTER_DATE_B);
+            cstmt.setString("V_D_ENTER_DATE_E", V_D_ENTER_DATE_E);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTCODEREPARIR", V_V_DEPTCODEREPARIR);
+            cstmt.setString("V_EQUTYPE_CODE", V_EQUTYPE_CODE);
+            cstmt.setString("V_EQU_CODE", V_EQU_CODE);
+            cstmt.setString("V_DJ_PERCODE", V_DJ_PERCODE);
+            cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
+            cstmt.setString("V_V_BJ_TXT", V_V_BJ_TXT);
+            cstmt.setString("V_V_WORKID",V_V_WORKID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKEDITCOUNT_N");
+        return result;
+    }
+    //工单删除
+    public HashMap PRO_DELETE_WORKEDIT_DEFECT(String IV_WORKORDER_GUID,String v_usercode) throws SQLException {
+        logger.info("begin PRO_DELETE_WORKEDIT_DEFECT");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DELETE_WORKEDIT_DEFECT" + "(:IV_WORKORDER_GUID,:v_usercode,:ret)}");
+            cstmt.setString("IV_WORKORDER_GUID", IV_WORKORDER_GUID);
+            cstmt.setString("v_usercode", v_usercode);
+            cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("ret",cstmt.getString("ret"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DELETE_WORKEDIT_DEFECT");
+        return result;
+    }
 }
